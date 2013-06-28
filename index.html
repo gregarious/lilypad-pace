@@ -31,8 +31,23 @@
         <div id="logo">
         </div>
         <div id="menu">
+            <menu>
+                <menu-item>EDIT ATTENDANCE</menu-item>
+                <div ng-controller="StudentCtrl">
+                    <menu-item ng-repeat="student in students">
+                        <strong>{{student.first_name}}</strong> {{student.last_name}}
+                    </menu-item>
+                </div>
+            </menu>
         </div>
     </div>
-    <div id="main"></div>
+    <div id="main" ng-controller="MainCtrl" ng-switch on="view">
+        <div id="student" ng-switch-when="student">
+            <h1><strong>{{student.first_name}}</strong> {{student.last_name}}</h1>
+        </div>
+        <div id="default" ng-switch-default>
+            <p>Howdy</p>
+        </div>
+    </div>
 </body>
 </html>

@@ -23,6 +23,10 @@ body {
     font-size: 18px;
 }
 
+strong {
+    font-family: allerbold;
+}
+
 #sidebar {
     box-sizing: border-box;
     float: left;
