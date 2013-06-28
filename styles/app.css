@@ -1,0 +1,51 @@
+/*
+    Green:      #48bea4
+    Light gray: #f1f1f2
+    Dark gray:  #939597
+    Text:       #58585b
+    Borders:    #c5c5c5
+*/
+
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    content: "";
+    clear: both;
+    height: 0;
+}
+
+body {
+    width: 1024px;
+    height: 748px;
+    overflow: hidden;
+    color: #58585b;
+    font-family: aller_lightregular;
+    font-size: 18px;
+}
+
+#sidebar {
+    box-sizing: border-box;
+    float: left;
+    width: 205px;
+    height: 748px;
+    border-right: solid 1px #c5c5c5;
+}
+
+#logo {
+    width: 100%;
+    height: 100px;
+    background-color: #3DBEA5;
+    color: #fff;
+}
+
+#menu {
+    height: 648px;
+    background-color: #f1f1f2;
+}
+
+#main {
+    box-sizing: border-box;
+    float: left;
+    width: 819px;
+    height: 100%;
+}
