@@ -24,30 +24,44 @@
     <!-- app -->
     <script src="app.js"></script>
 
-
 </head>
 <body>
     <div id="sidebar">
         <div id="logo">
         </div>
-        <div id="menu">
-            <menu>
-                <menu-item>EDIT ATTENDANCE</menu-item>
-                <div ng-controller="StudentCtrl">
-                    <menu-item ng-repeat="student in students">
-                        <strong>{{student.first_name}}</strong> {{student.last_name}}
+        <div id="menu" ng-controller="MenuCtrl">
+            <!-- Different menu views go here class list, student list etc.-->
+            <!-- We will need to implement this later using ng-switch-->
+            <!-- Every menu view would get its own controller-->
+            <div ng-controller="MenuStudentListCtrl">
+                <menu>
+                    <menu-item ng-click="$parent.toggleAttendance()">
+                        <ng-switch on="attendance">
+                            <span ng-switch-when="false">EDIT ATTENDANCE</span>
+                            <span ng-switch-when="true">SAVE ATTENDANCE</span>
+                        </ng-switch>
                     </menu-item>
-                </div>
-            </menu>
+                    <menu-item ng-repeat="student in students">
+                        <div ng-click="$parent.handleClick(student._id)">
+                            <strong>{{student.first_name}}</strong> {{student.last_name}}
+                            <ng-switch on="attendance">
+                                <span class="circle attendance" ng-class="{absent: !student.present}" ng-switch-when="true"></span>
+                            </ng-switch>
+                        </div>
+                    </menu-item>
+                </menu>
+            </div>
         </div>
     </div>
-    <div id="main" ng-controller="MainCtrl" ng-switch on="view">
-        <div id="student" ng-switch-when="student">
-            <h1><strong>{{student.first_name}}</strong> {{student.last_name}}</h1>
+    <div id="main" ng-controller="MainCtrl">
+        <ng-switch on="view">
+            <div id="student" ng-switch-when="student" ng-controller="MainStudentCtrl">
+                <h1><strong>{{student.first_name}}</strong> {{student.last_name}}</h1>
+            </div>
+            <div ng-switch-default>
+                <h1>default screen</h1>
         </div>
-        <div id="default" ng-switch-default>
-            <p>Howdy</p>
-        </div>
+        </ng-switch>
     </div>
 </body>
 </html>
