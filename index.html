@@ -41,8 +41,8 @@
                             <span ng-switch-when="true">SAVE ATTENDANCE</span>
                         </ng-switch>
                     </menu-item>
-                    <menu-item ng-repeat="student in students">
-                        <div ng-click="$parent.handleClick(student._id)">
+                    <menu-item ng-class="{selected: currentStudentId == student._id && !attendance}" ng-repeat="student in students">
+                         <div ng-click="$parent.handleClick(student._id)">
                             <strong>{{student.first_name}}</strong> {{student.last_name}}
                             <ng-switch on="attendance">
                                 <span class="circle attendance" ng-class="{absent: !student.present}" ng-switch-when="true"></span>
@@ -56,7 +56,20 @@
     <div id="main" ng-controller="MainCtrl">
         <ng-switch on="view">
             <div id="student" ng-switch-when="student" ng-controller="MainStudentCtrl">
-                <h1><strong>{{student.first_name}}</strong> {{student.last_name}}</h1>
+                <main-tabs>
+                    <div class="mainContent">
+                        <h1><strong>{{student.first_name}}</strong> {{student.last_name}}</h1>
+                        <main-pane title="Collect">
+                            Collect stuff
+                        </main-pane>
+                        <main-pane title="Analyze">
+                            Analyze stuff
+                        </main-pane>
+                        <main-pane title="Discuss">
+                            Discuss stuff
+                        </main-pane>
+                    </div>
+                </main-tabs>
             </div>
             <div ng-switch-default>
                 <h1>default screen</h1>

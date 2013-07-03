@@ -19,6 +19,7 @@ app.controller('MenuCtrl', function($scope) {
 // maintains viewstate data for student list in menu, handles events (not ideal)
 app.controller('MenuStudentListCtrl', function($scope, students, viewService) {
     $scope.attendance = false;
+    $scope.currentStudentId = null;
     $scope.students = students.students;
 
     $scope.toggleAttendance = function() {
@@ -35,6 +36,11 @@ app.controller('MenuStudentListCtrl', function($scope, students, viewService) {
             viewService.parameters['_id'] = studentId;
         }
     }
+
+    $scope.viewService = viewService;
+    $scope.$watch('viewService.parameters._id', function(newStudentId) {
+        $scope.currentStudentId = students.students[newStudentId]._id;
+    });
 });
 
 // maintains view state data for main content area for the student view
@@ -66,6 +72,60 @@ app.directive('menuItem', function() {
         replace: true
     }
 });
+
+
+
+app.directive('mainTabs', function() {
+    return {
+        restrict: 'E',
+        transclude: true,
+        scope: {},
+        controller: function($scope, $element) {
+            var panes = $scope.panes = [];
+
+            $scope.select = function(pane) {
+                angular.forEach(panes, function(pane) {
+                    pane.selected = false;
+                });
+                pane.selected = true;
+            }
+
+            this.addPane = function(pane) {
+                if (panes.length == 0) $scope.select(pane);
+                panes.push(pane);
+            }
+        },
+        template:
+            '<div>' +
+                '<div class="clearfix">' +
+                    '<ul class="mainTabs">' +
+                        '<li ng-repeat="pane in panes" ng-click="select(pane)" ng-class="{selected:pane.selected}">' +
+                        '{{pane.title}}' +
+                        '</li>' +
+                    '</ul>' +
+                '</div>' +
+                '<div class="tab-content" ng-transclude></div>' +
+                '</div>',
+        replace: true
+    };
+});
+
+app.directive('mainPane', function() {
+    return {
+        require: '^mainTabs',
+        restrict: 'E',
+        transclude: true,
+        scope: { title: '@' },
+        link: function(scope, element, attrs, mainTabsCtrl) {
+            mainTabsCtrl.addPane(scope);
+        },
+        template:
+            '<div class="tab-pane" ng-class="{active: selected}" ng-transclude>' +
+                '</div>',
+        replace: true
+    };
+});
+
 
 // maintains shared viewstate
 app.service('viewService', function() {

@@ -1,9 +1,15 @@
 /*
-    Green:      #48bea4
-    Light gray: #f1f1f2
-    Dark gray:  #939597
-    Text:       #58585b
-    Borders:    #c5c5c5
+    Green:          #48bea4
+
+    Light gray:     #f2f2f2
+    Medium gray:    #8C8C8C
+    Dark gray:      #333333
+
+    Light border:   #B3B3B3
+    Medium border:  #7F7F7F
+    Dark border:    #333333
+
+    Text:           #58585b
 */
 
 .clearfix:after {
@@ -21,10 +27,16 @@ body {
     color: #58585b;
     font-family: aller_lightregular;
     font-size: 18px;
+    letter-spacing: 0.1em;
 }
 
 strong {
     font-family: allerbold;
+}
+
+h1 {
+    font-size: 32px;
+    margin-bottom: 1em;
 }
 
 #sidebar {
@@ -32,7 +44,6 @@ strong {
     float: left;
     width: 205px;
     height: 748px;
-    border-right: solid 1px #c5c5c5;
 }
 
 #logo {
@@ -44,7 +55,7 @@ strong {
 
 #menu {
     height: 648px;
-    background-color: #f1f1f2;
+    background-color: #f2f2f2;
 }
 
 #menu li {
@@ -60,6 +71,44 @@ strong {
     height: 100%;
 }
 
+.tab-pane {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+.mainContent {
+    padding: 20px 50px;
+}
+
+.mainTabs {
+    box-sizing: border-box;
+    display: inline-block;
+    float: right;
+    background-color: #48bea4;
+    color: #ffffff;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.mainTabs li{
+    display: inline-block;
+    width: 120px;
+    font-size: 18px;
+    text-align: center;
+    height: 100%;
+    vertical-align: middle;
+    line-height: 2;
+    font-family: aller_lightregular;
+}
+
+.selected {
+    background-color: #8c8c8c;
+    color: #ffffff;
+}
+
 .circle {
     display: inline-block;
     border-radius: 50%;
@@ -71,7 +120,7 @@ strong {
     float: right;
     margin-top: 1em;
     margin-right: 1em;
-    background-color: #939597;
+    background-color: #8c8c8c;
 }
 
 .circle.attendance.absent::after {
@@ -80,7 +129,7 @@ strong {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background-color: #f1f1f2;
+    background-color: #f2f2f2;
     position: relative;
     left: 2px;
     top: -15px;
