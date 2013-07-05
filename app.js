@@ -2,13 +2,10 @@ var app = angular.module('pace', ['underscore']);
 
 // maintains viewstate for main content area
 app.controller('MainCtrl', function($scope, viewService) {
-    $scope.view = viewService.currentView;
-
-    // keeps the controller updated when service data changes
-    $scope.viewService = viewService;
-    $scope.$watch('viewService.currentView', function(newVal) {
-        $scope.view = newVal;
-    });
+    $scope.$watch(function() {return viewService}, function(data) {
+        $scope.view = data.currentView; // the current view
+        $scope.attendance = data.parameters.attendance; // whether attendance is being taken
+    }, true);
 });
 
 // will maintain viewstate for menu area
@@ -18,12 +15,18 @@ app.controller('MenuCtrl', function($scope) {
 
 // maintains viewstate data for student list in menu, handles events (not ideal)
 app.controller('MenuStudentListCtrl', function($scope, students, viewService) {
-    $scope.attendance = false;
-    $scope.currentStudentId = null;
-    $scope.students = students.students;
+    $scope.students = students.students; // list of students in class
 
+    $scope.$watch(function() {return viewService}, function(data) {
+        if (data.parameters._id !== undefined) {
+            $scope.currentStudentId = students.students[data.parameters._id]._id; // selected student id
+        }
+        $scope.attendance = data.parameters.attendance; // whether attendance is being taken
+    }, true);
+
+    // toggles attendance controls
     $scope.toggleAttendance = function() {
-        $scope.attendance = !$scope.attendance;
+        viewService.parameters.attendance = !viewService.parameters.attendance;
     };
 
     // handles click events on student list
@@ -36,22 +39,14 @@ app.controller('MenuStudentListCtrl', function($scope, students, viewService) {
             viewService.parameters['_id'] = studentId;
         }
     }
-
-    $scope.viewService = viewService;
-    $scope.$watch('viewService.parameters._id', function(newStudentId) {
-        $scope.currentStudentId = students.students[newStudentId]._id;
-    });
 });
 
 // maintains view state data for main content area for the student view
 app.controller('MainStudentCtrl', function($scope, students, viewService) {
-    $scope.student = students.students[viewService.parameters._id];
-
-    // keeps the controller updated when service data changes
-    $scope.viewService = viewService;
-    $scope.$watch('viewService.parameters._id', function(newStudentId) {
-        $scope.student = students.students[newStudentId];
-    });
+    $scope.$watch(function() {return viewService}, function(data) {
+        $scope.student = students.students[data.parameters._id];
+        $scope.attendance = data.parameters.attendance;
+    }, true);
 });
 
 app.directive('menu', function() {
@@ -72,8 +67,6 @@ app.directive('menuItem', function() {
         replace: true
     }
 });
-
-
 
 app.directive('mainTabs', function() {
     return {
@@ -115,12 +108,12 @@ app.directive('mainPane', function() {
         require: '^mainTabs',
         restrict: 'E',
         transclude: true,
-        scope: { title: '@' },
+        scope: { title: '@', disabled: '=' },
         link: function(scope, element, attrs, mainTabsCtrl) {
             mainTabsCtrl.addPane(scope);
         },
         template:
-            '<div class="tab-pane" ng-class="{active: selected}" ng-transclude>' +
+            '<div class="tab-pane" ng-class="{active: selected, disabled: disabled}" ng-transclude>{{disabled}}' +
                 '</div>',
         replace: true
     };

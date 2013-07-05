@@ -37,7 +37,7 @@
                 <menu>
                     <menu-item ng-click="$parent.toggleAttendance()">
                         <ng-switch on="attendance">
-                            <span ng-switch-when="false">EDIT ATTENDANCE</span>
+                            <span ng-switch-default>EDIT ATTENDANCE</span>
                             <span ng-switch-when="true">SAVE ATTENDANCE</span>
                         </ng-switch>
                     </menu-item>
@@ -53,13 +53,13 @@
             </div>
         </div>
     </div>
-    <div id="main" ng-controller="MainCtrl">
+    <div id="main" ng-controller="MainCtrl" ng-class="{disabled: attendance}">
         <ng-switch on="view">
             <div id="student" ng-switch-when="student" ng-controller="MainStudentCtrl">
                 <main-tabs>
                     <div class="mainContent">
                         <h1><strong>{{student.first_name}}</strong> {{student.last_name}}</h1>
-                        <main-pane title="Collect">
+                        <main-pane disabled="!student.present" title="Collect">
                             Collect stuff
                         </main-pane>
                         <main-pane title="Analyze">
