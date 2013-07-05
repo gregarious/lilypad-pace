@@ -53,23 +53,27 @@
             </div>
         </div>
     </div>
-    <div id="main" ng-controller="MainCtrl" ng-class="{disabled: attendance}">
+    <div id="main" ng-controller="MainCtrl">
         <ng-switch on="view">
-            <div id="student" ng-switch-when="student" ng-controller="MainStudentCtrl">
-                <main-tabs>
-                    <div class="mainContent">
-                        <h1><strong>{{student.first_name}}</strong> {{student.last_name}}</h1>
-                        <main-pane disabled="!student.present" title="Collect">
-                            Collect stuff
-                        </main-pane>
-                        <main-pane title="Analyze">
-                            Analyze stuff
-                        </main-pane>
-                        <main-pane title="Discuss">
-                            Discuss stuff
-                        </main-pane>
-                    </div>
-                </main-tabs>
+            <div id="student" ng-switch-when="student" ng-controller="MainStudentCtrl" >
+                <div class="mainContent" ng-class="{disabled: (attendance || settingsActive)}">
+                    <main-tabs>
+                            <h1><strong>{{student.first_name}}</strong> {{student.last_name}}</h1> <button ng-click="showSettings()">Settings</button>
+                            <main-pane disabled="!student.present" title="Collect">
+                                Collect stuff
+                            </main-pane>
+                            <main-pane title="Analyze">
+                                Analyze stuff
+                            </main-pane>
+                            <main-pane title="Discuss">
+                                Discuss stuff
+                            </main-pane>
+                    </main-tabs>
+                </div>
+                <main-modal active="settingsActive">
+                    <p>The really cool student modal screen</p>
+                    <button ng-click="hideSettings()">Close settings</button>
+                </main-modal>
             </div>
             <div ng-switch-default>
                 <h1>default screen</h1>

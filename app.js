@@ -43,10 +43,20 @@ app.controller('MenuStudentListCtrl', function($scope, students, viewService) {
 
 // maintains view state data for main content area for the student view
 app.controller('MainStudentCtrl', function($scope, students, viewService) {
+    $scope.settingsActive = false
+
     $scope.$watch(function() {return viewService}, function(data) {
         $scope.student = students.students[data.parameters._id];
         $scope.attendance = data.parameters.attendance;
     }, true);
+
+    $scope.showSettings = function() {
+        $scope.settingsActive = true;
+    }
+
+    $scope.hideSettings = function() {
+        $scope.settingsActive = false;
+    }
 });
 
 app.directive('menu', function() {
@@ -113,11 +123,22 @@ app.directive('mainPane', function() {
             mainTabsCtrl.addPane(scope);
         },
         template:
-            '<div class="tab-pane" ng-class="{active: selected, disabled: disabled}" ng-transclude>{{disabled}}' +
+            '<div class="tab-pane" ng-class="{active: selected, disabled: disabled}" ng-transclude>' +
                 '</div>',
         replace: true
     };
-});
+})
+
+app.directive('mainModal', function() {
+    return {
+        restrict: 'E',
+        transclude: true,
+        scope: {active: '='},
+        template:
+            '<div class="mainModal modal" ng-class="{active: active}" ng-transclude></div>',
+        replace: true
+    }
+})
 
 
 // maintains shared viewstate

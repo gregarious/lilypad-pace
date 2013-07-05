@@ -37,6 +37,7 @@ strong {
 h1 {
     font-size: 32px;
     margin-bottom: 1em;
+    display: inline;
 }
 
 #sidebar {
@@ -66,6 +67,7 @@ h1 {
 
 #main {
     box-sizing: border-box;
+    position: relative;
     float: left;
     width: 819px;
     height: 100%;
@@ -75,12 +77,27 @@ h1 {
     display: none;
 }
 
+.modal {
+    box-sizing: border-box;
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 15%;
+    right: 15%;
+    height: 100%;
+    padding: 1em;
+    padding-top: 2em;
+    background-color: #fff;
+    border-left: 1px solid #333333;
+    border-right: 1px solid #333333;
+}
+
 .active {
     display: block;
 }
 
 .mainContent {
-    padding: 20px 50px;
+    padding: 0px 50px;
 }
 
 .disabled {
@@ -105,6 +122,7 @@ h1 {
     box-sizing: border-box;
     display: inline-block;
     float: right;
+    margin-right: -50px;
     background-color: #48bea4;
     color: #ffffff;
     padding-left: 15px;
