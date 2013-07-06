@@ -40,6 +40,11 @@ h1 {
     display: inline;
 }
 
+h2 {
+    float: left;
+    font-size: 24px;
+}
+
 #sidebar {
     box-sizing: border-box;
     float: left;
@@ -81,15 +86,17 @@ h1 {
     box-sizing: border-box;
     display: none;
     position: absolute;
-    top: 0;
-    left: 15%;
-    right: 15%;
-    height: 100%;
+    top: 100px;
+    left: 10%;
+    right: 10%;
+    height: 80%;
     padding: 1em;
-    padding-top: 2em;
     background-color: #fff;
-    border-left: 1px solid #333333;
-    border-right: 1px solid #333333;
+    border: 1px solid #333333;
+}
+
+.modal .close {
+    float: right;
 }
 
 .active {
