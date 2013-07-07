@@ -56,7 +56,7 @@
     <div id="main" ng-controller="MainCtrl">
         <ng-switch on="view">
             <div id="student" ng-switch-when="student" ng-controller="MainStudentCtrl" >
-                <div class="mainContent" ng-class="{disabled: (attendance || settingsActive)}">
+                <div class="mainContent" ng-class="{disabled: (attendance || behaviorModalActive)}">
                     <main-tabs>
                             <h1><strong>{{student.first_name}}</strong> {{student.last_name}}</h1> <button ng-click="showSettings()">Settings</button>
                             <main-pane disabled="!student.present" title="Collect">
@@ -70,8 +70,28 @@
                             </main-pane>
                     </main-tabs>
                 </div>
-                <main-modal active="settingsActive" title="STUDENT BEHAVIORS">
-                    <button>Add Behavior</button>
+                <main-modal active="behaviorModalActive" title="STUDENT BEHAVIORS" >
+                    <div ng-controller="behaviorModalCtrl">
+                        <ng-switch on="addingBehavior">
+                            <div ng-switch-default>
+                                <button ng-click="showAddBehavior()">Add Behavior</button>
+                            </div>
+                            <section ng-switch-when="true">
+                                <div class="clearfix">
+                                    <div id="behaviorNameInput">
+                                        <h3>Behavior Description</h3>
+                                        <input type="text" placeholder="e.g. 'Physical Aggression'" ng-model="$parent.description"/>
+                                    </div>
+                                    <buttonset id="behaviorTypeInput" options="behaviorTypes" value="$parent.selectedBehaviorType" label="Behavior Type"></buttonset>
+                                </div>
+                                <div class="modalSubmit clearfix">
+                                    <button ng-click="saveBehavior()">Save Behavior</button>
+                                    <button ng-click="hideAddBehavior()">Cancel</button>
+                                </div>
+                            </section>
+                        </ng-switch>
+
+                    </div>
                 </main-modal>
             </div>
             <div ng-switch-default>

@@ -43,12 +43,42 @@ h1 {
 h2 {
     float: left;
     font-size: 24px;
+    line-height: 2;
+}
+
+h3 {
+    font-size: 18px;
+}
+
+button {
+    background-color: #48bea4;
+    border: 0px;
+    padding: 0.5em;
+    padding-left: 1em;
+    padding-right: 1em;
+    font-size: 18px;
+    color: #fff;
+}
+
+label {
+    display: inline-block;
+    margin-top: 1em;
+}
+
+input[type=text] {
+    font-size: 14px;
+    width: 300px;
+}
+
+section {
+    border: 1px solid #7f7f7f;
+    padding: 1em;
 }
 
 #sidebar {
     box-sizing: border-box;
     float: left;
-    width: 205px;
+    width: 254px;
     height: 748px;
 }
 
@@ -68,13 +98,14 @@ h2 {
     line-height: 3;
     height: 3em;
     border-bottom: 1px solid #c5c5c5;
+    padding-left: 1.5em;
 }
 
 #main {
     box-sizing: border-box;
     position: relative;
     float: left;
-    width: 819px;
+    width: 770px;
     height: 100%;
 }
 
@@ -87,8 +118,8 @@ h2 {
     display: none;
     position: absolute;
     top: 100px;
-    left: 10%;
-    right: 10%;
+    left: 5%;
+    right: 5%;
     height: 80%;
     padding: 1em;
     background-color: #fff;
@@ -139,7 +170,6 @@ h2 {
 .mainTabs li{
     display: inline-block;
     width: 120px;
-    font-size: 18px;
     text-align: center;
     height: 100%;
     vertical-align: middle;
@@ -151,6 +181,67 @@ h2 {
     background-color: #8c8c8c;
     color: #ffffff;
 }
+
+.buttonset {
+    box-sizing: border-box;
+    display: inline-block;
+    height: 3em;
+}
+
+.buttonset li{
+    box-sizing: border-box;
+    display: inline-block;
+    text-align: center;
+    border-right: 1px solid #ffffff;
+    vertical-align: middle;
+    line-height: 3;
+    font-family: aller_lightregular;
+    background-color: #f2f2f2;
+}
+
+.buttonset li:last-child{
+    border-right: 0;
+}
+
+.buttonset li:first-child {
+}
+
+.buttonset .selected {
+    background-color: #8C8C8C;
+}
+
+#behaviorTypeInput li {
+    width: 150px;
+    font-size: 14px;
+}
+
+#behaviorNameInput {
+    box-sizing: border-box;
+    float: left;
+    width: 300px;
+    font-size: 14px;
+}
+
+
+#behaviorTypeInput {
+    float: right;
+    font-size: 14px;
+}
+
+.modalSubmit {
+    margin-top: 1.5em;
+}
+
+.modalSubmit button {
+    float: right;
+    margin-right: 1em;
+}
+
+.modalSubmit button:first-child {
+    margin-right: 0;
+}
+
+
 
 .circle {
     display: inline-block;
