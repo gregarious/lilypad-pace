@@ -1,0 +1,53 @@
+.buttonset {
+    box-sizing: border-box;
+    display: inline-block;
+    height: 3em;
+}
+
+.buttonset li{
+    box-sizing: border-box;
+    display: inline-block;
+    text-align: center;
+    border-right: 1px solid #ffffff;
+    vertical-align: middle;
+    line-height: 3;
+    font-family: aller_lightregular;
+    background-color: #f2f2f2;
+}
+
+.buttonset li:last-child{
+    border-right: 0;
+}
+
+.buttonset li:first-child {
+}
+
+.buttonset .selected {
+    background-color: #8C8C8C;
+}
+
+.circle {
+    display: inline-block;
+    border-radius: 50%;
+}
+
+.circle.attendance {
+    width: 20px;
+    height: 20px;
+    float: right;
+    margin-top: 1em;
+    margin-right: 1em;
+    background-color: #8c8c8c;
+}
+
+.circle.attendance.absent::after {
+    display: inline-block;
+    content: "";
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #f2f2f2;
+    position: relative;
+    left: 2px;
+    top: -15px;
+}

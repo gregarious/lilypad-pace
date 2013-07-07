@@ -30,10 +30,6 @@ body {
     letter-spacing: 0.1em;
 }
 
-strong {
-    font-family: allerbold;
-}
-
 h1 {
     font-size: 32px;
     margin-bottom: 1em;
@@ -50,6 +46,12 @@ h3 {
     font-size: 18px;
 }
 
+
+strong {
+    font-family: allerbold;
+}
+
+
 button {
     background-color: #48bea4;
     border: 0px;
@@ -58,11 +60,6 @@ button {
     padding-right: 1em;
     font-size: 18px;
     color: #fff;
-}
-
-label {
-    display: inline-block;
-    margin-top: 1em;
 }
 
 input[type=text] {
@@ -109,51 +106,8 @@ section {
     height: 100%;
 }
 
-.tab-pane {
-    display: none;
-}
-
-.modal {
-    box-sizing: border-box;
-    display: none;
-    position: absolute;
-    top: 100px;
-    left: 5%;
-    right: 5%;
-    height: 80%;
-    padding: 1em;
-    background-color: #fff;
-    border: 1px solid #333333;
-}
-
-.modal .close {
-    float: right;
-}
-
-.active {
-    display: block;
-}
-
 .mainContent {
     padding: 0px 50px;
-}
-
-.disabled {
-    position: relative;
-}
-
-.disabled::after {
-    display: block;
-    content: "";
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: #fff;
-    opacity: 0.8;
 }
 
 .mainTabs {
@@ -177,38 +131,42 @@ section {
     font-family: aller_lightregular;
 }
 
-.selected {
-    background-color: #8c8c8c;
-    color: #ffffff;
+.tab-pane {
+    display: none;
 }
 
-.buttonset {
+.modal {
     box-sizing: border-box;
-    display: inline-block;
-    height: 3em;
+    display: none;
+    position: absolute;
+    top: 100px;
+    left: 5%;
+    right: 5%;
+    height: 80%;
+    padding: 1em;
+    background-color: #fff;
+    border: 1px solid #333333;
 }
 
-.buttonset li{
-    box-sizing: border-box;
-    display: inline-block;
-    text-align: center;
-    border-right: 1px solid #ffffff;
-    vertical-align: middle;
-    line-height: 3;
-    font-family: aller_lightregular;
-    background-color: #f2f2f2;
+.modalSubmit button {
+    float: right;
+    margin-right: 1em;
 }
 
-.buttonset li:last-child{
-    border-right: 0;
+.modalSubmit button:first-child {
+    margin-right: 0;
 }
 
-.buttonset li:first-child {
+.modal .close {
+    float: right;
 }
 
-.buttonset .selected {
-    background-color: #8C8C8C;
+
+#behaviorTypeInput {
+    float: right;
+    font-size: 14px;
 }
+
 
 #behaviorTypeInput li {
     width: 150px;
@@ -223,48 +181,36 @@ section {
 }
 
 
-#behaviorTypeInput {
-    float: right;
-    font-size: 14px;
-}
-
 .modalSubmit {
     margin-top: 1.5em;
 }
 
-.modalSubmit button {
-    float: right;
-    margin-right: 1em;
+.active {
+    display: block;
 }
 
-.modalSubmit button:first-child {
-    margin-right: 0;
-}
-
-
-
-.circle {
-    display: inline-block;
-    border-radius: 50%;
-}
-
-.circle.attendance {
-    width: 20px;
-    height: 20px;
-    float: right;
-    margin-top: 1em;
-    margin-right: 1em;
-    background-color: #8c8c8c;
-}
-
-.circle.attendance.absent::after {
-    display: inline-block;
-    content: "";
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background-color: #f2f2f2;
+.disabled {
     position: relative;
-    left: 2px;
-    top: -15px;
 }
+
+.disabled::after {
+    display: block;
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #fff;
+    opacity: 0.8;
+}
+
+.selected {
+    background-color: #8c8c8c;
+    color: #ffffff;
+}
+
+
+
