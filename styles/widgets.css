@@ -53,26 +53,28 @@
 }
 
 .frequency-counter {
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    display: inline-block;
     text-align: center;
-    background-color: grey;
     color: #FFF;
     overflow: hidden;
     box-sizing: border-box;
+    font-family: helveticaneue-light;
+
 }
 
 .frequency-counter .countWrapper {
-    width: 100%;
-    height: 60%;
-    overflow: hidden;
     box-sizing: border-box;
+    width: 100%;
+    height: 100px;
+    overflow: hidden;
+    margin-top: 10px;
 }
 
 .frequency-counter .count {
     height: 100%;
     width: 100%;
-    font-size: 6em;
+    font-size: 72px;
     box-sizing: border-box;
     vertical-align: middle;
 }
@@ -81,47 +83,57 @@
     -webkit-transition: margin .5s;
 }
 
+.frequency-counter .arrow-container {
+    -webkit-transition: opacity .5s;
+}
+
 .frequency-counter .name {
-    height: 10%;
-    font-size: 8pt;
-    font-weight: bold;
     box-sizing: border-box;
+    font-size: 14px;
+    margin-bottom: 15px;
 }
 
 .frequency-counter .arrow-container {
+    box-sizing: border-box;
     padding-top: 7px;
+    padding-bottom: 7px;
     height: 15%;
     width: 100%;
-    box-sizing: border-box;
 }
 
-.frequency-counter .arrow-container:first-child {
-    border-bottom: 1px solid #fff;
+.frequency-counter .arrow-container {
     box-sizing: border-box;
+    opacity: 0.8;
 }
 
-.frequency-counter .arrow-container:last-child {
-    border-top: 1px solid #fff;
-    box-sizing: border-box;
+.frequency-counter .arrow-container.arrowDisabled {
+    opacity: 0.2;
+}
+
+.frequency-counter .arrow-container.up {
+    border-bottom: 2px solid #fff;
+}
+
+.frequency-counter .arrow-container.down {
+    border-top: 2px solid #fff;
 }
 
 .arrow-up {
     width: 0;
     height: 0;
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    border-bottom: 15px solid white;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 12px solid white;
     margin-left: auto;
     margin-right: auto;
 }
 
 .arrow-down {
-    line-height: 15%;
     width: 0;
     height: 0;
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    border-top: 15px solid white;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-top: 12px solid white;
     margin-left: auto;
     margin-right: auto;
 }

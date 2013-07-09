@@ -68,7 +68,12 @@
                     <main-tabs>
                             <h1><strong>{{student.first_name}}</strong> {{student.last_name}}</h1> <button ng-click="showSettings()">Settings</button>
                             <main-pane disabled="!student.present" title="Collect">
-                                <counter value="1" max="2" min="0" text="Be Safe"></counter>
+                                <div id="periodicBehaviors">
+                                    <counter class="bs" value="student.bs" dec="true" dec-fn="decrement('bs')" max="2" min="0" text="Be Safe" id="student._id"></counter>
+                                    <counter class="kw" value="student.kw" dec="true" dec-fn="decrement('kw')" max="2" min="0" text="Kind Words" id="student._id"></counter>
+                                    <counter class="cw" value="student.cw" dec="true" dec-fn="decrement('cw')" max="2" min="0" text="Complete Work" id="student._id"></counter>
+                                    <counter class="fd" value="student.fd" dec="true" dec-fn="decrement('fd')" max="2" min="0" text="Follow Directions" id="student._id"></counter>
+                                </div>
                             </main-pane>
                             <main-pane title="Analyze">
                                 Analyze stuff

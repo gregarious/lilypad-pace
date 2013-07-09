@@ -212,5 +212,32 @@ section {
     color: #ffffff;
 }
 
+.bs {
+    background-color: #db6464;
+}
+
+.kw {
+    background-color: #f5906c;
+}
+
+.cw {
+    background-color: #648ec9;
+}
+
+.fd {
+    background-color: #8a6aad;
+}
+
+.frequency-counter {
+    width: 23.5%;
+    margin-right: 2%;
+}
+
+.frequency-counter:last-child {
+    margin-right: 0;
+}
+
+
+
 
 

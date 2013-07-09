@@ -23,51 +23,83 @@ app.service('students', function() {
             "_id": "51c89c0b1484e90e5940b021",
             present: false,
             "first_name": "Tom",
-            "last_name": "Haverford"
+            "last_name": "Haverford",
+            "bs": 2,
+            "kw": 0,
+            "cw": 0,
+            "fd": 0
         },
         {
             "_id": "51c89c0b1484e90e5940b022",
             present: true,
             "first_name": "Ann",
-            "last_name": "Perkins"
+            "last_name": "Perkins",
+            "bs": 2,
+            "kw": 2,
+            "cw": 2,
+            "fd": 2
         },
         {
             "_id": "51c89c0b1484e90e5940b023",
             present: true,
             "first_name": "Jerry",
-            "last_name": "Gergich"
+            "last_name": "Gergich",
+            "bs": 0,
+            "kw": 2,
+            "cw": 1,
+            "fd": 2
         },
         {
             "_id": "51c89c0b1484e90e5940b024",
             present: false,
             "first_name": "Donna",
-            "last_name": "Meagle"
+            "last_name": "Meagle",
+            "bs": 1,
+            "kw": 0,
+            "cw": 1,
+            "fd": 1
         },
         {
             "_id": "51c89c0b1484e90e5940b025",
             present: true,
             "first_name": "Andy",
-            "last_name": "Dwyer"
+            "last_name": "Dwyer",
+            "bs": 0,
+            "kw": 2,
+            "cw": 1,
+            "fd": 1
         },
         {
             "_id": "51c89c0b1484e90e5940b026",
             present: true,
             "first_name": "Leslie",
-            "last_name": "Knope"
+            "last_name": "Knope",
+            "bs": 1,
+            "kw": 1,
+            "cw": 2,
+            "fd": 1
         },
 
         {
             "_id": "51c89c0b1484e90e5940b027",
             present: true,
             "first_name": "April",
-            "last_name": "Ludgate"
+            "last_name": "Ludgate",
+            "bs": 2,
+            "kw": 0,
+            "cw": 0,
+            "fd": 0
         },
 
         {
             "_id": "51c89c0b1484e90e5940b028",
             present: true,
             "first_name": "Ron",
-            "last_name": "Swanson"
+            "last_name": "Swanson",
+            "bs": 0,
+            "kw": 0,
+            "cw": 0,
+            "fd": 0
         }
     ];
 

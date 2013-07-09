@@ -2,6 +2,10 @@
 app.controller('MainStudentCtrl', function($scope, students, viewService) {
     $scope.behaviorModalActive = false
 
+    $scope.decrement = function(category) {
+        $scope.student[category]--;
+    }
+
     $scope.$watch(function() {return viewService}, function(data) {
         $scope.student = students.students[data.parameters._id];
         $scope.attendance = data.parameters.attendance;

@@ -1,82 +1,124 @@
 var widgets = angular.module('widgets', ['underscore']);
 
-widgets.directive('buttonset', function() {
+widgets.directive('buttonset', function () {
     return {
         restrict: 'E',
         transclude: true,
         scope: {options: '=', value: '=', label: '@'},
-        controller: function($scope, $element, $attrs) {
+        controller: function ($scope, $element, $attrs) {
             //$scope.selectedIndex = $scope.options.indexOf($scope.value);
-            $scope.select = function(index) {
+            $scope.select = function (index) {
                 $scope.selectedIndex = index;
                 $scope.value = $scope.options[index];
 
             }
-            $scope.isSelected = function(index) {
+            $scope.isSelected = function (index) {
                 return index === $scope.selectedIndex;
             }
 
         },
-        template:
-            '<div>' +
-                '<h3>{{label}}</h3>' +
-                '<ul class="buttonset">' +
-                '<li ng-repeat="option in options" ng-click="select($index)" ng-class="{selected: isSelected($index)}">{{option}}</li>' +
-                '</ul>' +
-                '</div>',
+        template: '<div>' +
+            '<h3>{{label}}</h3>' +
+            '<ul class="buttonset">' +
+            '<li ng-repeat="option in options" ng-click="select($index)" ng-class="{selected: isSelected($index)}">{{option}}</li>' +
+            '</ul>' +
+            '</div>',
         replace: true
     };
 });
 
-widgets.directive('counter', function() {
+// TODO: There be some timing bugs here....
+// TODO: Should gray out arrows if value is at min or max
+widgets.directive('counter', function () {
     return {
         restrict: 'E',
-        scope: { max: '@', min: '@', text: '@', value: '='},
-        controller: function($scope, $element, $attrs) {
+        scope: { max: '@', min: '@', text: '@', value: '=', dec: '@', inc: '@', incFn: '&', decFn: '&', id: '='},
+        controller: function ($scope) {
 
-            // sanity checks
-            if ($attrs.max === undefined || $attrs.min === undefined || $scope.value === undefined) {
-                throw "Max, min, and value must all be defined";
-                if ($attrs.max <= $attrs.min ) {
-                    throw "Max must be greater than min for counter";
+            var timeout = false;
+
+            $scope.increment = function () {
+                if (!timeout && $scope.value < $scope.max) {
+                    $scope.incFn();
+                    timeout = true;
+                    setTimeout(function () {
+                        timeout = false;
+                    }, 500);
                 }
             }
 
-            // array of possible values for counter values
-            $scope.values = _.range(parseInt($attrs.min), parseInt($attrs.max) + 1).reverse();
-
-            // updates the counter's margin to move visible number
-            var updateCounter = function() {
-                var counterElement = $element[0].children[1].children[0]
-                counterElement.setAttribute("style", "margin-top:" + (- ($scope.max - $scope.value) * counterElement.clientHeight).toString() + "px")
+            $scope.decrement = function () {
+                if (!timeout && $scope.value > $scope.min) {
+                    $scope.decFn();
+                    timeout = true;
+                    setTimeout(function () {
+                        timeout = false;
+                    }, 500);
+                }
             }
+        },
+        link: function (scope, element) {
+            var oldValue;
+            var oldId;
 
-            $scope.increment = function() {
-                $scope.value = Math.min($scope.max, $scope.value + 1);
-                updateCounter();
-            }
-
-            $scope.decrement = function() {
-                $scope.value = Math.max($scope.min, $scope.value - 1);
-                updateCounter();
-            }
-
-            // set the counter to the correct initial value when element is ready
-            $element.ready(function() {
-                updateCounter();
-                // using setTimeout to avoid animating counters too early
-                setTimeout(function() {
-                    $element[0].children[1].children[0].className = $element[0].children[1].children[0].className + " animated";
+            var countContainer = element[0].children[1];
+            var counterElement = countContainer.children[0];
+            element.ready(function() {
+                counterElement.setAttribute("style", "margin-top:" + (-counterElement.clientHeight).toString() + "px");
+                scope.currentValue = scope.value;
+                setTimeout(function () {
+                    counterElement.classList.add('animated');
+                    oldValue = scope.value;
                 }, 0);
             })
+
+            scope.$watch('value', function (newValue) {
+                if (scope.id === oldId) {
+                    animate();
+                } else {
+                    scope.currentValue = newValue;
+
+                    oldValue = newValue;
+                    oldId = scope.id;
+                }
+            });
+            counterElement.addEventListener('webkitTransitionEnd', function (event) {
+                scope.currentValue = scope.value;
+                scope.$digest();
+                counterElement.classList.remove('animated');
+                counterElement.setAttribute("style", "margin-top:" + (-counterElement.clientHeight).toString() + "px");
+                setTimeout(function () {
+                    counterElement.classList.add('animated');
+                    oldValue = scope.value;
+                }, 0);
+            });
+
+            var animate = function () {
+                if (scope.value > oldValue) {
+                    scope.upValue = scope.value;
+                    counterElement.setAttribute("style", "margin-top: 0px")
+                }
+
+                if (scope.value < oldValue) {
+                    scope.downValue = scope.value;
+                    counterElement.setAttribute("style", "margin-top:" + (-2 * counterElement.clientHeight).toString() + "px")
+                }
+            }
         },
-        template: '<div class="frequency-counter">' +
-            '<div class="arrow-container" ng-click="increment()"><div class="arrow-up"></div></div>' +
-            '<div class="countWrapper">' +
-            '<div class="count" ng-repeat="i in values">{{i}}</div>' +
-            '</div>' +
-            '<div class="name">{{text}}</div>' +
-            '<div class="arrow-container" ng-click="decrement()"><div class="arrow-down"></div></div>' +
+        template:
+            '<div class="frequency-counter">' +
+                '<ng-switch on="inc">' +
+                    '<div ng-switch-when="true" class="arrow-container up" ng-click="increment()"><div class="arrow-up"></div></div>' +
+                '</ng-switch>' +
+                '<div class="countWrapper">' +
+                    '<div class="count">{{upValue}}</div>' +
+                    '<div class="count">{{currentValue}}</div>' +
+                    '<div class="count">{{downValue}}</div>' +
+                '</div>' +
+                '<div class="name">{{text}}</div>' +
+                '<ng-switch on="dec">' +
+                    '<div ng-switch-when="true" class="arrow-container down" ng-click="decrement()"><div class="arrow-down"></div></div>' +
+                '</ng-switch>' +
             '</div>',
         replace: true
     };
