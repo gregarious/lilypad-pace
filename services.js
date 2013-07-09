@@ -34,7 +34,7 @@ app.service('students', function() {
             present: true,
             "first_name": "Ann",
             "last_name": "Perkins",
-            "bs": 2,
+            "bs": 10,
             "kw": 2,
             "cw": 2,
             "fd": 2

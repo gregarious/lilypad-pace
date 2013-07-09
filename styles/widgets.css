@@ -83,7 +83,7 @@
     -webkit-transition: margin .5s;
 }
 
-.frequency-counter .arrow-container {
+.frequency-counter .arrow-container.animated {
     -webkit-transition: opacity .5s;
 }
 

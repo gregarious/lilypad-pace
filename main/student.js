@@ -6,6 +6,10 @@ app.controller('MainStudentCtrl', function($scope, students, viewService) {
         $scope.student[category]--;
     }
 
+    $scope.increment = function(category) {
+        $scope.student[category]++;
+    }
+
     $scope.$watch(function() {return viewService}, function(data) {
         $scope.student = students.students[data.parameters._id];
         $scope.attendance = data.parameters.attendance;

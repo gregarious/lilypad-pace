@@ -5,7 +5,7 @@ widgets.directive('buttonset', function () {
         restrict: 'E',
         transclude: true,
         scope: {options: '=', value: '=', label: '@'},
-        controller: function ($scope, $element, $attrs) {
+        controller: function ($scope) {
             //$scope.selectedIndex = $scope.options.indexOf($scope.value);
             $scope.select = function (index) {
                 $scope.selectedIndex = index;
@@ -27,8 +27,7 @@ widgets.directive('buttonset', function () {
     };
 });
 
-// TODO: There be some timing bugs here....
-// TODO: Should gray out arrows if value is at min or max
+// This is a mess :(
 widgets.directive('counter', function () {
     return {
         restrict: 'E',
@@ -37,13 +36,14 @@ widgets.directive('counter', function () {
 
             var timeout = false;
 
+            // call passed in increment and decrement functions
             $scope.increment = function () {
                 if (!timeout && $scope.value < $scope.max) {
                     $scope.incFn();
                     timeout = true;
                     setTimeout(function () {
                         timeout = false;
-                    }, 500);
+                    }, 550);
                 }
             }
 
@@ -53,7 +53,7 @@ widgets.directive('counter', function () {
                     timeout = true;
                     setTimeout(function () {
                         timeout = false;
-                    }, 500);
+                    }, 550);
                 }
             }
         },
@@ -63,6 +63,33 @@ widgets.directive('counter', function () {
 
             var countContainer = element[0].children[1];
             var counterElement = countContainer.children[0];
+
+            // don't animate initially when the id has changed
+            scope.$watch('id', function (newId) {
+                scope.animate = false;
+                setTimeout(function() {
+                    scope.animate = true;
+                    oldId = newId;
+                }, 0);
+            })
+
+            // update the control when the value has changed, if the id is the same
+            scope.$watch('value', function (newValue) {
+                if (scope.id === oldId) {
+                    animate();
+                } else {
+                    scope.animate = false;
+                    scope.currentValue = newValue;
+                    oldValue = newValue;
+                    oldId = scope.id;
+                    setTimeout(function () {
+                        scope.animate = true;
+                    }, 0);
+
+                }
+            });
+
+            // initial state of element
             element.ready(function() {
                 counterElement.setAttribute("style", "margin-top:" + (-counterElement.clientHeight).toString() + "px");
                 scope.currentValue = scope.value;
@@ -72,17 +99,7 @@ widgets.directive('counter', function () {
                 }, 0);
             })
 
-            scope.$watch('value', function (newValue) {
-                if (scope.id === oldId) {
-                    animate();
-                } else {
-                    scope.currentValue = newValue;
-
-                    oldValue = newValue;
-                    oldId = scope.id;
-                }
-            });
-            counterElement.addEventListener('webkitTransitionEnd', function (event) {
+            counterElement.addEventListener('webkitTransitionEnd', function () {
                 scope.currentValue = scope.value;
                 scope.$digest();
                 counterElement.classList.remove('animated');
@@ -108,18 +125,18 @@ widgets.directive('counter', function () {
         template:
             '<div class="frequency-counter">' +
                 '<ng-switch on="inc">' +
-                    '<div ng-switch-when="true" class="arrow-container up" ng-click="increment()"><div class="arrow-up"></div></div>' +
+                '<div ng-switch-when="true" ng-class="{arrowDisabled: value == max, animated: animate}" class="arrow-container up" ng-click="increment()"><div class="arrow-up"></div></div>' +
                 '</ng-switch>' +
                 '<div class="countWrapper">' +
-                    '<div class="count">{{upValue}}</div>' +
-                    '<div class="count">{{currentValue}}</div>' +
-                    '<div class="count">{{downValue}}</div>' +
+                '<div class="count">{{upValue}}</div>' +
+                '<div class="count">{{currentValue}}</div>' +
+                '<div class="count">{{downValue}}</div>' +
                 '</div>' +
-                '<div class="name">{{text}}</div>' +
+                '<div class="name">{{text}} {{inTransition}}</div>' +
                 '<ng-switch on="dec">' +
-                    '<div ng-switch-when="true" class="arrow-container down" ng-click="decrement()"><div class="arrow-down"></div></div>' +
+                '<div ng-switch-when="true" ng-class="{arrowDisabled: value == min, animated: animate }" class="arrow-container down" ng-click="decrement()"><div class="arrow-down"></div></div>' +
                 '</ng-switch>' +
-            '</div>',
+                '</div>',
         replace: true
     };
 });
