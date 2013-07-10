@@ -4,10 +4,10 @@
     <title>Lilypad - Pace</title>
 
     <!-- For that native webapp experience -->
-    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
 
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
 
     <!-- stylesheets -->
     <link rel="stylesheet" href="styles/reset.css">
@@ -20,6 +20,8 @@
 
     <!-- modules -->
     <script src="modules/underscore.js"></script>
+    <script src="modules/backbone.js"></script>
+    <script src="modules/backbone-relational.js"></script>
     <script src="modules/modules.js"></script>
     <script src="modules/widgets.js"></script>
 
@@ -34,83 +36,99 @@
 
 </head>
 <body>
-    <div id="sidebar">
-        <div id="logo">
-        </div>
-        <div id="menu" ng-controller="MenuCtrl">
-            <!-- Different menu views go here class list, student list etc.-->
-            <!-- We will need to implement this later using ng-switch-->
-            <!-- Every menu view would get its own controller-->
-            <div ng-controller="MenuStudentListCtrl">
-                <menu>
-                    <menu-item ng-click="$parent.toggleAttendance()">
+<div id="sidebar">
+    <div id="logo">
+    </div>
+    <div id="menu" ng-controller="MenuCtrl">
+        <!-- Different menu views go here class list, student list etc.-->
+        <!-- We will need to implement this later using ng-switch-->
+        <!-- Every menu view would get its own controller-->
+        <div ng-controller="MenuStudentListCtrl">
+            <menu>
+                <menu-item ng-click="$parent.toggleAttendance()">
+                    <ng-switch on="attendance">
+                        <span ng-switch-default>EDIT ATTENDANCE</span>
+                        <span ng-switch-when="true">SAVE ATTENDANCE</span>
+                    </ng-switch>
+                </menu-item>
+                <menu-item ng-class="{selected: currentStudentId == student.get('id') && !attendance}"
+                           ng-repeat="student in students">
+                    <div ng-click="$parent.handleClick(student.get('id'))">
+                        <strong>{{student.get('first_name')}}</strong> {{student.get('last_name')}}
                         <ng-switch on="attendance">
-                            <span ng-switch-default>EDIT ATTENDANCE</span>
-                            <span ng-switch-when="true">SAVE ATTENDANCE</span>
+                            <span class="circle attendance" ng-class="{absent: !student.present}"
+                                  ng-switch-when="true"></span>
                         </ng-switch>
-                    </menu-item>
-                    <menu-item ng-class="{selected: currentStudentId == student._id && !attendance}" ng-repeat="student in students">
-                         <div ng-click="$parent.handleClick(student._id)">
-                            <strong>{{student.first_name}}</strong> {{student.last_name}}
-                            <ng-switch on="attendance">
-                                <span class="circle attendance" ng-class="{absent: !student.present}" ng-switch-when="true"></span>
-                            </ng-switch>
-                        </div>
-                    </menu-item>
-                </menu>
-            </div>
-        </div>
-    </div>
-    <div id="main" ng-controller="MainCtrl">
-        <ng-switch on="view">
-            <div id="student" ng-switch-when="student" ng-controller="MainStudentCtrl" >
-                <div class="mainContent" ng-class="{disabled: (attendance || behaviorModalActive)}">
-                    <main-tabs>
-                            <h1><strong>{{student.first_name}}</strong> {{student.last_name}}</h1> <button ng-click="showSettings()">Settings</button>
-                            <main-pane disabled="!student.present" title="Collect">
-                                <div id="periodicBehaviors">
-                                    <counter class="bs" value="student.bs" dec="true" dec-fn="decrement('bs')" max="2" min="0" text="Be Safe" id="student._id"></counter>
-                                    <counter class="kw" value="student.kw" dec="true" dec-fn="decrement('kw')" max="2" min="0" text="Kind Words" id="student._id"></counter>
-                                    <counter class="cw" value="student.cw" dec="true" dec-fn="decrement('cw')" max="2" min="0" text="Complete Work" id="student._id"></counter>
-                                    <counter class="fd" value="student.fd" dec="true" dec-fn="decrement('fd')" max="2" min="0" text="Follow Directions" id="student._id"></counter>
-                                </div>
-                            </main-pane>
-                            <main-pane title="Analyze">
-                                Analyze stuff
-                            </main-pane>
-                            <main-pane title="Discuss">
-                                Discuss stuff
-                            </main-pane>
-                    </main-tabs>
-                </div>
-                <main-modal active="behaviorModalActive" title="STUDENT BEHAVIORS" >
-                    <div ng-controller="behaviorModalCtrl">
-                        <ng-switch on="addingBehavior">
-                            <div ng-switch-default>
-                                <button ng-click="showAddBehavior()">Add Behavior</button>
-                            </div>
-                            <section ng-switch-when="true">
-                                <div class="clearfix">
-                                    <div id="behaviorNameInput">
-                                        <h3>Behavior Description</h3>
-                                        <input type="text" placeholder="e.g. 'Physical Aggression'" ng-model="$parent.description"/>
-                                    </div>
-                                    <buttonset id="behaviorTypeInput" options="behaviorTypes" value="$parent.selectedBehaviorType" label="Behavior Type"></buttonset>
-                                </div>
-                                <div class="modalSubmit clearfix">
-                                    <button ng-click="saveBehavior()">Save Behavior</button>
-                                    <button ng-click="hideAddBehavior()">Cancel</button>
-                                </div>
-                            </section>
-                        </ng-switch>
-
                     </div>
-                </main-modal>
-            </div>
-            <div ng-switch-default>
-                <h1>default screen</h1>
+                </menu-item>
+            </menu>
         </div>
-        </ng-switch>
     </div>
+</div>
+<div id="main" ng-controller="MainCtrl">
+    <ng-switch on="view">
+        <div id="student" ng-switch-when="student" ng-controller="MainStudentCtrl">
+            <!-- Disabled until attendance is implemented -->
+            <!--<div class="mainContent" ng-class="{disabled: (attendance || behaviorModalActive)}">-->
+            <div class="mainContent">
+                <main-tabs>
+                    <h1><strong>{{student.get('first_name')}}</strong> {{student.get('last_name')}}</h1>
+                    <button ng-click="showSettings()">Settings</button>
+                    <!--Disabled until attendance is implemented-->
+                    <!--<main-pane disabled="!student.present" title="Collect">-->
+                    <main-pane title="Collect">
+                        <div id="periodicBehaviors">
+                            <counter class="bs" value="student.bs" dec="true" dec-fn="decrement('bs')" max="2" min="0"
+                                     text="Be Safe" id="student._id"></counter>
+                            <counter class="kw" value="student.kw" dec="true" dec-fn="decrement('kw')" max="2" min="0"
+                                     text="Kind Words" id="student._id"></counter>
+                            <counter class="cw" value="student.cw" dec="true" dec-fn="decrement('cw')" max="2" min="0"
+                                     text="Complete Work" id="student._id"></counter>
+                            <counter class="fd" value="student.fd" dec="true" dec-fn="decrement('fd')" max="2" min="0"
+                                     text="Follow Directions" id="student._id"></counter>
+                        </div>
+                    </main-pane>
+                    <main-pane title="Analyze">
+                        Analyze stuff
+                    </main-pane>
+                    <main-pane title="Discuss">
+                        Discuss stuff
+                    </main-pane>
+                </main-tabs>
+            </div>
+            <main-modal active="behaviorModalActive" title="STUDENT BEHAVIORS">
+                <div ng-controller="behaviorModalCtrl">
+                    <ng-switch on="addingBehavior">
+                        <div ng-switch-default>
+                            <button ng-click="showAddBehavior()">Add Behavior</button>
+                        </div>
+                        <section ng-switch-when="true">
+                            <div class="clearfix">
+                                <div id="behaviorNameInput">
+                                    <h3>Behavior Description</h3>
+                                    <input type="text" placeholder="e.g. 'Physical Aggression'"
+                                           ng-model="$parent.description"/>
+                                </div>
+                                <buttonset id="behaviorTypeInput" options="behaviorTypes"
+                                           value="$parent.selectedBehaviorType" label="Behavior Type"></buttonset>
+                            </div>
+                            <div class="modalSubmit clearfix">
+                                <button ng-click="saveBehavior()">Save Behavior</button>
+                                <button ng-click="hideAddBehavior()">Cancel</button>
+                            </div>
+                        </section>
+                    </ng-switch>
+                    <ul>
+                        <li ng-repeat="behavior in behaviors">{{behavior.get('code')}} - {{behavior.get('label')}} - {{behavior.get('supports_duration')}} </li>
+                    </ul>
+
+                </div>
+            </main-modal>
+        </div>
+        <div ng-switch-default>
+            <h1>default screen</h1>
+        </div>
+    </ng-switch>
+</div>
 </body>
 </html>

@@ -1,9 +1,9 @@
-app.controller('MenuStudentListCtrl', function($scope, students, viewService) {
-    $scope.students = students.students; // list of students in class
+app.controller('MenuStudentListCtrl', function($scope, studentService, viewService) {
+    $scope.students = studentService.getStudents().models; // list of students in class
 
     $scope.$watch(function() {return viewService}, function(data) {
-        if (data.parameters._id !== undefined) {
-            $scope.currentStudentId = students.students[data.parameters._id]._id; // selected student id
+        if (data.parameters.id !== undefined) {
+            $scope.currentStudentId = studentService.getStudents().get([data.parameters.id]).get('id'); // selected student id
         }
         $scope.attendance = data.parameters.attendance; // whether attendance is being taken
     }, true);
@@ -17,10 +17,10 @@ app.controller('MenuStudentListCtrl', function($scope, students, viewService) {
     $scope.handleClick = function(studentId) {
         // are we taking attendance or switching main content views between students?
         if ($scope.attendance) {
-            students.students[studentId].present = !students.students[studentId].present;
+            studentService.getStudents().get(studentId).markAbsent();
         } else {
             viewService.currentView = 'student';
-            viewService.parameters['_id'] = studentId;
+            viewService.parameters['id'] = studentId;
         }
     }
 });

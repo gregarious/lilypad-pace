@@ -1,5 +1,5 @@
 // maintains view state data for main content area for the student view
-app.controller('MainStudentCtrl', function($scope, students, viewService) {
+app.controller('MainStudentCtrl', function($scope, studentService, viewService) {
     $scope.behaviorModalActive = false
 
     $scope.decrement = function(category) {
@@ -11,7 +11,7 @@ app.controller('MainStudentCtrl', function($scope, students, viewService) {
     }
 
     $scope.$watch(function() {return viewService}, function(data) {
-        $scope.student = students.students[data.parameters._id];
+        $scope.student = studentService.getStudents().get([data.parameters.id]);
         $scope.attendance = data.parameters.attendance;
     }, true);
 
@@ -20,10 +20,13 @@ app.controller('MainStudentCtrl', function($scope, students, viewService) {
     }
 });
 
-app.controller('behaviorModalCtrl', function($scope) {
+app.controller('behaviorModalCtrl', function($scope, studentService, viewService) {
     $scope.addingBehavior = false;
     $scope.behaviorTypes = ['Frequency', 'Duration'];
     $scope.selectedBehaviorType = null;
+
+    $scope.behaviors = studentService.getStudents().get(viewService.parameters.id).get('behaviorIncidentTypes').models;
+    console.log(studentService.getStudents().get(viewService.parameters.id).get('behaviorIncidentTypes').models.length);
 
     $scope.showAddBehavior = function() {
         $scope.addingBehavior = true;
