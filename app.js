@@ -1,1 +1,1 @@
-var app = angular.module('pace', ['underscore', 'widgets']);
+var app = angular.module('pace', ['ngMobile', 'underscore', 'widgets']);
