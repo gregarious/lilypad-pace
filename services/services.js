@@ -77,8 +77,8 @@ app.service('viewService', function() {
             period: null,
             date: null,
             points: {
-                'ukw': 2,
-                'dw': 2,
+                'kw': 2,
+                'cw': 2,
                 'fd': 2,
                 'bs': 2
             }
@@ -86,7 +86,7 @@ app.service('viewService', function() {
 
         /**
          * Various methods to set point values for particular categories.
-         * Category codes are among: 'ukw', 'dw', 'fd', 'bs'
+         * Category codes are among: 'kw', 'cw', 'fd', 'bs'
          */
         getPointValue: function(categoryCode) {
             return this.get('points')[categoryCode];
@@ -104,7 +104,7 @@ app.service('viewService', function() {
          */
         totalPoints: function() {
             var points = this.get('points');
-            return points.ukw + points.dw + points.fd + points.bs;
+            return points.kw + points.cw + points.fd + points.bs;
         }
     });
     var PeriodicBehaviorRecordCollection = Backbone.Collection.extend({
@@ -234,19 +234,19 @@ app.service('viewService', function() {
                             id: '122',
                             period: 8,
                             date: '2013-07-03',
-                            points: {'ukw': 2, 'dw': 2, 'fd': 2, 'bs': 0}
+                            points: {'kw': 2, 'cw': 2, 'fd': 2, 'bs': 0}
                         },
                         {
                             id: '123',
                             period: 1,
                             date: '2013-07-04',
-                            points: {'ukw': 2, 'dw': 1, 'fd': 0, 'bs': 2}
+                            points: {'kw': 2, 'cw': 1, 'fd': 0, 'bs': 2}
                         },
                         {
                             id: '124',
                             period: 2,
                             date: '2013-07-04',
-                            points: {'ukw': 2, 'dw': 2, 'fd': 1, 'bs': 2}
+                            points: {'kw': 2, 'cw': 2, 'fd': 1, 'bs': 2}
                         }
                     ]),
 
