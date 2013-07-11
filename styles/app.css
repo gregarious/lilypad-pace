@@ -179,6 +179,10 @@ section {
     float: right;
 }
 
+#behaviorIncidents {
+    margin-top: 2em;
+}
+
 
 #behaviorTypeInput {
     float: right;
@@ -253,6 +257,33 @@ section {
 
 .frequency-counter:last-child {
     margin-right: 0;
+}
+
+table {
+    width: 100%;
+}
+
+th {
+    font-family: allerbold;
+    border-bottom: 1px solid #B3B3B3;
+}
+
+tr {
+    border-bottom: 1px solid #B3B3B3;
+}
+
+td, th {
+    border-right: 1px solid #B3B3B3;
+    padding: 1em;
+    font-size: 14px;
+}
+
+tr:last-child {
+    border-bottom: 0;
+}
+
+td:last-child, th:last-child {
+    border-right: 0;
 }
 
 

@@ -28,6 +28,7 @@
     <!-- app -->
     <script src="app.js"></script>
     <script src="services/services.js"></script>
+    <script src="filters.js"></script>
     <script src="menu/menu.js"></script>
     <script src="menu/studentList.js"></script>
     <script src="main/main.js"></script>
@@ -86,6 +87,26 @@
                                      text="Complete Work" id="student._id"></counter>
                             <counter class="fd" value="student.fd" dec="true" dec-fn="decrement('fd')" max="2" min="0"
                                      text="Follow Directions" id="student._id"></counter>
+                        </div>
+                        <div id="behaviorIncidents">
+                            <table class="log">
+                                <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Incident</th>
+                                    <th>Duration</th>
+                                    <th>Comment</th>
+                                </tr>
+                                </thead>
+                                <tbod>
+                                    <tr ng-repeat="incident in incidents">
+                                        <td>{{incident.occurred_at | date: 'h:mm a'}}</td>
+                                        <td>{{incident.type}}</td>
+                                        <td>{{incident.duration | duration}}</td>
+                                        <td>{{incident.comment}}</td>
+                                    </tr>
+                                </tbod>
+                            </table>
                         </div>
                     </main-pane>
                     <main-pane title="Analyze">
