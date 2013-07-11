@@ -1,3 +1,5 @@
+// Returns an appropriately rounded time measure given some number of seconds
+// 37s, 1h 24min, 3min 47s... etc.
 app.filter('duration', function() {
     return function(input) {
         if (typeof input !== 'number' || input < 1) {
