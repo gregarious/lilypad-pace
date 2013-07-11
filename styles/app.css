@@ -12,13 +12,7 @@
     Text:           #58585b
 */
 
-.clearfix:after {
-    visibility: hidden;
-    display: block;
-    content: "";
-    clear: both;
-    height: 0;
-}
+/* App universal */
 
 body {
     width: 1024px;
@@ -32,8 +26,7 @@ body {
 
 h1 {
     font-size: 32px;
-    margin-bottom: 1em;
-    display: inline;
+    margin-bottom: 0.5em;
 }
 
 h2 {
@@ -46,11 +39,9 @@ h3 {
     font-size: 18px;
 }
 
-
 strong {
     font-family: allerbold;
 }
-
 
 button {
     background-color: #48bea4;
@@ -62,15 +53,103 @@ button {
     color: #fff;
 }
 
+section {
+    border: 1px solid #7f7f7f;
+    padding: 1em;
+}
+
 input[type=text] {
     font-size: 14px;
     width: 300px;
 }
 
-section {
-    border: 1px solid #7f7f7f;
-    padding: 1em;
+select {
+    margin-bottom: 1em;
 }
+
+table {
+    width: 100%;
+}
+
+th {
+    font-family: allerbold;
+    border-bottom: 1px solid #B3B3B3;
+}
+
+tr {
+    border-bottom: 1px solid #B3B3B3;
+}
+
+td, th {
+    border-right: 1px solid #B3B3B3;
+    padding: 1em;
+    font-size: 14px;
+}
+
+tr:last-child {
+    border-bottom: 0;
+}
+
+td:last-child, th:last-child {
+    border-right: 0;
+}
+
+.disabled {
+    position: relative;
+}
+
+.disabled::after {
+    display: block;
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #fff;
+    opacity: 0.8;
+}
+
+.hidden {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+.selected {
+    background-color: #8c8c8c;
+    color: #ffffff;
+}
+
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    content: "";
+    clear: both;
+    height: 0;
+}
+
+.bs {
+    background-color: #db6464;
+}
+
+.kw {
+    background-color: #f5906c;
+}
+
+.cw {
+    background-color: #648ec9;
+}
+
+.fd {
+    background-color: #8a6aad;
+}
+
+/* App layout */
 
 #sidebar {
     box-sizing: border-box;
@@ -110,24 +189,6 @@ section {
     padding: 0px 50px;
 }
 
-.disabled {
-    position: relative;
-}
-
-.disabled::after {
-    display: block;
-    content: "";
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: #fff;
-    opacity: 0.8;
-}
-
 .mainTabs {
     box-sizing: border-box;
     display: inline-block;
@@ -139,7 +200,7 @@ section {
     padding-right: 15px;
 }
 
-.mainTabs li{
+.mainTabs li {
     display: inline-block;
     width: 120px;
     text-align: center;
@@ -149,13 +210,28 @@ section {
     font-family: aller_lightregular;
 }
 
-.tab-pane {
-    display: none;
+.divider {
+    border-bottom: 1px solid #B3B3B3;
+    width: 100%;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.buttonGroup {
+    float: right;
+    margin-bottom: 1.5em;
+}
+
+.buttonGroup button {
+    margin-right: 1em;
+}
+
+.buttonGroup button:last-child {
+    margin-right: 0;
 }
 
 .modal {
     box-sizing: border-box;
-    display: none;
     position: absolute;
     top: 100px;
     left: 5%;
@@ -166,29 +242,16 @@ section {
     border: 1px solid #333333;
 }
 
-.modalSubmit button {
-    float: right;
-    margin-right: 1em;
-}
-
-.modalSubmit button:first-child {
-    margin-right: 0;
-}
-
-.modal .close {
-    float: right;
-}
+/* Student Main Styles */
 
 #behaviorIncidents {
-    margin-top: 2em;
+    /*margin-top: 2em;*/
 }
-
 
 #behaviorTypeInput {
     float: right;
     font-size: 14px;
 }
-
 
 #behaviorTypeInput li {
     width: 150px;
@@ -202,89 +265,29 @@ section {
     font-size: 14px;
 }
 
-
-.modalSubmit {
-    margin-top: 1.5em;
-}
-
-.active {
-    display: block;
-}
-
-.disabled {
-    position: relative;
-}
-
-.disabled::after {
-    display: block;
-    content: "";
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: #fff;
-    opacity: 0.8;
-}
-
-.selected {
-    background-color: #8c8c8c;
-    color: #ffffff;
-}
-
-.bs {
-    background-color: #db6464;
-}
-
-.kw {
-    background-color: #f5906c;
-}
-
-.cw {
-    background-color: #648ec9;
-}
-
-.fd {
-    background-color: #8a6aad;
-}
-
-.frequency-counter {
+#periodBehaviorCounters .frequency-counter {
     width: 23.5%;
     margin-right: 2%;
 }
 
-.frequency-counter:last-child {
+#periodBehaviorCounters .frequency-counter:last-child {
     margin-right: 0;
 }
 
-table {
-    width: 100%;
+#periodicBehaviors select {
+    float: right;
 }
 
-th {
-    font-family: allerbold;
-    border-bottom: 1px solid #B3B3B3;
+#periodBehaviorCounters {
+    font-size: 0;
 }
 
-tr {
-    border-bottom: 1px solid #B3B3B3;
+#behaviorIncidentsTable {
+    height: 400px;
+    overflow: auto;
 }
 
-td, th {
-    border-right: 1px solid #B3B3B3;
-    padding: 1em;
-    font-size: 14px;
-}
 
-tr:last-child {
-    border-bottom: 0;
-}
-
-td:last-child, th:last-child {
-    border-right: 0;
-}
 
 
 
