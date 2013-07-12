@@ -73,10 +73,12 @@ app.service('periodicRecordService', ['studentService', function(studentService)
 
     });
 
-    var StudentPeriodicRecordCollection = Backbone.Collection.extend({
+    var PeriodicBehaviorRecordCollection = Backbone.Collection.extend({
         model: PeriodicBehaviorRecord,
-        url: '/periodicbehaviorrecords',
+        url: '/periodicbehaviorrecords'
+    });
 
+    var StudentPeriodicRecordCollection = PeriodicBehaviorRecordCollection.extend({
         initialize: function(models, options) {
             // if student is provided, this collection should deal only with
             // records for the given Student
@@ -88,6 +90,11 @@ app.service('periodicRecordService', ['studentService', function(studentService)
             // TODO: customize various sync methods like this to deal only with this student
         }
     });
+
+    // expose the model/collection classes
+    this.PeriodicBehaviorRecord = PeriodicBehaviorRecord;
+    this.PeriodicBehaviorRecordCollection = PeriodicBehaviorRecordCollection;
+    this.StudentPeriodicRecordCollection = StudentPeriodicRecordCollection;
 
     /**
      * Returns a StudentPeriodicRecordCollection with records for the 
@@ -101,7 +108,7 @@ app.service('periodicRecordService', ['studentService', function(studentService)
      *                                  - period: Integer
      *                                  - date: String (ISO format)
      * 
-     * @return {PeriodicBeaviorRecordCollection}         [description]
+     * @return {PeriodicBehaviorRecordCollection}         [description]
      */
     this.getDayRecords = function(student, dateString) {
         var records = new StudentPeriodicRecordCollection([], {
