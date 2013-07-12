@@ -51,7 +51,7 @@ app.directive('mainPane', function() {
             mainTabsCtrl.addPane(scope);
         },
         template:
-            '<div class="tab-pane" ng-class="{active: selected, disabled: disabled}" ng-transclude>' +
+            '<div class="hidden" ng-class="{active: selected, disabled: disabled}" ng-transclude>' +
                 '</div>',
         replace: true
     };
@@ -68,7 +68,7 @@ app.directive('mainModal', function() {
             }
         },
         template:
-            '<div class="mainModal modal" ng-class="{active: active}">' +
+            '<div class="mainModal modal hidden" ng-class="{active: active}">' +
                 '<div class="clearfix">' +
                 '<h2>{{title}}</h2>' +
                 '<button class="close" ng-click="closeModal()">Close</button>' +
