@@ -1,5 +1,4 @@
-
-
+// TODO: use proper backbone module, not global `app`
 app.service('periodicRecordService', ['studentService', function(studentService) {
 
     var PeriodicBehaviorRecord = Backbone.Model.extend({
@@ -16,7 +15,7 @@ app.service('periodicRecordService', ['studentService', function(studentService)
                 }
                 isEligible : Boolean
             Relations:
-                student : Student
+                student : Student (HasOne)
          */
 
         relations: [{
@@ -92,11 +91,6 @@ app.service('periodicRecordService', ['studentService', function(studentService)
         }
     });
 
-    // expose the model/collection classes
-    this.PeriodicBehaviorRecord = PeriodicBehaviorRecord;
-    this.PeriodicBehaviorRecordCollection = PeriodicBehaviorRecordCollection;
-    this.StudentPeriodicRecordCollection = StudentPeriodicRecordCollection;
-
     /**
      * Returns a DailyStudentRecordCollection with records for the 
      * given student and date.
@@ -106,7 +100,7 @@ app.service('periodicRecordService', ['studentService', function(studentService)
      * 
      * @return {DailyStudentRecordCollection}         [description]
      */
-    this.getDayRecords = function(student, dateString) {
+    var getDayRecords = function(student, dateString) {
         // use today's day if no date was provided
         // TODO: use moment module for Angular
         var dateQuery = dateString || moment().format('YYYY-MM-DD');
@@ -119,4 +113,17 @@ app.service('periodicRecordService', ['studentService', function(studentService)
         return records;
     };
 
+    /** Public interface of service **/
+
+    // expose the model/collection classes
+    this.PeriodicBehaviorRecord = PeriodicBehaviorRecord;
+    this.PeriodicBehaviorRecordCollection = PeriodicBehaviorRecordCollection;
+    this.StudentPeriodicRecordCollection = StudentPeriodicRecordCollection;
+    this.getDayRecords = getDayRecords;
+
+    // TODO: remove. temporarily making these global for testing purposes
+    window.PeriodicBehaviorRecord = PeriodicBehaviorRecord;
+    window.PeriodicBehaviorRecordCollection = PeriodicBehaviorRecordCollection;
+    window.StudentPeriodicRecordCollection = StudentPeriodicRecordCollection;
+    window.getDayRecords = getDayRecords;
 }]);
