@@ -2,14 +2,16 @@
 // TODO: use proper backbone module
 
 var Student = Backbone.RelationalModel.extend({
-    /* Attributes:
-        first_name
-        last_name
+    /* 
+        Attributes:
+            id
+            first_name
+            last_name
 
-       Reverse relations:
-        behaviorIncidents
-        periodicBehaviorRecords
-       */
+        Reverse relations:
+            behaviorIncidents
+            periodicBehaviorRecords
+    */
 
     // cache the current status of the student here
     // Note that this isn't an attribute because it's not part of the resource
@@ -39,6 +41,9 @@ var StudentCollection = Backbone.Collection.extend({
 });
 
 app.service('studentService', function(){
+    this.Student = Student,
+    this.StudentCollection = StudentCollection,
+
     this.getStudents = function() {
         // TODO: flesh out with fake data
         return new StudentCollection();
