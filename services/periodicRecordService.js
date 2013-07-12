@@ -78,11 +78,12 @@ app.service('periodicRecordService', ['studentService', function(studentService)
         url: '/periodicbehaviorrecords'
     });
 
-    var StudentPeriodicRecordCollection = PeriodicBehaviorRecordCollection.extend({
+    var DailyStudentRecordCollection = PeriodicBehaviorRecordCollection.extend({
         initialize: function(models, options) {
-            // if student is provided, this collection should deal only with
-            // records for the given Student
+            // if student/date is provided, this collection should deal only with
+            // records relevant to them
             this._student = options._student || null;
+            this._dateString = options._dateString || null;
         },
 
         fetch: function() {
@@ -97,29 +98,24 @@ app.service('periodicRecordService', ['studentService', function(studentService)
     this.StudentPeriodicRecordCollection = StudentPeriodicRecordCollection;
 
     /**
-     * Returns a StudentPeriodicRecordCollection with records for the 
-     * given student and period.
+     * Returns a DailyStudentRecordCollection with records for the 
+     * given student and date.
      * 
      * @param  {Student} student
-     * @param  {String} dateString    ISO-formatted date. Defaults to today's date.
-     * @param  {Object} filterParams  Object to limit the scope of records 
-     *                                 returned upon server fetch. 
-     *                                 Accepted key/value pairs:
-     *                                  - period: Integer
-     *                                  - date: String (ISO format)
+     * @param  {String} dateString    ISO-formatted date. Defaults to today's date
      * 
-     * @return {PeriodicBehaviorRecordCollection}         [description]
+     * @return {DailyStudentRecordCollection}         [description]
      */
     this.getDayRecords = function(student, dateString) {
-        var records = new StudentPeriodicRecordCollection([], {
-            student: student
-        });
-        // Use today's day if no date was provided
-
+        // use today's day if no date was provided
         // TODO: use moment module for Angular
         var dateQuery = dateString || moment().format('YYYY-MM-DD');
+        var records = new DailyStudentRecordCollection([], {
+            student: student,
+            dateQuery: dateQuery
+        });
 
-        // TODO: fetch records for the given date
+        // TODO: fetch records
         return records;
     };
 
