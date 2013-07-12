@@ -6,6 +6,6 @@ underscore.factory('_', function() {
 // backbone relational not implemented yet
 
 var backbone = angular.module('backbone', ['underscore']);
-underscore.factory('Backbone', function() {
+backbone.factory('Backbone', function() {
     return window.Backbone;
 });
