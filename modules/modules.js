@@ -10,6 +10,6 @@ backbone.factory('Backbone', function() {
     return window.Backbone;
 });
 
-angular.module('moment').factory('moment', function() {
+angular.module('moment', []).factory('moment', function() {
 	return window.moment;
 });
