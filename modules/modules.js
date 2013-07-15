@@ -36,10 +36,10 @@
             _.each(_.pairs(data), function(kv_pair) {
                 // first serialize any sub models
                 var value = kv_pair[1];
-                if(value.toJSON) {
+                if(value && value.toJSON) {
                     value = value.toJSON();
                 }
-                
+
                 // now transform key
                 snakeData[decamelize(kv_pair[0])] = value;
             });
