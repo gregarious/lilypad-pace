@@ -35,7 +35,7 @@
             delete data['behavior_incidents_url'];
 
             return data;
-        }
+        },
 
         markAbsent: function() {
             // TODO: mark student absent on server

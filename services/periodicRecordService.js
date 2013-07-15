@@ -102,9 +102,11 @@
     var DailyStudentRecordCollection = Backbone.Collection.extend({
         model: PeriodicRecord,
 
+        /**
+         * Collection must be initialized with an options dict that
+         * includes `student` and `dateString`.
+         */
         initialize: function(models, options) {
-            // if student/date is provided, this collection should deal only with
-            // records relevant to them
             this._student = options.student;
             this._dateString = options.dateString;
         },
@@ -130,6 +132,7 @@
          * @param  {Integer}  period           
          * @param  {Boolean}  isEligible         (default true)
          * @param  {Integer}  initialPointValue  (default 2 if eligible, null if not)
+         * @param  {Object} options              Typical Backbone.create options
          * @return {PeriodicRecord}
          */
         createPeriodicRecord: function(period, isEligible, initialPointValue, options) {
@@ -162,12 +165,13 @@
      *                                collection already exists? 
      *                                default: true
      * 
-     * @return {DailyStudentRecordCollection}         [description]
+     * @return {DailyStudentRecordCollection}
      */
     var getDayRecords = function(student, dateString, refresh) {
         // use today's day if no date was provided
         // TODO: use moment module for Angular
         dateString = dateString || moment().format('YYYY-MM-DD');
+        refresh = refresh || true;
 
         if (!dailyRecordsStore[student.id]) {
             dailyRecordsStore[student.id] = {};
