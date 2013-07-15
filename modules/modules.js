@@ -1,12 +1,3 @@
-var zepto = angular.module('zepto', []);
-zepto.factory('Zepto', function() {
-    return window.Zepto;
-});
-
-var underscore = angular.module('underscore', []);
-underscore.factory('_', function() {
-    return window._; // assumes underscore has already been loaded on the page
-});
 
 // some setup work on Backbone to allow for ease transition from API server variable
 // letter case conventions during serialization
@@ -48,9 +39,17 @@ underscore.factory('_', function() {
             return snakeData;
         }
     });
-
-
 })();
+
+var zepto = angular.module('zepto', []);
+zepto.factory('Zepto', function() {
+    return window.Zepto;
+});
+
+var underscore = angular.module('underscore', []);
+underscore.factory('_', function() {
+    return window._; // assumes underscore has already been loaded on the page
+});
 
 var backbone = angular.module('backbone', ['underscore']);
 backbone.factory('Backbone', function() {
