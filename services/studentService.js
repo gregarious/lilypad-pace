@@ -1,16 +1,19 @@
 // TODO: use proper backbone module, not global `app`
-app.service('studentService', function(){
-    var Student = Backbone.RelationalModel.extend({
+// app.service('studentService', function(){
+    var Student = Backbone.Model.extend({
         /* 
             Attributes:
-                id
-                first_name
-                last_name
+                id : Integer
+                url : String
+                firstName : String 
+                lastName : String
 
-            Reverse relations:
-                behaviorIncidents
-                periodicBehaviorRecords
+                periodicRecordsUrl : String
+                behaviorTypesUrl : String
+                behaviorIncidentsUrl : String
         */
+
+        urlRoot: '/pace/students',
 
         // cache the current status of the student here
         // Note that this isn't an attribute because it's not part of the resource
@@ -36,23 +39,26 @@ app.service('studentService', function(){
 
     var StudentCollection = Backbone.Collection.extend({
         model: Student,
-        url: '/students'
+        url: '/pace/students'
     });
 
     var getStudents = function() {
-        // TODO: flesh out with fake data
-        return new StudentCollection();
+        s = new StudentCollection();
+        s.fetch();
+        return s;
     };
 
     /** Public interface of service **/
 
-    this.Student = Student,
-    this.StudentCollection = StudentCollection,
-    this.getStudents = getStudents;
+    // this.Student = Student,
+    // this.StudentCollection = StudentCollection,
+    // this.getStudents = getStudents;
 
 
     // TODO: remove. temporarily making these global for testing purposes
-    window.Student = Student;
-    window.StudentCollection = StudentCollection;
-    window.getStudents = getStudents;
-});
+    window.studentService = {
+        Student: Student,
+        StudentCollection: StudentCollection,
+        getStudents: getStudents
+    };
+// });
