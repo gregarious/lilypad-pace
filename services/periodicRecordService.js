@@ -1,12 +1,13 @@
 // TODO: use proper backbone module, not global `app`
-app.service('periodicRecordService', ['studentService', function(studentService) {
+// app.service('periodicRecordService', ['studentService', function(studentService) {
 
-    var PeriodicBehaviorRecord = Backbone.Model.extend({
+    var PeriodicRecord = Backbone.Model.extend({
         /*
             Attributes:
                 id : String
+                url : String
                 period : Integer
-                date : String (ISO format)
+                dateString : String (ISO format)
                 points : {
                     'kw' : Integer,
                     'cw' : Integer,
@@ -14,19 +15,40 @@ app.service('periodicRecordService', ['studentService', function(studentService)
                     'bs' : Integer
                 }
                 isEligible : Boolean
-            Relations:
-                student : Student (HasOne)
+                student : Student
          */
+        urlRoot: '/pace/periodicrecords',
 
-        relations: [{
-            type: Backbone.HasOne,
-            key: 'student',
-            relatedModel: studentService.Student,
-            reverseRelation: {
-                key: 'periodicBehaviorRecords',
-                includeInJSON: 'id'
-            }
-        }],
+        parse: function(response, options) {
+            response = Backbone.Model.prototype.parse.apply(this, arguments);
+            response.student = new Student(response.student);
+            response.points = {
+                kw: response.kindWordsPoints,
+                cw: response.completeWorkPoints,
+                fd: response.followDirectionsPoints,
+                bs: response.beSafePoints
+            };
+            delete response.kindWordsPoints;
+            delete response.completeWorkPoints;
+            delete response.followDirectionsPoints;
+            delete response.beSafePoints;
+            return response;
+        },
+
+        toJSON: function() {
+            // camelize the data keys
+            var data = Backbone.Model.prototype.toJSON.apply(this, arguments);
+            var points = data.points;
+            delete data.points;
+
+            data.student = data.student && data.student.toJSON();
+            data.kindWordsPoints = data.points && data.points.kw;
+            data.completeWorkPoints = data.points && data.points.cw;
+            data.followDirectionsPoints = data.points && data.points.fd;
+            data.beSafePoints = data.points && data.points.bs;
+
+            return data;
+        },
 
         /**
          * Various methods to get/set point values for particular categories.
@@ -69,61 +91,108 @@ app.service('periodicRecordService', ['studentService', function(studentService)
             var points = this.get('points');
             return points.kw + points.cw + points.fd + points.bs;
         }
-
     });
 
-    var PeriodicBehaviorRecordCollection = Backbone.Collection.extend({
-        model: PeriodicBehaviorRecord,
-        url: '/periodicbehaviorrecords'
-    });
+    // Collection returned by getDayRecords.
+    var DailyStudentRecordCollection = Backbone.Collection.extend({
+        model: PeriodicRecord,
 
-    var DailyStudentRecordCollection = PeriodicBehaviorRecordCollection.extend({
         initialize: function(models, options) {
             // if student/date is provided, this collection should deal only with
             // records relevant to them
-            this._student = options._student || null;
-            this._dateString = options._dateString || null;
+            this._student = options.student || null;
+            this._dateString = options.dateString || null;
         },
 
-        fetch: function() {
-            Backbone.Collection.prototype.fetch.apply(this, arguments);
-            // TODO: customize various sync methods like this to deal only with this student
+        url: function() {
+            return this._student.get('periodicRecordsUrl') + '?date=' + this._dateString;
+        },
+
+        /**
+         * Return the PeriodicRecord model corresponding
+         * to the given period number.
+         * 
+         * @param  {Integer} period
+         * @return {PeriodicRecord or undefined}
+         */
+        getPeriodicRecord: function(period) {
+            return this.findWhere({period: period});
+        },
+
+        /**
+         * Wrapper around Collection.create that inserts student and date into
+         * attributes for new Model.
+         * @param  {Integer}  period           
+         * @param  {Boolean}  isEligible         (default true)
+         * @param  {Integer}  initialPointValue  (default 2 if eligible, null if not)
+         * @return {PeriodicRecord}
+         */
+        createPeriodicRecord: function(period, isEligible, initialPointValue) {
+            isEligible = isEligible || false;
+            initialPointValue = initialPointValue || (isEligible ? 2 : null);
+            return this.create({
+                student: this._student,
+                date: this._dateString,
+                period: period,
+                isEligible: isEligible,
+                points: {
+                    kw: initialPointValue,
+                    cw: initialPointValue,
+                    fd: initialPointValue,
+                    bs: initialPointValue
+                }
+            });
         }
     });
 
+    // DailyStudentRecordCollection store
+    var dailyRecordsStore = {};
     /**
      * Returns a DailyStudentRecordCollection with records for the 
      * given student and date.
      * 
      * @param  {Student} student
-     * @param  {String} dateString    ISO-formatted date. Defaults to today's date
+     * @param  {String} dateString    default: today's date as ISO string
+     * @param  {String} refresh       should a fetch be performed if 
+     *                                collection already exists? 
+     *                                default: true
      * 
      * @return {DailyStudentRecordCollection}         [description]
      */
-    var getDayRecords = function(student, dateString) {
+    var getDayRecords = function(student, dateString, refresh) {
         // use today's day if no date was provided
         // TODO: use moment module for Angular
-        var dateQuery = dateString || moment().format('YYYY-MM-DD');
-        var records = new DailyStudentRecordCollection([], {
-            student: student,
-            dateQuery: dateQuery
-        });
+        dateString = dateString || moment().format('YYYY-MM-DD');
 
-        // TODO: fetch records
-        return records;
+        if (!dailyRecordsStore[student.id]) {
+            dailyRecordsStore[student.id] = {};
+        }
+
+        var recordCollection = dailyRecordsStore[student.id][dateString];
+        if (!recordCollection) {
+            recordCollection = new DailyStudentRecordCollection([], {
+                student: student,
+                dateString: dateString
+            });
+            refresh = true;
+            dailyRecordsStore[student.id][dateString] = recordCollection;
+        }
+        if (refresh) {
+            recordCollection.fetch();
+        }
+        
+        return recordCollection;
     };
 
     /** Public interface of service **/
 
     // expose the model/collection classes
-    this.PeriodicBehaviorRecord = PeriodicBehaviorRecord;
-    this.PeriodicBehaviorRecordCollection = PeriodicBehaviorRecordCollection;
-    this.StudentPeriodicRecordCollection = StudentPeriodicRecordCollection;
-    this.getDayRecords = getDayRecords;
+    // this.PeriodicRecord = PeriodicRecord;
+    // this.getDayRecords = getDayRecords;
 
     // TODO: remove. temporarily making these global for testing purposes
-    window.PeriodicBehaviorRecord = PeriodicBehaviorRecord;
-    window.PeriodicBehaviorRecordCollection = PeriodicBehaviorRecordCollection;
-    window.StudentPeriodicRecordCollection = StudentPeriodicRecordCollection;
-    window.getDayRecords = getDayRecords;
-}]);
+    window.periodicRecordService = {
+        PeriodicRecord: PeriodicRecord,
+        getDayRecords: getDayRecords
+    };
+// }]);
