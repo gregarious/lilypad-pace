@@ -41,14 +41,10 @@
         },
 
         toJSON: function() {
-            // transform Student model into (at least) stub dict and unpack 
-            // point records
-
             // camelize the data keys first
             var data = Backbone.Model.prototype.toJSON.apply(this, arguments);
 
-            data['student'] = data.student && data.student.toJSON();
-
+            // unpack point records
             var points = data.points;
             delete data.points;
             data['kind_words_points'] = points && points.kw;

@@ -18,11 +18,24 @@
 
         parse: function(request, options) {
             response = Backbone.Model.prototype.parse.apply(this, arguments);
-            
+
             // TODO: determine this from API data. For now just defaulting to absent
             response.isPresent = false;
             return response;
         },
+
+        toJSON: function() {
+            // camelize the data keys first
+            var data = Backbone.Model.prototype.toJSON.apply(this, arguments);
+
+            // don't want to send isPresent or relation urls in requests
+            delete data['is_present'];
+            delete data['periodic_records_url'];
+            delete data['behavior_types_url'];
+            delete data['behavior_incidents_url'];
+
+            return data;
+        }
 
         markAbsent: function() {
             // TODO: mark student absent on server

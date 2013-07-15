@@ -34,7 +34,14 @@
             var snakeData = {};
             // TODO: use proper modularized version of underscore
             _.each(_.pairs(data), function(kv_pair) {
-                snakeData[decamelize(kv_pair[0])] = kv_pair[1];
+                // first serialize any sub models
+                var value = kv_pair[1];
+                if(value.toJSON) {
+                    value = value.toJSON();
+                }
+                
+                // now transform key
+                snakeData[decamelize(kv_pair[0])] = value;
             });
             return snakeData;
         }
