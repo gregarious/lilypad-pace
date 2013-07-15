@@ -20,32 +20,41 @@
         urlRoot: '/pace/periodicrecords',
 
         parse: function(response, options) {
+            // transform student stub dict into Student model and pack all
+            // point records into a `points` object
+
             response = Backbone.Model.prototype.parse.apply(this, arguments);
             response.student = new Student(response.student);
             response.points = {
-                kw: response.kindWordsPoints,
-                cw: response.completeWorkPoints,
-                fd: response.followDirectionsPoints,
-                bs: response.beSafePoints
+                kw: response.kindWordsPoints || null,
+                cw: response.completeWorkPoints || null,
+                fd: response.followDirectionsPoints || null,
+                bs: response.beSafePoints || null
             };
+
             delete response.kindWordsPoints;
             delete response.completeWorkPoints;
             delete response.followDirectionsPoints;
             delete response.beSafePoints;
+
             return response;
         },
 
         toJSON: function() {
-            // camelize the data keys
+            // transform Student model into (at least) stub dict and unpack 
+            // point records
+
+            // camelize the data keys first
             var data = Backbone.Model.prototype.toJSON.apply(this, arguments);
+
+            data['student'] = data.student && data.student.toJSON();
+
             var points = data.points;
             delete data.points;
-
-            data.student = data.student && data.student.toJSON();
-            data.kindWordsPoints = data.points && data.points.kw;
-            data.completeWorkPoints = data.points && data.points.cw;
-            data.followDirectionsPoints = data.points && data.points.fd;
-            data.beSafePoints = data.points && data.points.bs;
+            data['kind_words_points'] = points && points.kw;
+            data['complete_work_points'] = points && points.cw;
+            data['follow_directions_points'] = points && points.fd;
+            data['be_safe_points'] = points && points.bs;
 
             return data;
         },
@@ -100,8 +109,8 @@
         initialize: function(models, options) {
             // if student/date is provided, this collection should deal only with
             // records relevant to them
-            this._student = options.student || null;
-            this._dateString = options.dateString || null;
+            this._student = options.student;
+            this._dateString = options.dateString;
         },
 
         url: function() {
@@ -121,13 +130,13 @@
 
         /**
          * Wrapper around Collection.create that inserts student and date into
-         * attributes for new Model.
+         * attributes for new Model. Don't use create directly.
          * @param  {Integer}  period           
          * @param  {Boolean}  isEligible         (default true)
          * @param  {Integer}  initialPointValue  (default 2 if eligible, null if not)
          * @return {PeriodicRecord}
          */
-        createPeriodicRecord: function(period, isEligible, initialPointValue) {
+        createPeriodicRecord: function(period, isEligible, initialPointValue, options) {
             isEligible = isEligible || false;
             initialPointValue = initialPointValue || (isEligible ? 2 : null);
             return this.create({
@@ -141,7 +150,7 @@
                     fd: initialPointValue,
                     bs: initialPointValue
                 }
-            });
+            }, options);
         }
     });
 
@@ -180,7 +189,7 @@
         if (refresh) {
             recordCollection.fetch();
         }
-        
+
         return recordCollection;
     };
 
