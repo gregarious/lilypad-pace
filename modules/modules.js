@@ -46,6 +46,14 @@
             return snakeData;
         }
     });
+
+    // TODO: remove async: only for development
+    var origSync = Backbone.sync;
+    Backbone.sync = function(method, model, options) {
+        options = options || {};
+        options.async = false;
+        return origSync(method, model, options);
+    };
 })();
 
 var zepto = angular.module('zepto', []);
