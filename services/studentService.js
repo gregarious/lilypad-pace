@@ -7,6 +7,7 @@
                 url : String
                 firstName : String 
                 lastName : String
+                isPresent : Boolean (not part of resource)
 
                 periodicRecordsUrl : String
                 behaviorTypesUrl : String
@@ -15,25 +16,21 @@
 
         urlRoot: '/pace/students',
 
-        // cache the current status of the student here
-        // Note that this isn't an attribute because it's not part of the resource
-        _isPresent: false,
-
-        // TODO: hook this function to some kind of model sync event
-        _determineIfPresent: function() {
-            // TODO: figure out _isPresent status from server
+        parse: function(request, options) {
+            response = Backbone.Model.prototype.parse.apply(this, arguments);
+            
+            // TODO: determine this from API data. For now just defaulting to absent
+            response.isPresent = false;
+            return response;
         },
 
         markAbsent: function() {
             // TODO: mark student absent on server
-            this._isPresent = false;
+            this.set('isPresent', false);
         },
         markPresent: function() {
             // TODO: mark student present on server
-            this._isPresent = true;
-        },
-        isPresent: function() {
-            return this._isPresent;
+            this.set('isPresent', true);
         }
     });
 
