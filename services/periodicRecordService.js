@@ -17,14 +17,14 @@
                 isEligible : Boolean
                 student : Student
          */
-        urlRoot: '/pace/periodicrecords',
+        urlRoot: '/pace/periodicrecords/',
 
         parse: function(response, options) {
             // transform student stub dict into Student model and pack all
             // point records into a `points` object
 
             response = Backbone.Model.prototype.parse.apply(this, arguments);
-            response.student = new studentService.Student(response.student);
+            response.student = new window.studentService.Student(response.student);
             response.points = {
                 kw: response.kindWordsPoints || null,
                 cw: response.completeWorkPoints || null,
@@ -136,7 +136,7 @@
          * @return {PeriodicRecord}
          */
         createPeriodicRecord: function(period, isEligible, initialPointValue, options) {
-            isEligible = isEligible || false;
+            isEligible = isEligible || true;
             initialPointValue = initialPointValue || (isEligible ? 2 : null);
             return this.create({
                 student: this._student,

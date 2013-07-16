@@ -1,5 +1,5 @@
 // TODO: use proper backbone module, not global `app`
-app.service('studentService', function(){
+// app.service('studentService', function(){
     var Student = Backbone.Model.extend({
         /* 
             Attributes:
@@ -14,7 +14,7 @@ app.service('studentService', function(){
                 behaviorIncidentsUrl : String
         */
 
-        urlRoot: '/pace/students',
+        urlRoot: '/pace/students/',
 
         parse: function(request, options) {
             response = Backbone.Model.prototype.parse.apply(this, arguments);
@@ -61,9 +61,11 @@ app.service('studentService', function(){
     /** Public interface of service **/
 
     this.allStudents = allStudents;
+    this.Student = Student;
 
     // TODO: remove. temporarily making these global for testing purposes
     window.studentService = {
+        Student: Student,
         allStudents: allStudents
     };
-});
+// });
