@@ -24,7 +24,7 @@
             // point records into a `points` object
 
             response = Backbone.Model.prototype.parse.apply(this, arguments);
-            response.student = new Student(response.student);
+            response.student = new studentService.Student(response.student);
             response.points = {
                 kw: response.kindWordsPoints || null,
                 cw: response.completeWorkPoints || null,
@@ -98,7 +98,7 @@
         }
     });
 
-    // Collection returned by getDayRecords.
+    // Collection returned by dailyStudentRecords.
     var DailyStudentRecordCollection = Backbone.Collection.extend({
         model: PeriodicRecord,
 
@@ -167,7 +167,7 @@
      * 
      * @return {DailyStudentRecordCollection}
      */
-    var getDayRecords = function(student, dateString, refresh) {
+    var dailyStudentRecords = function(student, dateString, refresh) {
         // use today's day if no date was provided
         // TODO: use moment module for Angular
         dateString = dateString || moment().format('YYYY-MM-DD');
@@ -195,13 +195,11 @@
 
     /** Public interface of service **/
 
-    // expose the model/collection classes
-    // this.PeriodicRecord = PeriodicRecord;
-    // this.getDayRecords = getDayRecords;
+    // expose the student accessor function
+    this.dailyStudentRecords = dailyStudentRecords;
 
     // TODO: remove. temporarily making these global for testing purposes
     window.periodicRecordService = {
-        PeriodicRecord: PeriodicRecord,
-        getDayRecords: getDayRecords
+        dailyStudentRecords: dailyStudentRecords
     };
 // }]);

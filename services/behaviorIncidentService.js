@@ -16,13 +16,13 @@
             // transform student stub dict into Student model
             response = Backbone.Model.prototype.parse.apply(this, arguments);
             if (response.applicableStudent) {
-                response.applicableStudent = new Student(response.applicableStudent);
+                response.applicableStudent = new studentService.Student(response.applicableStudent);
             }
             return response;
         }
     });
 
-    // Collection returned by getBehaviorIncidentTypes
+    // Collection returned by typesForStudent
     var StudentBehaviorTypeCollection = Backbone.Collection.extend({
         model: BehaviorIncidentType,
 
@@ -64,7 +64,7 @@
      * 
      * @return {StudentBehaviorTypeCollection}
      */
-    var getBehaviorIncidentTypes = function(student, refresh) {
+    var typesForStudent = function(student, refresh) {
         refresh = refresh || true;
         if (!behaviorTypesStore[student.id]) {
             behaviorTypesStore[student.id] = new StudentBehaviorTypeCollection([], {
@@ -98,14 +98,14 @@
 
             // transform student stub dict into Student model and
             // type dict into (full) BehaviorIncidentType model
-            response.student = new Student(response.student);
+            response.student = new studentService.Student(response.student);
             response.type = new BehaviorIncidentType(response.type);
 
             return response;
         }
     });
 
-    // Collection returned by getDayBehaviorIncidents.
+    // Collection returned by dailyStudentIncidents.
     var DailyBehaviorIncidentCollection = Backbone.Collection.extend({
         model: BehaviorIncident,
 
@@ -173,7 +173,7 @@
      * @return {DailyBehaviorIncidentCollection}
      */
 
-    var getDayBehaviorIncidents = function(student, dateString, refresh) {
+    var dailyStudentIncidents = function(student, dateString, refresh) {
         // use today's day if no date was provided
         // TODO: use moment module for Angular
         dateString = dateString || moment().format('YYYY-MM-DD');
@@ -199,12 +199,13 @@
         return incidentCollection;
     };
 
-    window.behaviorIncidentService = {
-        BehaviorIncidentType: BehaviorIncidentType,
-        BehaviorIncident: BehaviorIncident,
+    this.typesForStudent = typesForStudent;
+    this.dailyStudentIncidents = dailyStudentIncidents;
 
-        getBehaviorIncidentTypes: getBehaviorIncidentTypes,
-        getDayBehaviorIncidents: getDayBehaviorIncidents
+    // TODO: remove. temporarily making these global for testing purposes
+    window.behaviorIncidentService = {
+        typesForStudent: typesForStudent,
+        dailyStudentIncidents: dailyStudentIncidents
     };
 
 // }]);

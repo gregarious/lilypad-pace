@@ -1,5 +1,5 @@
 // TODO: use proper backbone module, not global `app`
-// app.service('studentService', function(){
+app.service('studentService', function(){
     var Student = Backbone.Model.extend({
         /* 
             Attributes:
@@ -52,7 +52,7 @@
         url: '/pace/students'
     });
 
-    var getStudents = function() {
+    var allStudents = function() {
         s = new StudentCollection();
         s.fetch();
         return s;
@@ -60,15 +60,10 @@
 
     /** Public interface of service **/
 
-    // this.Student = Student,
-    // this.StudentCollection = StudentCollection,
-    // this.getStudents = getStudents;
-
+    this.allStudents = allStudents;
 
     // TODO: remove. temporarily making these global for testing purposes
     window.studentService = {
-        Student: Student,
-        StudentCollection: StudentCollection,
-        getStudents: getStudents
+        allStudents: allStudents
     };
-// });
+});
