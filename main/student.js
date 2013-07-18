@@ -47,7 +47,7 @@ app.controller('MainStudentCtrl', function($scope, studentService, viewService) 
     ]
 
     $scope.$watch(function() {return viewService}, function(data) {
-        $scope.student = studentService.getStudents().get([data.parameters.id]);
+        $scope.student = studentService.allStudents().get([data.parameters.id]);
         $scope.attendance = data.parameters.attendance;
     }, true);
 
@@ -66,8 +66,8 @@ app.controller('behaviorModalCtrl', function($scope, studentService, viewService
     $scope.behaviorTypes = ['Frequency', 'Duration'];
     $scope.selectedBehaviorType = null;
 
-    $scope.behaviors = studentService.getStudents().get(viewService.parameters.id).get('behaviorIncidentTypes').models;
-    console.log(studentService.getStudents().get(viewService.parameters.id).get('behaviorIncidentTypes').models.length);
+    $scope.behaviors = studentService.allStudents().get(viewService.parameters.id).get('behaviorIncidentTypes').models;
+    console.log(studentService.allStudents().get(viewService.parameters.id).get('behaviorIncidentTypes').models.length);
 
     $scope.showAddBehavior = function() {
         $scope.addingBehavior = true;

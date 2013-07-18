@@ -1,6 +1,4 @@
-// // TODO: use proper backbone module, not global `app`
-// app.service('periodicRecordService', ['studentService', function(studentService) {
-
+angular.module('pace').service('behaviorIncidentService', function(Backbone, moment, studentService) {
     var BehaviorIncidentType = Backbone.Model.extend({
         /*
             Attibutes:
@@ -175,7 +173,6 @@
 
     var dailyStudentIncidents = function(student, dateString, refresh) {
         // use today's day if no date was provided
-        // TODO: use moment module for Angular
         dateString = dateString || moment().format('YYYY-MM-DD');
         refresh = _.isUndefined(refresh) ? true : refresh;
 
@@ -201,11 +198,4 @@
 
     this.typesForStudent = typesForStudent;
     this.dailyStudentIncidents = dailyStudentIncidents;
-
-    // TODO: remove. temporarily making these global for testing purposes
-    window.behaviorIncidentService = {
-        typesForStudent: typesForStudent,
-        dailyStudentIncidents: dailyStudentIncidents
-    };
-
-// }]);
+});

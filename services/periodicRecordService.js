@@ -1,6 +1,4 @@
-// TODO: use proper backbone module, not global `app`
-// app.service('periodicRecordService', ['studentService', function(studentService) {
-
+angular.module('pace').service('periodicRecordService', function(Backbone, moment, studentService) {
     var PeriodicRecord = Backbone.Model.extend({
         /*
             Attributes:
@@ -24,7 +22,7 @@
             // point records into a `points` object
 
             response = Backbone.Model.prototype.parse.apply(this, arguments);
-            response.student = new window.studentService.Student(response.student);
+            response.student = new studentService.Student(response.student);
             response.points = {
                 kw: response.kindWordsPoints || null,
                 cw: response.completeWorkPoints || null,
@@ -169,7 +167,6 @@
      */
     var dailyStudentRecords = function(student, dateString, refresh) {
         // use today's day if no date was provided
-        // TODO: use moment module for Angular
         dateString = dateString || moment().format('YYYY-MM-DD');
         refresh = refresh || true;
 
@@ -197,9 +194,4 @@
 
     // expose the student accessor function
     this.dailyStudentRecords = dailyStudentRecords;
-
-    // TODO: remove. temporarily making these global for testing purposes
-    window.periodicRecordService = {
-        dailyStudentRecords: dailyStudentRecords
-    };
-// }]);
+});

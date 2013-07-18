@@ -1,5 +1,4 @@
-// TODO: use proper backbone module, not global `app`
-// app.service('studentService', function(){
+angular.module('pace').service('studentService', function(Backbone){
     var Student = Backbone.Model.extend({
         /* 
             Attributes:
@@ -62,10 +61,4 @@
 
     this.allStudents = allStudents;
     this.Student = Student;
-
-    // TODO: remove. temporarily making these global for testing purposes
-    window.studentService = {
-        Student: Student,
-        allStudents: allStudents
-    };
-// });
+});

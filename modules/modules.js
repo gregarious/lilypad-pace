@@ -1,20 +1,13 @@
 /* Turn third-party packages into modules */
 
-var zepto = angular.module('zepto', []);
-zepto.factory('Zepto', function() {
-    return window.Zepto;
-});
+angular.module('underscore', []).
+	constant('_', window._);
 
-var underscore = angular.module('underscore', []);
-underscore.factory('_', function() {
-    return window._; // assumes underscore has already been loaded on the page
-});
+angular.module('backbone', ['underscore']).
+	factory('Backbone', function($http) {
+		window.Backbone._patchAjax($http);
+		return window.Backbone;
+	});
 
-var backbone = angular.module('backbone', ['underscore']);
-backbone.factory('Backbone', function() {
-    return window.Backbone;
-});
-
-angular.module('moment', []).factory('moment', function() {
-    return window.moment;
-});
+angular.module('moment', []).
+	constant('moment', window.moment);
