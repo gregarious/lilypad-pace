@@ -10,10 +10,10 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
 
     <!-- stylesheets -->
-    <link rel="stylesheet" href="styles/reset.css">
-    <link rel="stylesheet" href="styles/aller/aller.css">
-    <link rel="stylesheet" href="styles/app.css">
-    <link rel="stylesheet" href="styles/widgets.css">
+    <link rel="stylesheet" href="/lilypad-client/pace/styles/reset.css">
+    <link rel="stylesheet" href="/lilypad-client/pace/styles/aller/aller.css">
+    <link rel="stylesheet" href="/lilypad-client/pace/styles/app.css">
+    <link rel="stylesheet" href="/lilypad-client/pace/styles/widgets.css">
 
     <!-- angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.js"></script>
@@ -21,26 +21,26 @@
 
     <!-- modules -->
     <!-- Zepto included for AJAX library, not DOM manipulation. jqLite will still handle that -->
-    <script src="modules/underscore.js"></script>
-    <script src="modules/backbone.js"></script>
-    <script src="modules/backbone-patches.js"></script>
-    <script src="modules/moment.js"></script>
-    <script src="modules/modules.js"></script>
-    <script src="modules/widgets.js"></script>
+    <script src="/lilypad-client/pace/modules/underscore.js"></script>
+    <script src="/lilypad-client/pace/modules/backbone.js"></script>
+    <script src="/lilypad-client/pace/modules/backbone-patches.js"></script>
+    <script src="/lilypad-client/pace/modules/moment.js"></script>
+    <script src="/lilypad-client/pace/modules/modules.js"></script>
+    <script src="/lilypad-client/pace/modules/widgets.js"></script>
 
     <!-- app -->
-    <script src="app.js"></script>
+    <script src="/lilypad-client/pace/app.js"></script>
 
-    <script src="services/studentService.js"></script>
-    <script src="services/behaviorIncidentService.js"></script>
-    <script src="services/periodicRecordService.js"></script>
-    <script src="services/viewService.js"></script>
+    <script src="/lilypad-client/pace/services/studentService.js"></script>
+    <script src="/lilypad-client/pace/services/behaviorIncidentService.js"></script>
+    <script src="/lilypad-client/pace/services/periodicRecordService.js"></script>
+    <script src="/lilypad-client/pace/services/viewService.js"></script>
 
-    <script src="filters.js"></script>
-    <script src="menu/menu.js"></script>
-    <script src="menu/studentList.js"></script>
-    <script src="main/main.js"></script>
-    <script src="main/student.js"></script>
+    <script src="/lilypad-client/pace/filters.js"></script>
+    <script src="/lilypad-client/pace/menu/menu.js"></script>
+    <script src="/lilypad-client/pace/menu/studentList.js"></script>
+    <script src="/lilypad-client/pace/main/main.js"></script>
+    <script src="/lilypad-client/pace/main/student.js"></script>
 
 
 </head>
@@ -63,7 +63,7 @@
                 <menu-item ng-class="{selected: currentStudentId == student.get('id') && !attendance}"
                            ng-repeat="student in students">
                     <div ng-click="$parent.handleClick(student.get('id'))">
-                        <strong>{{student.get('first_name')}}</strong> {{student.get('last_name')}}
+                        <strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}
                         <ng-switch on="attendance">
                             <span class="circle attendance" ng-class="{absent: !student.present}"
                                   ng-switch-when="true"></span>
@@ -81,7 +81,7 @@
             <!--<div class="mainContent" ng-class="{disabled: (attendance || behaviorModalActive)}">-->
             <div class="mainContent">
                 <main-tabs>
-                    <h1><strong>{{student.get('first_name')}}</strong> {{student.get('last_name')}}</h1>
+                    <h1><strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}</h1>
                     <!--Disabled until attendance is implemented-->
                     <!--<main-pane disabled="!student.present" title="Collect">-->
                     <main-pane title="Collect">
@@ -177,7 +177,7 @@
                     </ng-switch>
                     <ul>
                         <li ng-repeat="behavior in behaviors">{{behavior.get('code')}} - {{behavior.get('label')}} -
-                            {{behavior.get('supports_duration')}}
+                            {{behavior.get('supportsDuration')}}
                         </li>
                     </ul>
 
