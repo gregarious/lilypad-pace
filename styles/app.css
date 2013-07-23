@@ -169,11 +169,12 @@ td:last-child, th:last-child {
 #menu {
     height: 648px;
     background-color: #f2f2f2;
+    overflow: auto;
 }
 
 #menu li {
     line-height: 3;
-    height: 3em;
+    height: 4em;
     border-bottom: 1px solid #c5c5c5;
     padding-left: 1.5em;
 }

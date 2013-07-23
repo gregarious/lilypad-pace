@@ -119,7 +119,7 @@
                         <div id="behaviorIncidents">
                             <div class="clearfix">
                                 <div class="buttonGroup">
-                                    <button ng-click="showSettings()">Add Incident</button>
+                                    <button ng-click="showAddIncident()">Add Incident</button>
                                     <button ng-click="showSettings()">Settings</button>
                                 </div>
                             </div>
@@ -133,56 +133,76 @@
                                         <th>Comment</th>
                                     </tr>
                                     </thead>
-                                    <tbod>
+                                    <tbody>
+                                        <tr ng-show="addingIncident">
+                                            <td>
+                                                <input ng-model="startedAt" type="time" />
+                                                <input ng-model="EndedAt" ng-show="type.get('supportsDuration')" type="time" />
+                                            </td>
+                                            <td>
+                                                <select ng-model="type" ng-options="incidentType.get('label') group by incidentType.get('applicableStudent') for incidentType in incidentTypes"></select>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
                                         <tr ng-repeat="incident in incidents">
-                                            <td>{{incident.occurred_at | date: 'h:mm a'}}</td>
-                                            <td>{{incident.type}}</td>
+                                            <td>{{incident.get('startedAt') | date: 'h:mm a'}}</td>
+                                            <td>{{incident.get('type').get('label')}}</td>
                                             <td>{{incident.duration | duration}}</td>
                                             <td>{{incident.comment}}</td>
                                         </tr>
-                                    </tbod>
+                                    </tbody>
                                 </table>
+                                <main-modal active="behaviorModalActive" title="STUDENT BEHAVIORS">
+                                    <div>
+                                        <div ng-show="addingBehavior">
+                                            <p>Add a behavior yo</p>
+                                        </div>
+                                        <div ng-hide="addingBehavior">
+                                            <button ng-click="showAddBehavior()">Add Behavior</button>
+                                        </div>
+                                        <table>
+                                            <thead>
+                                            <tr>
+                                                <th>Behavior</th>
+                                                <th>Type</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="studentType in studentTypes">
+                                                <td>{{studentType.get('label')}}</td>
+                                                <td>{{studentType.get('supportsDuration')}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </main-modal>
                             </div>
                         </div>
                     </main-pane>
                     <main-pane title="Analyze">
-                        Analyze stuff
+                        Start: <input type="date" />
+                        End: <input type="date" />
+                        <select ng-model="analyzeView">
+                            <option value="treatmentPeriods">Treatment Periods</option>
+                            <option value="behaviorLogs">Behavior Logs</option>
+                            <option value="attendanceRecords">Attendance Records</option>
+                        </select>
+                        <div class="divider"></div>
+                        <ng-switch on="analyzeView">
+                            <div ng-switch-when="treatmentPeriods">Get yo treatments!</div>
+                            <div ng-switch-when="behaviorLogs">Rollin in da logs</div>
+                            <div ng-switch-when="attendanceRecords">DAT ATTENDANCE</div>
+                        </ng-switch>
+
                     </main-pane>
                     <main-pane title="Discuss">
                         Discuss stuff
                     </main-pane>
                 </main-tabs>
             </div>
-            <main-modal active="behaviorModalActive" title="STUDENT BEHAVIORS">
-                <div ng-controller="behaviorModalCtrl">
-                    <ng-switch on="addingBehavior">
-                        <div ng-switch-default>
-                            <button ng-click="showAddBehavior()">Add Behavior</button>
-                        </div>
-                        <section ng-switch-when="true">
-                            <div class="clearfix">
-                                <div id="behaviorNameInput">
-                                    <h3>Behavior Description</h3>
-                                    <input type="text" placeholder="e.g. 'Physical Aggression'"
-                                           ng-model="$parent.description"/>
-                                </div>
-                                <buttonset id="behaviorTypeInput" options="behaviorTypes"
-                                           value="$parent.selectedBehaviorType" label="Behavior Type"></buttonset>
-                            </div>
-                            <div class="modalSubmit clearfix">
-                                <button ng-click="saveBehavior()">Save Behavior</button>
-                                <button ng-click="hideAddBehavior()">Cancel</button>
-                            </div>
-                        </section>
-                    </ng-switch>
-                    <ul>
-                        <li ng-repeat="behavior in behaviors">{{behavior.get('code')}} - {{behavior.get('label')}} -
-                            {{behavior.get('supportsDuration')}}
-                        </li>
-                    </ul>
 
-                </div>
-            </main-modal>
         </div>
         <div ng-switch-default>
             <h1>default screen</h1>

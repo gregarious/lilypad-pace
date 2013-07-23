@@ -1,54 +1,15 @@
 // maintains view state data for main content area for the student view
-app.controller('MainStudentCtrl', function($scope, studentService, viewService) {
-    $scope.behaviorModalActive = false
-    $scope.incidents = [
-        {
-            occurred_at: new Date('2013/07/02 17:45:23'),
-            duration: 15,   // 15 seconds = 15s
-            comment: 'Ran out of classroom',
-            type: 'Out of Area'
-        },
-        {
-            occurred_at: new Date('2013/07/02 17:22:23'),
-            duration: ((60 * 5) + (15)),   // 5 minutes 15 seconds = 5min 15s
-            comment: 'Ran out emergency exit',
-            type: 'Out of Building'
-        },
-        {
-            occurred_at: new Date('2013/07/02 14:07:23'),
-            duration: ((60 * 60 * 3) + 15),   // 3 hour 15 seconds = 1h
-            comment: 'Hit another student',
-            type: 'Physical Aggression'
-        },
-        {
-            occurred_at: new Date('2013/07/02 13:23:23'),
-            duration: null,   // 2 hours 17 minutes 15 seconds = 2h 17min
-            comment: '',
-            type: 'Suicidal/Homicidal Ideation'
-        },
-        {
-            occurred_at: new Date('2013/07/02 12:05:23'),
-            duration: ((60 * 60 * 2) + (17 * 60) + (15)) ,   // 2 hours 17 minutes 15 seconds = 2h 17min
-            comment: 'Ran out of classroom',
-            type: 'Out of Area'
-        },
-        {
-            occurred_at: new Date('2013/07/02 12:03:23'),
-            duration: null,   // 2 hours 17 minutes 15 seconds = 2h 17min
-            comment: '',
-            type: 'Filler'
-        },
-        {
-            occurred_at: new Date('2013/07/02 12:02:23'),
-            duration: null,   // 2 hours 17 minutes 15 seconds = 2h 17min
-            comment: 'Just filling up space',
-            type: 'Filler'
-        }
-    ]
-
+app.controller('MainStudentCtrl', function($scope, studentService, behaviorIncidentService, viewService) {
+    var students = studentService.allStudents();
+    $scope.behaviorModalActive = false;
+    $scope.addingIncident = false;
     $scope.$watch(function() {return viewService}, function(data) {
-        $scope.student = studentService.allStudents().get([data.parameters.id]);
+        $scope.student = students.get([data.parameters.id]);
         $scope.attendance = data.parameters.attendance;
+        $scope.incidents = behaviorIncidentService.dailyStudentIncidents($scope.student).models;
+        $scope.incidentTypes = behaviorIncidentService.typesForStudent($scope.student).models;
+        $scope.studentTypes = _.filter($scope.incidentTypes, function(type) {return type.get('applicableStudent') !== null});
+        console.log($scope.studentTypes);
     }, true);
 
 
@@ -56,18 +17,21 @@ app.controller('MainStudentCtrl', function($scope, studentService, viewService) 
         $scope.student[category]--;
     }
 
+    $scope.showAddIncident = function() {
+        $scope.addingIncident = true;
+    }
+
     $scope.showSettings = function() {
         $scope.behaviorModalActive = true;
     }
-});
 
-app.controller('behaviorModalCtrl', function($scope, studentService, viewService) {
     $scope.addingBehavior = false;
     $scope.behaviorTypes = ['Frequency', 'Duration'];
     $scope.selectedBehaviorType = null;
 
-    $scope.behaviors = studentService.allStudents().get(viewService.parameters.id).get('behaviorIncidentTypes').models;
-    console.log(studentService.allStudents().get(viewService.parameters.id).get('behaviorIncidentTypes').models.length);
+    // Incident Type Settings
+    //$scope.behaviors = studentService.allStudents().get(viewService.parameters.id).get('behaviorIncidentTypes').models;
+    //console.log(studentService.allStudents().get(viewService.parameters.id).get('behaviorIncidentTypes').models.length);
 
     $scope.showAddBehavior = function() {
         $scope.addingBehavior = true;

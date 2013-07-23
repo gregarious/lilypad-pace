@@ -3,7 +3,7 @@ app.controller('MenuStudentListCtrl', function($scope, studentService, viewServi
 
     $scope.$watch(function() {return viewService}, function(data) {
         if (data.parameters.id !== undefined) {
-            $scope.currentStudentId = studentService.allStudents().get([data.parameters.id]).get('id'); // selected student id
+            $scope.currentStudentId = data.parameters.id;
         }
         $scope.attendance = data.parameters.attendance; // whether attendance is being taken
     }, true);
