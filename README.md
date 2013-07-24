@@ -1,6 +1,6 @@
-# Lilypad PACE
+# Lilypad Pace
 
-A single-page app for Lilypad at PACE.
+A single-page app for Lilypad at Pace.
 
 ## Installation (for dev machines)
 
