@@ -63,7 +63,7 @@ angular.module('pace').service('behaviorIncidentService', function(Backbone, mom
      * @return {StudentBehaviorTypeCollection}
      */
     var typesForStudent = function(student, refresh) {
-        refresh = refresh || true;
+        refresh = _.isUndefined(refresh) ? true : refresh;
         if (!behaviorTypesStore[student.id]) {
             behaviorTypesStore[student.id] = new StudentBehaviorTypeCollection([], {
                 student: student
@@ -98,6 +98,10 @@ angular.module('pace').service('behaviorIncidentService', function(Backbone, mom
             // type dict into (full) BehaviorIncidentType model
             response.student = new studentService.Student(response.student);
             response.type = new BehaviorIncidentType(response.type);
+
+            // parse ISO date string into Date
+            response.startedAt = moment(response.startedAt).toDate();
+            response.endedAt = response.endedAt && moment(response.endedAt).toDate();
 
             return response;
         }

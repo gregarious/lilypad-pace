@@ -168,7 +168,7 @@ angular.module('pace').service('periodicRecordService', function(Backbone, momen
     var dailyStudentRecords = function(student, dateString, refresh) {
         // use today's day if no date was provided
         dateString = dateString || moment().format('YYYY-MM-DD');
-        refresh = refresh || true;
+        refresh = _.isUndefined(refresh) ? true : refresh;
 
         if (!dailyRecordsStore[student.id]) {
             dailyRecordsStore[student.id] = {};
