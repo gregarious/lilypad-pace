@@ -65,6 +65,7 @@ app.directive('mainModal', function() {
         controller: function($scope) {
             $scope.closeModal = function() {
                 $scope.active = false;
+                console.log($scope.active);
             }
         },
         template:
