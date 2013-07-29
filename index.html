@@ -119,39 +119,53 @@
                         <div id="behaviorIncidents">
                             <div class="clearfix">
                                 <div class="buttonGroup">
-                                    <button ng-click="showAddIncident()">Add Incident</button>
                                     <button ng-click="showSettings()">Settings</button>
                                 </div>
                             </div>
                             <div id="behaviorIncidentsTable">
                                 <table class="log">
-                                    <thead>
                                     <tr>
                                         <th>Time</th>
                                         <th>Incident</th>
                                         <th>Duration</th>
                                         <th>Comment</th>
                                     </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr ng-show="addingIncident">
-                                            <td>
-                                                <input ng-model="startedAt" type="time" />
-                                                <input ng-model="EndedAt" ng-show="type.get('supportsDuration')" type="time" />
-                                            </td>
-                                            <td>
-                                                <select ng-model="type" ng-options="incidentType.get('label') group by incidentType.get('applicableStudent') for incidentType in incidentTypes"></select>
-                                            </td>
-                                            <td></td>
-                                            <td></td>
+                                        <tr class="input" ng-show="!addingIncident">
+                                            <td colspan="4" ng-click="showAddIncident()"><p class="centered">Add Incident</p></td>
                                         </tr>
+                                        <tr ng-show="addingIncident" class="noborder">
+                                                    <td>
+                                                        <p>Start</p>
+                                                        <input ng-model="startedAt" type="time" />
+                                                    </td>
+                                                    <td>
+                                                        <p>Behavior</p>
+                                                        <select ng-model="type" ng-options="incidentType.get('label') group by incidentType.get('applicableStudent') for incidentType in incidentTypes">
+                                                            <option>test</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <span ng-show="type.get('supportsDuration')">
+                                                        <p>End</p>
+                                                        <input ng-model="EndedAt" type="time" />
+                                                        </span>
+                                                    </td>
+                                                    <td></td>
+                                        </tr>
+                                    <tr ng-show="addingIncident">
+                                        <td colspan="4">
+                                        <p>Comment</p>
+                                        <input type="text" placeholder="Comment">
+                                        <button>Cancel</button>
+                                        <button>Submit</button>
+                                        </td>
+                                    </tr>
                                         <tr ng-repeat="incident in incidents">
                                             <td>{{incident.get('startedAt') | date: 'h:mm a'}}</td>
                                             <td>{{incident.get('type').get('label')}}</td>
                                             <td>{{incident.duration | duration}}</td>
                                             <td>{{incident.comment}}</td>
                                         </tr>
-                                    </tbody>
                                 </table>
                                 <main-modal active="behaviorModalActive" title="STUDENT BEHAVIORS">
                                     <div>

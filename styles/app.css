@@ -44,13 +44,13 @@ strong {
 }
 
 button {
-    background-color: #48bea4;
+    background-color: #f2f2f2;
     border: 0px;
     padding: 0.5em;
     padding-left: 1em;
     padding-right: 1em;
     font-size: 18px;
-    color: #fff;
+    color: #58585b;
 }
 
 section {
@@ -81,6 +81,10 @@ tr {
     border-bottom: 1px solid #B3B3B3;
 }
 
+tr.input {
+    background-color: #f2f2f2;
+}
+
 td, th {
     border-right: 1px solid #B3B3B3;
     padding: 1em 0.5em 1em 0.5em;
@@ -93,6 +97,18 @@ tr:last-child {
 
 td:last-child, th:last-child {
     border-right: 0;
+}
+
+.noborder td {
+    border: 0;
+}
+
+button.primary {
+    background-color: #48bea4;
+}
+
+.centered {
+    text-align: center;
 }
 
 .disabled {
