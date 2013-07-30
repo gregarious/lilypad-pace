@@ -159,16 +159,16 @@ angular.module('pace').service('periodicRecordService', function(Backbone, momen
      * 
      * @param  {Student} student
      * @param  {String} dateString    default: today's date as ISO string
-     * @param  {String} refresh       should a fetch be performed if 
-     *                                collection already exists? 
-     *                                default: true
+     * @param  {String} options       if {refresh: true} in options, a fetch
+     *                                will be performed when the collection
+     *                                already exists.
      * 
      * @return {DailyStudentRecordCollection}
      */
-    var dailyStudentRecords = function(student, dateString, refresh) {
+    var dailyStudentRecords = function(student, dateString, options) {
         // use today's day if no date was provided
         dateString = dateString || moment().format('YYYY-MM-DD');
-        refresh = _.isUndefined(refresh) ? true : refresh;
+        var refresh = options && options.refresh;
 
         if (!dailyRecordsStore[student.id]) {
             dailyRecordsStore[student.id] = {};

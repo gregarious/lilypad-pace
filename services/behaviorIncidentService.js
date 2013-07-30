@@ -56,14 +56,14 @@ angular.module('pace').service('behaviorIncidentService', function(Backbone, mom
      * given student.
      * 
      * @param  {Student} student
-     * @param  {String} refresh       should a fetch be performed if 
-     *                                collection already exists? 
-     *                                default: true
+     * @param  {String} options       if {refresh: true} in options, a fetch
+     *                                will be performed when the collection
+     *                                already exists.
      * 
      * @return {StudentBehaviorTypeCollection}
      */
-    var typesForStudent = function(student, refresh) {
-        refresh = _.isUndefined(refresh) ? true : refresh;
+    var typesForStudent = function(student, options) {
+        var refresh = options && options.refresh;
         if (!behaviorTypesStore[student.id]) {
             behaviorTypesStore[student.id] = new StudentBehaviorTypeCollection([], {
                 student: student
@@ -168,17 +168,16 @@ angular.module('pace').service('behaviorIncidentService', function(Backbone, mom
      * 
      * @param  {Student} student
      * @param  {String} dateString    default: today's date as ISO string
-     * @param  {String} refresh       should a fetch be performed if 
-     *                                collection already exists? 
-     *                                default: true
-     * 
+     * @param  {String} options       if {refresh: true} in options, a fetch
+     *                                will be performed when the collection
+     *                                already exists.
      * @return {DailyBehaviorIncidentCollection}
      */
 
-    var dailyStudentIncidents = function(student, dateString, refresh) {
+    var dailyStudentIncidents = function(student, dateString, options) {
         // use today's day if no date was provided
         dateString = dateString || moment().format('YYYY-MM-DD');
-        refresh = _.isUndefined(refresh) ? true : refresh;
+        var refresh = options && options.refresh;
 
         if (!dailyIncidentsStore[student.id]) {
             dailyIncidentsStore[student.id] = {};
