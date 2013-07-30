@@ -23,7 +23,7 @@ app.controller('MainStudentBehaviorsCtrl', function($scope, studentService, beha
     }
 
     $scope.submitNewBehavior = function() {
-        behaviorIncidentService.typesForStudent($scope.student).createIncidentType($scope.label, $scope.data.selectedBehaviorType === 'Frequency', null);
+        behaviorIncidentService.typesForStudent($scope.student).createIncidentType($scope.label, $scope.data.selectedBehaviorType === 'Duration', null);
         $scope.closeNewBehavior();
     }
 });

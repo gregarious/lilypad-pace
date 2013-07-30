@@ -202,7 +202,7 @@
                                             </tr>
                                             <tr ng-repeat="studentType in studentTypes">
                                                 <td>{{studentType.get('label')}}</td>
-                                                <td>{{studentType.get('supportsDuration')}}</td>
+                                                <td>{{studentType.get('supportsDuration') | supportsDuration}}</td>
                                             </tr>
                                             </tbody>
                                         </table>

@@ -26,3 +26,9 @@ app.filter('duration', function() {
 
     };
 });
+
+app.filter('supportsDuration', function() {
+    return function(input) {
+        return input ? "Duration" : "Frequency";
+    }
+})
