@@ -8,13 +8,10 @@ app.controller('MainStudentBehaviorsCtrl', function($scope, studentService, beha
     $scope.$watch(function() {return viewService}, function(data) {
         $scope.student = students.get([data.parameters.id]);
         $scope.studentTypes = _.filter($scope.incidentTypes, function(type) {return type.get('applicableStudent') !== null});
+
     }, true);
 
 
-
-    // Incident Type Settings
-    //$scope.behaviors = studentService.allStudents().get(viewService.parameters.id).get('behaviorIncidentTypes').models;
-    //console.log(studentService.allStudents().get(viewService.parameters.id).get('behaviorIncidentTypes').models.length);
 
     $scope.openNewBehavior = function() {
         $scope.addingBehavior = true;
@@ -22,10 +19,11 @@ app.controller('MainStudentBehaviorsCtrl', function($scope, studentService, beha
 
     $scope.closeNewBehavior = function() {
         $scope.addingBehavior = false;
+        $scope.label = $scope.data.selectedBehaviorType = null;
     }
 
     $scope.submitNewBehavior = function() {
-        console.log($scope.description, $scope.selectedBehaviorType);
-        $scope.addingBehavior = false;
+        behaviorIncidentService.typesForStudent($scope.student).createIncidentType($scope.label, $scope.data.selectedBehaviorType === 'Frequency', null);
+        $scope.closeNewBehavior();
     }
 });

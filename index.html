@@ -82,7 +82,7 @@
             <!--<div class="mainContent" ng-class="{disabled: (attendance || behaviorModalActive)}">-->
             <div class="mainContent">
                 <main-tabs>
-                    <h1><strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}</h1> {{behaviorModalActive}}
+                    <h1><strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}</h1>
 
                     <!--Disabled until attendance is implemented-->
                     <!--<main-pane disabled="!student.present" title="Collect">-->
@@ -103,16 +103,16 @@
                                 </select>
                             </div>
                             <div id="periodBehaviorCounters">
-                                <counter class="bs" value="student.bs" dec="true" dec-fn="decrement('bs')" max="2"
+                                <counter class="bs" value="points.bs" dec="true" dec-fn="decrement('bs')" max="2"
                                          min="0"
                                          text="Be Safe" id="student._id"></counter>
-                                <counter class="kw" value="student.kw" dec="true" dec-fn="decrement('kw')" max="2"
+                                <counter class="kw" value="points.kw" dec="true" dec-fn="decrement('kw')" max="2"
                                          min="0"
                                          text="Kind Words" id="student._id"></counter>
-                                <counter class="cw" value="student.cw" dec="true" dec-fn="decrement('cw')" max="2"
+                                <counter class="cw" value="points.cw" dec="true" dec-fn="decrement('cw')" max="2"
                                          min="0"
                                          text="Complete Work" id="student._id"></counter>
-                                <counter class="fd" value="student.fd" dec="true" dec-fn="decrement('fd')" max="2"
+                                <counter class="fd" value="points.fd" dec="true" dec-fn="decrement('fd')" max="2"
                                          min="0"
                                          text="Follow Directions" id="student._id"></counter>
                             </div>
@@ -132,8 +132,8 @@
                                         <th>Duration</th>
                                         <th>Comment</th>
                                     </tr>
-                                        <tr class="input" ng-hide="addingIncident">
-                                            <td colspan="4" ng-click="openNewIncident()"><p class="centered">Add Incident</p></td>
+                                        <tr class="input">
+                                            <td colspan="4" ng-click="openNewIncident()"><p class="centered">Add<span ng-show="addingIncident">ing</span> Incident</p></td>
                                         </tr>
                                         <tr ng-show="addingIncident" class="noborder">
                                                     <td>
@@ -156,21 +156,19 @@
                                         </tr>
                                     <tr ng-show="addingIncident">
                                         <td colspan="4">
-                                        <p>Comment</p>
-                                        <input type="text" ng-model="data.comment">
+                                        <input type="text" placeholder="Comment" ng-model="data.comment">
                                         <button ng-click="closeNewIncident()">Cancel</button>
-                                        <button ng-click="submitIncident()">Submit</button>
+                                        <button class="main" ng-click="submitIncident()">Submit</button>
                                         </td>
                                     </tr>
                                         <tr ng-repeat="incident in incidents">
-                                            <td>{{incident.get('startedAt') | date: 'h:mm a'}}</td>
+                                            <td>{{incident.get('startedAt') | date: 'h:mm'}}</td>
                                             <td>{{incident.get('type').get('label')}}</td>
                                             <td>{{incident.duration | duration}}</td>
-                                            <td>{{incident.comment}}</td>
+                                            <td>{{incident.get('comment')}}</td>
                                         </tr>
                                 </table>
-                                {{behaviorModalActive}}
-                                <main-modal active="behaviorModalActive" title="STUDENT BEHAVIORS">
+                                <main-modal active="data.behaviorModalActive" title="STUDENT BEHAVIORS">
                                     <div ng-controller="MainStudentBehaviorsCtrl">
                                         <table>
                                             <thead>
@@ -180,17 +178,17 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr ng-hide="addingBehavior">
+                                            <tr class="input">
                                                 <td colspan="2" ng-click="openNewBehavior()">
-
+                                                    Add<span ng-show="addingBehavior">ing</span> Behavior
                                                 </td>
                                             </tr>
                                             <tr class="noborder" ng-show="addingBehavior">
                                                 <td>
-                                                    <input ng-model="data.label" type="text" />
+                                                    <input type="text" placeholder="Label" ng-model="label"  />
                                                 </td>
                                                 <td>
-                                                    <buttonset options="behaviorTypes" value="selectedBehaviorType"></buttonset>
+                                                    <buttonset id="behaviorTypeInput" options="behaviorTypes" value="data.selectedBehaviorType"></buttonset>
                                                 </td>
                                                 <td>
 
@@ -199,7 +197,7 @@
                                             <tr ng-show="addingBehavior">
                                                 <td colspan="2">
                                                     <button ng-click="closeNewBehavior()">Cancel</button>
-                                                    <button ng-click="submitNewBehavior()">Submit</button>
+                                                    <button class="main" ng-click="submitNewBehavior()">Submit</button>
                                                 </td>
                                             </tr>
                                             <tr ng-repeat="studentType in studentTypes">

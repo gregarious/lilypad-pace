@@ -1,15 +1,19 @@
 // maintains view state data for main content area for the student view
-app.controller('MainStudentCtrl', function($scope, studentService, behaviorIncidentService, viewService) {
+app.controller('MainStudentCtrl', function($scope, studentService, behaviorIncidentService, periodicRecordService, viewService) {
     var students = studentService.allStudents();
-    $scope.behaviorModalActive = false;
-    $scope.addingIncident = false;
+    var behaviorIncident = null;
+    var periodicRecord = null;
     $scope.data = {};
+    $scope.points = {}
+    $scope.data.behaviorModalActive = false;
+    $scope.addingIncident = false;
     $scope.$watch(function() {return viewService}, function(data) {
         $scope.student = students.get([data.parameters.id]);
         $scope.attendance = data.parameters.attendance;
         $scope.incidentCollection = behaviorIncidentService.dailyStudentIncidents($scope.student);
         $scope.incidents = $scope.incidentCollection.models;
         $scope.incidentTypes = behaviorIncidentService.typesForStudent($scope.student).models;
+        $scope.periodicRecordCollection = periodicRecordService.dailyStudentRecords($scope.student);
     }, true);
 
 
@@ -27,17 +31,25 @@ app.controller('MainStudentCtrl', function($scope, studentService, behaviorIncid
     }
 
     $scope.showSettings = function() {
-        console.log($scope.behaviorModalActive);
-        $scope.behaviorModalActive = true;
+        $scope.data.behaviorModalActive = true;
     }
 
     $scope.submitIncident = function() {
+        var today = new Date();
+        $scope.data.startedAt.split(':')
+        today.setHours($scope.data.startedAt[0]);
+        today.setMinutes($scope.data.startedAt[1]);
+        $scope.data.startedAt = today;
+        if ($scope.data.endedAt) {
+            today.setHours($scope.data.endedAt[0]);
+            today.setMinutes($scope.data.endedAt[1]);
+            $scope.data.startedAt = today;
+        }
         var newIncident = $scope.incidentCollection.createIncident(
             $scope.data.type, 
             $scope.data.startedAt, 
             $scope.data.endedAt, 
             $scope.data.comment);
-        newIncident.save();
         $scope.closeNewIncident();
     }
 });
