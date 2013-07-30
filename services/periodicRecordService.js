@@ -184,7 +184,8 @@ angular.module('pace').service('periodicRecordService', function(Backbone, momen
             dailyRecordsStore[student.id][dateString] = recordCollection;
         }
         if (refresh) {
-            recordCollection.fetch();
+            // TODO: revisit the non-destructive nature of the fetch
+            recordCollection.fetch({remove: false});
         }
 
         return recordCollection;

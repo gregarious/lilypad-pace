@@ -71,7 +71,8 @@ angular.module('pace').service('behaviorIncidentService', function(Backbone, mom
             refresh = true;
         }
         if (refresh) {
-            behaviorTypesStore[student.id].fetch();
+            // TODO: revisit the non-destructive nature of the fetch
+            behaviorTypesStore[student.id].fetch({remove: false});
         }
         return behaviorTypesStore[student.id];
     };
@@ -193,7 +194,8 @@ angular.module('pace').service('behaviorIncidentService', function(Backbone, mom
             dailyIncidentsStore[student.id][dateString] = incidentCollection;
         }
         if (refresh) {
-            incidentCollection.fetch();
+            // TODO: revisit the non-destructive nature of the fetch
+            incidentCollection.fetch({remove: false});
         }
 
         return incidentCollection;
