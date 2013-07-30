@@ -7,7 +7,8 @@ app.controller('MainStudentCtrl', function($scope, studentService, behaviorIncid
     $scope.$watch(function() {return viewService}, function(data) {
         $scope.student = students.get([data.parameters.id]);
         $scope.attendance = data.parameters.attendance;
-        $scope.incidents = behaviorIncidentService.dailyStudentIncidents($scope.student).models;
+        $scope.incidentCollection = behaviorIncidentService.dailyStudentIncidents($scope.student);
+        $scope.incidents = $scope.incidentCollection.models;
         $scope.incidentTypes = behaviorIncidentService.typesForStudent($scope.student).models;
     }, true);
 
@@ -31,7 +32,11 @@ app.controller('MainStudentCtrl', function($scope, studentService, behaviorIncid
     }
 
     $scope.submitIncident = function() {
-        var newIncident = behaviorIncidentService.dailyStudentIncidents($scope.student).createIncident($scope.data.type, $scope.data.startedAt, $scope.data.endedAt, $scope.data.comment);
+        var newIncident = $scope.incidentCollection.createIncident(
+            $scope.data.type, 
+            $scope.data.startedAt, 
+            $scope.data.endedAt, 
+            $scope.data.comment);
         newIncident.save();
         $scope.closeNewIncident();
     }
