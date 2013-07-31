@@ -31,7 +31,11 @@ angular.module('pace').service('discussionService', function(Backbone, moment, s
             return response;
         },
 
-        createNewReply: function(author, content) {
+        /**
+         * Creates a new ReplyPost and hooks it up to the Collection living
+         * in this Post's `replies`. Doesn't currently POST.
+         */
+        createNewReply: function(author, content, options) {
             var newReply = new ReplyPost({
                 author: author,
                 content: content
@@ -83,7 +87,7 @@ angular.module('pace').service('discussionService', function(Backbone, moment, s
         },
 
         /**
-         * Wrapper around Collection.create that inserts student and date into
+         * Wrapper around Collection.create that inserts student into 
          * attributes for new Model. Don't use create directly.
          * @param  {String}  content           
          * @param  {String}  author         (will become User object soon)
