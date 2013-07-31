@@ -32,6 +32,7 @@ angular.module('pace').service('studentService', function(Backbone){
             delete data['periodic_records_url'];
             delete data['behavior_types_url'];
             delete data['behavior_incidents_url'];
+            delete data['posts_url'];
 
             return data;
         },
