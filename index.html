@@ -285,5 +285,13 @@
         </div>
     </ng-switch>
 </div>
+
+<script>
+    // For development purposes. Simply call `_injector.get('serviceName')` to get a service instance.
+    angular.module('pace').run(function($injector) {
+        window._injector = $injector;
+    });
+</script>
+
 </body>
 </html>
