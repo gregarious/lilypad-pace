@@ -42,6 +42,8 @@
     <script src="/lilypad-client/lilypad-pace/menu/studentList.js"></script>
     <script src="/lilypad-client/lilypad-pace/main/main.js"></script>
     <script src="/lilypad-client/lilypad-pace/main/student/student.js"></script>
+    <script src="/lilypad-client/lilypad-pace/main/student/collect.js"></script>
+    <script src="/lilypad-client/lilypad-pace/main/student/discuss.js"></script>
     <script src="/lilypad-client/lilypad-pace/main/student/studentBehaviors.js"></script>
 
 
@@ -88,139 +90,146 @@
                     <!--Disabled until attendance is implemented-->
                     <!--<main-pane disabled="!student.present" title="Collect">-->
                     <main-pane title="Collect">
-                        <div id="periodicBehaviors">
-                            <div class="clearfix">
-                                <select name="period">
-                                    <option value="1">Period 1</option>
-                                    <option value="2">Period 2</option>
-                                    <option value="3">Period 3</option>
-                                    <option value="4">Period 4</option>
-                                    <option value="5">Period 5</option>
-                                    <option value="6">Period 6</option>
-                                    <option value="7">Period 7</option>
-                                    <option value="8">Period 8</option>
-                                    <option value="9">Period 9</option>
-                                    <option value="10">Period 10</option>
-                                </select>
-                            </div>
-                            <div id="periodBehaviorCounters">
-                                <counter class="bs" value="points.bs" dec="true" dec-fn="decrement('bs')" max="2"
-                                         min="0"
-                                         text="Be Safe" id="student._id"></counter>
-                                <counter class="kw" value="points.kw" dec="true" dec-fn="decrement('kw')" max="2"
-                                         min="0"
-                                         text="Kind Words" id="student._id"></counter>
-                                <counter class="cw" value="points.cw" dec="true" dec-fn="decrement('cw')" max="2"
-                                         min="0"
-                                         text="Complete Work" id="student._id"></counter>
-                                <counter class="fd" value="points.fd" dec="true" dec-fn="decrement('fd')" max="2"
-                                         min="0"
-                                         text="Follow Directions" id="student._id"></counter>
-                            </div>
-                        </div>
-                        <div class="divider"></div>
-                        <div id="behaviorIncidents">
-                            <div class="clearfix">
-                                <div class="buttonGroup">
-                                    <button ng-click="showSettings()">Settings</button>
+                        <div ng-controller="MainStudentCollectCtrl">
+                            <div id="periodicBehaviors">
+                                <div class="clearfix">
+                                    <select name="period">
+                                        <option value="1">Period 1</option>
+                                        <option value="2">Period 2</option>
+                                        <option value="3">Period 3</option>
+                                        <option value="4">Period 4</option>
+                                        <option value="5">Period 5</option>
+                                        <option value="6">Period 6</option>
+                                        <option value="7">Period 7</option>
+                                        <option value="8">Period 8</option>
+                                        <option value="9">Period 9</option>
+                                        <option value="10">Period 10</option>
+                                    </select>
+                                </div>
+                                <div id="periodBehaviorCounters">
+                                    <counter class="bs" value="points.bs" dec="true" dec-fn="decrement('bs')" max="2"
+                                             min="0"
+                                             text="Be Safe" id="student._id"></counter>
+                                    <counter class="kw" value="points.kw" dec="true" dec-fn="decrement('kw')" max="2"
+                                             min="0"
+                                             text="Kind Words" id="student._id"></counter>
+                                    <counter class="cw" value="points.cw" dec="true" dec-fn="decrement('cw')" max="2"
+                                             min="0"
+                                             text="Complete Work" id="student._id"></counter>
+                                    <counter class="fd" value="points.fd" dec="true" dec-fn="decrement('fd')" max="2"
+                                             min="0"
+                                             text="Follow Directions" id="student._id"></counter>
                                 </div>
                             </div>
-                            <div id="behaviorIncidentsTable">
-                                <table class="log">
-                                    <tr>
-                                        <th>Time</th>
-                                        <th>Incident</th>
-                                        <th>Duration</th>
-                                        <th>Comment</th>
-                                    </tr>
+                            <div class="divider"></div>
+                            <div id="behaviorIncidents">
+                                <div class="clearfix">
+                                    <div class="buttonGroup">
+                                        <button ng-click="showSettings()">Settings</button>
+                                    </div>
+                                </div>
+                                <div id="behaviorIncidentsTable">
+                                    <table class="log">
+                                        <tr>
+                                            <th>Time</th>
+                                            <th>Incident</th>
+                                            <th>Duration</th>
+                                            <th>Comment</th>
+                                        </tr>
                                         <tr class="input">
-                                            <td colspan="4" ng-click="openNewIncident()"><p class="centered">Add<span ng-show="addingIncident">ing</span> Incident</p></td>
+                                            <td colspan="4" ng-click="openNewIncident()"><p class="centered">Add<span
+                                                    ng-show="addingIncident">ing</span> Incident</p></td>
                                         </tr>
                                         <tr ng-show="addingIncident" class="noborder">
-                                                    <td>
-                                                        <p>Start</p>
-                                                        <input ng-model="data.startedAt" type="time" />
-                                                    </td>
-                                                    <td>
-                                                        <p>Behavior</p>
-                                                        <select ng-model="data.type" ng-options="incidentType.get('label') group by incidentType.get('applicableStudent') for incidentType in incidentTypes">
-                                                            <option>test</option>
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        <span ng-show="data.type.get('supportsDuration')">
-                                                        <p>End</p>
-                                                        <input ng-model="data.endedAt" type="time" />
-                                                        </span>
-                                                    </td>
-                                                    <td></td>
+                                            <td>
+                                                <p>Start</p>
+                                                <input ng-model="data.startedAt" type="time"/>
+                                            </td>
+                                            <td>
+                                                <p>Behavior</p>
+                                                <select ng-model="data.type"
+                                                        ng-options="incidentType.get('label') group by incidentType.get('applicableStudent') for incidentType in incidentTypes">
+                                                    <option>test</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                            <span ng-show="data.type.get('supportsDuration')">
+                                                            <p>End</p>
+                                                            <input ng-model="data.endedAt" type="time"/>
+                                                            </span>
+                                            </td>
+                                            <td></td>
                                         </tr>
-                                    <tr ng-show="addingIncident">
-                                        <td colspan="4">
-                                        <input type="text" placeholder="Comment" ng-model="data.comment">
-                                        <button ng-click="closeNewIncident()">Cancel</button>
-                                        <button class="main" ng-click="submitIncident()">Submit</button>
-                                        </td>
-                                    </tr>
+                                        <tr ng-show="addingIncident">
+                                            <td colspan="4">
+                                                <input type="text" placeholder="Comment" ng-model="data.comment">
+                                                <button ng-click="closeNewIncident()">Cancel</button>
+                                                <button class="main" ng-click="submitIncident()">Submit</button>
+                                            </td>
+                                        </tr>
                                         <tr ng-repeat="incident in incidents">
                                             <td>{{incident.get('startedAt') | date: 'h:mm'}}</td>
                                             <td>{{incident.get('type').get('label')}}</td>
                                             <td>{{incident.duration | duration}}</td>
                                             <td>{{incident.get('comment')}}</td>
                                         </tr>
-                                </table>
-                                <main-modal active="data.behaviorModalActive" title="STUDENT BEHAVIORS">
-                                    <div ng-controller="MainStudentBehaviorsCtrl">
-                                        <table>
-                                            <thead>
-                                            <tr>
-                                                <th>Behavior</th>
-                                                <th>Type</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr class="input">
-                                                <td colspan="2" ng-click="openNewBehavior()">
-                                                    Add<span ng-show="addingBehavior">ing</span> Behavior
-                                                </td>
-                                            </tr>
-                                            <tr class="noborder" ng-show="addingBehavior">
-                                                <td>
-                                                    <input type="text" placeholder="Label" ng-model="label"  />
-                                                </td>
-                                                <td>
-                                                    <buttonset id="behaviorTypeInput" options="behaviorTypes" value="data.selectedBehaviorType"></buttonset>
-                                                </td>
-                                                <td>
+                                    </table>
+                                    <main-modal active="data.behaviorModalActive" title="STUDENT BEHAVIORS">
+                                        <div ng-controller="MainStudentBehaviorsCtrl">
+                                            <table>
+                                                <thead>
+                                                <tr>
+                                                    <th>Behavior</th>
+                                                    <th>Type</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr class="input">
+                                                    <td colspan="2" ng-click="openNewBehavior()">
+                                                        Add<span ng-show="addingBehavior">ing</span> Behavior
+                                                    </td>
+                                                </tr>
+                                                <tr class="noborder" ng-show="addingBehavior">
+                                                    <td>
+                                                        <input type="text" placeholder="Label" ng-model="label"/>
+                                                    </td>
+                                                    <td>
+                                                        <buttonset id="behaviorTypeInput" options="behaviorTypes"
+                                                                   value="data.selectedBehaviorType"></buttonset>
+                                                    </td>
+                                                    <td>
 
-                                                </td>
-                                            </tr>
-                                            <tr ng-show="addingBehavior">
-                                                <td colspan="2">
-                                                    <button ng-click="closeNewBehavior()">Cancel</button>
-                                                    <button class="main" ng-click="submitNewBehavior()">Submit</button>
-                                                </td>
-                                            </tr>
-                                            <tr ng-repeat="studentType in studentTypes">
-                                                <td>{{studentType.get('label')}}</td>
-                                                <td>{{studentType.get('supportsDuration') | supportsDuration}}</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr ng-show="addingBehavior">
+                                                    <td colspan="2">
+                                                        <button ng-click="closeNewBehavior()">Cancel</button>
+                                                        <button class="main" ng-click="submitNewBehavior()">Submit
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr ng-repeat="studentType in studentTypes">
+                                                    <td>{{studentType.get('label')}}</td>
+                                                    <td>{{studentType.get('supportsDuration') | supportsDuration}}</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
 
-                                    </div>
-                                </main-modal>
+                                        </div>
+                                    </main-modal>
+                                </div>
                             </div>
                         </div>
                     </main-pane>
                     <main-pane title="Analyze">
-                        Start: <input type="date" />
-                        End: <input type="date" />
+                        Start: <input type="date"/>
+                        End: <input type="date"/>
                         <select ng-model="analyzeView">
                             <option value="treatmentPeriods">Treatment Periods</option>
                             <option value="behaviorLogs">Behavior Logs</option>
                             <option value="attendanceRecords">Attendance Records</option>
                         </select>
+
                         <div class="divider"></div>
                         <ng-switch on="analyzeView">
                             <div ng-switch-when="treatmentPeriods">Get yo treatments!</div>
@@ -230,7 +239,42 @@
 
                     </main-pane>
                     <main-pane title="Discuss">
-                        Discuss stuff
+                        <div ng-controller="MainStudentDiscussCtrl">
+                            <form>
+                                <select ng-model="data.author">
+                                    <option>Gabi</option>
+                                    <option>Greg</option>
+                                    <option>Hayden</option>
+                                </select>
+                                <input type="text" ng-model="data.content" />
+                                <button ng-click="newTopic()">Post comment</button>
+                            </form>
+                            <div id="discussions">
+                                <div ng-repeat="discussion in discussions">
+                                    <div class="post">
+                                        <div class="header"><span class="author">{{discussion.get('author')}}</span><span class="date">{{discussion.get('createdAt')}}</span>
+                                        </div>
+                                        <div class="content">{{discussion.get('content')}}</div>
+                                    </div>
+                                    <div class="post reply" ng-repeat="reply in discussion.get('replies').models">
+                                        <div class="header"><span class="author">{{reply.get('author')}}</span><span class="date">{{reply.get('createdAt')}}</span>
+                                        </div>
+                                        <div class="content">{{reply.get('content')}}</div>
+                                    </div>
+                                    <reply class="reply" text="Add reply">
+                                        <form>
+                                            <select ng-model="data.author">
+                                                <option>Gabi</option>
+                                                <option>Greg</option>
+                                                <option>Hayden</option>
+                                            </select>
+                                            <input type="text" ng-model="discussion.newReply" />
+                                            <button ng-click="newReply(discussion)">Add reply</button>
+                                        </form>
+                                    </reply>
+                                </div>
+                            </div>
+                        </div>
                     </main-pane>
                 </main-tabs>
             </div>

@@ -86,7 +86,7 @@ tr {
     border-bottom: 1px solid #B3B3B3;
 }
 
-tr.input {
+.input {
     background-color: #f2f2f2;
     text-align: center;
 }
@@ -305,6 +305,30 @@ button.primary {
 #behaviorIncidentsTable {
     height: 300px;
     overflow: auto;
+}
+
+#discussions .post {
+    border-top: 1px solid #7f7f7f;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+#discussions .reply {
+    margin-left: 50px;
+}
+
+#discussions .author {
+    font-family: allerbold;
+}
+
+#discussions .date {
+    float: right;
+    color: #b3b3b3;
+}
+
+#discussions .post .header {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 
