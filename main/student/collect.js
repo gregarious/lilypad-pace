@@ -1,6 +1,6 @@
 // maintains view state data for main content area for the student view
-app.controller('MainStudentCollectCtrl', function($scope, studentService, behaviorIncidentService, periodicRecordService, viewService) {
-    var students = studentService.allStudents();
+app.controller('MainStudentCollectCtrl', function($scope, studentAccessors, behaviorIncidentService, periodicRecordService, viewService) {
+    var students = studentAccessors.allStudents();
     $scope.data = {};
     $scope.points = {}
     $scope.data.behaviorModalActive = false;

@@ -1,6 +1,6 @@
 // maintains view state data for main content area for the student view
-app.controller('MainStudentBehaviorsCtrl', function($scope, studentService, behaviorIncidentService, viewService) {
-    var students = studentService.allStudents();
+app.controller('MainStudentBehaviorsCtrl', function($scope, studentAccessors, behaviorIncidentService, viewService) {
+    var students = studentAccessors.allStudents();
     $scope.addingBehavior = false;
     $scope.behaviorTypes = ['Frequency', 'Duration'];
     $scope.selectedBehaviorType = null;

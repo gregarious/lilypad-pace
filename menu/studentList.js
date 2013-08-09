@@ -1,5 +1,5 @@
-app.controller('MenuStudentListCtrl', function($scope, studentService, viewService) {
-    $scope.students = studentService.allStudents().models; // list of students in class
+app.controller('MenuStudentListCtrl', function($scope, studentAccessors, viewService) {
+    $scope.students = studentAccessors.allStudents().models; // list of students in class
 
     $scope.$watch(function() {return viewService}, function(data) {
         if (data.parameters.id !== undefined) {
@@ -17,7 +17,7 @@ app.controller('MenuStudentListCtrl', function($scope, studentService, viewServi
     $scope.handleClick = function(studentId) {
         // are we taking attendance or switching main content views between students?
         if ($scope.attendance) {
-            studentService.allStudents().get(studentId).markAbsent();
+            studentAccessors.allStudents().get(studentId).markAbsent();
         } else {
             viewService.currentView = 'student';
             viewService.parameters['id'] = studentId;
