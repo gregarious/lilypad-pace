@@ -21,8 +21,7 @@ angular.module('pace').factory('Student', function(Backbone){
         parse: function(request, options) {
             response = Backbone.Model.prototype.parse.apply(this, arguments);
 
-            // TODO: determine this from API data. For now just defaulting to absent
-            response.isPresent = false;
+            // TODO: determine isPresent from API data. For now just defaulting to absent
             return response;
         },
 

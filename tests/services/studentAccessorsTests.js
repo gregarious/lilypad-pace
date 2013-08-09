@@ -1,10 +1,12 @@
 describe('studentAccessors', function() {
+	/* Set up module/type injectors */
 	var _studentAccessors;
 	beforeEach(module('pace'));
 	beforeEach(inject(function(studentAccessors) {
 		_studentAccessors = studentAccessors;
 	}));
 
+	/* Start actual specs */
 	describe('.allStudents', function() {
 		var allStudents;
 		beforeEach(function() {

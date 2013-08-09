@@ -1,10 +1,15 @@
 describe('Student', function() {
-	var _Student, student;
+	/* Set up module/type injectors */
+	var _Student;
 	beforeEach(module('pace'));
 	beforeEach(inject(function(Student) {
 		_Student = Student;
-		student = new _Student();
 	}));
+
+	/* Start actual specs */
+	beforeEach(function() {
+		student = new _Student();
+	});
 
 	it('defaults to absent', function() {
 		expect(student.get('isPresent')).toBe(false);
