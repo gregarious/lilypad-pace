@@ -1,4 +1,4 @@
-angular.module('pace').service('behaviorIncidentService', function(Backbone, moment, studentService) {
+angular.module('pace').service('behaviorIncidentService', function(Backbone, moment, Student) {
     var BehaviorIncidentType = Backbone.Model.extend({
         /*
             Attibutes:
@@ -14,7 +14,7 @@ angular.module('pace').service('behaviorIncidentService', function(Backbone, mom
             // transform student stub dict into Student model
             response = Backbone.Model.prototype.parse.apply(this, arguments);
             if (response.applicableStudent) {
-                response.applicableStudent = new studentService.Student(response.applicableStudent);
+                response.applicableStudent = new Student(response.applicableStudent);
             }
             return response;
         }
@@ -97,7 +97,7 @@ angular.module('pace').service('behaviorIncidentService', function(Backbone, mom
 
             // transform student stub dict into Student model and
             // type dict into (full) BehaviorIncidentType model
-            response.student = new studentService.Student(response.student);
+            response.student = new Student(response.student);
             response.type = new BehaviorIncidentType(response.type);
 
             // parse ISO date string into Date

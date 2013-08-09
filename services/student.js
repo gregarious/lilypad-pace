@@ -1,5 +1,5 @@
-angular.module('pace').service('studentService', function(Backbone){
-    var Student = Backbone.Model.extend({
+angular.module('pace').factory('Student', function(Backbone){
+    return Backbone.Model.extend({
         /* 
             Attributes:
                 id : Integer
@@ -13,6 +13,9 @@ angular.module('pace').service('studentService', function(Backbone){
                 behaviorIncidentsUrl : String
         */
 
+        defaults: {
+            isPresent: false
+        },
         urlRoot: '/pace/students/',
 
         parse: function(request, options) {
@@ -46,20 +49,4 @@ angular.module('pace').service('studentService', function(Backbone){
             this.set('isPresent', true);
         }
     });
-
-    var StudentCollection = Backbone.Collection.extend({
-        model: Student,
-        url: '/pace/students'
-    });
-
-    var allStudents = function() {
-        s = new StudentCollection();
-        s.fetch();
-        return s;
-    };
-
-    /** Public interface of service **/
-
-    this.allStudents = allStudents;
-    this.Student = Student;
 });

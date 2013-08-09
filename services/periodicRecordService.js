@@ -1,4 +1,4 @@
-angular.module('pace').service('periodicRecordService', function(Backbone, moment, studentService) {
+angular.module('pace').service('periodicRecordService', function(Backbone, moment, Student) {
     var PeriodicRecord = Backbone.Model.extend({
         /*
             Attributes:
@@ -22,7 +22,7 @@ angular.module('pace').service('periodicRecordService', function(Backbone, momen
             // point records into a `points` object
 
             response = Backbone.Model.prototype.parse.apply(this, arguments);
-            response.student = new studentService.Student(response.student);
+            response.student = new Student(response.student);
             response.points = {
                 kw: response.kindWordsPoints || null,
                 cw: response.completeWorkPoints || null,

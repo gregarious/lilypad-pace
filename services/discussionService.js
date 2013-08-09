@@ -1,4 +1,4 @@
-angular.module('pace').service('discussionService', function(Backbone, moment, studentService) {
+angular.module('pace').service('discussionService', function(Backbone, moment, Student) {
     var Post = Backbone.Model.extend({
         /*
             Attributes:
@@ -23,7 +23,7 @@ angular.module('pace').service('discussionService', function(Backbone, moment, s
             // TODO: handle author deserialization when User model in place
 
             response = Backbone.Model.prototype.parse.apply(this, arguments);
-            response.student = new studentService.Student(response.student);
+            response.student = new Student(response.student);
             response.createdAt = moment(response.createdAt).toDate();
 
             var ReplyCollection = Backbone.Collection.extend({'model': ReplyPost});
