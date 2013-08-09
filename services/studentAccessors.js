@@ -1,4 +1,4 @@
-angular.module('pace').service('studentAccessors', function(Backbone, Student){
+angular.module('pace').factory('studentAccessors', function(Backbone, Student){
     var StudentCollection = Backbone.Collection.extend({
         model: Student,
         url: '/pace/students'
@@ -8,18 +8,20 @@ angular.module('pace').service('studentAccessors', function(Backbone, Student){
     var beenFetched = false;
 
     /** Public interface of service **/
-    this.allStudents = function(options) {
-        options = _.defaults(options || {}, {refresh: false});
+    return {
+        allStudents: function(options) {
+            options = _.defaults(options || {}, {refresh: false});
 
-        // if caller wants refresh, or no sync has ever been performed, fetch now
-        if(options.refresh || !beenFetched) {
-            _allStudents.fetch({
-                success: function() {
-                    beenFetched = true;
-                }
-            });
+            // if caller wants refresh, or no sync has ever been performed, fetch now
+            if(options.refresh || !beenFetched) {
+                _allStudents.fetch({
+                    success: function() {
+                        beenFetched = true;
+                    }
+                });
+            }
+            
+            return _allStudents;
         }
-        
-        return _allStudents;
     };
 });
