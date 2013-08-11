@@ -1,0 +1,107 @@
+describe("DailyStudentRecordCollection", function() {
+    /* Set up module/type injectors */
+    var _DailyStudentRecordCollection, _PeriodicRecord, _Student;
+    beforeEach(module('pace'));
+    beforeEach(inject(function(periodicRecordAccessors, PeriodicRecord, DailyStudentRecordCollection, Student) {
+        _DailyStudentRecordCollection = DailyStudentRecordCollection;
+        _PeriodicRecord = PeriodicRecord;
+        _Student = Student;
+    }));
+
+    var student, dateString;
+    beforeEach(function() {
+        student = new _Student({
+            id: 4,
+            periodicRecordsUrl: '/pace/students/4/periodicrecords/'
+        });
+        dateString = '2013-01-01';
+    });
+
+    /* Start actual specs */
+    describe("constructor", function() {
+        it("should fail if called with no student", function() {
+            var newCall = function() {
+                new _DailyStudentRecordCollection({dateString: dateString});
+            };
+            expect(newCall).toThrow();
+        });
+
+        it("should fail if called with no student", function() {
+            var newCall = function() {
+                new _DailyStudentRecordCollection({student: student});
+            };
+            expect(newCall).toThrow();
+        });
+
+    });
+
+    describe("instance", function() {
+        var pd1, pd2, collection;
+        beforeEach(function() {
+            // mock out syncing for now
+            spyOn(Backbone, 'sync');
+
+            // Note: DSRCollection is should rarely, if ever, be built 
+            // manually like this. Typicaly it will be populated with
+            // a fetch call or via createPeriodicRecord calls.
+            pd1 = new _PeriodicRecord({
+                student: student,
+                dateString: dateString,
+                period: 1
+            });
+            pd2 = new _PeriodicRecord({
+                student: student,
+                dateString: dateString,
+                period: 2
+            });
+
+            collection = new _DailyStudentRecordCollection([pd1, pd2], {
+                student: student,
+                dateString: dateString
+            });
+        });
+
+        describe('.url', function() {
+            it('should return expected url with options', function() {
+                expect(collection.url()).toBe('/pace/students/4/periodicrecords/?date=2013-01-01')
+            });
+        });
+
+        describe('.getPeriodicRecord', function() {
+            it('should return expected model when queried', function() {
+                expect(collection.getPeriodicRecord(2)).toBe(pd2);
+            });
+            it("should return undefined when queried period doesn't exist", function() {
+                expect(collection.getPeriodicRecord(3)).toBeUndefined();
+            });
+        });
+
+        describe('.createPeriodicRecord', function() {
+            beforeEach(function() {
+                spyOn(collection, 'create').andCallThrough();
+            });
+
+            it('defers to create', function() {
+                var newRecord = collection.createPeriodicRecord(3);
+                expect(collection.create).toHaveBeenCalled();
+                // sanity check, just ensure model is in collection
+                expect(collection).toContain(newRecord);
+            });
+
+            it('sets all point values to null if not eligible', function() {
+                var newRecord = collection.createPeriodicRecord(3, false);
+                _.each(newRecord.get('points'), function(val) {
+                    expect(val).toBeNull();
+                });
+            });
+
+            it('sets all point values to the initial point value', function() {
+                var newRecord = collection.createPeriodicRecord(3, true, 4);
+                _.each(newRecord.get('points'), function(val) {
+                    expect(val).toBe(4);
+                });
+            });
+        });
+    });
+
+});
