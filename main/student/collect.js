@@ -1,5 +1,5 @@
 // maintains view state data for main content area for the student view
-app.controller('MainStudentCollectCtrl', function($scope, studentAccessors, behaviorIncidentService, periodicRecordService, viewService) {
+app.controller('MainStudentCollectCtrl', function($scope, studentAccessors, behaviorIncidentService, periodicRecordAccessors, viewService) {
     var students = studentAccessors.allStudents();
     $scope.data = {};
     $scope.points = {}
@@ -11,7 +11,7 @@ app.controller('MainStudentCollectCtrl', function($scope, studentAccessors, beha
         $scope.incidentCollection = behaviorIncidentService.dailyStudentIncidents($scope.student);
         $scope.incidents = $scope.incidentCollection.models;
         $scope.incidentTypes = behaviorIncidentService.typesForStudent($scope.student).models;
-        $scope.periodicRecordCollection = periodicRecordService.dailyStudentRecords($scope.student);
+        $scope.periodicRecordCollection = periodicRecordAccessors.dailyStudentRecords($scope.student);
     }, true);
 
 
