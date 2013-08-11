@@ -23,6 +23,17 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, Student) 
          */
         urlRoot: '/pace/periodicrecords/',
 
+        initialize: function(attributes, options) {
+            dump(attributes);
+            if(!this.get('isEligible')) {
+                var pts = {};
+                _.each(validPointCategoryCodes, function(code) {
+                    pts[code] = null;
+                });
+                this.set('points', pts);
+            }
+        },
+
         parse: function(response, options) {
             // transform student stub dict into Student model and pack all
             // point records into a `points` object

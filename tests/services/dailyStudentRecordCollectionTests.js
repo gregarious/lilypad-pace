@@ -88,15 +88,22 @@ describe("DailyStudentRecordCollection", function() {
                 expect(collection).toContain(newRecord);
             });
 
-            it('sets all point values to null if not eligible', function() {
-                var newRecord = collection.createPeriodicRecord(3, false);
+            it('defaults to creating a record with `isEligible` == true', function() {
+                var newRecord = collection.createPeriodicRecord(3);
+                expect(newRecord.get('isEligible')).toBe(true);
+            });
+
+            it('defaults to creating a record with point values set to 2', function() {
+                var newRecord = collection.createPeriodicRecord(3, true);
+                expect(newRecord.get('points')).toBeDefined();
                 _.each(newRecord.get('points'), function(val) {
-                    expect(val).toBeNull();
+                    expect(val).toBe(2);
                 });
             });
 
             it('sets all point values to the initial point value', function() {
                 var newRecord = collection.createPeriodicRecord(3, true, 4);
+                expect(newRecord.get('points')).toBeDefined();
                 _.each(newRecord.get('points'), function(val) {
                     expect(val).toBe(4);
                 });

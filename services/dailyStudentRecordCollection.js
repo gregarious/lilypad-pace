@@ -41,7 +41,7 @@ angular.module('pace').factory('DailyStudentRecordCollection', function(Backbone
          */
         createPeriodicRecord: function(period, isEligible, initialPointValue, options) {
             isEligible = !_.isUndefined(isEligible) ? isEligible : true;
-            initialPointValue = initialPointValue || (isEligible ? 2 : null);
+            initialPointValue = !_.isUndefined(initialPointValue) ? initialPointValue : 2;
             return this.create({
                 student: this._student,
                 date: this._dateString,
