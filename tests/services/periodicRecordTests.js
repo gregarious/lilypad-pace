@@ -36,7 +36,10 @@ describe("PeriodicRecord", function() {
                 "kind_words_points": 2,
                 "complete_work_points": 1,
                 "follow_directions_points": 1,
-                "be_safe_points": 0
+                "be_safe_points": 0,
+                "student": {
+                    "id": 99
+                }
             };
 
             beforeEach(function() {
