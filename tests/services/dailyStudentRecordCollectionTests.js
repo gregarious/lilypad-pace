@@ -10,20 +10,18 @@ describe("DailyStudentRecordCollection", function() {
     }));
 
     describe("constructor", function() {
-        beforeEach(inject(function(DailyStudentRecordCollection) {
-            it("should fail if called with no student", function() {
-                var newCall = function() {
-                    new DailyStudentRecordCollection({dateString: dateString});
-                };
-                expect(newCall).toThrow();
-            });
+        it("should fail if called with no student", inject(function(DailyStudentRecordCollection) {
+            var newCall = function() {
+                new DailyStudentRecordCollection({dateString: dateString});
+            };
+            expect(newCall).toThrow();
+        }));
 
-            it("should fail if called with no date", function() {
-                var newCall = function() {
-                    new DailyStudentRecordCollection({student: student});
-                };
-                expect(newCall).toThrow();
-            });
+        it("should fail if called with no date", inject(function(DailyStudentRecordCollection) {
+            var newCall = function() {
+                new DailyStudentRecordCollection({student: student});
+            };
+            expect(newCall).toThrow();
         }));
     });
 
