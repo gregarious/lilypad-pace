@@ -78,6 +78,12 @@ describe("DailyStudentRecordCollection", function() {
                 expect(collection).toContain(newRecord);
             });
 
+            it('creates an instance with expected student and date', function() {
+                var newRecord = collection.createPeriodicRecord(3);
+                expect(newRecord.get('student')).toBe(student);
+                expect(newRecord.get('date')).toBe(dateString);
+            });
+
             it('defaults to creating a record with `isEligible` == true', function() {
                 var newRecord = collection.createPeriodicRecord(3);
                 expect(newRecord.get('isEligible')).toBe(true);
