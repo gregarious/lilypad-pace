@@ -130,6 +130,16 @@ describe("PeriodicRecord", function() {
                     expect(periodicRecord.get('points')).toEqual(origPoints);
                 });
             });
+
+            describe('.getTotalPointValue', function() {
+                it('adds all points', function() {
+                    expect(periodicRecord.getTotalPointValue()).toBe(4);
+                })
+                it('returns null if student is not eligible', function() {
+                    periodicRecord.set('isEligible', false);
+                    expect(periodicRecord.getTotalPointValue()).toBeNull();  
+                })
+            })
         });
     });
 });

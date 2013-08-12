@@ -107,7 +107,7 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, Student) 
          * if student was not eligible for points.
          * @return {Integer or null}
          */
-        totalPoints: function() {
+        getTotalPointValue: function() {
             if (!this.get('isEligible')) {
                 return null;
             }
