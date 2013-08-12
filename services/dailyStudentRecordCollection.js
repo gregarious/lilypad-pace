@@ -23,10 +23,14 @@ angular.module('pace').factory('DailyStudentRecordCollection', function(Backbone
          * Return the PeriodicRecord model corresponding
          * to the given period number.
          * 
-         * @param  {Integer} period
+         * @param  {Integer} period     (optional) If omitted, returns record
+         *                              for highest-number period
          * @return {PeriodicRecord or undefined}
          */
         getPeriodicRecord: function(period) {
+            if (_.isUndefined(period)) {
+                period = _.max(this.pluck('period'));
+            }
             return this.findWhere({period: period});
         },
 
