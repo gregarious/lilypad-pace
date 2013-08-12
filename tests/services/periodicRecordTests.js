@@ -1,12 +1,4 @@
 describe("PeriodicRecord", function() {
-    /* Set up module/type injectors */
-    // var _PeriodicRecord, periodicRecord, _Student;
-    // beforeEach(inject(function(PeriodicRecord, Student) {
-    //     _PeriodicRecord = PeriodicRecord;
-    //     _Student = Student;
-    // }));
-
-    /* Start actual specs */
     describe(".initialize", function() {
         var ineligibleStudentRecord;
         beforeEach(inject(function(PeriodicRecord) {
