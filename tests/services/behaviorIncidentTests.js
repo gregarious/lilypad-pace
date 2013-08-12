@@ -9,8 +9,8 @@ describe("BehaviorIncident", function() {
         beforeEach(function() {
             var responseJSON = {
                 id: 1,
-                "startedAt": "2013-01-01T13:00:00Z",
-                "endedAt": "2013-01-01T14:00:00Z",
+                "started_at": "2013-01-01T13:00:00Z",
+                "ended_at": "2013-01-01T14:00:00Z",
                 "student": {
                     "id": 99
                 },
