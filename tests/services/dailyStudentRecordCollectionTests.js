@@ -1,69 +1,61 @@
 describe("DailyStudentRecordCollection", function() {
-    /* Set up module/type injectors */
-    var _DailyStudentRecordCollection, _PeriodicRecord, _Student;
-    beforeEach(module('pace'));
-    beforeEach(inject(function(periodicRecordAccessors, PeriodicRecord, DailyStudentRecordCollection, Student) {
-        _DailyStudentRecordCollection = DailyStudentRecordCollection;
-        _PeriodicRecord = PeriodicRecord;
-        _Student = Student;
-    }));
-
+    // set up some values to be used in specs below
     var student, dateString;
-    beforeEach(function() {
-        student = new _Student({
+    beforeEach(inject(function(Student) {
+        student = new Student({
             id: 4,
             periodicRecordsUrl: '/pace/students/4/periodicrecords/'
         });
         dateString = '2013-01-01';
-    });
+    }));
 
-    /* Start actual specs */
     describe("constructor", function() {
-        it("should fail if called with no student", function() {
-            var newCall = function() {
-                new _DailyStudentRecordCollection({dateString: dateString});
-            };
-            expect(newCall).toThrow();
-        });
+        beforeEach(inject(function(DailyStudentRecordCollection) {
+            it("should fail if called with no student", function() {
+                var newCall = function() {
+                    new DailyStudentRecordCollection({dateString: dateString});
+                };
+                expect(newCall).toThrow();
+            });
 
-        it("should fail if called with no student", function() {
-            var newCall = function() {
-                new _DailyStudentRecordCollection({student: student});
-            };
-            expect(newCall).toThrow();
-        });
-
+            it("should fail if called with no student", function() {
+                var newCall = function() {
+                    new DailyStudentRecordCollection({student: student});
+                };
+                expect(newCall).toThrow();
+            });
+        }));
     });
 
     describe("instance", function() {
         var pd1, pd2, collection;
-        beforeEach(function() {
+        beforeEach(inject(function(PeriodicRecord, DailyStudentRecordCollection) {
             // mock out syncing for now
             spyOn(Backbone, 'sync');
 
             // Note: DSRCollection is should rarely, if ever, be built 
             // manually like this. Typicaly it will be populated with
             // a fetch call or via createPeriodicRecord calls.
-            pd1 = new _PeriodicRecord({
+            pd1 = new PeriodicRecord({
                 student: student,
                 dateString: dateString,
                 period: 1
             });
-            pd2 = new _PeriodicRecord({
+            pd2 = new PeriodicRecord({
                 student: student,
                 dateString: dateString,
                 period: 2
             });
 
-            collection = new _DailyStudentRecordCollection([pd1, pd2], {
+            collection = new DailyStudentRecordCollection([pd1, pd2], {
                 student: student,
                 dateString: dateString
             });
-        });
+        }));
 
         describe('.url', function() {
             it('should return expected url with options', function() {
-                expect(collection.url()).toBe('/pace/students/4/periodicrecords/?date=2013-01-01')
+                expect(collection.url()).toBe('/pace/students/4/periodicrecords/?date=2013-01-01');
             });
         });
 
@@ -110,5 +102,4 @@ describe("DailyStudentRecordCollection", function() {
             });
         });
     });
-
 });

@@ -45,6 +45,7 @@ module.exports = function(config) {
         'tests/angular-mocks.js',
 
         // tests
+        'tests/init.js',
         'tests/**/*.js'
     ],
 

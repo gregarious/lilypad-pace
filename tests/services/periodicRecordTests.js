@@ -1,21 +1,23 @@
 describe("PeriodicRecord", function() {
     /* Set up module/type injectors */
-    var _PeriodicRecord, periodicRecord, _Student;
-    beforeEach(module('pace'));
-    beforeEach(inject(function(PeriodicRecord, Student) {
-        _PeriodicRecord = PeriodicRecord;
-        _Student = Student;
-    }));
+    // var _PeriodicRecord, periodicRecord, _Student;
+    // beforeEach(inject(function(PeriodicRecord, Student) {
+    //     _PeriodicRecord = PeriodicRecord;
+    //     _Student = Student;
+    // }));
 
     /* Start actual specs */
     describe(".initialize", function() {
         var ineligibleStudentRecord;
-        it('sets all point values to null if initialized to not be eligible', function() {
-            ineligibleStudentRecord = new _PeriodicRecord({
+        beforeEach(inject(function(PeriodicRecord) {
+             ineligibleStudentRecord = new PeriodicRecord({
                 isEligible: false,
                 points: {kw: 2, cw: 2, fd: 2, bs: 2}
             });
-            
+        
+        }));
+
+        it('sets all point values to null if initialized to not be eligible', function() {
             expect(ineligibleStudentRecord.get('points')).toBeDefined();
             _.each(ineligibleStudentRecord.get('points'), function(val) {
                 expect(val).toBeNull();
@@ -25,9 +27,9 @@ describe("PeriodicRecord", function() {
 
     describe('instance', function() {
         var periodicRecord;
-        beforeEach(function() {
-            periodicRecord = new _PeriodicRecord();
-        });
+        beforeEach(inject(function(PeriodicRecord) {
+            periodicRecord = new PeriodicRecord();
+        }));
 
         // TODO: turn .parse/.toJSON tests into side effects of fetch/save calls.
         // don't like testing internal API calls
@@ -53,9 +55,9 @@ describe("PeriodicRecord", function() {
                 expect(response.points).toEqual({kw: 2, cw: 1, fd: 1, bs: 0});
             });
 
-            it('creates Student instance stub', function() {
-                expect(response.student.constructor).toEqual(_Student);
-            });
+            it('creates Student instance stub', inject(function(Student) {
+                expect(response.student.constructor).toEqual(Student);
+            }));
         });
 
         describe(".toJSON", function() {
