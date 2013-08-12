@@ -1,5 +1,5 @@
 // maintains view state data for main content area for the student view
-app.controller('MainStudentBehaviorsCtrl', function($scope, studentAccessors, behaviorIncidentService, viewService) {
+app.controller('MainStudentBehaviorsCtrl', function($scope, studentAccessors, behaviorIncidentAccessors, viewService) {
     var students = studentAccessors.allStudents();
     $scope.addingBehavior = false;
     $scope.behaviorTypes = ['Frequency', 'Duration'];
@@ -11,19 +11,17 @@ app.controller('MainStudentBehaviorsCtrl', function($scope, studentAccessors, be
 
     }, true);
 
-
-
     $scope.openNewBehavior = function() {
         $scope.addingBehavior = true;
-    }
+    };
 
     $scope.closeNewBehavior = function() {
         $scope.addingBehavior = false;
         $scope.label = $scope.data.selectedBehaviorType = null;
-    }
+    };
 
     $scope.submitNewBehavior = function() {
-        behaviorIncidentService.typesForStudent($scope.student).createIncidentType($scope.label, $scope.data.selectedBehaviorType === 'Duration', null);
+        behaviorIncidentAccessors.studentBehaviorTypes($scope.student).createIncidentType($scope.label, $scope.data.selectedBehaviorType === 'Duration', null);
         $scope.closeNewBehavior();
-    }
+    };
 });
