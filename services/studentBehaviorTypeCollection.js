@@ -1,4 +1,4 @@
-angular.module('pace').factory('StudentBehaviorTypeCollection', function(BehaviorIncidentType) {
+angular.module('pace').factory('StudentBehaviorTypeCollection', function(Backbone, BehaviorIncidentType) {
     return Backbone.Collection.extend({
         model: BehaviorIncidentType,
 
