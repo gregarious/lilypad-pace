@@ -18,7 +18,7 @@ describe("DailyStudentRecordCollection", function() {
                 expect(newCall).toThrow();
             });
 
-            it("should fail if called with no student", function() {
+            it("should fail if called with no date", function() {
                 var newCall = function() {
                     new DailyStudentRecordCollection({student: student});
                 };
