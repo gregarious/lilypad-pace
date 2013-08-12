@@ -13,9 +13,9 @@ describe("BehaviorIncidentType", function() {
   describe(".parse", function() {
     it("creates a Student instance stub for `applicableStudent`", inject(function(Student) {
       var responseJSON = {
-        id: 1,
-        applicableStudent: {
-          id: 99,
+        "id": 1,
+        "applicableStudent": {
+          "id": 99
         }
       };
       var response = incidentType.parse(responseJSON);
