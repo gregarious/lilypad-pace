@@ -1,8 +1,10 @@
-app.controller('MenuCtrl', function($scope) {
+// parent controller for menus in the left panel
+app.controller('MenuCtrl', function ($scope) {
 
 });
 
-app.directive('menu', function() {
+// directive for menus in the left panel
+app.directive('menu', function () {
     return {
         restrict: 'E',
         transclude: true,
@@ -11,7 +13,8 @@ app.directive('menu', function() {
     }
 });
 
-app.directive('menuItem', function() {
+// directive for menu items
+app.directive('menuItem', function () {
     return {
         require: '^menu',
         restrict: 'E',

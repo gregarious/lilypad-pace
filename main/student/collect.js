@@ -1,12 +1,16 @@
-// maintains view state data for main content area for the student view
-app.controller('MainStudentCollectCtrl', function($scope, studentAccessors, behaviorIncidentAccessors, periodicRecordAccessors, viewService) {
+// controller for collect pane
+// TODO: This controller should be broken up for modals, periodic behaviors, and the incident log
+app.controller('MainStudentCollectCtrl', function ($scope, studentAccessors, behaviorIncidentAccessors, periodicRecordAccessors, viewService) {
+    var students = studentAccessors.allStudents();
     $scope.period = {};
     $scope.data = {};
     $scope.points = {};
     $scope.data.behaviorModalActive = false;
     $scope.addingIncident = false;
-    $scope.$watch(function() {return viewService}, function(data) {
-        //$scope.student = students.get([data.parameters.id]);
+    $scope.$watch(function () {
+        return viewService
+    }, function (data) {
+        $scope.student = students.get([data.parameters.id]);
         $scope.attendance = data.parameters.attendance;
         $scope.period = periodicRecordAccessors.dailyStudentRecords($scope.student, '2013-08-12').getPeriodicRecord();
         $scope.points.bs = $scope.period.getPointValue('bs');
@@ -19,26 +23,26 @@ app.controller('MainStudentCollectCtrl', function($scope, studentAccessors, beha
         console.log($scope.points)
     }, true);
 
-    $scope.decrement = function(category) {
+    $scope.decrement = function (category) {
         $scope.period.decrementPointValue(category);
-    }
+    };
 
-    $scope.openNewIncident = function() {
+    $scope.openNewIncident = function () {
         $scope.addingIncident = true;
-    }
+    };
 
-    $scope.closeNewIncident = function() {
+    $scope.closeNewIncident = function () {
         $scope.addingIncident = false;
         $scope.data.type = $scope.data.startedAt = $scope.data.endedAt = $scope.data.comment = null;
-    }
+    };
 
-    $scope.showSettings = function() {
+    $scope.showSettings = function () {
         $scope.data.behaviorModalActive = true;
-    }
+    };
 
-    $scope.submitIncident = function() {
+    $scope.submitIncident = function () {
         var today = new Date();
-        $scope.data.startedAt.split(':')
+        $scope.data.startedAt.split(':');
         today.setHours($scope.data.startedAt[0]);
         today.setMinutes($scope.data.startedAt[1]);
         $scope.data.startedAt = today;
@@ -47,11 +51,11 @@ app.controller('MainStudentCollectCtrl', function($scope, studentAccessors, beha
             today.setMinutes($scope.data.endedAt[1]);
             $scope.data.startedAt = today;
         }
-        var newIncident = $scope.incidentCollection.createIncident(
+        $scope.incidentCollection.createIncident(
             $scope.data.type,
             $scope.data.startedAt,
             $scope.data.endedAt,
             $scope.data.comment);
         $scope.closeNewIncident();
-    }
+    };
 });

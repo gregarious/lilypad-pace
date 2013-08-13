@@ -1,5 +1,6 @@
 var widgets = angular.module('widgets', ['underscore']);
 
+// directive for small option sets
 widgets.directive('buttonset', function () {
     return {
         restrict: 'E',
@@ -11,10 +12,10 @@ widgets.directive('buttonset', function () {
                 $scope.selectedIndex = index;
                 $scope.value = $scope.options[index];
 
-            }
+            };
             $scope.isSelected = function (index) {
                 return index === $scope.selectedIndex;
-            }
+            };
 
         },
         template: '<div>' +
@@ -27,7 +28,8 @@ widgets.directive('buttonset', function () {
     };
 });
 
-// This is a mess :(
+// directive for counter widgets
+// enter if ye dare
 widgets.directive('counter', function () {
     return {
         restrict: 'E',
@@ -45,7 +47,7 @@ widgets.directive('counter', function () {
                         timeout = false;
                     }, 550);
                 }
-            }
+            };
 
             $scope.decrement = function () {
                 if (!timeout && $scope.value > $scope.min) {
@@ -67,11 +69,11 @@ widgets.directive('counter', function () {
             // don't animate initially when the id has changed
             scope.$watch('id', function (newId) {
                 scope.animate = false;
-                setTimeout(function() {
+                setTimeout(function () {
                     scope.animate = true;
                     oldId = newId;
                 }, 0);
-            })
+            });
 
             // update the control when the value has changed, if the id is the same
             scope.$watch('value', function (newValue) {
@@ -90,14 +92,14 @@ widgets.directive('counter', function () {
             });
 
             // initial state of element
-            element.ready(function() {
+            element.ready(function () {
                 counterElement.setAttribute("style", "margin-top:" + (-counterElement.clientHeight).toString() + "px");
                 scope.currentValue = scope.value;
                 setTimeout(function () {
                     counterElement.classList.add('animated');
                     oldValue = scope.value;
                 }, 0);
-            })
+            });
 
             counterElement.addEventListener('webkitTransitionEnd', function () {
                 scope.currentValue = scope.value;
@@ -122,21 +124,20 @@ widgets.directive('counter', function () {
                 }
             }
         },
-        template:
-            '<div class="frequency-counter">' +
-                '<ng-switch on="inc">' +
-                '<div ng-switch-when="true" ng-class="{arrowDisabled: value == max, animated: animate}" class="arrow-container up" ng-click="increment()"><div class="arrow-up"></div></div>' +
-                '</ng-switch>' +
-                '<div class="countWrapper">' +
-                '<div class="count">{{upValue}}</div>' +
-                '<div class="count">{{currentValue}}</div>' +
-                '<div class="count">{{downValue}}</div>' +
-                '</div>' +
-                '<div class="name">{{text}} {{inTransition}}</div>' +
-                '<ng-switch on="dec">' +
-                '<div ng-switch-when="true" ng-class="{arrowDisabled: value == min, animated: animate }" class="arrow-container down" ng-click="decrement()"><div class="arrow-down"></div></div>' +
-                '</ng-switch>' +
-                '</div>',
+        template: '<div class="frequency-counter">' +
+            '<ng-switch on="inc">' +
+            '<div ng-switch-when="true" ng-class="{arrowDisabled: value == max, animated: animate}" class="arrow-container up" ng-click="increment()"><div class="arrow-up"></div></div>' +
+            '</ng-switch>' +
+            '<div class="countWrapper">' +
+            '<div class="count">{{upValue}}</div>' +
+            '<div class="count">{{currentValue}}</div>' +
+            '<div class="count">{{downValue}}</div>' +
+            '</div>' +
+            '<div class="name">{{text}} {{inTransition}}</div>' +
+            '<ng-switch on="dec">' +
+            '<div ng-switch-when="true" ng-class="{arrowDisabled: value == min, animated: animate }" class="arrow-container down" ng-click="decrement()"><div class="arrow-down"></div></div>' +
+            '</ng-switch>' +
+            '</div>',
         replace: true
     };
 });
