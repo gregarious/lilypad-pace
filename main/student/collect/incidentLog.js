@@ -1,45 +1,31 @@
-// controller for collect pane
-// TODO: This controller should be broken up for modals, periodic behaviors, and the incident log
-app.controller('MainStudentCollectCtrl', function ($scope, studentAccessors, behaviorIncidentAccessors, periodicRecordAccessors, viewService) {
+// controller for the incident log
+app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, studentAccessors, behaviorIncidentAccessors, viewService) {
     var students = studentAccessors.allStudents();
     $scope.period = {};
     $scope.data = {};
-    $scope.points = {};
-    $scope.data.behaviorModalActive = false;
     $scope.addingIncident = false;
     $scope.$watch(function () {
         return viewService
     }, function (data) {
         $scope.student = students.get([data.parameters.id]);
-        $scope.attendance = data.parameters.attendance;
-        $scope.period = periodicRecordAccessors.dailyStudentRecords($scope.student, '2013-08-12').getPeriodicRecord();
-        $scope.points.bs = $scope.period.getPointValue('bs');
-        $scope.points.kw = $scope.period.getPointValue('kw');
-        $scope.points.cw = $scope.period.getPointValue('cw');
-        $scope.points.fd = $scope.period.getPointValue('fd');
         $scope.incidentCollection = behaviorIncidentAccessors.dailyStudentIncidents($scope.student);
         $scope.incidents = $scope.incidentCollection.models;
         $scope.incidentTypes = behaviorIncidentAccessors.studentBehaviorTypes($scope.student).models;
-        console.log($scope.points)
     }, true);
 
-    $scope.decrement = function (category) {
-        $scope.period.decrementPointValue(category);
-    };
-
+    // opens the "new incident" control
     $scope.openNewIncident = function () {
         $scope.addingIncident = true;
     };
 
+    // closes and clears the "new incident" control
     $scope.closeNewIncident = function () {
         $scope.addingIncident = false;
         $scope.data.type = $scope.data.startedAt = $scope.data.endedAt = $scope.data.comment = null;
     };
 
-    $scope.showSettings = function () {
-        $scope.data.behaviorModalActive = true;
-    };
-
+    // TODO: Should be doing responsive form validation here
+    // TODO: Should confirm new incidents for students marked absent
     $scope.submitIncident = function () {
         var today = new Date();
         $scope.data.startedAt.split(':');

@@ -1,5 +1,5 @@
 // controller for discussion tab
-app.controller('MainStudentDiscussCtrl', function ($scope, discussionAccessors, viewService) {
+app.controller('MainStudentDiscussCtrl', function ($scope, discussionAccessors, studentAccessors, viewService) {
     var students = studentAccessors.allStudents();
     $scope.data = {};
     $scope.$watch(function () {
