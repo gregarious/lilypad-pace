@@ -1,5 +1,4 @@
 // controller for periodic records
-// TODO: This controller should be broken up for modals, periodic behaviors, and the incident log
 app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, studentAccessors, periodicRecordAccessors, viewService) {
     var students = studentAccessors.allStudents();
     $scope.period = {};
@@ -14,7 +13,6 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, student
         // TODO: Handle isEligible
         // TODO: Handle non-existent periods
         $scope.period = periodicRecordAccessors.dailyStudentRecords($scope.student, '2013-08-12').getPeriodicRecord();
-
         // points for four rules
         $scope.points.bs = $scope.period.getPointValue('bs');
         $scope.points.kw = $scope.period.getPointValue('kw');

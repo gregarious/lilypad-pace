@@ -61,16 +61,18 @@ button.main {
     color: #fff;
 }
 
+button[disabled] {
+    opacity: 0.5;
+}
+
 section {
     border: 1px solid #7f7f7f;
     padding: 1em;
 }
 
-input[type=text] {
+input[type=text], input[type=password] {
     box-sizing: border-box;
     font-size: 14px;
-    width: 300px;
-    height: 44px;
 }
 
 select {
@@ -102,10 +104,6 @@ td, th {
     border-right: 1px solid #b3b3b3;
     padding: 1em 0.5em 1em 0.5em;
     font-size: 14px;
-}
-
-button.primary {
-    background-color: #48bea4;
 }
 
 .disabled {
@@ -145,6 +143,51 @@ button.primary {
     content: "";
     clear: both;
     height: 0;
+}
+
+#login {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url(../images/background_login.png);
+    z-index: 1;
+}
+
+#login div {
+    width: 500px;
+    text-align: center;
+    margin-top: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#login input {
+    width: 200px;
+    margin-left: 0.5em;
+    background: none;
+    color: #f9f9f9;
+    border: 1px solid #f9f9f9;
+}
+
+#login label {
+    color: #f9f9f9;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0.25em;
+    display: block;
+}
+
+#login label:last-child {
+    margin-bottom: 1em;
+}
+
+#login button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    color: #48bea4;
 }
 
 .bs {

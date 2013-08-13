@@ -69,7 +69,17 @@
 
 
 </head>
-<body>
+<body ng-controller="main">
+<div id="login" ng-hide="authenticated">
+    <div>
+        <form name="login">
+            <label>Username<input type="text" ng-model="login.username" required /></label>
+            <label>Password  <input type="password" ng-model="login.password" required /></label>
+        </form>
+        <button ng-disabled="!login.$valid" ng-click="authenticate()">Log In</button>
+
+    </div>
+</div>
 <div id="sidebar">
     <div id="logo">
     </div>
