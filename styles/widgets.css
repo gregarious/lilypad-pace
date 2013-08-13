@@ -95,15 +95,13 @@
 
 .frequency-counter .arrow-container {
     box-sizing: border-box;
-    padding-top: 7px;
-    padding-bottom: 7px;
-    height: 15%;
+    padding-top: 10px;
+    padding-bottom: 10px;
     width: 100%;
 }
 
 .frequency-counter .arrow-container {
     box-sizing: border-box;
-    opacity: 0.8;
 }
 
 .frequency-counter .arrow-container.arrowDisabled {
@@ -111,19 +109,19 @@
 }
 
 .frequency-counter .arrow-container.up {
-    border-bottom: 2px solid #fff;
+    border-bottom: 2px solid rgba(255, 255, 255, .3);
 }
 
 .frequency-counter .arrow-container.down {
-    border-top: 2px solid #fff;
+    border-top: 2px solid rgba(255, 255, 255, .3);
 }
 
 .arrow-up {
     width: 0;
     height: 0;
-    border-left: 12px solid transparent;
-    border-right: 12px solid transparent;
-    border-bottom: 12px solid white;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-bottom: 14px solid white;
     margin-left: auto;
     margin-right: auto;
 }
@@ -131,9 +129,9 @@
 .arrow-down {
     width: 0;
     height: 0;
-    border-left: 12px solid transparent;
-    border-right: 12px solid transparent;
-    border-top: 12px solid white;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-top: 14px solid white;
     margin-left: auto;
     margin-right: auto;
 }

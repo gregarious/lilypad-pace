@@ -1,7 +1,8 @@
 /*
     Green:          #48bea4
 
-    Light gray:     #f2f2f2
+    Lighter gray:   #f9f9f9
+    Light gray:     #f1f1f1
     Medium gray:    #8C8C8C
     Dark gray:      #333333
 
@@ -44,8 +45,10 @@ strong {
 }
 
 button {
-    background-color: #f2f2f2;
-    border: 0px;
+    box-sizing: border-box;
+    height: 44px;
+    background-color: #f9f9f9;
+    border: 1px solid #b3b3b3;
     padding: 0.5em;
     padding-left: 1em;
     padding-right: 1em;
@@ -64,8 +67,10 @@ section {
 }
 
 input[type=text] {
+    box-sizing: border-box;
     font-size: 14px;
     width: 300px;
+    height: 44px;
 }
 
 select {
@@ -75,38 +80,28 @@ select {
 
 table {
     width: 100%;
+    border: 1px solid #b3b3b3;
 }
 
 th {
     font-family: allerbold;
-    border-bottom: 1px solid #B3B3B3;
-}
-
-tr {
-    border-bottom: 1px solid #B3B3B3;
+    background-color: #f9f9f9 ;
 }
 
 .input {
-    background-color: #f2f2f2;
+    background-color: #f1f1f1;
     text-align: center;
 }
 
+tr {
+    border-bottom: 1px solid #b3b3b3;
+    border-top: 1px solid #b3b3b3;
+}
+
 td, th {
-    border-right: 1px solid #B3B3B3;
+    border-right: 1px solid #b3b3b3;
     padding: 1em 0.5em 1em 0.5em;
     font-size: 14px;
-}
-
-tr:last-child {
-    border-bottom: 0;
-}
-
-td:last-child, th:last-child {
-    border-right: 0;
-}
-
-.noborder td, tr.noborder {
-    border: 0;
 }
 
 button.primary {
@@ -186,14 +181,14 @@ button.primary {
 
 #menu {
     height: 648px;
-    background-color: #f2f2f2;
+    background-color: #f9f9f9;
     overflow: auto;
 }
 
 #menu li {
     line-height: 3;
     height: 4em;
-    border-bottom: 1px solid #c5c5c5;
+    border-bottom: 1px solid #b3b3b3;
     padding-left: 1.5em;
 }
 
@@ -233,13 +228,13 @@ button.primary {
 .divider {
     border-bottom: 1px solid #B3B3B3;
     width: 100%;
-    margin-top: 2em;
-    margin-bottom: 2em;
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 .buttonGroup {
     float: right;
-    margin-bottom: 1.5em;
+    margin-bottom: 1em;
 }
 
 .buttonGroup button {
@@ -303,12 +298,12 @@ button.primary {
 }
 
 #behaviorIncidentsTable {
-    height: 300px;
+    height: 350px;
     overflow: auto;
 }
 
 #discussions .post {
-    border-top: 1px solid #7f7f7f;
+    border-top: 1px solid #b3b3b3;
     padding-top: 1em;
     padding-bottom: 1em;
 }
@@ -323,12 +318,16 @@ button.primary {
 
 #discussions .date {
     float: right;
-    color: #b3b3b3;
+    color: #8c8c8c;
 }
 
 #discussions .post .header {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
+}
+
+.tableform, .tableform td {
+    border: 0;
 }
 
 

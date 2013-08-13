@@ -5,8 +5,7 @@ app.controller('MainStudentDiscussCtrl', function ($scope, discussionAccessors, 
         return viewService;
     }, function (data) {
         $scope.discussionCollection = discussionAccessors.studentPosts($scope.student);
-        $scope.discussions = $scope.discussionCollection.models;
-        console.log($scope.discussions);
+        $scope.discussions = $scope.discussionCollection.models
     }, true);
 
     $scope.newTopic = function () {

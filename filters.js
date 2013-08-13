@@ -32,3 +32,11 @@ app.filter('supportsDuration', function() {
         return input ? "Duration" : "Frequency";
     }
 })
+
+app.filter('dateStamp', ['moment', function() {
+    return function(input) {
+        if (!input)
+            return ''
+        return moment(input).calendar();
+    }
+}])

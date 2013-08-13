@@ -1,22 +1,26 @@
 // maintains view state data for main content area for the student view
 app.controller('MainStudentCollectCtrl', function($scope, studentAccessors, behaviorIncidentAccessors, periodicRecordAccessors, viewService) {
-    var students = studentAccessors.allStudents();
+    $scope.period = {};
     $scope.data = {};
-    $scope.points = {}
+    $scope.points = {};
     $scope.data.behaviorModalActive = false;
     $scope.addingIncident = false;
     $scope.$watch(function() {return viewService}, function(data) {
         //$scope.student = students.get([data.parameters.id]);
         $scope.attendance = data.parameters.attendance;
+        $scope.period = periodicRecordAccessors.dailyStudentRecords($scope.student, '2013-08-12').getPeriodicRecord();
+        $scope.points.bs = $scope.period.getPointValue('bs');
+        $scope.points.kw = $scope.period.getPointValue('kw');
+        $scope.points.cw = $scope.period.getPointValue('cw');
+        $scope.points.fd = $scope.period.getPointValue('fd');
         $scope.incidentCollection = behaviorIncidentAccessors.dailyStudentIncidents($scope.student);
         $scope.incidents = $scope.incidentCollection.models;
         $scope.incidentTypes = behaviorIncidentAccessors.studentBehaviorTypes($scope.student).models;
-        $scope.periodicRecordCollection = periodicRecordAccessors.dailyStudentRecords($scope.student);
+        console.log($scope.points)
     }, true);
 
-
     $scope.decrement = function(category) {
-        $scope.student[category]--;
+        $scope.period.decrementPointValue(category);
     }
 
     $scope.openNewIncident = function() {
