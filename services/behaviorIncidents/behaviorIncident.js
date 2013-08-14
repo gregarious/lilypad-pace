@@ -1,5 +1,5 @@
-angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, BehaviorIncidentType, Student) {
-    return Backbone.Model.extend({
+angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, LoggableMixin, BehaviorIncidentType, Student) {
+    return Backbone.Model.extend(_.extend(new LoggableMixin(), {
         /*
             Attributes:
                 id : String
@@ -26,6 +26,28 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Be
             response.endedAt = response.endedAt && moment(response.endedAt).toDate();
 
             return response;
+        },
+
+        // Loggable mixin overrides
+        getOccurredAt: function() {
+            return this.get('startedAt');
+        }, 
+
+        getDuration: function() {
+            if (this.has('endedAt')) {
+                return (this.get('endedAt') - this.get('startedAt')) / 1000;
+            }
+            return null;
+        },
+
+        getLabel: function() {
+            if (this.has('type')) {
+                return this.get('type').get('label');
+            }
+            return undefined;
         }
-    });
+
+
+        
+    }));
 });
