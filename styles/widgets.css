@@ -32,11 +32,11 @@
 }
 
 .circle.attendance {
+    position: absolute;
+    right: 5px;
+    top: 16px;
     width: 20px;
     height: 20px;
-    float: right;
-    margin-top: 1em;
-    margin-right: 1em;
     background-color: #8c8c8c;
 }
 
@@ -46,10 +46,10 @@
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background-color: #f2f2f2;
+    background-color: #f9f9f9;
     position: relative;
     left: 2px;
-    top: -15px;
+    top: -10px;
 }
 
 .frequency-counter {

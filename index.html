@@ -76,20 +76,25 @@
             <label>Username<input type="text" ng-model="login.username" required /></label>
             <label>Password  <input type="password" ng-model="login.password" required /></label>
         </form>
-        <button ng-disabled="!login.$valid" ng-click="authenticate()">Log In</button>
+        <button ng-disabled="!login.$valid" ng-click="signIn()">Log In</button>
 
     </div>
 </div>
-<div id="sidebar">
-    <div id="logo">
+<div id="sidebar" ng-controller="MenuCtrl">
+    <div id="logo" ng-click="toggleSystemMenu()">
+        Mrs. Frizzle's Classrom
     </div>
-    <div id="menu" ng-controller="MenuCtrl">
+    <!-- TODO: fix touching extreme left side of menu item -->
+    <div id="menu">
         <!-- Different menu views go here class list, student list etc.-->
         <!-- We will need to implement this later using ng-switch-->
         <!-- Every menu view would get its own controller-->
         <div ng-controller="MenuStudentListCtrl">
             <menu>
-                <menu-item ng-click="$parent.toggleAttendance()">
+                <menu-item id="signout" ng-show="systemMenuActive" ng-click="signOut()">
+                    <span>SIGN OUT</span>
+                </menu-item>
+                <menu-item id="attendanceToggle" ng-click="$parent.toggleAttendance()">
                     <ng-switch on="attendance">
                         <span ng-switch-default>EDIT ATTENDANCE</span>
                         <span ng-switch-when="true">SAVE ATTENDANCE</span>
@@ -316,7 +321,7 @@
         </div>
     </ng-switch>
 </div>
-
+<!-- TODO: look into fixing the rubberband effect on app boundaries -->
 <script>
     // For development purposes. Simply call `_injector.get('serviceName')` to get a service instance.
     angular.module('pace').run(function($injector) {

@@ -4,9 +4,13 @@ app.controller('main', function ($scope) {
     $scope.login = {};
     $scope.authenticated = true;
 
-    $scope.authenticate = function() {
+    $scope.signIn = function() {
         if ($scope.login.$valid) {
             $scope.authenticated = true;
         }
+    }
+
+    $scope.signOut = function() {
+        $scope.authenticated = false
     }
 });
