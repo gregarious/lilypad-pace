@@ -16,14 +16,14 @@ beforeEach(inject(function(_) {
 	});
 }));
 
-describe('Loggable', function() {
-	var loggableModel;
+describe('LoggableMixin', function() {
+	var LoggableModel;
 
-	beforeEach(inject(function(Loggable, Backbone) {
-		loggableModel = _.extend(new Backbone.Model(), Loggable);
+	beforeEach(inject(function(LoggableMixin, Backbone) {
+		LoggableModel = Backbone.Model.extend(_.extend(new LoggableMixin, {}));
 	}));
 
 	it('implements the loggable interface', function() {
-		expect(loggableModel).toImplementLoggable();
+		expect(new LoggableModel()).toImplementLoggable();
 	});
 });
