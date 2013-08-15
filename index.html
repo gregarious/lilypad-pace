@@ -142,7 +142,7 @@
                                 <option value="10">Period 10</option>
                             </select>
                         </div>
-                        <div id="periodBehaviorCounters">
+                        <div id="periodBehaviorCounters" ng-class="{disabled: !isEligible}">
                             <counter class="bs" value="points.bs" dec="true" dec-fn="decrement('bs')" max="2"
                                      min="0"
                                      text="Be Safe" id="student.get('id')"></counter>
