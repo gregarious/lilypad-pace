@@ -22,7 +22,7 @@ app.directive('mainTabs', function () {
                     pane.selected = false;
                 });
                 pane.selected = true;
-            };
+            }
 
             this.addPane = function (pane) {
                 if (panes.length == 0) $scope.select(pane);
@@ -57,7 +57,7 @@ app.directive('mainPane', function () {
             '</div>',
         replace: true
     };
-});
+})
 
 // directive for modals that cover main content area
 app.directive('mainModal', function () {
@@ -68,7 +68,7 @@ app.directive('mainModal', function () {
         controller: function ($scope) {
             $scope.closeModal = function () {
                 $scope.active = false;
-            };
+            }
         },
         template: '<div class="mainModal modal hidden" ng-class="{active: active}">' +
             '<div class="clearfix">' +

@@ -320,6 +320,11 @@ td, th {
     font-family: aller_lightregular;
 }
 
+.tab-content {
+    height: 704px;
+    overflow: auto;
+}
+
 .divider {
     border-bottom: 1px solid #B3B3B3;
     width: 100%;
@@ -406,11 +411,6 @@ td, th {
     font-size: 0;
 }
 
-#behaviorIncidentsTable {
-    height: 350px;
-    overflow: auto;
-}
-
 #discussions .post {
     border-top: 1px solid #b3b3b3;
     padding-top: 1em;
@@ -435,10 +435,6 @@ td, th {
     margin-bottom: 0.5em;
 }
 
-.tableform, .tableform td {
-    border: 0;
-}
-
 form {
     display: block;
 }
@@ -448,6 +444,10 @@ form label {
     margin-right: 3em;
 }
 
+form label:last-child {
+    margin-right: 0;
+}
+
 form[name=incident] input[type=text] {
     width: 400px;
 }
@@ -455,6 +455,22 @@ form[name=incident] input[type=text] {
 form[name=incident] {
     padding: 1em;
 }
+
+form[name=analyze] {
+    position: relative
+}
+
+form[name=analyze] select {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 0;
+}
+
+form[name=analyze] span {
+    float: right;
+}
+
+
 
 
 
