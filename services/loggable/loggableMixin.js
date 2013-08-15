@@ -7,15 +7,15 @@
  * - getStudent() -> Student
  * - getDuration() -> Date (null also acceptable)
  *
- * 
+ *
  * Loggable Mixin:
  *
  * Since it's Javascript, there's no such thing as an explicit interface, but
- * the service below is a Backbone-flavored mixin for implementing the 
- * interface in a sane way on a Model. To use this default functionality, 
+ * the service below is a Backbone-flavored mixin for implementing the
+ * interface in a sane way on a Model. To use this default functionality,
  * extend your new Backbone.Model type attributes with a new copy of the
  * mixin. For example:
- * 
+ *
  * var NewType = Backbone.Model.extend(_.extend(new LoggableMixin(), {
  *     urlRoot: ...,
  *     ...
