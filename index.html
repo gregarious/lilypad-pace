@@ -34,12 +34,12 @@
     <!-- Student-related services -->
     <script src="/lilypad-client/lilypad-pace/services/students/student.js"></script>
     <script src="/lilypad-client/lilypad-pace/services/students/studentAccessors.js"></script>
-    
+
     <!-- PeriodicRecord-related services -->
     <script src="/lilypad-client/lilypad-pace/services/periodicRecords/periodicRecord.js"></script>
     <script src="/lilypad-client/lilypad-pace/services/periodicRecords/dailyStudentRecordCollection.js"></script>
     <script src="/lilypad-client/lilypad-pace/services/periodicRecords/periodicRecordAccessors.js"></script>
-    
+
     <!-- BehaviorIncident/BehaviorIncidentType-related services -->
     <script src="/lilypad-client/lilypad-pace/services/behaviorIncidents/behaviorIncident.js"></script>
     <script src="/lilypad-client/lilypad-pace/services/behaviorIncidents/behaviorIncidentType.js"></script>
@@ -73,8 +73,8 @@
 <div id="login" ng-hide="authenticated">
     <div>
         <form name="login">
-            <label>Username<input type="text" ng-model="login.username" required /></label>
-            <label>Password  <input type="password" ng-model="login.password" required /></label>
+            <label>Username<input type="text" ng-model="login.username" required/></label>
+            <label>Password <input type="password" ng-model="login.password" required/></label>
         </form>
         <button ng-disabled="!login.$valid" ng-click="signIn()">Log In</button>
 
@@ -82,7 +82,7 @@
 </div>
 <div id="sidebar" ng-controller="MenuCtrl">
     <div id="logo" ng-click="toggleSystemMenu()">
-        Mrs. Frizzle's Classrom
+        Valerie Frizzle's Lilypad
     </div>
     <!-- TODO: fix touching extreme left side of menu item -->
     <div id="menu">
@@ -161,8 +161,35 @@
                             <div id="behaviorIncidents" ng-controller="MainStudentCollectIncidentLogCtrl">
                                 <div class="clearfix">
                                     <div class="buttonGroup">
-                                        <button ng-click="$parent.showSettings()">Settings</button>
+                                        <button class="settings" ng-click="$parent.showSettings()"></button>
+                                        <button ng-click="openNewIncident()">+</button>
                                     </div>
+                                </div>
+                                <div class="bordered" ng-show="addingIncident">
+                                    <h3>Adding Incident</h3>
+                                    <form name="incident" >
+                                        <div class="clearfix">
+                                            <label>
+                                                <p>Start time</p>
+                                                <input ng-model="data.startedAt" type="time" required/>
+                                            </label>
+                                            <label>
+                                                <p>Behavior</p>
+                                                <select ng-model="data.type"
+                                                        ng-options="incidentType.get('label') group by incidentType.get('applicableStudent') for incidentType in incidentTypes" required>
+                                                </select>
+                                            </label>
+                                            <label ng-show="data.type.get('supportsDuration')">
+                                                <p>End time</p>
+                                                <input type="time" ng-model="data.endedAt" ng-required="data.type.get('supportsDuration')" />
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <input type="text" placeholder="Comment" ng-model="data.comment">
+                                            <button ng-click="closeNewIncident()">Cancel</button>
+                                            <button class="main" ng-disabled="!incident.$valid" ng-click="submitIncident()">Submit</button>
+                                        </div>
+                                    </form>
                                 </div>
                                 <div id="behaviorIncidentsTable">
                                     <table class="log">
@@ -171,38 +198,6 @@
                                             <th>Incident</th>
                                             <th>Duration</th>
                                             <th>Comment</th>
-                                        </tr>
-                                        <tr class="input">
-                                            <td colspan="4" ng-click="openNewIncident()"><p class="centered">Add<span
-                                                    ng-show="addingIncident">ing</span> Incident</p></td>
-                                        </tr>
-                                        <tr class="tableform" ng-show="addingIncident">
-                                            <td>
-                                                <p>Start</p>
-                                                <input ng-model="data.startedAt" type="time"/>
-                                            </td>
-                                            <td>
-                                                <p>Behavior</p>
-                                                <select ng-model="data.type"
-                                                        ng-options="incidentType.get('label') group by incidentType.get('applicableStudent') for incidentType in incidentTypes">
-                                                    <option>test</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                            <span ng-show="data.type.get('supportsDuration')">
-                                                            <p>End</p>
-                                                            <input ng-model="data.endedAt" type="time"/>
-                                                            </span>
-                                            </td>
-                                            <td></td>
-                                        </tr>
-                                        <tr class="tableform" ng-show="addingIncident">
-                                            <td colspan="4">
-                                                <input type="text" placeholder="Comment" ng-model="data.comment">
-                                                <button ng-click="closeNewIncident()">Cancel</button>
-                                                <button class="main" ng-click="submitIncident()">Submit</button>
-                                            </td>
-                                        </tr>
                                         <tr ng-repeat="incident in incidents">
                                             <td>{{incident.get('startedAt') | date: 'h:mm'}}</td>
                                             <td>{{incident.get('type').get('label')}}</td>
@@ -282,18 +277,20 @@
                                     <option>Greg</option>
                                     <option>Hayden</option>
                                 </select>
-                                <input type="text" ng-model="data.content" />
+                                <input type="text" ng-model="data.content"/>
                                 <button ng-click="newTopic()">Post comment</button>
                             </form>
                             <div id="discussions">
                                 <div ng-repeat="discussion in discussions">
                                     <div class="post">
-                                        <div class="header"><span class="author">{{discussion.get('author')}}</span><span class="date">{{discussion.get('createdAt') | dateStamp}} </span>
+                                        <div class="header"><span
+                                                class="author">{{discussion.get('author')}}</span><span class="date">{{discussion.get('createdAt') | dateStamp}} </span>
                                         </div>
                                         <div class="content">{{discussion.get('content')}}</div>
                                     </div>
                                     <div class="post reply" ng-repeat="reply in discussion.get('replies').models">
-                                        <div class="header"><span class="author">{{reply.get('author')}}</span><span class="date">{{reply.get('createdAt') | dateStamp}}</span>
+                                        <div class="header"><span class="author">{{reply.get('author')}}</span><span
+                                                class="date">{{reply.get('createdAt') | dateStamp}}</span>
                                         </div>
                                         <div class="content">{{reply.get('content')}}</div>
                                     </div>
@@ -304,7 +301,7 @@
                                                 <option>Greg</option>
                                                 <option>Hayden</option>
                                             </select>
-                                            <input type="text" ng-model="discussion.newReply" />
+                                            <input type="text" ng-model="discussion.newReply"/>
                                             <button ng-click="newReply(discussion)">Add reply</button>
                                         </form>
                                     </reply>
@@ -324,7 +321,7 @@
 <!-- TODO: look into fixing the rubberband effect on app boundaries -->
 <script>
     // For development purposes. Simply call `_injector.get('serviceName')` to get a service instance.
-    angular.module('pace').run(function($injector) {
+    angular.module('pace').run(function ($injector) {
         window._injector = $injector;
     });
 </script>
