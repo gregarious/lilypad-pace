@@ -1,4 +1,4 @@
-/* 
+/*
 This file includes monkey-patches to Backbone models so they play
 a bit nicer with our API. Patches include:
 
@@ -58,7 +58,7 @@ if sub-models start getting more complex.
         }
     });
 
-    // These are the option keys allowed to be passed into Backbone.ajax 
+    // These are the option keys allowed to be passed into Backbone.ajax
     // with the patch below.
     var expectedAjaxOptions = [
         'contentType', 'data', 'dataType', 'error', 'processData',
@@ -71,29 +71,29 @@ if sub-models start getting more complex.
         'add', 'merge', 'remove'
     ];
 
-    /* 
+    /*
       Patch to have Backbone use Angular's $http for AJAX calls.
 
-      We need to actually hook this up inside a the Backbone provider 
+      We need to actually hook this up inside a the Backbone provider
       definition in order to get access to $http, but to keep that
       module clean all the logic is in here. To actually plug it in,
-      just call Backbone._patchAjax($http) once a reference to $http 
+      just call Backbone._patchAjax($http) once a reference to $http
       exists.
     */
     Backbone._patchAjax = function(httpProvider) {
         /**
-         * Backbone.ajax override to use Angular's $http instead. Note that 
+         * Backbone.ajax override to use Angular's $http instead. Note that
          * this function doesn't aim to duplicate jQuery.ajax, just the parts
          * of it that Backbone uses. In particular, here are some of the known
          * limitations to the override:
-         * 
+         *
          * 1. A limited subset of $.ajax settings are allowed
-         * 2. Values are assumed for a few settings keys (`dataType` and 
+         * 2. Values are assumed for a few settings keys (`dataType` and
          *    `processData`). An error will be thrown if unexpected values
          *    are found.
          * 3. Angular doesn't give access to the raw XHR object at the $http
          *    level, so this version of `ajax` returns Angular HttpPromise object
-         *    instead of XHR objects. These HttpPromises also replace the xhr 
+         *    instead of XHR objects. These HttpPromises also replace the xhr
          *    objeects passed into the success and error callbacks.
          *
          * These limitations aren't problems as long as they're used in the context
@@ -139,7 +139,7 @@ if sub-models start getting more complex.
                 });
             }
 
-            // if jQuery-style error callback is provided, attach a wrapped 
+            // if jQuery-style error callback is provided, attach a wrapped
             // version to the promise
             if (jqSettings.error) {
                 promise.error(function(data, status, headers, config) {

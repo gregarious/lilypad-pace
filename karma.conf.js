@@ -39,7 +39,7 @@ module.exports = function(config) {
         'modules/modules.js',
         'modules/widgets.js',
         'app.js',
-        'services/*.js',
+        'services/**/*.js',
 
         // angular mock library for Jasmine
         'tests/angular-mocks.js',
@@ -52,7 +52,7 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
-      
+
     ],
 
 
