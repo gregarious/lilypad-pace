@@ -4,13 +4,14 @@ app.controller('main', function ($scope) {
     $scope.login = {};
     $scope.authenticated = true;
 
-    $scope.signIn = function() {
+    $scope.logIn = function() {
         if ($scope.login.$valid) {
+            $scope.login.username = $scope.login.password = undefined;
             $scope.authenticated = true;
         }
     }
 
-    $scope.signOut = function() {
+    $scope.logOut = function() {
         $scope.authenticated = false
     }
 });

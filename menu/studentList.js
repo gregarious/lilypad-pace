@@ -22,7 +22,7 @@ app.controller('MenuStudentListCtrl', function ($scope, studentAccessors, viewSe
         // are we taking attendance or switching main content views between students?
         if ($scope.attendance) {
             var student = studentCollection.get(studentId);
-            if (student.isPresent) {
+            if (student.get('isPresent')) {
                 student.markAbsent();
             } else {
                 student.markPresent();

@@ -454,12 +454,12 @@ form {
     display: block;
 }
 
-form label {
+form[name=incident] label {
     float: left;
     margin-right: 3em;
 }
 
-form label:last-child {
+form[name=incident] label:last-child {
     margin-right: 0;
 }
 
