@@ -10,6 +10,7 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, student
 
         // period object for current student
         // TODO: Allow for period selection
+        // TODO: use actual date
         $scope.period = periodicRecordAccessors.dailyStudentRecords($scope.student, '2013-08-12').getPeriodicRecord();
         if ($scope.period) {
             $scope.isEligible = $scope.period.get('isEligible');

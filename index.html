@@ -104,10 +104,7 @@
                            ng-repeat="student in students">
                     <div ng-click="$parent.handleClick(student.get('id'))">
                         <strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}
-                        <ng-switch on="attendance">
-                            <span class="circle attendance" ng-class="{absent: !student.present}"
-                                  ng-switch-when="true"></span>
-                        </ng-switch>
+                        <span class="circle attendance" ng-class="{absent: !student.get('isPresent')}" ng-show="attendance || !student.get('isPresent')"></span>
                     </div>
                 </menu-item>
             </menu>
@@ -118,8 +115,7 @@
 <ng-switch on="view">
 <div id="student" ng-switch-when="student" ng-controller="MainStudentCtrl">
     <!-- Disabled until attendance is implemented -->
-    <!--<div class="mainContent" ng-class="{disabled: (attendance || behaviorModalActive)}">-->
-    <div class="mainContent">
+    <div class="mainContent" ng-class="{disabled: (attendance)}">
         <main-tabs>
             <h1><strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}</h1>
 
