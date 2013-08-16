@@ -31,7 +31,7 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Lo
         // Loggable mixin overrides
         getOccurredAt: function() {
             return this.get('startedAt');
-        }, 
+        },
 
         getDuration: function() {
             if (this.has('endedAt')) {
@@ -46,8 +46,5 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Lo
             }
             return undefined;
         }
-
-
-        
     }));
 });

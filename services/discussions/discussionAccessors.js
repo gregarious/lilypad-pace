@@ -2,14 +2,14 @@ angular.module('pace').factory('discussionAccessors', function(StudentPostCollec
     // StudentPostCollection cache
     var studentPostsStore = {};
     /**
-     * Returns a StudentPostCollection with models for the 
+     * Returns a StudentPostCollection with models for the
      * given student.
-     * 
+     *
      * @param  {Student} student
      * @param  {String} options       if {refresh: true} in options, a fetch
      *                                will be performed when the collection
      *                                already exists.
-     * 
+     *
      * @return {StudentPostCollection}
      */
     var studentPosts = function(student, options) {
@@ -20,11 +20,25 @@ angular.module('pace').factory('discussionAccessors', function(StudentPostCollec
             });
             refresh = true;
         }
+
+        var deferred = $q.defer();
         if (refresh) {
             // TODO: revisit the non-destructive nature of the fetch
-            studentPostsStore[student.id].fetch({remove: false});
+            studentPostsStore[student.id].fetch({
+                remove: false,
+                success: function(collection, resp, options) {
+                    deferred.resolve(collection);
+                },
+                error: function(collection, resp, options) {
+                    deferred.resolve(resp);
+                }
+            });
         }
-        return studentPostsStore[student.id];
+        else {
+            deferred.resolve(studentPostsStore[student.id]);
+        }
+
+        return deferred.promise;
     };
 
     /** Public interface of service **/
