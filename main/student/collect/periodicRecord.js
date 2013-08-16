@@ -3,8 +3,8 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, student
     $scope.period = {};
     $scope.points = {};
 
-    var fetchStudent = studentAccessors.allStudents();
-    fetchStudent.then(function(students) {
+    var fetchStudents = studentAccessors.allStudents();
+    fetchStudents.then(function(students) {
         $scope.$watch(function () {
             return viewService;
         }, function (data) {
