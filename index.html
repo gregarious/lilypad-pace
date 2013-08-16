@@ -145,9 +145,9 @@
                             <counter class="cw" value="points.cw" dec="true" dec-fn="decrement('cw')" max="2"
                                      min="0"
                                      text="Complete Work" id="student.get('id')"></counter>
-                            <counter class="fd" value="points.fd" dec="true" dec-fn="student.get('id')" max="2"
+                            <counter class="fd" value="points.fd" dec="true" dec-fn="decrement('fd')" max="2"
                                      min="0"
-                                     text="Follow Directions{{points.fd}}" id="student.get('id')"></counter>
+                                     text="Follow Directions" id="student.get('id')"></counter>
                         </div>
                     </div>
                     <div class="divider"></div>
