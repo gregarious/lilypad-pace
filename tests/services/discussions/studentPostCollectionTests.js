@@ -54,5 +54,21 @@ describe("StudentPostCollection", function() {
             // TODO: future specs:
             // - ensure createdAt gets set to a sane value (by mocking clock) even if server is down
         });
+
+        it('should sort by date created', inject(function(DiscussionPost) {
+            collection.add(new DiscussionPost({
+                id: 1,
+                content: 'second',
+                createdAt: new Date(2013, 0, 2, 12, 0, 0)
+            }));
+            collection.add(new DiscussionPost({
+                id: 2,
+                content: 'first',
+                createdAt: new Date(2013, 0, 1, 12, 0, 0)
+            }));
+
+            expect(collection.models[0].get('content')).toBe('first');
+            expect(collection.models[1].get('content')).toBe('second');
+        }));
     });
 });

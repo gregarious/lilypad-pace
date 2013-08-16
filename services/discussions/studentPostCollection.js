@@ -18,10 +18,12 @@ angular.module('pace').factory('StudentPostCollection', function(Backbone, Discu
             return this._student.get('postsUrl');
         },
 
+        comparator: 'createdAt',
+
         /**
-         * Wrapper around Collection.create that inserts student into 
+         * Wrapper around Collection.create that inserts student into
          * attributes for new Model. Don't use create directly.
-         * @param  {String}  content           
+         * @param  {String}  content
          * @param  {String}  author         (will become User object soon)
          * @param  {Object} options         Typical Backbone.create options
          * @return {Post}
