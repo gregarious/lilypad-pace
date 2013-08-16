@@ -5,6 +5,11 @@ app.controller('MenuCtrl', function ($scope) {
     $scope.toggleSystemMenu = function() {
         $scope.systemMenuActive = !$scope.systemMenuActive;
     }
+
+    $scope.signOut = function() {
+        $scope.systemMenuActive = false;
+        $scope.logOut();
+    }
 });
 
 // directive for menus in the left panel

@@ -1,6 +1,6 @@
 angular.module('pace').factory('DiscussionPost', function(Backbone, moment, Student, DiscussionReply) {
     var ReplyCollection = Backbone.Collection.extend({'model': DiscussionReply});
-    
+
     return Backbone.Model.extend({
         /*
             Attributes:
@@ -14,13 +14,16 @@ angular.module('pace').factory('DiscussionPost', function(Backbone, moment, Stud
          */
         urlRoot: '/pace/posts/',
 
-        defaults: {
-            replies: new ReplyCollection
+        initialize: function() {
+            // if no replies passed in, create a new Collection for them
+            if (!this.has('replies')) {
+                this.set('replies', new ReplyCollection());
+            }
         },
 
         parse: function(response, options) {
-            // transform student stub dict into Student model, handle 
-            // createdAt Date deserialization, and create lightweight 
+            // transform student stub dict into Student model, handle
+            // createdAt Date deserialization, and create lightweight
             // collection of ReplyPost models from replies
             // TODO: handle author deserialization when User model in place
 
@@ -45,9 +48,9 @@ angular.module('pace').factory('DiscussionPost', function(Backbone, moment, Stud
             // don't want to POST this to server, but just set it
             // client-side now while the async call is in progress
             newReply.set('createdAt', new Date());
-            
+
             // TODO: hook this up to POST endpoint
-            
+
             this.get('replies').add(newReply);
             return newReply;
         }

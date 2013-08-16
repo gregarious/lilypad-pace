@@ -14,6 +14,7 @@ app.controller('MainStudentDiscussCtrl', function ($scope, discussionAccessors, 
     // NOTE: parameters are swapped between createNewPost and createNewReply
     $scope.newTopic = function () {
         $scope.discussionCollection.createNewPost($scope.data.content, $scope.data.author);
+        console.log($scope.discussionCollection);
     };
 
     $scope.newReply = function (discussion) {
