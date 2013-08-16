@@ -3,7 +3,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, studentAcc
     $scope.period = {};
     $scope.data = {};
     $scope.addingIncident = false;
-    $scope.incidentTypes = []
+    $scope.incidentTypes = [];
     $scope.incidentCollection = null;
     $scope.incidents = [];
 
@@ -14,15 +14,16 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, studentAcc
         }, function (data) {
             $scope.student = students.get(data.parameters.id);
 
-            var fetchTypes = behaviorIncidentAccessors.studentBehaviorTypes($scope.student).models;
-            var fetchIncidents = behaviorIncidentAccessors.dailyStudentIncidents($scope.student);
-            var fetchAll = $q.all(fetchTypes, fetchIncidents);
-            fetchAll.then(function(collections) {
-                $scope.incidentTypes = collections[0].models;
-                $scope.incidentCollection = collections[1];
-                $scope.incidents = $scope.incidentCollection.models;
+            var fetchTypes = behaviorIncidentAccessors.studentBehaviorTypes($scope.student);
+            fetchTypes.then(function(collection) {
+                $scope.incidentTypes = collection.models;
             });
 
+            var fetchIncidents = behaviorIncidentAccessors.dailyStudentIncidents($scope.student);
+            fetchIncidents.then(function(collection) {
+                $scope.incidentCollection = collection;
+                $scope.incidents = $scope.incidentCollection.models;
+            });
         }, true);
 
         // opens the "new incident" control
