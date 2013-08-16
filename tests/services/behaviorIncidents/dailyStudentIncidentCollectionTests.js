@@ -39,7 +39,7 @@ describe("DailyStudentIncidentCollection", function() {
 
         describe('.url', function() {
             it('should return expected url with date range', function() {
-                expect(collection.url()).toBe('/pace/students/4/behaviorincidents/?started_at__gte=2013-01-01T00:00:00-05:00&ended_at__lt=2013-01-02T00:00:00-05:00');
+                expect(collection.url()).toBe('/pace/students/4/behaviorincidents/?started_at__gte=2013-01-01T00:00:00-05:00&started_at__lt=2013-01-02T00:00:00-05:00');
             });
         });
 
