@@ -31,6 +31,14 @@ angular.module('pace').factory('DiscussionPost', function(Backbone, moment, Stud
             response.student = new Student(response.student);
             response.createdAt = moment(response.createdAt).toDate();
 
+            // necessary to manually change inner object case, recursive support doesn't exist right now
+            _.each(response.replies, function(replyJSON) {
+                if (replyJSON.created_at) {
+                    replyJSON.createdAt = replyJSON.created_at;
+                    delete replyJSON.created_at;
+                }
+            });
+
             response.replies = new ReplyCollection(response.replies);
             return response;
         },
