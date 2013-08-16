@@ -1,4 +1,4 @@
-angular.module('pace').factory('studentAccessors', function(Backbone, Student, $q){
+angular.module('pace').factory('studentAccessors', function(Backbone, Student, $q) {
     var StudentCollection = Backbone.Collection.extend({
         model: Student,
         url: '/pace/students'
