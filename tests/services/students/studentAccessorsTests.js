@@ -4,8 +4,9 @@ xdescribe('studentAccessors', function() {
 		beforeEach(inject(function($injector) {
 			$httpBackend = $injector.get('$httpBackend');
 			$httpBackend.when('GET', '/pace/students/').respond([
-				{"id": 1, "first_name": "Leslie", "last_name": "Knope"},
-				{"id": 2, "first_name": "Ron", "last_name": "Swanson"}
+				{"id": 1, "first_name": "Leslie", "last_name": "Nielsen"},
+				{"id": 2, "first_name": "Ron", "last_name": "Swanson"},
+				{"id": 3, "first_name": "Leslie", "last_name": "Knope"}
 			]);
 		}));
 
@@ -44,12 +45,18 @@ xdescribe('studentAccessors', function() {
 
 			// TODO: remove message and timeout when working. flush call should make it a guaranteed return
 			waitsFor(function() {
-				return !_.isUndefined(secondResponse)
+				return !_.isUndefined(secondResponse);
 			}, 'student accessor', 500);
 		});
 
 		it('has length of 2', function() {
 			expect(students.length).toBe(2);
+		});
+
+		it('sorts models by first then last name', function() {
+			expect(students.models[0].get('last_name')).toBe('Knope');
+			expect(students.models[1].get('last_name')).toBe('Nielsen');
+			expect(students.models[2].get('last_name')).toBe('Swanson');
 		});
 	});
 });

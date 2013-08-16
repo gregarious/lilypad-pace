@@ -1,7 +1,12 @@
 angular.module('pace').factory('studentAccessors', function(Backbone, Student, $q) {
     var StudentCollection = Backbone.Collection.extend({
         model: Student,
-        url: '/pace/students'
+        url: '/pace/students',
+        comparator: function(student) {
+            var first = student.get('firstName') || '';
+            var last = student.get('lastName') || '';
+            return (first+last).toLowerCase();
+        }
     });
 
     var _allStudents = new StudentCollection();
