@@ -8,7 +8,6 @@ app.controller('MainStudentDiscussCtrl', function ($scope, discussionAccessors, 
         $scope.student = students.get([data.parameters.id]);
         $scope.discussionCollection = discussionAccessors.studentPosts($scope.student);
         $scope.discussions = $scope.discussionCollection.models
-        console.log($scope.discussions)
     }, true);
 
     // creating new comments and replies to comments

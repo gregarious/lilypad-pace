@@ -115,13 +115,9 @@
 <div id="main" ng-controller="MainCtrl">
 <ng-switch on="view">
 <div id="student" ng-switch-when="student" ng-controller="MainStudentCtrl">
-    <!-- Disabled until attendance is implemented -->
     <div class="mainContent" ng-class="{disabled: (attendance)}">
         <main-tabs>
             <h1><strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}</h1>
-
-            <!--Disabled until attendance is implemented-->
-            <!--<main-pane disabled="!student.present" title="Collect">-->
             <main-pane title="Collect">
                 <div ng-controller="MainStudentCollectCtrl">
                     <div id="periodicBehaviors" ng-controller="MainStudentCollectPeriodicRecordCtrl">
@@ -263,8 +259,8 @@
                             <option value="attendanceRecords">Attendance Records</option>
                         </select>
                         <span ng-hide="analyzeView == 'treatmentPeriods'">
-                            <label><p>Start date</p><input type="date"/></label>
-                            <label><p>End date</p><input type="date"/></label>
+                            <span><label><p>End date</p><input type="date"/></label></span>
+                            <span><label><p>Start date</p><input type="date"/></label></span>
                         </span>
                     </form>
                 </div>

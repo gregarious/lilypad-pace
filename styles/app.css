@@ -485,6 +485,10 @@ form[name=analyze] span {
     float: right;
 }
 
+form[name=analyze] span span:last-child {
+    margin-right: 3em;
+}
+
 
 
 
