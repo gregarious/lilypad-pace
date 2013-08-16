@@ -26,11 +26,25 @@ angular.module('pace').factory('behaviorIncidentAccessors', function(Backbone, m
             });
             refresh = true;
         }
+
+        var deferred = $q.defer();
         if (refresh) {
             // TODO: revisit the non-destructive nature of the fetch
-            behaviorTypesStore[student.id].fetch({remove: false});
+            behaviorTypesStore[student.id].fetch({
+                remove: false,
+                success: function(collection, resp, options) {
+                    deferred.resolve(collection);
+                },
+                error: function(collection, resp, options) {
+                    deferred.resolve(resp);
+                }
+            });
         }
-        return behaviorTypesStore[student.id];
+        else {
+            deferred.resolve(behaviorTypesStore[student.id]);
+        }
+
+        return deferred.promise;
     };
 
     /**
