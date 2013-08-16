@@ -1,4 +1,4 @@
-angular.module('pace').factory('behaviorIncidentAccessors', function(Backbone, moment, Student, StudentBehaviorTypeCollection, DailyStudentIncidentCollection) {
+angular.module('pace').factory('behaviorIncidentAccessors', function(Backbone, moment, Student, StudentBehaviorTypeCollection, DailyStudentIncidentCollection, $q) {
 
     // internal StudentBehaviorTypeCollection cache
     var behaviorTypesStore = {};

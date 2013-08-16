@@ -1,4 +1,4 @@
-angular.module('pace').factory('discussionAccessors', function(StudentPostCollection) {
+angular.module('pace').factory('discussionAccessors', function(StudentPostCollection, $q) {
     // StudentPostCollection cache
     var studentPostsStore = {};
     /**
