@@ -33,7 +33,7 @@ angular.module('pace').factory('behaviorIncidentAccessors', function(_, Backbone
                     deferred.resolve(collection);
                 },
                 error: function(collection, resp, options) {
-                    deferred.resolve(resp);
+                    deferred.reject(resp);
                 }
             });
         }

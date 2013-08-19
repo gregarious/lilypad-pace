@@ -30,7 +30,7 @@ angular.module('pace').factory('discussionAccessors', function(StudentPostCollec
                     deferred.resolve(collection);
                 },
                 error: function(collection, resp, options) {
-                    deferred.resolve(resp);
+                    deferred.reject(resp);
                 }
             });
         }

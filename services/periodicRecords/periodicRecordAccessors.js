@@ -39,7 +39,7 @@ angular.module('pace').factory('periodicRecordAccessors', function(Backbone, mom
                     deferred.resolve(collection);
                 },
                 error: function(collection, resp, options) {
-                    deferred.resolve(resp);
+                    deferred.reject(resp);
                 }
             });
         }
