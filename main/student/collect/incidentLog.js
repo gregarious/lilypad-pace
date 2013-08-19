@@ -1,11 +1,10 @@
 // controller for the incident log
-app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, studentAccessors, behaviorIncidentAccessors, viewService, $q) {
+app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, studentAccessors, behaviorIncidentAccessors, logEntryAccessor, viewService, $q) {
     $scope.period = {};
     $scope.data = {};
     $scope.addingIncident = false;
     $scope.incidentTypes = [];
-    $scope.incidentCollection = null;
-    $scope.incidents = [];
+    $scope.activityLog = null;      // this will be a Collection of Loggable objects
 
     var fetchStudent = studentAccessors.allStudents();
     fetchStudent.then(function(students) {
@@ -19,10 +18,10 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, studentAcc
                 $scope.incidentTypes = collection.models;
             });
 
-            var fetchIncidents = behaviorIncidentAccessors.dailyStudentIncidents($scope.student);
-            fetchIncidents.then(function(collection) {
-                $scope.incidentCollection = collection;
-                $scope.incidents = $scope.incidentCollection.models;
+            // TODO: not filtering by date yet
+            var fetchLogEntries = logEntryAccessor($scope.student);
+            fetchLogEntries.then(function(collection) {
+                $scope.activityLog = collection;
             });
         }, true);
 
@@ -50,11 +49,18 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, studentAcc
                 today.setMinutes($scope.data.endedAt[1]);
                 $scope.data.startedAt = today;
             }
-            $scope.incidentCollection.createIncident(
+
+            var newIncident = behaviorIncidentAccessors.createIncident(
+                $scope.student,
                 $scope.data.type,
                 $scope.data.startedAt,
                 $scope.data.endedAt,
                 $scope.data.comment);
+
+            if ($scope.activityLog) {
+                $scope.activityLog.add(newIncident);
+            }
+
             $scope.closeNewIncident();
         };
     });

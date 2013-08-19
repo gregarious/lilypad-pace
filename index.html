@@ -198,11 +198,11 @@
                                     <th>Incident</th>
                                     <th>Duration</th>
                                     <th>Comment</th>
-                                <tr ng-repeat="incident in incidents">
-                                    <td>{{incident.get('startedAt') | date: 'h:mm'}}</td>
-                                    <td>{{incident.get('type').get('label')}}</td>
-                                    <td>{{incident.duration | duration}}</td>
-                                    <td>{{incident.get('comment')}}</td>
+                                <tr ng-repeat="logEntry in logEntryCollection.models">
+                                    <td>{{logEntry.getOccurredAt() | date: 'h:mm'}}</td>
+                                    <td>{{logEntry.getLabel()}}</td>
+                                    <td>{{logEntry.getDuration() | duration}}</td>
+                                    <td>{{logEntry.getComment()}}</td>
                                 </tr>
                             </table>
                         </div>
