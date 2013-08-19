@@ -52,7 +52,7 @@ describe("behaviorIncidentAccessors", function() {
         });
 
         it('creates an instance with expected `startedAt`', function() {
-            expect(newIncident.get('startedAt')).toBe(incidentDate);
+            expect(newIncident.get('startedAt')).toEqual(incidentDate);
         });
 
         it('defaults to creating a record with `endedAt` == null', function() {

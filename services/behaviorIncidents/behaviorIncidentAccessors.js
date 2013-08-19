@@ -62,6 +62,10 @@ angular.module('pace').factory('behaviorIncidentAccessors', function(_, Backbone
         endedAt = _.isUndefined(endedAt) ? null : endedAt;
         comment = _.isUndefined(comment) ? "" : comment;
 
+        // mandate that dates are actual Date objects
+        startedAt = moment(startedAt).toDate();
+        endedAt = endedAt ? moment(endedAt).toDate() : null;
+
         var newIncident = new BehaviorIncident({
             student: student,
             type: type,
