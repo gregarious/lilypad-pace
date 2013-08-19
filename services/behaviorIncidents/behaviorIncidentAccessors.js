@@ -1,4 +1,4 @@
-angular.module('pace').factory('behaviorIncidentAccessors', function(Backbone, moment, Student, StudentBehaviorTypeCollection, DailyStudentIncidentCollection, $q) {
+angular.module('pace').factory('behaviorIncidentAccessors', function(_, Backbone, moment, Student, StudentBehaviorTypeCollection, DailyStudentIncidentCollection, BehaviorIncident, $q) {
 
     // internal StudentBehaviorTypeCollection cache
     var behaviorTypesStore = {};
@@ -18,7 +18,7 @@ angular.module('pace').factory('behaviorIncidentAccessors', function(Backbone, m
      *
      * @return {StudentBehaviorTypeCollection}
      */
-    exports.studentBehaviorTypes = function(student, options) {
+    var studentBehaviorTypes = function(student, options) {
         var refresh = options && options.refresh;
         if (!behaviorTypesStore[student.id]) {
             behaviorTypesStore[student.id] = new StudentBehaviorTypeCollection([], {
@@ -48,6 +48,33 @@ angular.module('pace').factory('behaviorIncidentAccessors', function(Backbone, m
     };
 
     /**
+     * Wrapper around BehaviorIncident model creation and saving.
+     *
+     * @param  {Student} student
+     * @param  {BehaviorIncidentType} type
+     * @param  {Date} startedAt
+     * @param  {Date or null} endedAt
+     * @param  {String} comment
+     * @return {BehaviorIncident}
+     */
+    var createIncident = function(student, type, startedAt, endedAt, comment) {
+        // set arugment defaults
+        endedAt = _.isUndefined(endedAt) ? null : endedAt;
+        comment = _.isUndefined(comment) ? "" : comment;
+
+        var newIncident = new BehaviorIncident({
+            student: student,
+            type: type,
+            startedAt: startedAt,
+            endedAt: endedAt,
+            comment: comment
+        });
+        newIncident.save();
+
+        return newIncident;
+    };
+
+    /**
      * Returns a DailyStudentIncidentCollection with incidents for the
      * given student and date.
      *
@@ -59,7 +86,7 @@ angular.module('pace').factory('behaviorIncidentAccessors', function(Backbone, m
      * @return {DailyStudentIncidentCollection}
      */
 
-    exports.dailyStudentIncidents = function(student, dateString, options) {
+    var dailyStudentIncidents = function(student, dateString, options) {
         // use today's day if no date was provided
         dateString = dateString || moment().format('YYYY-MM-DD');
         var refresh = options && options.refresh;
@@ -96,5 +123,9 @@ angular.module('pace').factory('behaviorIncidentAccessors', function(Backbone, m
         return deferred.promise;
     };
 
-    return exports;
+    return {
+        studentBehaviorTypes: studentBehaviorTypes,
+        dailyStudentIncidents: dailyStudentIncidents,
+        createIncident: createIncident
+    };
 });
