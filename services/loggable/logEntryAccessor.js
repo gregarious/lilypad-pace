@@ -1,4 +1,4 @@
-angular.module('pace').factory('logEntryAccessor', function(Backbone, BehaviorIncident, moment, $q) {
+angular.module('pace').factory('logEntryAccessor', function(Backbone, BehaviorIncident, PointLoss, moment, $q) {
     /**
      * Returns a promise for a Collection of Loggable models for a given student
      * in a given date range.
@@ -30,34 +30,39 @@ angular.module('pace').factory('logEntryAccessor', function(Backbone, BehaviorIn
             }
         });
 
-        // Enable when PointLoss is defined
-        //
-        // var pointLosses = new (Backbone.Collection.extend({
-        //     model: PointLoss,
-        //     url: student.get('pointLossesUrl')
-        // }))();
-        //
-        // var deferredPointLosses = $q.defer();
-        // pointLosses.fetch({
-        //     success: function(collection) {
-        //         deferredPointLosses.resolve(collection);
-        //     }
-        // });
+        var pointLosses = new (Backbone.Collection.extend({
+            model: PointLoss,
+            url: student.get('pointLossesUrl')
+        }))();
+
+        var deferredPointLosses = $q.defer();
+        pointLosses.fetch({
+            success: function(collection) {
+                deferredPointLosses.resolve(collection);
+            }
+        });
 
         var deferred = $q.defer();
         // when all collections have returned, we can fulfill this promise
-        $q.all([deferredIncidents.promise]).then(function(collections) {
+        $q.all([deferredIncidents.promise,
+                deferredPointLosses.promise]).then(function(collections) {
 
             // compile all returned collections into one
             var entryCollection = new Backbone.Collection([], {
                 comparator: function(loggableModel) {
-                    loggableModel.getOccurredAt();
+                    return -loggableModel.getOccurredAt();
                 }
             });
 
-            // cycle over each collection and add it
-            _.each(collections, function(collection) {
-                entryCollection.add(collection.models);
+            // add models from each collection
+            _.each(collections, function(collection, index) {
+                // need to avoid index collisions, so change the id
+                // of each model before adding
+                var idPrefix = parseInt(index, 10) + '_';
+                collection.each(function(model) {
+                    model.id = idPrefix + model.id;
+                    entryCollection.add(model);
+                });
             });
 
             deferred.resolve(entryCollection);

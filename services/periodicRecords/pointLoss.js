@@ -1,4 +1,4 @@
-angular.module('pace').factory('PointLoss', function(Backbone, LoggableMixin) {
+angular.module('pace').factory('PointLoss', function(Backbone, moment, LoggableMixin) {
     /*
 		Implements Loggable.
 
@@ -14,7 +14,17 @@ angular.module('pace').factory('PointLoss', function(Backbone, LoggableMixin) {
 	return Backbone.Model.extend(_.extend(new LoggableMixin(), {
 		urlRoot: '/pace/pointlosses/',
 
-		// TODO: handle parse() method
+        parse: function(response, options) {
+            response = Backbone.Model.prototype.parse.apply(this, arguments);
+            // transform ISO date string to Date
+            if (response.occurredAt) {
+                response.occurredAt = moment(response.occurredAt).toDate();
+            }
+            // TODO: handle PeriodicRecord stubbing if necessary (naive impl
+            // causes circular reference)
+
+            return response;
+        },
 
 		getStudent: function() {
 			if (this.has('periodicRecord')) {
