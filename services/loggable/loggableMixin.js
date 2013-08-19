@@ -4,6 +4,7 @@
  * Specifications:
  * - getOccurredAt() -> Date
  * - getLabel() -> String
+ * - getComment() -> String
  * - getStudent() -> Student
  * - getDuration() -> Date (null also acceptable)
  *
@@ -27,5 +28,6 @@ angular.module('pace').factory('LoggableMixin', function() {
 		this.getLabel = function() { return this.get('label'); };
 		this.getStudent = function() { return this.get('student'); };
 		this.getDuration = function() { return this.get('duration'); };
+		this.getComment = function() { return this.get('comment'); };
 	};
 });

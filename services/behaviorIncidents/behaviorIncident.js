@@ -7,6 +7,7 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Lo
                 startedAt : Date
                 endedAt : Date or null
                 student : Student
+                comment : String
          */
 
         // needed to allow for creating and saving isolated incidents

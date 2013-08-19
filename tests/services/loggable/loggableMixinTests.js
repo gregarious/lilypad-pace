@@ -11,7 +11,8 @@ beforeEach(inject(function(_) {
 			return _.isFunction(this.actual.getOccurredAt) &&
 					_.isFunction(this.actual.getLabel) &&
 					_.isFunction(this.actual.getDuration) &&
-					_.isFunction(this.actual.getStudent);
+					_.isFunction(this.actual.getStudent) &&
+					_.isFunction(this.actual.getComment);
 		}
 	});
 }));
@@ -20,7 +21,7 @@ describe('LoggableMixin', function() {
 	var LoggableModel;
 
 	beforeEach(inject(function(LoggableMixin, Backbone) {
-		LoggableModel = Backbone.Model.extend(_.extend(new LoggableMixin, {}));
+		LoggableModel = Backbone.Model.extend(_.extend(new LoggableMixin(), {}));
 	}));
 
 	it('implements the loggable interface', function() {
