@@ -40,14 +40,18 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, studentAcc
         // TODO: Should confirm new incidents for students marked absent
         $scope.submitIncident = function () {
             var today = new Date();
-            $scope.data.startedAt.split(':');
-            today.setHours($scope.data.startedAt[0]);
-            today.setMinutes($scope.data.startedAt[1]);
+            var splitTime;
+            splitTime = $scope.data.startedAt.split(':');
+            today.setHours(splitTime[0]);
+            today.setMinutes(splitTime[1]);
             $scope.data.startedAt = today;
+
             if ($scope.data.endedAt) {
-                today.setHours($scope.data.endedAt[0]);
-                today.setMinutes($scope.data.endedAt[1]);
-                $scope.data.startedAt = today;
+                today = new Date();
+                splitTime = $scope.data.endedAt.split(':');
+                today.setHours(splitTime[0]);
+                today.setMinutes(splitTime[1]);
+                $scope.data.endedAt = today;
             }
 
             var newIncident = behaviorIncidentAccessors.createIncident(
