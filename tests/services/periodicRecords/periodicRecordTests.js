@@ -6,7 +6,7 @@ describe("PeriodicRecord", function() {
                 isEligible: false,
                 points: {kw: 2, cw: 2, fd: 2, bs: 2}
             });
-        
+
         }));
 
         it('sets all point values to null if initialized to not be eligible', function() {
@@ -79,14 +79,14 @@ describe("PeriodicRecord", function() {
             });
 
             describe('.getPointValue', function() {
-                it('works with valid category code', function() {
+                it('works with valid point type', function() {
                     expect(periodicRecord.getPointValue('cw')).toBe(1);
                 });
                 it('returns null if student is not eligible for points', function() {
                     periodicRecord.set('isEligible', false);
                     expect(periodicRecord.getPointValue('cw')).toBeNull();
                 });
-                it('returns null with invalid category code', function() {
+                it('returns null with invalid point type', function() {
                     expect(periodicRecord.getPointValue('xx')).toBeNull();
                 });
             });
@@ -96,7 +96,7 @@ describe("PeriodicRecord", function() {
                     periodicRecord.setPointValue('cw', 2);
                     expect(periodicRecord.get('points').cw).toBe(2);
                 });
-                it('does nothing if category code is invalid', function() {
+                it('does nothing if point type is invalid', function() {
                     var origPoints = _.clone(periodicRecord.get('points'));
                     periodicRecord.setPointValue('xx', 2);
                     expect(periodicRecord.get('points')).toEqual(origPoints);
@@ -109,25 +109,36 @@ describe("PeriodicRecord", function() {
                 });
             });
 
-            describe('.decrementPointValue', function() {
+            describe('.registerPointLoss', function() {
                 it('reduces point value by 1', function() {
-                    periodicRecord.decrementPointValue('cw');
+                    periodicRecord.registerPointLoss('cw');
                     expect(periodicRecord.get('points').cw).toBe(0);
                 });
+
+                it('returns a new PointLoss model', inject(function(PointLoss) {
+                    var lossObj = periodicRecord.registerPointLoss('cw');
+                    expect(lossObj.constructor).toBe(PointLoss);
+                }));
+
                 it('does nothing if student is ineligible', function() {
                     var origPoints = _.clone(periodicRecord.get('points'));
                     periodicRecord.set('isEligible', false);
-                    periodicRecord.decrementPointValue('cw');
+                    var lossObj = periodicRecord.registerPointLoss('cw');
+                    expect(lossObj).toBeNull();
                     expect(periodicRecord.get('points')).toEqual(origPoints);
                 });
+
                 it('does nothing if value is already 0', function() {
-                    periodicRecord.decrementPointValue('bs');
+                    var lossObj = periodicRecord.registerPointLoss('bs');
                     expect(periodicRecord.get('points').bs).toBe(0);
+                    expect(lossObj).toBeNull();
                 });
-                it('does nothing if category code is invalid', function() {
+
+                it('does nothing if point type is invalid', function() {
                     var origPoints = _.clone(periodicRecord.get('points'));
-                    periodicRecord.decrementPointValue('xx');
+                    var lossObj = periodicRecord.registerPointLoss('xx');
                     expect(periodicRecord.get('points')).toEqual(origPoints);
+                    expect(lossObj).toBeNull();
                 });
             });
 
@@ -137,7 +148,7 @@ describe("PeriodicRecord", function() {
                 })
                 it('returns null if student is not eligible', function() {
                     periodicRecord.set('isEligible', false);
-                    expect(periodicRecord.getTotalPointValue()).toBeNull();  
+                    expect(periodicRecord.getTotalPointValue()).toBeNull();
                 })
             })
         });

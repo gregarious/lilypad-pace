@@ -1,8 +1,8 @@
-angular.module('pace').factory('PeriodicRecord', function(_, Backbone, Student) {
+angular.module('pace').factory('PeriodicRecord', function(_, Backbone, Student, PointLoss) {
     // utilities in use below
-    var validPointCategoryCodes = ['kw', 'cw', 'fd', 'bs'];
-    var isValidPointCategoryCode = function(code) {
-        return _.indexOf(validPointCategoryCodes, code) !== -1;
+    var validPointpointTypes = ['kw', 'cw', 'fd', 'bs'];
+    var isValidPointType = function(code) {
+        return _.indexOf(validPointpointTypes, code) !== -1;
     };
 
     return Backbone.Model.extend({
@@ -26,7 +26,7 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, Student) 
         initialize: function(attributes, options) {
             if(!this.get('isEligible')) {
                 var pts = {};
-                _.each(validPointCategoryCodes, function(code) {
+                _.each(validPointpointTypes, function(code) {
                     pts[code] = null;
                 });
                 this.set('points', pts);
@@ -39,7 +39,7 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, Student) 
 
             response = Backbone.Model.prototype.parse.apply(this, arguments);
             response.student = new Student(response.student);
-            
+
             var valueOrNull = function(val) {return !_.isUndefined(val) ? val : null; };
             response.points = {
                 kw: valueOrNull(response.kindWordsPoints),
@@ -72,34 +72,49 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, Student) 
         },
 
         /**
-         * Various methods to get/set point values for particular categories.
-         * 
+         * get/set point values for particular point types.
+         *
          * If student is not eligible, getPointValue will return null and
-         * the set methods will be no-ops.
-         * 
-         * Category codes are among: 'kw', 'cw', 'fd', 'bs'
+         * the setPointValue will be no-ops.
+         *
+         * Point types codes are among: 'kw', 'cw', 'fd', 'bs'
          */
-        getPointValue: function(categoryCode) {
-            if (this.get('isEligible') && isValidPointCategoryCode(categoryCode)) {
-                return this.get('points')[categoryCode];
+        getPointValue: function(pointType) {
+            if (this.get('isEligible') && isValidPointType(pointType)) {
+                return this.get('points')[pointType];
             }
             else {
                 return null;
             }
         },
-        setPointValue: function(categoryCode, value) {
-            if (this.get('isEligible') && isValidPointCategoryCode(categoryCode)) {
-                this.get('points')[categoryCode] = value;
+        setPointValue: function(pointType, value) {
+            if (this.get('isEligible') && isValidPointType(pointType)) {
+                this.get('points')[pointType] = value;
                 this.save();
             }
         },
-        decrementPointValue: function(categoryCode) {
-            if (this.get('isEligible') && isValidPointCategoryCode(categoryCode)) {
-                if (this.get('points')[categoryCode] >= 1) {
-                    this.get('points')[categoryCode]--;
-                    this.save();
+
+        /**
+         * Decrements the point value for the given type and returns
+         * a new PointLoss instance.
+         *
+         * @param  {String} pointType   From list of point types
+         * @return {PointLoss}
+         */
+        registerPointLoss: function(pointType) {
+            if (this.get('isEligible') && isValidPointType(pointType)) {
+                if (this.get('points')[pointType] >= 1) {
+                    this.get('points')[pointType]--;
+                    var lossRecord = new PointLoss({
+                        pointType: pointType,
+                        periodicRecord: this,
+                        occurredAt: new Date()
+                    });
+                    lossRecord.save();
+                    return lossRecord;
                 }
             }
+            return null;
         },
 
         /**
