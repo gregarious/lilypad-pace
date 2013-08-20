@@ -23,14 +23,20 @@ describe("dailyLogEntryStore", function() {
                 expect(studentEntries.lastSyncedAt).toBe(null);
                 expect(studentEntries.isSyncInProgress).toBe(true);
             });
+        });
 
-            // TODO: enable the rest after $http mocking works
-            xit("contacts the behavior incidents endpoint with a date filter", function() {
-                // TODO: ensure endpoint is contacted with date query
-            });
+        describe("after collection syncs", function() {
+            var studentEntries;
+            beforeEach(inject(function(dailyLogEntryStore) {
+                studentEntries = dailyLogEntryStore.getForStudent(student);
+            }));
 
-            xit("contacts the point losses endpoint with a date filter", function() {
-                // TODO: ensure endpoint is contacted with date query
+            // TODO: add a $http/timeTracker-mocked test to ensure filtering works
+            xit("only entries from given day are present", function() {
+                expect(studentEntries.models.length).toBe(3);
+                studentEntries.each(function(logEntry) {
+                    expect(moment(logEntry.occurredAt().format("YYYY-MM-DD"))).toEqual('2013-08-20');
+                });
             });
 
             xdescribe("on subsequent accesses", function() {
