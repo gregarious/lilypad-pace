@@ -1,3 +1,10 @@
+/**
+ * Manages collections of Loggable models for the current date (according
+ * to timeTracker).
+ *
+ * Interface:
+ * - getForStudent: Returns a Student-specific collection of Loggables
+ */
 angular.module('pace').factory('dailyLogEntryStore', function(timeTracker, moment, logEntryCollectionFactory) {
     var cache = {};
 
