@@ -9,10 +9,10 @@ describe("APIBackedCollection", function() {
 
         describe('initial settings', function() {
             it('.isSyncInProgress should be false', function() {
-                expect(collection.isSyncInProgress()).toBe(false);
+                expect(collection.isSyncInProgress).toBe(false);
             });
             it('.lastSyncedAt should be null', function() {
-                expect(collection.lastSyncedAt()).toBeNull();
+                expect(collection.lastSyncedAt).toBeNull();
             });
         });
 
@@ -22,10 +22,10 @@ describe("APIBackedCollection", function() {
             });
 
             it('.isSyncInProgress should be true', function() {
-                expect(collection.isSyncInProgress()).toBe(true);
+                expect(collection.isSyncInProgress).toBe(true);
             });
             it('.lastSyncedAt should be null', function() {
-                expect(collection.lastSyncedAt()).toBeNull();
+                expect(collection.lastSyncedAt).toBeNull();
             });
         });
 
@@ -37,10 +37,10 @@ describe("APIBackedCollection", function() {
             });
 
             it('.isSyncInProgress should be false', function() {
-                expect(collection.isSyncInProgress()).toBe(false);
+                expect(collection.isSyncInProgress).toBe(false);
             });
             it('.lastSyncedAt should be set', function() {
-                expect(collection.lastSyncedAt()).not.toBeNull();
+                expect(collection.lastSyncedAt).not.toBeNull();
             });
         });
     });
