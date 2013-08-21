@@ -50,7 +50,7 @@ describe("appViewState", function() {
         });
     });
 
-    describe('.collect', function() {
+    describe('.collectViewState', function() {
         // set up mock PeriodicRecord and Loggable stores
         var recordsA, recordsB, logsA, logsB;
         beforeEach(inject(function(APIBackedCollection, dailyPeriodicRecordStore, dailyLogEntryStore) {
@@ -66,25 +66,33 @@ describe("appViewState", function() {
             });
         }));
 
-        describe('.periodicRecords', function() {
-            it('defaults to an empty Collection', inject(function(appViewState) {
-                expect(appViewState.collect.periodicRecords.length).toBe(0);
+        describe('.periodicRecordViewState', function() {
+            beforeEach(inject(function(appViewState) {
+                periodicRecordViewState = appViewState.collectViewState.periodicRecordViewState;
             }));
+
+            it('collection defaults to an empty Collection', function() {
+                expect(periodicRecordViewState.collection.length).toBe(0);
+            });
 
             it('updates on student change', inject(function(appViewState) {
                 appViewState.selectedStudent.set(studentA);
-                expect(appViewState.collect.periodicRecords).toBe(recordsA);
+                expect(periodicRecordViewState.collection).toBe(recordsA);
             }));
         });
 
-        describe('.activityLog', function() {
-            it('defaults to an empty Collection', inject(function(appViewState) {
-                expect(appViewState.collect.activityLog.length).toBe(0);
+        describe('.activityLogViewState', function() {
+            var activityLogViewState;
+            beforeEach(inject(function(appViewState) {
+                activityLogViewState = appViewState.collectViewState.activityLogViewState;
+            }));
+            it('collection defaults to an empty Collection', inject(function(appViewState) {
+                expect(activityLogViewState.collection.length).toBe(0);
             }));
 
             it('updates on student change', inject(function(appViewState) {
                 appViewState.selectedStudent.set(studentA);
-                expect(appViewState.collect.activityLog).toBe(logsA);
+                expect(activityLogViewState.collection).toBe(logsA);
             }));
         });
     });
