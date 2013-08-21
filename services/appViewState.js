@@ -1,4 +1,4 @@
-angular.module('pace').factory('appViewState', function(_, Backbone) {
+angular.module('pace').factory('appViewState', function(_, Backbone, dailyPeriodicRecordStore, dailyLogEntryStore) {
     var _selectedStudent = null;
 
     var selectedStudent = {
@@ -12,8 +12,19 @@ angular.module('pace').factory('appViewState', function(_, Backbone) {
     };
     _.extend(selectedStudent, Backbone.Events);
 
+    var collect = {
+        periodicRecords: null,
+        activityLog: null
+    };
+
+    selectedStudent.on('change', function() {
+        var selected = selectedStudent.get();
+        collect.periodicRecords = dailyPeriodicRecordStore.getForStudent(selected);
+        collect.activityLog = dailyLogEntryStore.getForStudent(selected);
+    });
 
     return {
-        selectedStudent: selectedStudent
+        selectedStudent: selectedStudent,
+        collect: collect
     };
 });
