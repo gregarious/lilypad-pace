@@ -1,33 +1,18 @@
 // controller for discussion tab
-app.controller('MainStudentDiscussCtrl', function ($scope, discussionAccessors, studentAccessors, viewService) {
-    $scope.discussionCollection = null;
-    $scope.discussions = [];
+app.controller('MainStudentDiscussCtrl', function ($scope, appViewState, viewService) {
+    $scope.data = {};
+    $scope.discussViewState = appViewState.discussViewState;
 
-    var fetchStudents = studentAccessors.allStudents();
-    fetchStudents.then(function(students) {
-        $scope.data = {};
-        $scope.$watch(function () {
-            return viewService;
-        }, function (data) {
-            $scope.student = students.get([data.parameters.id]);
-            var fetchPosts = discussionAccessors.studentPosts($scope.student);
-            fetchPosts.then(function(collection) {
-                $scope.discussionCollection = collection;
-                $scope.discussions = $scope.discussionCollection.models;
-            });
-        }, true);
+    // creating new comments and replies to comments
+    // NOTE: parameters are swapped between createNewPost and createNewReply
+    $scope.newTopic = function () {
+        $scope.discussViewState.collection.createNewPost($scope.data.content, $scope.data.author);
+    };
 
-        // creating new comments and replies to comments
-        // NOTE: parameters are swapped between createNewPost and createNewReply
-        $scope.newTopic = function () {
-            $scope.discussionCollection.createNewPost($scope.data.content, $scope.data.author);
-            console.log($scope.discussionCollection);
-        };
+    $scope.newReply = function (discussion) {
+        discussion.createNewReply($scope.data.author, discussion.newReply);
+    };
 
-        $scope.newReply = function (discussion) {
-            discussion.createNewReply($scope.data.author, discussion.newReply);
-        };
-    });
 });
 
 // directive for add reply toggle

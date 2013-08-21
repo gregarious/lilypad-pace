@@ -1,5 +1,11 @@
 var app = angular.module('pace', ['ngMobile', 'underscore', 'widgets', 'backbone', 'moment']);
 
+// debug settings for timeTracker
+app.run(function(timeTracker) {
+    timeTracker.currentDate = '2013-08-20';
+    timeTracker.currentPeriod = 3;
+});
+
 app.controller('main', function ($scope) {
     $scope.login = {};
     $scope.authenticated = true;

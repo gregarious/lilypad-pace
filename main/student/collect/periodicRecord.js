@@ -1,40 +1,50 @@
 // controller for periodic records
-app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, studentAccessors, periodicRecordAccessors, viewService) {
-    $scope.period = {};
-    $scope.points = {};
+app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, appViewState, dailyLogEntryStore, timeTracker, _) {
+    $scope.viewState = appViewState.collectViewState.periodicRecordViewState;
 
-    var fetchStudents = studentAccessors.allStudents();
-    fetchStudents.then(function(students) {
-        $scope.$watch(function () {
-            return viewService;
-        }, function (data) {
-            $scope.student = students.get([data.parameters.id]);
+    // watch the time tracker: it will update when the current period changes
+    $scope.timeTracker = timeTracker;
+    $scope.$watch('timeTracker.currentPeriod', setAvailablePeriods);
+    setAvailablePeriods(timeTracker.currentPeriod);
 
-            // period object for current student
-            // TODO: Allow for period selection
-            // TODO: use actual date
-            var fetchRecords = periodicRecordAccessors.dailyStudentRecords($scope.student, '2013-08-12');
-            fetchRecords.then(function(records) {
-                $scope.period = records.getPeriodicRecord(1);
-                if ($scope.period) {
-                    $scope.isEligible = $scope.period.get('isEligible');
-                    // points for four rules
-                    $scope.points.bs = $scope.period.getPointValue('bs');
-                    $scope.points.kw = $scope.period.getPointValue('kw');
-                    $scope.points.cw = $scope.period.getPointValue('cw');
-                    $scope.points.fd = $scope.period.getPointValue('fd');
-                } else {
-                    // no records found
-                    $scope.isEligible = false;
-                    $scope.points.bs = $scope.points.kw = $scope.points.cw = $scope.points.fd = 2;
-                }
-            });
-        }, true);
+    // initialize $scope
+    $scope.selectedPeriodNumber = timeTracker.currentPeriod;
+    if ($scope.viewState.collection && $scope.viewState.collection.length) {
+        $scope.selectedPeriod = $scope.viewState.collection.getByPeriod($scope.selectedPeriodNumber);
+    }
 
-        // decrement the current student in the given category
-        $scope.decrement = function (category) {
-            var pointLossRecord = $scope.period.registerPointLoss(category);
-            // TODO: Hayden: add this pointLossRecord to the activity log. It's Loggable.
-        };
+    // update the selectedPeriod if the PeriodRecord collection gets an update from the server
+    $scope.$watch('viewState.collection.isSyncInProgress', function() {
+        $scope.selectedPeriod = $scope.viewState.collection.getByPeriod($scope.selectedPeriodNumber);
     });
+
+    // watch the select input for changes
+    $scope.$watch('selectedPeriodNumber', function(val) {
+        var number = parseInt(val, 10);
+        $scope.selectedPeriod = $scope.viewState.collection.getByPeriod(number);
+    });
+
+    /** Functions **/
+
+    // decrement the current student in the given category
+    $scope.decrement = function (category) {
+        var pointLossRecord = $scope.selectedPeriod.registerPointLoss(category);
+        var student = $scope.selectedPeriod.get('student');
+        var log = dailyLogEntryStore.getForStudent(student);
+        log.add(pointLossRecord);
+    };
+
+    function setAvailablePeriods(maxPeriod) {
+        if (maxPeriod) {
+            $scope.availablePeriods = _.map(_.range(1, maxPeriod+1), function(pd) {
+                return {
+                    label: 'Period ' + pd,
+                    value: pd
+                };
+            });
+        }
+        else {
+            $scope.availablePeriods = [];
+        }
+    }
 });

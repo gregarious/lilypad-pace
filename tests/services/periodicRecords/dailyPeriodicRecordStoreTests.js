@@ -1,4 +1,65 @@
-describe("DailyStudentRecordCollection", function() {
+describe("dailyPeriodicRecordStore", function() {
+    describe(".getForStudent", function() {
+        var student;
+        beforeEach(inject(function(Student) {
+            student = new Student({
+                id: 4,
+                periodicRecordsUrl: '/pr',
+            });
+        }));
+
+        describe("on first access", function() {
+            var studentRecords;
+            beforeEach(inject(function(dailyPeriodicRecordStore) {
+                studentRecords = dailyPeriodicRecordStore.getForStudent(student);
+            }));
+
+            it("returns an empty Collection", function() {
+                expect(studentRecords.models.length).toBe(0);
+            });
+
+            it("returns a Collection with its first sync in progress", function() {
+                expect(studentRecords.lastSyncedAt).toBe(null);
+                expect(studentRecords.isSyncInProgress).toBe(true);
+            });
+        });
+
+        describe("after collection syncs", function() {
+            var studentRecords;
+            beforeEach(inject(function(dailyPeriodicRecordStore) {
+                studentRecords = dailyPeriodicRecordStore.getForStudent(student);
+            }));
+
+            // TODO: add a $http/timeTracker-mocked test to ensure filtering works
+            xit("only records from given date are present", function() {
+                expect(studentRecords.models.length).toBe(3);
+                studentRecords.each(function(record) {
+                    expect(record.get('date')).toEqual('2013-08-20');
+                });
+            });
+
+            xdescribe("on subsequent accesses", function() {
+                var studentRecords2;
+                beforeEach(inject(function(dailyPeriodicRecordStore) {
+                    // flush $http
+                    studentRecords2 = dailyPeriodicRecordStore.getForStudent(student);
+                }));
+
+                it("returns the same collection", function() {
+                    expect(studentRecords2).toBe(studentRecords);
+                });
+
+                it("does not automatically sync again", function() {
+                    expect(studentRecords2.isSyncInProgress()).toBe(false);
+                });
+            });
+        });
+    });
+});
+
+
+/*
+
     // set up some values to be used in specs below
     var student, dateString;
     beforeEach(inject(function(Student) {
@@ -31,7 +92,7 @@ describe("DailyStudentRecordCollection", function() {
             // mock out syncing for now
             spyOn(Backbone, 'sync');
 
-            // Note: DSRCollection is should rarely, if ever, be built 
+            // Note: DSRCollection is should rarely, if ever, be built
             // manually like this. Typicaly it will be populated with
             // a fetch call or via createPeriodicRecord calls.
             pd1 = new PeriodicRecord({
@@ -57,15 +118,15 @@ describe("DailyStudentRecordCollection", function() {
             });
         });
 
-        describe('.getPeriodicRecord', function() {
+        describe('.getByPeriod', function() {
             it('should return expected model when queried', function() {
-                expect(collection.getPeriodicRecord(1)).toBe(pd1);
+                expect(collection.getByPeriod(1)).toBe(pd1);
             });
             it("should return undefined when queried period doesn't exist", function() {
-                expect(collection.getPeriodicRecord(3)).toBeUndefined();
+                expect(collection.getByPeriod(3)).toBeUndefined();
             });
             it('should return the latest period if no argument given', function() {
-                expect(collection.getPeriodicRecord()).toBe(pd2);
+                expect(collection.getByPeriod()).toBe(pd2);
             });
         });
 
@@ -109,4 +170,4 @@ describe("DailyStudentRecordCollection", function() {
             });
         });
     });
-});
+*/
