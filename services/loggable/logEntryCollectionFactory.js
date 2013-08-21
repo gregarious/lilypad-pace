@@ -7,7 +7,7 @@ angular.module('pace').factory('logEntryCollectionFactory', function(APIBackedCo
      *                              `pointLossesUrl` attributes defined)
      * @param  {Date} startDate
      * @param  {Date} endDate
-     * @return {Promise}
+     * @return {Collection instance}
      */
     return function(student, startDate, endDate) {
         var incidentArgs = [];
