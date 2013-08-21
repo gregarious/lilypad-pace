@@ -2,15 +2,15 @@
  * Provides factories to create new Collections of post objects
  */
 angular.module('pace').factory('discussionPostCollectionFactories', function(APIBackedCollection, DiscussionPost) {
-    /**
-     * Returns a new Collection of DiscussionPost models for a student,
-     * sorted by createdAt timestamp
-     *
-     * @param  {Student} student    (must have `postsUrl attribute defined)
-     *
-     * @return {Collection instance}
-     */
     return {
+        /**
+         * Returns a new Collection of DiscussionPost models for a student,
+         * sorted by createdAt timestamp
+         *
+         * @param  {Student} student    (must have `postsUrl attribute defined)
+         *
+         * @return {Collection instance}
+         */
         studentPosts: function(student) {
             var StudentPostCollection = APIBackedCollection.extend({
                 model: DiscussionPost,
@@ -40,6 +40,7 @@ angular.module('pace').factory('discussionPostCollectionFactories', function(API
                     return post;
                 }
             });
+
             return new StudentPostCollection();
         }
     };

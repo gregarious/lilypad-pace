@@ -5,14 +5,14 @@
  * Interface:
  * - getForStudent: Returns a Student-specific collection of Loggables
  */
-angular.module('pace').factory('dailyLogEntryStore', function(timeTracker, moment, logEntryCollectionFactory) {
+angular.module('pace').factory('dailyLogEntryStore', function(timeTracker, moment, loggableCollectionFactories) {
     var cache = {};
 
     var buildCollection = function(student, date) {
         var startDate = moment(date).startOf('day').format();
         var endDate = moment(date).add(1, 'day').startOf('day').format();
 
-        return logEntryCollectionFactory(student, startDate, endDate);
+        return loggableCollectionFactories.dailyStudentLog(student, startDate, endDate);
     };
 
     return {

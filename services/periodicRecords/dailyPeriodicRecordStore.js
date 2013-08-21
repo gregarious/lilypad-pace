@@ -6,7 +6,7 @@
  * - getForStudent: Returns a Student-specific collection of PeriodicRecords
  */
 
-angular.module('pace').factory('dailyPeriodicRecordStore', function(moment, timeTracker, periodicRecordCollectionFactory) {
+angular.module('pace').factory('dailyPeriodicRecordStore', function(moment, timeTracker, periodicRecordCollectionFactories) {
     // PeriodicRecordCollection cache, indexed by student
     var cache = {};
 
@@ -14,8 +14,8 @@ angular.module('pace').factory('dailyPeriodicRecordStore', function(moment, time
         getForStudent: function(student) {
             var collection = cache[student.id];
             if (!collection) {
-                collection = cache[student.id] = periodicRecordCollectionFactory(student,
-                    timeTracker.currentDate);
+                var factory = periodicRecordCollectionFactories.dailyStudentRecords;
+                collection = cache[student.id] = factory(student, timeTracker.currentDate);
                 collection.fetch();
             }
             return collection;
