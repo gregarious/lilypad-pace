@@ -38,8 +38,8 @@
     <!-- PeriodicRecord-related services -->
     <script src="/lilypad-client/lilypad-pace/services/periodicRecords/periodicRecord.js"></script>
     <script src="/lilypad-client/lilypad-pace/services/periodicRecords/pointLoss.js"></script>
-    <script src="/lilypad-client/lilypad-pace/services/periodicRecords/dailyStudentRecordCollection.js"></script>
-    <script src="/lilypad-client/lilypad-pace/services/periodicRecords/periodicRecordAccessors.js"></script>
+    <script src="/lilypad-client/lilypad-pace/services/periodicRecords/periodicRecordCollectionFactories.js"></script>
+    <script src="/lilypad-client/lilypad-pace/services/periodicRecords/dailyPeriodicRecordStore.js"></script>
 
     <!-- BehaviorIncident/BehaviorIncidentType-related services -->
     <script src="/lilypad-client/lilypad-pace/services/behaviorIncidents/behaviorIncident.js"></script>
@@ -50,16 +50,22 @@
     <!-- DiscussionPost-related services -->
     <script src="/lilypad-client/lilypad-pace/services/discussions/discussionPost.js"></script>
     <script src="/lilypad-client/lilypad-pace/services/discussions/discussionReply.js"></script>
-    <script src="/lilypad-client/lilypad-pace/services/discussions/studentPostCollection.js"></script>
-    <script src="/lilypad-client/lilypad-pace/services/discussions/discussionAccessors.js"></script>
+    <script src="/lilypad-client/lilypad-pace/services/discussions/discussionPostCollectionFactories.js"></script>
+    <script src="/lilypad-client/lilypad-pace/services/discussions/discussionPostStore.js"></script>
 
-    <!-- Other services -->
-    <script src="/lilypad-client/lilypad-pace/services/common/timeTracker.js"></script>
-    <script src="/lilypad-client/lilypad-pace/services/viewService.js"></script>
+    <!-- Loggable services -->
     <script src="/lilypad-client/lilypad-pace/services/loggable/loggableMixin.js"></script>
-    <script src="/lilypad-client/lilypad-pace/services/loggable/logEntryAccessor.js"></script>
+    <script src="/lilypad-client/lilypad-pace/services/loggable/loggableCollectionFactories.js"></script>
+    <script src="/lilypad-client/lilypad-pace/services/loggable/dailyLogEntryStore.js"></script>
+
+    <!-- Attendance services -->
     <script src="/lilypad-client/lilypad-pace/services/attendance/attendanceSpan.js"></script>
     <script src="/lilypad-client/lilypad-pace/services/attendance/attendanceAccessors.js"></script>
+
+    <!-- Other services -->
+    <script src="/lilypad-client/lilypad-pace/services/common/apiBackedCollection.js"></script>
+    <script src="/lilypad-client/lilypad-pace/services/common/timeTracker.js"></script>
+    <script src="/lilypad-client/lilypad-pace/services/viewService.js"></script>
 
     <script src="/lilypad-client/lilypad-pace/filters.js"></script>
     <script src="/lilypad-client/lilypad-pace/menu/menu.js"></script>
