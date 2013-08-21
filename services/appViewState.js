@@ -11,21 +11,9 @@ angular.module('pace').factory('appViewState', function(_, Backbone, APIBackedCo
     };
     _.extend(selectedStudent, Backbone.Events);
 
-    var _selectedPeriod = null;
     var periodicRecordViewState = {
-        collection: new APIBackedCollection(),
-        selectedPeriod: {
-            get: function() {
-                return _selectedPeriod;
-            },
-            set: function(period) {
-                _selectedPeriod = period;
-                this.trigger('change');
-            }
-        }
+        collection: new APIBackedCollection()
     };
-    _.extend(periodicRecordViewState.selectedPeriod, Backbone.Events);
-
     var activityLogViewState = {
         collection: new APIBackedCollection()
     };
