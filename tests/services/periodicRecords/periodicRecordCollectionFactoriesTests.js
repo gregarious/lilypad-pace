@@ -18,15 +18,15 @@ xdescribe('periodicRecordCollectionFactories', function() {
                 collection = periodicRecordCollectionFactories.studentRecords(student, dateString);
             }));
 
-            describe('.getPeriodicRecord', function() {
+            describe('.getByPeriod', function() {
                 it('should return expected model when queried', function() {
-                    expect(collection.getPeriodicRecord(1).get('period')).toBe(1);
+                    expect(collection.getByPeriod(1).get('period')).toBe(1);
                 });
                 it("should return undefined when queried period doesn't exist", function() {
-                    expect(collection.getPeriodicRecord(3)).toBeUndefined();
+                    expect(collection.getByPeriod(3)).toBeUndefined();
                 });
                 it('should return the latest period if no argument given', function() {
-                    expect(collection.getPeriodicRecord(1).get('period')).toBe(2);
+                    expect(collection.getByPeriod(1).get('period')).toBe(2);
                 });
             });
 

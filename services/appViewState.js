@@ -1,6 +1,5 @@
-angular.module('pace').factory('appViewState', function(_, Backbone, dailyPeriodicRecordStore, dailyLogEntryStore, discussionPostStore) {
+angular.module('pace').factory('appViewState', function(_, Backbone, APIBackedCollection, dailyPeriodicRecordStore, dailyLogEntryStore, discussionPostStore) {
     var _selectedStudent = null;
-
     var selectedStudent = {
         get: function() {
             return _selectedStudent;
@@ -12,25 +11,44 @@ angular.module('pace').factory('appViewState', function(_, Backbone, dailyPeriod
     };
     _.extend(selectedStudent, Backbone.Events);
 
-    var collect = {
-        periodicRecords: null,
-        activityLog: null
+    var _selectedPeriod = null;
+    var periodicRecordViewState = {
+        collection: new APIBackedCollection(),
+        selectedPeriod: {
+            get: function() {
+                return _selectedPeriod;
+            },
+            set: function(period) {
+                _selectedPeriod = period;
+                this.trigger('change');
+            }
+        }
+    };
+    _.extend(periodicRecordViewState.selectedPeriod, Backbone.Events);
+
+    var activityLogViewState = {
+        collection: new APIBackedCollection()
+    };
+
+    var collectViewState = {
+        periodicRecordViewState: periodicRecordViewState,
+        activityLogViewState: activityLogViewState
     };
 
     var discuss = {
-        posts: null
+        posts: new APIBackedCollection()
     };
 
     selectedStudent.on('change', function() {
         var selected = selectedStudent.get();
-        collect.periodicRecords = dailyPeriodicRecordStore.getForStudent(selected);
-        collect.activityLog = dailyLogEntryStore.getForStudent(selected);
+        periodicRecordViewState.collection = dailyPeriodicRecordStore.getForStudent(selected);
+        activityLogViewState.collection = dailyLogEntryStore.getForStudent(selected);
         discuss.posts = discussionPostStore.getForStudent(selected);
     });
 
     return {
         selectedStudent: selectedStudent,
-        collect: collect,
+        collectViewState: collectViewState,
         discuss: discuss
     };
 });

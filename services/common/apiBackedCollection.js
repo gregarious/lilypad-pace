@@ -5,10 +5,11 @@ angular.module('pace').factory('APIBackedCollection', function(Backbone) {
 
         sync: function(method, collection, options) {
             var httpPromise = Backbone.Collection.prototype.sync.apply(this, arguments);
-            this.isSyncInProgress = true;
+            var collection = this;
+            collection.isSyncInProgress = true;
             httpPromise.always(function() {
-                this.isSyncInProgress = false;
-                this.lastSyncedAt = new Date();
+                collection.isSyncInProgress = false;
+                collection.lastSyncedAt = new Date();
             });
             return httpPromise;
         }

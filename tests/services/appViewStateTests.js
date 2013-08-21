@@ -67,8 +67,8 @@ describe("appViewState", function() {
         }));
 
         describe('.periodicRecords', function() {
-            it('defaults to null', inject(function(appViewState) {
-                expect(appViewState.collect.periodicRecords).toBeNull();
+            it('defaults to an empty Collection', inject(function(appViewState) {
+                expect(appViewState.collect.periodicRecords.length).toBe(0);
             }));
 
             it('updates on student change', inject(function(appViewState) {
@@ -78,8 +78,8 @@ describe("appViewState", function() {
         });
 
         describe('.activityLog', function() {
-            it('defaults to null', inject(function(appViewState) {
-                expect(appViewState.collect.activityLog).toBeNull();
+            it('defaults to an empty Collection', inject(function(appViewState) {
+                expect(appViewState.collect.activityLog.length).toBe(0);
             }));
 
             it('updates on student change', inject(function(appViewState) {
@@ -101,8 +101,8 @@ describe("appViewState", function() {
         }));
 
         describe('.posts', function() {
-            it('defaults to null', inject(function(appViewState) {
-                expect(appViewState.discuss.posts).toBeNull();
+            it('defaults to an empty Collection', inject(function(appViewState) {
+                expect(appViewState.discuss.posts.length).toBe(0);
             }));
 
             it('updates on student change', inject(function(appViewState) {

@@ -28,7 +28,7 @@ angular.module('pace').factory('periodicRecordCollectionFactories', function(API
                  *                              for highest-number period
                  * @return {PeriodicRecord or undefined}
                  */
-                getPeriodicRecord: function(period) {
+                getByPeriod: function(period) {
                     if (_.isUndefined(period)) {
                         period = _.max(this.pluck('period'));
                     }

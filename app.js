@@ -3,7 +3,7 @@ var app = angular.module('pace', ['ngMobile', 'underscore', 'widgets', 'backbone
 // debug settings for timeTracker
 app.run(function(timeTracker) {
     timeTracker.currentDate = '2013-08-20';
-    timeTracker.currentPeriod = 1;
+    timeTracker.currentPeriod = 3;
 });
 
 app.controller('main', function ($scope) {

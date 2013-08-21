@@ -1,5 +1,5 @@
 // controller for the student list in the left panel
-app.controller('MenuStudentListCtrl', function ($scope, studentAccessors, viewService) {
+app.controller('MenuStudentListCtrl', function ($scope, appViewState, viewService, studentAccessors) {
     var fetchStudents = studentAccessors.allStudents();
     var studentCollection;
     fetchStudents.then(function(collection) {
@@ -23,9 +23,9 @@ app.controller('MenuStudentListCtrl', function ($scope, studentAccessors, viewSe
 
     // handles click events on student list
     $scope.handleClick = function (studentId) {
+        var student = studentCollection.get(studentId);
         // are we taking attendance or switching main content views between students?
         if ($scope.attendance) {
-            var student = studentCollection.get(studentId);
             if (student.get('isPresent')) {
                 student.markAbsent();
             } else {
@@ -35,6 +35,8 @@ app.controller('MenuStudentListCtrl', function ($scope, studentAccessors, viewSe
             // update the view service that we are looking at a different student
             viewService.currentView = 'student';
             viewService.parameters['id'] = studentId;
+
+            appViewState.selectedStudent.set(student);
         }
     };
 });
