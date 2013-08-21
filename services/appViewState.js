@@ -35,20 +35,20 @@ angular.module('pace').factory('appViewState', function(_, Backbone, APIBackedCo
         activityLogViewState: activityLogViewState
     };
 
-    var discuss = {
-        posts: new APIBackedCollection()
+    var discussViewState = {
+        collection: new APIBackedCollection()
     };
 
     selectedStudent.on('change', function() {
         var selected = selectedStudent.get();
         periodicRecordViewState.collection = dailyPeriodicRecordStore.getForStudent(selected);
         activityLogViewState.collection = dailyLogEntryStore.getForStudent(selected);
-        discuss.posts = discussionPostStore.getForStudent(selected);
+        discussViewState.collection = discussionPostStore.getForStudent(selected);
     });
 
     return {
         selectedStudent: selectedStudent,
         collectViewState: collectViewState,
-        discuss: discuss
+        discussViewState: discussViewState
     };
 });

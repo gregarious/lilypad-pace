@@ -67,6 +67,7 @@ describe("appViewState", function() {
         }));
 
         describe('.periodicRecordViewState', function() {
+            var periodicRecordViewState;
             beforeEach(inject(function(appViewState) {
                 periodicRecordViewState = appViewState.collectViewState.periodicRecordViewState;
             }));
@@ -86,6 +87,7 @@ describe("appViewState", function() {
             beforeEach(inject(function(appViewState) {
                 activityLogViewState = appViewState.collectViewState.activityLogViewState;
             }));
+
             it('collection defaults to an empty Collection', inject(function(appViewState) {
                 expect(activityLogViewState.collection.length).toBe(0);
             }));
@@ -97,7 +99,7 @@ describe("appViewState", function() {
         });
     });
 
-    describe('.discuss', function() {
+    describe('.discussViewState', function() {
         // set up mock PeriodicRecord and Loggable stores
         var postsA, postsB;
         beforeEach(inject(function(APIBackedCollection, discussionPostStore) {
@@ -108,14 +110,19 @@ describe("appViewState", function() {
             });
         }));
 
+        var discussViewState;
+        beforeEach(inject(function(appViewState) {
+            discussViewState = appViewState.discussViewState;
+        }));
+
         describe('.posts', function() {
-            it('defaults to an empty Collection', inject(function(appViewState) {
-                expect(appViewState.discuss.posts.length).toBe(0);
+            it('collection defaults to an empty Collection', inject(function(appViewState) {
+                expect(discussViewState.collection.length).toBe(0);
             }));
 
             it('updates on student change', inject(function(appViewState) {
                 appViewState.selectedStudent.set(studentA);
-                expect(appViewState.discuss.posts).toBe(postsA);
+                expect(discussViewState.collection).toBe(postsA);
             }));
         });
     });

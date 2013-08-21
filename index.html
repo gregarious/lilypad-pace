@@ -286,7 +286,7 @@
                         <button ng-click="newTopic()">Post comment</button>
                     </form>
                     <div id="discussions">
-                        <div ng-repeat="discussion in discussions">
+                        <div ng-repeat="discussion in discussViewState.collection.models">
                             <div class="post">
                                 <div class="header"><span
                                         class="author">{{discussion.get('author')}} {{discussion.get('id')}}</span><span

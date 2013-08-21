@@ -1,15 +1,12 @@
 // controller for discussion tab
 app.controller('MainStudentDiscussCtrl', function ($scope, appViewState, viewService) {
-    $scope.discussionCollection = null;
-    $scope.discussions = [];
-
-    $scope.discussionCollection = appViewState.discuss.posts;
+    $scope.data = {};
+    $scope.discussViewState = appViewState.discussViewState;
 
     // creating new comments and replies to comments
     // NOTE: parameters are swapped between createNewPost and createNewReply
     $scope.newTopic = function () {
-        $scope.discussionCollection.createNewPost($scope.data.content, $scope.data.author);
-        console.log($scope.discussionCollection);
+        $scope.discussViewState.collection.createNewPost($scope.data.content, $scope.data.author);
     };
 
     $scope.newReply = function (discussion) {
