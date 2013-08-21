@@ -10,10 +10,6 @@ angular.module('pace').factory('dailyPeriodicRecordStore', function(moment, time
     // PeriodicRecordCollection cache, indexed by student
     var cache = {};
 
-    var buildCollection = function(student, date) {
-        return periodicRecordCollectionFactory(student, date);
-    };
-
     return {
         getForStudent: function(student) {
             var collection = cache[student.id];
