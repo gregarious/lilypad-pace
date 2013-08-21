@@ -1,12 +1,12 @@
 // controller for the incident log
 app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, appViewState, viewService, studentAccessors, behaviorIncidentAccessors) {
-    $scope.period = {};
     $scope.data = {};
     $scope.addingIncident = false;
     $scope.incidentTypes = [];
 
     $scope.activityLogViewState = appViewState.collectViewState.activityLogViewState;
 
+    // still doing the old-style async handling for retrieving behavior types
     var fetchStudent = studentAccessors.allStudents();
     fetchStudent.then(function(students) {
         $scope.$watch(function () {
@@ -20,6 +20,8 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, appViewSta
             });
         }, true);
     });
+
+    /* View functions */
 
     // opens the "new incident" control
     $scope.openNewIncident = function () {
