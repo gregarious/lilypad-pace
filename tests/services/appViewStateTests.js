@@ -50,65 +50,65 @@ describe("appViewState", function() {
         });
     });
 
-    // describe('.collect', function() {
-    //     // set up mock PeriodicRecord and Loggable stores
-    //     var recordsA, recordsB, logsA, logsB;
-    //     beforeEach(inject(function(APIBackedCollection, dailyPeriodicRecordStore, dailyLogEntryStore) {
-    //         recordsA = new APIBackedCollection();
-    //         recordsB = new APIBackedCollection();
-    //         logsA = new APIBackedCollection();
-    //         logsB = new APIBackedCollection();
-    //         spyOn(dailyPeriodicRecordStore, 'getForStudent').andCallFake(function(student) {
-    //             return student.id === 1 ? recordsA : recordsB;
-    //         });
-    //         spyOn(dailyLogEntryStore, 'getForStudent').andCallFake(function(student) {
-    //             return student.id === 1 ? logsA : logsB;
-    //         });
-    //     }));
+    describe('.collect', function() {
+        // set up mock PeriodicRecord and Loggable stores
+        var recordsA, recordsB, logsA, logsB;
+        beforeEach(inject(function(APIBackedCollection, dailyPeriodicRecordStore, dailyLogEntryStore) {
+            recordsA = new APIBackedCollection();
+            recordsB = new APIBackedCollection();
+            logsA = new APIBackedCollection();
+            logsB = new APIBackedCollection();
+            spyOn(dailyPeriodicRecordStore, 'getForStudent').andCallFake(function(student) {
+                return student.id === 1 ? recordsA : recordsB;
+            });
+            spyOn(dailyLogEntryStore, 'getForStudent').andCallFake(function(student) {
+                return student.id === 1 ? logsA : logsB;
+            });
+        }));
 
-    //     describe('.periodicRecords', function() {
-    //         it('defaults to null', inject(function(appViewState) {
-    //             expect(appViewState.collect.periodicRecords).toBeNull();
-    //         }));
+        describe('.periodicRecords', function() {
+            it('defaults to null', inject(function(appViewState) {
+                expect(appViewState.collect.periodicRecords).toBeNull();
+            }));
 
-    //         it('updates on student change', inject(function(appViewState) {
-    //             appViewState.selectedStudent.set(studentA);
-    //             expect(appViewState.collect.periodicRecords).toBe(recordsA);
-    //         }));
-    //     });
+            it('updates on student change', inject(function(appViewState) {
+                appViewState.selectedStudent.set(studentA);
+                expect(appViewState.collect.periodicRecords).toBe(recordsA);
+            }));
+        });
 
-    //     describe('.activityLog', function() {
-    //         it('defaults to null', inject(function(appViewState) {
-    //             expect(appViewState.collect.activityLog).toBeNull();
-    //         }));
+        describe('.activityLog', function() {
+            it('defaults to null', inject(function(appViewState) {
+                expect(appViewState.collect.activityLog).toBeNull();
+            }));
 
-    //         it('updates on student change', inject(function(appViewState) {
-    //             appViewState.selectedStudent.set(studentA);
-    //             expect(appViewState.collect.activityLog).toBe(logsA);
-    //         }));
-    //     });
-    // });
+            it('updates on student change', inject(function(appViewState) {
+                appViewState.selectedStudent.set(studentA);
+                expect(appViewState.collect.activityLog).toBe(logsA);
+            }));
+        });
+    });
 
-    // describe('.discuss', function() {
-    //     // set up mock PeriodicRecord and Loggable stores
-    //     var postsA, postsB;
-    //     beforeEach(inject(function(APIBackedCollection, discussionPostStore) {
-    //         postsA = new APIBackedCollection();
-    //         postsB = new APIBackedCollection();
-    //         spyOn(discussionPostStore, 'getForStudent').andCallFake(function(student) {
-    //             return student.id === 1 ? postsA : postsB;
-    //         });
-    //     }));
+    describe('.discuss', function() {
+        // set up mock PeriodicRecord and Loggable stores
+        var postsA, postsB;
+        beforeEach(inject(function(APIBackedCollection, discussionPostStore) {
+            postsA = new APIBackedCollection();
+            postsB = new APIBackedCollection();
+            spyOn(discussionPostStore, 'getForStudent').andCallFake(function(student) {
+                return student.id === 1 ? postsA : postsB;
+            });
+        }));
 
-    //     describe('.posts', function() {
-    //         it('defaults to null', inject(function(appViewState) {
-    //             expect(appViewState.discuss.posts).toBeNull();
-    //         }));
+        describe('.posts', function() {
+            it('defaults to null', inject(function(appViewState) {
+                expect(appViewState.discuss.posts).toBeNull();
+            }));
 
-    //         it('updates on student change', inject(function(appViewState) {
-    //             appViewState.selectedStudent.set(studentA);
-    //             expect(appViewState.discuss.posts).toBe(postsA);
-    //         }));
-    //     });
-    // });
+            it('updates on student change', inject(function(appViewState) {
+                appViewState.selectedStudent.set(studentA);
+                expect(appViewState.discuss.posts).toBe(postsA);
+            }));
+        });
+    });
 });
