@@ -2,17 +2,20 @@ describe("appViewState", function() {
     // set up mock student store
     var studentA, studentB;
     beforeEach(inject(function(APIBackedCollection, Student, studentAccessors) {
+        // TODO: don't like the dependency on an explicit url setting. put these in Model defs
         studentA = new Student({
             id: 1,
             periodicRecordsUrl: '/pr/1',
             behaviorIncidentsUrl: '/bi/1',
-            pointLossesUrl: '/pl/1'
+            pointLossesUrl: '/pl/1',
+            postsUrl: '/po/1'
         });
         studentB = new Student({
             id: 2,
             periodicRecordsUrl: '/pr/2',
             behaviorIncidentsUrl: '/bi/2',
-            pointLossesUrl: '/pl/2'
+            pointLossesUrl: '/pl/2',
+            postsUrl: '/po/1'
         });
 
         var mockAllStudents = new APIBackedCollection([studentA, studentB]);
@@ -82,6 +85,29 @@ describe("appViewState", function() {
             it('updates on student change', inject(function(appViewState) {
                 appViewState.selectedStudent.set(studentA);
                 expect(appViewState.collect.activityLog).toBe(logsA);
+            }));
+        });
+    });
+
+    describe('.discuss', function() {
+        // set up mock PeriodicRecord and Loggable stores
+        var postsA, postsB;
+        beforeEach(inject(function(APIBackedCollection, discussionPostStore) {
+            postsA = new APIBackedCollection();
+            postsB = new APIBackedCollection();
+            spyOn(discussionPostStore, 'getForStudent').andCallFake(function(student) {
+                return student.id === 1 ? postsA : postsB;
+            });
+        }));
+
+        describe('.posts', function() {
+            it('defaults to null', inject(function(appViewState) {
+                expect(appViewState.discuss.posts).toBeNull();
+            }));
+
+            it('updates on student change', inject(function(appViewState) {
+                appViewState.selectedStudent.set(studentA);
+                expect(appViewState.discuss.posts).toBe(postsA);
             }));
         });
     });

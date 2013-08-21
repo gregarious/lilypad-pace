@@ -1,4 +1,4 @@
-angular.module('pace').factory('appViewState', function(_, Backbone, dailyPeriodicRecordStore, dailyLogEntryStore) {
+angular.module('pace').factory('appViewState', function(_, Backbone, dailyPeriodicRecordStore, dailyLogEntryStore, discussionPostStore) {
     var _selectedStudent = null;
 
     var selectedStudent = {
@@ -17,14 +17,20 @@ angular.module('pace').factory('appViewState', function(_, Backbone, dailyPeriod
         activityLog: null
     };
 
+    var discuss = {
+        posts: null
+    };
+
     selectedStudent.on('change', function() {
         var selected = selectedStudent.get();
         collect.periodicRecords = dailyPeriodicRecordStore.getForStudent(selected);
         collect.activityLog = dailyLogEntryStore.getForStudent(selected);
+        discuss.posts = discussionPostStore.getForStudent(selected);
     });
 
     return {
         selectedStudent: selectedStudent,
-        collect: collect
+        collect: collect,
+        discuss: discuss
     };
 });
