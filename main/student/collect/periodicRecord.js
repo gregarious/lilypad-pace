@@ -13,6 +13,11 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, appView
         $scope.selectedPeriod = $scope.viewState.collection.getByPeriod($scope.selectedPeriodNumber);
     }
 
+    // TODO: should be able to get rid of/combine some of these watches
+    // update the selectedPeriod if the PeriodRecord collection changes
+    $scope.$watch('viewState.collection', function() {
+        $scope.selectedPeriod = $scope.viewState.collection.getByPeriod($scope.selectedPeriodNumber);
+    });
     // update the selectedPeriod if the PeriodRecord collection gets an update from the server
     $scope.$watch('viewState.collection.isSyncInProgress', function() {
         $scope.selectedPeriod = $scope.viewState.collection.getByPeriod($scope.selectedPeriodNumber);
