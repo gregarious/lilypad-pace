@@ -133,7 +133,7 @@
                 <div ng-controller="MainStudentCollectCtrl">
                     <div id="periodicBehaviors" ng-controller="MainStudentCollectPeriodicRecordCtrl">
                         <div class="clearfix">
-                            <select name="periodNumber" ng-model="periodNumber" ng-options="pd.value as pd.label for pd in availablePeriods"></select>
+                            <select name="period" ng-model="selectedPeriodNumber" ng-options="pd.value as pd.label for pd in availablePeriods"></select>
                         </div>
                         <div id="periodBehaviorCounters" ng-class="{disabled: !selectedPeriod.get('isEligible')}">
                             <counter class="bs" value="selectedPeriod.get('points').bs" dec="true" dec-fn="decrement('bs')" max="2"

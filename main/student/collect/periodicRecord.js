@@ -1,35 +1,30 @@
 // controller for periodic records
 app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, appViewState, dailyLogEntryStore, timeTracker, _) {
-    var viewState = appViewState.collectViewState.periodicRecordViewState;
+    $scope.viewState = appViewState.collectViewState.periodicRecordViewState;
 
-    $scope.periodicRecordViewState = viewState;
-    $scope.selectedPeriod = null;
-    $scope.periodNumber = 1;
+    // watch the time tracker: it will update when the current period changes
+    $scope.timeTracker = timeTracker;
+    $scope.$watch('timeTracker.currentPeriod', setAvailablePeriods);
+    setAvailablePeriods(timeTracker.currentPeriod);
 
-    if (timeTracker.currentPeriod) {
-        _g = $scope.availablePeriods = _.map(_.range(1, timeTracker.currentPeriod+1), function(pd) {
-            return {
-                label: 'Period ' + pd,
-                value: pd
-            };
-        });
-    }
-    else {
-        $scope.availablePeriods = [];
+    // initialize $scope
+    $scope.selectedPeriodNumber = timeTracker.currentPeriod;
+    if ($scope.viewState.collection && $scope.viewState.collection.length) {
+        $scope.selectedPeriod = $scope.viewState.collection.getByPeriod($scope.selectedPeriodNumber);
     }
 
-    $scope.moo = {periodNumber: 1};
-
-    // can't call getByPeriod on a PeriodicRecordCollection that hasn't synced yet
-    $scope.$watch('periodicRecordViewState.collection.isSyncInProgress', function() {
-        $scope.selectedPeriod = viewState.collection.getByPeriod($scope.periodNumber);
+    // update the selectedPeriod if the PeriodRecord collection gets an update from the server
+    $scope.$watch('viewState.collection.isSyncInProgress', function() {
+        $scope.selectedPeriod = $scope.viewState.collection.getByPeriod($scope.selectedPeriodNumber);
     });
 
-    $scope.$watch('periodNumber', function(val) {
-        console.log(val);
+    // watch the select input for changes
+    $scope.$watch('selectedPeriodNumber', function(val) {
         var number = parseInt(val, 10);
-        $scope.selectedPeriod = viewState.collection.getByPeriod(number);
+        $scope.selectedPeriod = $scope.viewState.collection.getByPeriod(number);
     });
+
+    /** Functions **/
 
     // decrement the current student in the given category
     $scope.decrement = function (category) {
@@ -38,4 +33,18 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, appView
         var log = dailyLogEntryStore.getForStudent(student);
         log.add(pointLossRecord);
     };
+
+    function setAvailablePeriods(maxPeriod) {
+        if (maxPeriod) {
+            $scope.availablePeriods = _.map(_.range(1, maxPeriod+1), function(pd) {
+                return {
+                    label: 'Period ' + pd,
+                    value: pd
+                };
+            });
+        }
+        else {
+            $scope.availablePeriods = [];
+        }
+    }
 });
