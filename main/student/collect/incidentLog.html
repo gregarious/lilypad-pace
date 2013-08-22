@@ -1,0 +1,53 @@
+<div class="clearfix">
+    <div class="buttonGroup">
+        <button class="settings" ng-click="$parent.showSettings()"></button>
+        <button ng-click="openNewIncident()">+</button>
+    </div>
+</div>
+<div class="bordered" ng-show="addingIncident">
+    <h3>Adding Incident</h3>
+
+    <form name="incident">
+        <div class="clearfix">
+            <label>
+                <p>Start time</p>
+                <input ng-model="data.startedAt" type="time" required/>
+            </label>
+            <label>
+                <p>Behavior</p>
+                <select ng-model="data.type"
+                        ng-options="incidentType.get('label') group by incidentType.get('applicableStudent') for incidentType in incidentTypes"
+                        required>
+                </select>
+            </label>
+            <label ng-show="data.type.get('supportsDuration')">
+                <p>End time</p>
+                <input type="time" ng-model="data.endedAt"
+                       ng-required="data.type.get('supportsDuration')"/>
+            </label>
+        </div>
+        <div>
+            <input type="text" placeholder="Comment" ng-model="data.comment">
+            <button ng-click="closeNewIncident()">Cancel</button>
+            <button class="main" ng-disabled="!incident.$valid" ng-click="submitIncident()">
+                Submit
+            </button>
+        </div>
+    </form>
+</div>
+<div id="behaviorIncidentsTable">
+    <table class="log">
+        <tr>
+            <th>Time</th>
+            <th>Incident</th>
+            <th>Duration</th>
+            <th>Comment</th>
+        </tr>
+        <tr ng-repeat="logEntry in activityLogViewState.collection.models">
+            <td>{{logEntry.getOccurredAt() | date: 'h:mm'}}</td>
+            <td>{{logEntry.getLabel()}}</td>
+            <td>{{logEntry.getDuration() | duration}}</td>
+            <td>{{logEntry.getComment()}}</td>
+        </tr>
+    </table>
+</div>
