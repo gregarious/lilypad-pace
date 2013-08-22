@@ -6,7 +6,7 @@ app.run(function(timeTracker) {
     timeTracker.currentPeriod = 3;
 });
 
-app.run(function(mainViewState, collectViewState, discussViewState) {
+app.run(function(mainViewState, collectViewState, analyzeViewState, discussViewState) {
     // do nothing -- just want to eagerly load the view states so event
     // listeners can hook into each other before their respective controllers
     // are first loaded. otherwise the injector can initialize them (and
@@ -23,9 +23,9 @@ app.controller('main', function ($scope) {
             $scope.login.username = $scope.login.password = undefined;
             $scope.authenticated = true;
         }
-    }
+    };
 
     $scope.logOut = function() {
-        $scope.authenticated = false
-    }
+        $scope.authenticated = false;
+    };
 });
