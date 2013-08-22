@@ -1,1 +1,3 @@
-GET YO TX
+<ul>
+    <li ng-repeat="span in viewState.attendanceViewState.collection.models">{{span.get('date')}}: {{span.get('timeIn')}} - {{span.get('timeOut')}}</li>
+</ul>

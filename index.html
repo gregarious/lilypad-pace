@@ -50,7 +50,7 @@
     <!-- Analyze controllers -->
     <script src="/lilypad-client/lilypad-pace/main/student/analyze/analyze.js"></script>
     <script src="/lilypad-client/lilypad-pace/main/student/analyze/attendanceRecords.js"></script>
-    <script src="/lilypad-client/lilypad-pace/main/student/analyze/behaviorLogs.js"></script>
+    <script src="/lilypad-client/lilypad-pace/main/student/analyze/behaviorLog.js"></script>
     <script src="/lilypad-client/lilypad-pace/main/student/analyze/treatmentPeriod.js"></script>
 
     <!-- DiscussionPost-related services -->
@@ -91,7 +91,6 @@
     <script src="/lilypad-client/lilypad-pace/main/student/collect/periodicRecord.js"></script>
     <script src="/lilypad-client/lilypad-pace/main/student/collect/behaviorsModal.js"></script>
     <script src="/lilypad-client/lilypad-pace/main/student/discuss.js"></script>
-    <script src="/lilypad-client/lilypad-pace/main/student/simpleAnalyze.js"></script>
 
 
 </head>
@@ -268,36 +267,6 @@
             </main-pane>
             <main-pane title="Analyze">
                 <div ng-controller="MainStudentAnalyzeCtrl" ng-include="'/lilypad-client/lilypad-pace/main/student/analyze/analyze.html'"></div>
-                <div class="clearfix">
-                    <form name="analyze" class="clearfix">
-                        <select ng-model="analyzeView">
-                            <option value="treatmentPeriods">Treatment Periods</option>
-                            <option value="behaviorLogs">Behavior Logs</option>
-                            <option value="attendanceRecords">Attendance Records</option>
-                        </select>
-                        <span ng-hide="analyzeView == 'treatmentPeriods'">
-                            <span><label><p>End date</p><input type="date"/></label></span>
-                            <span><label><p>Start date</p><input type="date"/></label></span>
-                        </span>
-                    </form>
-                </div>
-                <div class="divider"></div>
-                <ng-switch on="analyzeView" ng-controller="SimpleAnalyzeCtrl">
-                    <div ng-switch-when="treatmentPeriods">Get yo treatments!</div>
-                    <div ng-switch-when="behaviorLogs">
-                        Rollin in da logs
-                        <ul>
-                            <li ng-repeat="logEntry in viewState.logViewState.collection.models">{{logEntry.getLabel();}}</li>
-                        </ul>
-                    </div>
-                    <div ng-switch-when="attendanceRecords">
-                        DAT ATTENDANCE
-                        <ul>
-                            <li ng-repeat="span in viewState.attendanceViewState.collection.models">{{span.get('date')}}: {{span.get('timeIn')}} - {{span.get('timeOut')}}</li>
-                        </ul>
-                    </div>
-                </ng-switch>
-
             </main-pane>
             <main-pane title="Discuss">
                 <div ng-controller="MainStudentDiscussCtrl">
