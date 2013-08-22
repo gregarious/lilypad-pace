@@ -1,15 +1,17 @@
 angular.module('pace').factory('mainViewState', function(_, Backbone, APIBackedCollection, dailyPeriodicRecordStore, dailyLogEntryStore, discussionPostStore) {
+    var mainViewState = {};
     var _selectedStudent = null;
-    var selectedStudent = {
-        get: function() {
-            return _selectedStudent;
-        },
-        set: function(student) {
-            _selectedStudent = student;
-            this.trigger('change');
-        }
+
+    mainViewState.getSelectedStudent = function() {
+        return _selectedStudent;
     };
-    _.extend(selectedStudent, Backbone.Events);
+
+    mainViewState.setSelectedStudent = function(student) {
+        _selectedStudent = student;
+        mainViewState.trigger('change:selectedStudent', _selectedStudent);
+    };
+
+    _.extend(mainViewState, Backbone.Events);
 
     var periodicRecordViewState = {
         collection: new APIBackedCollection()
@@ -27,16 +29,14 @@ angular.module('pace').factory('mainViewState', function(_, Backbone, APIBackedC
         collection: new APIBackedCollection()
     };
 
-    selectedStudent.on('change', function() {
-        var selected = selectedStudent.get();
-        periodicRecordViewState.collection = dailyPeriodicRecordStore.getForStudent(selected);
-        activityLogViewState.collection = dailyLogEntryStore.getForStudent(selected);
-        discussViewState.collection = discussionPostStore.getForStudent(selected);
+    mainViewState.on('change:selectedStudent', function(newSelected) {
+        periodicRecordViewState.collection = dailyPeriodicRecordStore.getForStudent(newSelected);
+        activityLogViewState.collection = dailyLogEntryStore.getForStudent(newSelected);
+        discussViewState.collection = discussionPostStore.getForStudent(newSelected);
     });
 
-    return {
-        selectedStudent: selectedStudent,
-        collectViewState: collectViewState,
-        discussViewState: discussViewState
-    };
+    mainViewState.collectViewState = collectViewState;
+    mainViewState.discussViewState = discussViewState;
+
+    return mainViewState;
 });
