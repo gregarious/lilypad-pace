@@ -1,6 +1,6 @@
 describe("mainViewState", function() {
     // set up mock student store
-    var studentA, studentB;
+    var studentA;
     beforeEach(inject(function(APIBackedCollection, Student, studentAccessors) {
         // TODO: don't like the dependency on an explicit url setting. put these in Model defs
         studentA = new Student({
@@ -10,15 +10,8 @@ describe("mainViewState", function() {
             pointLossesUrl: '/pl/1',
             postsUrl: '/po/1'
         });
-        studentB = new Student({
-            id: 2,
-            periodicRecordsUrl: '/pr/2',
-            behaviorIncidentsUrl: '/bi/2',
-            pointLossesUrl: '/pl/2',
-            postsUrl: '/po/1'
-        });
 
-        var mockAllStudents = new APIBackedCollection([studentA, studentB]);
+        var mockAllStudents = new APIBackedCollection([studentA]);
         spyOn(studentAccessors, 'allStudents').andReturn(mockAllStudents);
     }));
 
@@ -45,55 +38,6 @@ describe("mainViewState", function() {
 
         it("triggers 'change' event", function() {
             expect(changeTriggered).toBe(true);
-        });
-    });
-
-    describe('.collectViewState', function() {
-        // set up mock PeriodicRecord and Loggable stores
-        var recordsA, recordsB, logsA, logsB;
-        beforeEach(inject(function(APIBackedCollection, dailyPeriodicRecordStore, dailyLogEntryStore) {
-            recordsA = new APIBackedCollection();
-            recordsB = new APIBackedCollection();
-            logsA = new APIBackedCollection();
-            logsB = new APIBackedCollection();
-            spyOn(dailyPeriodicRecordStore, 'getForStudent').andCallFake(function(student) {
-                return student.id === 1 ? recordsA : recordsB;
-            });
-            spyOn(dailyLogEntryStore, 'getForStudent').andCallFake(function(student) {
-                return student.id === 1 ? logsA : logsB;
-            });
-        }));
-
-        describe('.periodicRecordViewState', function() {
-            var periodicRecordViewState;
-            beforeEach(inject(function(mainViewState) {
-                periodicRecordViewState = mainViewState.collectViewState.periodicRecordViewState;
-            }));
-
-            it('collection defaults to an empty Collection', function() {
-                expect(periodicRecordViewState.collection.length).toBe(0);
-            });
-
-            it('updates on student change', inject(function(mainViewState) {
-                mainViewState.setSelectedStudent(studentA);
-                expect(periodicRecordViewState.collection).toBe(recordsA);
-            }));
-        });
-
-        describe('.activityLogViewState', function() {
-            var activityLogViewState;
-            beforeEach(inject(function(mainViewState) {
-                activityLogViewState = mainViewState.collectViewState.activityLogViewState;
-            }));
-
-            it('collection defaults to an empty Collection', inject(function(mainViewState) {
-                expect(activityLogViewState.collection.length).toBe(0);
-            }));
-
-            it('updates on student change', inject(function(mainViewState) {
-                mainViewState.setSelectedStudent(studentA);
-                expect(activityLogViewState.collection).toBe(logsA);
-            }));
         });
     });
 

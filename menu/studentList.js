@@ -36,7 +36,7 @@ app.controller('MenuStudentListCtrl', function ($scope, mainViewState, viewServi
             viewService.currentView = 'student';
             viewService.parameters['id'] = studentId;
 
-            mainViewState.selectedStudent.set(student);
+            mainViewState.setSelectedStudent(student);
         }
     };
 });
