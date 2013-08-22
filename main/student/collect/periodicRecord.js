@@ -7,34 +7,19 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, collect
     $scope.$watch('timeTracker.currentPeriod', setAvailablePeriods);
     setAvailablePeriods(timeTracker.currentPeriod);
 
-    // initialize $scope
-    $scope.selectedPeriodNumber = timeTracker.currentPeriod;
-    if ($scope.viewState.collection && $scope.viewState.collection.length) {
-        $scope.selectedPeriod = $scope.viewState.collection.getByPeriod($scope.selectedPeriodNumber);
-    }
-
-    // TODO: should be able to get rid of/combine some of these watches
-    // update the selectedPeriod if the PeriodRecord collection changes
-    $scope.$watch('viewState.collection', function() {
-        $scope.selectedPeriod = $scope.viewState.collection.getByPeriod($scope.selectedPeriodNumber);
-    });
-    // update the selectedPeriod if the PeriodRecord collection gets an update from the server
-    $scope.$watch('viewState.collection.isSyncInProgress', function() {
-        $scope.selectedPeriod = $scope.viewState.collection.getByPeriod($scope.selectedPeriodNumber);
-    });
-
+    $scope.selectedPeriodNumber = $scope.viewState.getSelectedPeriodNumber();
     // watch the select input for changes
     $scope.$watch('selectedPeriodNumber', function(val) {
         var number = parseInt(val, 10);
-        $scope.selectedPeriod = $scope.viewState.collection.getByPeriod(number);
+        $scope.selectedPeriod = $scope.viewState.setSelectedPeriodNumber(number);
     });
 
     /** Functions **/
 
     // decrement the current student in the given category
     $scope.decrement = function (category) {
-        var pointLossRecord = $scope.selectedPeriod.registerPointLoss(category);
-        var student = $scope.selectedPeriod.get('student');
+        var pointLossRecord = $scope.viewState.selectedPeriod.registerPointLoss(category);
+        var student = $scope.viewState.selectedPeriod.get('student');
         var log = dailyLogEntryStore.getForStudent(student);
         log.add(pointLossRecord);
     };
