@@ -1,5 +1,8 @@
 // parent controller to all student main views (collect, analyze, discuss)
 app.controller('MainStudentCtrl', function ($scope, studentAccessors, viewService) {
+
+    // TODO: refactor this
+
     $scope.student = null;
 
 	var fetchStudent = studentAccessors.allStudents();

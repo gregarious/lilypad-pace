@@ -31,6 +31,13 @@
     <!-- app -->
     <script src="/lilypad-client/lilypad-pace/app.js"></script>
 
+    <!-- app filters -->
+    <script src="/lilypad-client/lilypad-pace/filters.js"></script>
+
+    <!----------------------------->
+    <!-- SERVICES -->
+    <!----------------------------->
+
     <!-- Student-related services -->
     <script src="/lilypad-client/lilypad-pace/services/students/student.js"></script>
     <script src="/lilypad-client/lilypad-pace/services/students/studentAccessors.js"></script>
@@ -46,12 +53,6 @@
     <script src="/lilypad-client/lilypad-pace/services/behaviorIncidents/behaviorIncidentType.js"></script>
     <script src="/lilypad-client/lilypad-pace/services/behaviorIncidents/studentBehaviorTypeCollection.js"></script>
     <script src="/lilypad-client/lilypad-pace/services/behaviorIncidents/behaviorIncidentAccessors.js"></script>
-
-    <!-- Analyze controllers -->
-    <script src="/lilypad-client/lilypad-pace/main/student/analyze.js"></script>
-    <script src="/lilypad-client/lilypad-pace/main/student/analyze/attendanceLog.js"></script>
-    <script src="/lilypad-client/lilypad-pace/main/student/analyze/behaviorLog.js"></script>
-    <script src="/lilypad-client/lilypad-pace/main/student/analyze/treatmentPeriod.js"></script>
 
     <!-- DiscussionPost-related services -->
     <script src="/lilypad-client/lilypad-pace/services/discussions/discussionPost.js"></script>
@@ -81,16 +82,32 @@
     <script src="/lilypad-client/lilypad-pace/services/common/timeTracker.js"></script>
     <script src="/lilypad-client/lilypad-pace/services/viewService.js"></script>
 
-    <script src="/lilypad-client/lilypad-pace/filters.js"></script>
-    <script src="/lilypad-client/lilypad-pace/menu/menu.js"></script>
-    <script src="/lilypad-client/lilypad-pace/menu/studentList.js"></script>
-    <script src="/lilypad-client/lilypad-pace/main/main.js"></script>
-    <script src="/lilypad-client/lilypad-pace/main/student/student.js"></script>
-    <script src="/lilypad-client/lilypad-pace/main/student/collect.js"></script>
-    <script src="/lilypad-client/lilypad-pace/main/student/collect/incidentLog.js"></script>
-    <script src="/lilypad-client/lilypad-pace/main/student/collect/periodicRecord.js"></script>
-    <script src="/lilypad-client/lilypad-pace/main/student/collect/behaviorsModal.js"></script>
-    <script src="/lilypad-client/lilypad-pace/main/student/discuss.js"></script>
+    <!----------------------------->
+    <!-- CONTROLLERS -->
+    <!----------------------------->
+
+    <!-- Menu controllers -->
+    <script src="/lilypad-client/lilypad-pace/frontEnd/menu.js"></script>
+    <script src="/lilypad-client/lilypad-pace/frontEnd/menu/studentList.js"></script>
+
+    <!-- Main controllers -->
+    <script src="/lilypad-client/lilypad-pace/frontEnd/main.js"></script>
+    <script src="/lilypad-client/lilypad-pace/frontEnd/main/student.js"></script>
+
+    <!-- Main/collect controllers -->
+    <script src="/lilypad-client/lilypad-pace/frontEnd/main/student/collect.js"></script>
+    <script src="/lilypad-client/lilypad-pace/frontEnd/main/student/collect/incidentLog.js"></script>
+    <script src="/lilypad-client/lilypad-pace/frontEnd/main/student/collect/periodicRecord.js"></script>
+    <script src="/lilypad-client/lilypad-pace/frontEnd/main/student/collect/behaviorsModal.js"></script>
+
+    <!-- Main/analyze controllers -->
+    <script src="/lilypad-client/lilypad-pace/frontEnd/main/student/analyze.js"></script>
+    <script src="/lilypad-client/lilypad-pace/frontEnd/main/student/analyze/attendanceLog.js"></script>
+    <script src="/lilypad-client/lilypad-pace/frontEnd/main/student/analyze/behaviorLog.js"></script>
+    <script src="/lilypad-client/lilypad-pace/frontEnd/main/student/analyze/treatmentPeriod.js"></script>
+
+    <!-- Main/discuss controllers -->
+    <script src="/lilypad-client/lilypad-pace/frontEnd/main/student/discuss.js"></script>
 
 
 </head>
@@ -138,18 +155,18 @@
 </div>
 <div id="main" ng-controller="MainCtrl">
 <ng-switch on="view">
-<div id="student" ng-switch-when="student" ng-controller="MainStudentCtrl">
-    <div class="mainContent" ng-class="{disabled: (attendance)}">
+<div id="student" ng-switch-when="student">
+    <div class="mainContent" ng-class="{disabled: (attendance)}" ng-controller="MainStudentCtrl">
         <main-tabs>
             <h1><strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}</h1>
             <main-pane title="Collect">
-                <ng-include src="'/lilypad-client/lilypad-pace/main/student/collect.html'" ng-controller="MainStudentCollectCtrl"></ng-include>
+                <ng-include src="'/lilypad-client/lilypad-pace/frontEnd/main/student/collect.html'" ng-controller="MainStudentCollectCtrl"></ng-include>
             </main-pane>
             <main-pane title="Analyze">
-                <ng-include src="'/lilypad-client/lilypad-pace/main/student/analyze.html'" ng-controller="MainStudentAnalyzeCtrl"></ng-include>
+                <ng-include src="'/lilypad-client/lilypad-pace/frontEnd/main/student/analyze.html'" ng-controller="MainStudentAnalyzeCtrl"></ng-include>
             </main-pane>
             <main-pane title="Discuss">
-                <ng-include src="'/lilypad-client/lilypad-pace/main/student/discuss.html'" ng-controller="MainStudentDiscussCtrl"></ng-include>
+                <ng-include src="'/lilypad-client/lilypad-pace/frontEnd/main/student/discuss.html'" ng-controller="MainStudentDiscussCtrl"></ng-include>
             </main-pane>
         </main-tabs>
     </div>
