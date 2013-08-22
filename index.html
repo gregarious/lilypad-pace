@@ -85,6 +85,7 @@
     <script src="/lilypad-client/lilypad-pace/main/student/collect/periodicRecord.js"></script>
     <script src="/lilypad-client/lilypad-pace/main/student/collect/behaviorsModal.js"></script>
     <script src="/lilypad-client/lilypad-pace/main/student/discuss.js"></script>
+    <script src="/lilypad-client/lilypad-pace/main/student/simpleAnalyze.js"></script>
 
 
 </head>
@@ -274,10 +275,20 @@
                     </form>
                 </div>
                 <div class="divider"></div>
-                <ng-switch on="analyzeView">
+                <ng-switch on="analyzeView" ng-controller="SimpleAnalyzeCtrl">
                     <div ng-switch-when="treatmentPeriods">Get yo treatments!</div>
-                    <div ng-switch-when="behaviorLogs">Rollin in da logs</div>
-                    <div ng-switch-when="attendanceRecords">DAT ATTENDANCE</div>
+                    <div ng-switch-when="behaviorLogs">
+                        Rollin in da logs
+                        <ul>
+                            <li ng-repeat="logEntry in viewState.logViewState.collection.models">{{logEntry.getLabel();}}</li>
+                        </ul>
+                    </div>
+                    <div ng-switch-when="attendanceRecords">
+                        DAT ATTENDANCE
+                        <ul>
+                            <li ng-repeat="span in viewState.attendanceViewState.collection.models">{{span.get('date')}}: {{span.get('timeIn')}} - {{span.get('timeOut')}}</li>
+                        </ul>
+                    </div>
                 </ng-switch>
 
             </main-pane>
