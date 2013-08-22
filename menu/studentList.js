@@ -1,5 +1,5 @@
 // controller for the student list in the left panel
-app.controller('MenuStudentListCtrl', function ($scope, appViewState, viewService, studentAccessors) {
+app.controller('MenuStudentListCtrl', function ($scope, mainViewState, viewService, studentAccessors) {
     var fetchStudents = studentAccessors.allStudents();
     var studentCollection;
     fetchStudents.then(function(collection) {
@@ -36,7 +36,7 @@ app.controller('MenuStudentListCtrl', function ($scope, appViewState, viewServic
             viewService.currentView = 'student';
             viewService.parameters['id'] = studentId;
 
-            appViewState.selectedStudent.set(student);
+            mainViewState.selectedStudent.set(student);
         }
     };
 });

@@ -1,7 +1,7 @@
 // controller for discussion tab
-app.controller('MainStudentDiscussCtrl', function ($scope, appViewState, viewService) {
+app.controller('MainStudentDiscussCtrl', function ($scope, mainViewState, viewService) {
     $scope.data = {};
-    $scope.discussViewState = appViewState.discussViewState;
+    $scope.discussViewState = mainViewState.discussViewState;
 
     // creating new comments and replies to comments
     // NOTE: parameters are swapped between createNewPost and createNewReply

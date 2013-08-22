@@ -1,5 +1,5 @@
 // parent controller for collect pane
-app.controller('MainStudentCollectCtrl', function ($scope, appViewState) {
+app.controller('MainStudentCollectCtrl', function ($scope, mainViewState) {
     $scope.data = {};
     $scope.data.behaviorModalActive = false;
 

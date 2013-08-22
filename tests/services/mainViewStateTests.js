@@ -1,4 +1,4 @@
-describe("appViewState", function() {
+describe("mainViewState", function() {
     // set up mock student store
     var studentA, studentB;
     beforeEach(inject(function(APIBackedCollection, Student, studentAccessors) {
@@ -24,24 +24,24 @@ describe("appViewState", function() {
 
     describe('.selectedStudent', function() {
         describe('.get', function() {
-            it('defaults to null', inject(function(appViewState) {
-                expect(appViewState.selectedStudent.get()).toBeNull();
+            it('defaults to null', inject(function(mainViewState) {
+                expect(mainViewState.selectedStudent.get()).toBeNull();
             }));
         });
 
         describe('.set', function() {
             var changeTriggered;
-            beforeEach(inject(function(appViewState) {
+            beforeEach(inject(function(mainViewState) {
                 changeTriggered = false;
-                appViewState.selectedStudent.on('change', function() {
+                mainViewState.selectedStudent.on('change', function() {
                     changeTriggered = true;
                 });
 
-                appViewState.selectedStudent.set(studentA);
+                mainViewState.selectedStudent.set(studentA);
             }));
 
-            it('changes .getSelectedStudent value', inject(function(appViewState) {
-                expect(appViewState.selectedStudent.get()).toBe(studentA);
+            it('changes .getSelectedStudent value', inject(function(mainViewState) {
+                expect(mainViewState.selectedStudent.get()).toBe(studentA);
             }));
 
             it("triggers 'change' event", function() {
@@ -68,32 +68,32 @@ describe("appViewState", function() {
 
         describe('.periodicRecordViewState', function() {
             var periodicRecordViewState;
-            beforeEach(inject(function(appViewState) {
-                periodicRecordViewState = appViewState.collectViewState.periodicRecordViewState;
+            beforeEach(inject(function(mainViewState) {
+                periodicRecordViewState = mainViewState.collectViewState.periodicRecordViewState;
             }));
 
             it('collection defaults to an empty Collection', function() {
                 expect(periodicRecordViewState.collection.length).toBe(0);
             });
 
-            it('updates on student change', inject(function(appViewState) {
-                appViewState.selectedStudent.set(studentA);
+            it('updates on student change', inject(function(mainViewState) {
+                mainViewState.selectedStudent.set(studentA);
                 expect(periodicRecordViewState.collection).toBe(recordsA);
             }));
         });
 
         describe('.activityLogViewState', function() {
             var activityLogViewState;
-            beforeEach(inject(function(appViewState) {
-                activityLogViewState = appViewState.collectViewState.activityLogViewState;
+            beforeEach(inject(function(mainViewState) {
+                activityLogViewState = mainViewState.collectViewState.activityLogViewState;
             }));
 
-            it('collection defaults to an empty Collection', inject(function(appViewState) {
+            it('collection defaults to an empty Collection', inject(function(mainViewState) {
                 expect(activityLogViewState.collection.length).toBe(0);
             }));
 
-            it('updates on student change', inject(function(appViewState) {
-                appViewState.selectedStudent.set(studentA);
+            it('updates on student change', inject(function(mainViewState) {
+                mainViewState.selectedStudent.set(studentA);
                 expect(activityLogViewState.collection).toBe(logsA);
             }));
         });
@@ -111,17 +111,17 @@ describe("appViewState", function() {
         }));
 
         var discussViewState;
-        beforeEach(inject(function(appViewState) {
-            discussViewState = appViewState.discussViewState;
+        beforeEach(inject(function(mainViewState) {
+            discussViewState = mainViewState.discussViewState;
         }));
 
         describe('.posts', function() {
-            it('collection defaults to an empty Collection', inject(function(appViewState) {
+            it('collection defaults to an empty Collection', inject(function(mainViewState) {
                 expect(discussViewState.collection.length).toBe(0);
             }));
 
-            it('updates on student change', inject(function(appViewState) {
-                appViewState.selectedStudent.set(studentA);
+            it('updates on student change', inject(function(mainViewState) {
+                mainViewState.selectedStudent.set(studentA);
                 expect(discussViewState.collection).toBe(postsA);
             }));
         });
