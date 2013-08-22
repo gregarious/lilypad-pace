@@ -63,14 +63,17 @@
     <script src="/lilypad-client/lilypad-pace/services/loggable/loggableMixin.js"></script>
     <script src="/lilypad-client/lilypad-pace/services/loggable/loggableCollectionFactories.js"></script>
     <script src="/lilypad-client/lilypad-pace/services/loggable/dailyLogEntryStore.js"></script>
+    <script src="/lilypad-client/lilypad-pace/services/loggable/logEntryStore.js"></script>
 
     <!-- Attendance services -->
     <script src="/lilypad-client/lilypad-pace/services/attendance/attendanceSpan.js"></script>
-    <script src="/lilypad-client/lilypad-pace/services/attendance/attendanceAccessors.js"></script>
+    <script src="/lilypad-client/lilypad-pace/services/attendance/attendanceSpanCollectionFactories.js"></script>
+    <script src="/lilypad-client/lilypad-pace/services/attendance/attendanceSpanStore.js"></script>
 
     <!-- ViewState services -->
     <script src="/lilypad-client/lilypad-pace/services/viewStates/mainViewState.js"></script>
     <script src="/lilypad-client/lilypad-pace/services/viewStates/collectViewState.js"></script>
+    <script src="/lilypad-client/lilypad-pace/services/viewStates/analyzeViewState.js"></script>
     <script src="/lilypad-client/lilypad-pace/services/viewStates/discussViewState.js"></script>
 
     <!-- Other services -->
@@ -88,6 +91,7 @@
     <script src="/lilypad-client/lilypad-pace/main/student/collect/periodicRecord.js"></script>
     <script src="/lilypad-client/lilypad-pace/main/student/collect/behaviorsModal.js"></script>
     <script src="/lilypad-client/lilypad-pace/main/student/discuss.js"></script>
+    <script src="/lilypad-client/lilypad-pace/main/student/simpleAnalyze.js"></script>
 
 
 </head>
@@ -145,17 +149,17 @@
                         <div class="clearfix">
                             <select name="period" ng-model="selectedPeriodNumber" ng-options="pd.value as pd.label for pd in availablePeriods"></select>
                         </div>
-                        <div id="periodBehaviorCounters" ng-class="{disabled: !selectedPeriod.get('isEligible')}">
-                            <counter class="bs" value="selectedPeriod.get('points').bs" dec="true" dec-fn="decrement('bs')" max="2"
+                        <div id="periodBehaviorCounters" ng-class="{disabled: !viewState.selectedPeriod.get('isEligible')}">
+                            <counter class="bs" value="viewState.selectedPeriod.get('points').bs" dec="true" dec-fn="decrement('bs')" max="2"
                                      min="0"
                                      text="Be Safe" id="student.get('id')"></counter>
-                            <counter class="kw" value="selectedPeriod.get('points').kw" dec="true" dec-fn="decrement('kw')" max="2"
+                            <counter class="kw" value="viewState.selectedPeriod.get('points').kw" dec="true" dec-fn="decrement('kw')" max="2"
                                      min="0"
                                      text="Kind Words" id="student.get('id')"></counter>
-                            <counter class="cw" value="selectedPeriod.get('points').cw" dec="true" dec-fn="decrement('cw')" max="2"
+                            <counter class="cw" value="viewState.selectedPeriod.get('points').cw" dec="true" dec-fn="decrement('cw')" max="2"
                                      min="0"
                                      text="Complete Work" id="student.get('id')"></counter>
-                            <counter class="fd" value="selectedPeriod.get('points').fd" dec="true" dec-fn="decrement('fd')" max="2"
+                            <counter class="fd" value="viewState.selectedPeriod.get('points').fd" dec="true" dec-fn="decrement('fd')" max="2"
                                      min="0"
                                      text="Follow Directions" id="student.get('id')"></counter>
                         </div>
@@ -264,6 +268,35 @@
             </main-pane>
             <main-pane title="Analyze">
                 <div ng-controller="MainStudentAnalyzeCtrl" ng-include="'/lilypad-client/lilypad-pace/main/student/analyze/analyze.html'"></div>
+                <div class="clearfix">
+                    <form name="analyze" class="clearfix">
+                        <select ng-model="analyzeView">
+                            <option value="treatmentPeriods">Treatment Periods</option>
+                            <option value="behaviorLogs">Behavior Logs</option>
+                            <option value="attendanceRecords">Attendance Records</option>
+                        </select>
+                        <span ng-hide="analyzeView == 'treatmentPeriods'">
+                            <span><label><p>End date</p><input type="date"/></label></span>
+                            <span><label><p>Start date</p><input type="date"/></label></span>
+                        </span>
+                    </form>
+                </div>
+                <div class="divider"></div>
+                <ng-switch on="analyzeView" ng-controller="SimpleAnalyzeCtrl">
+                    <div ng-switch-when="treatmentPeriods">Get yo treatments!</div>
+                    <div ng-switch-when="behaviorLogs">
+                        Rollin in da logs
+                        <ul>
+                            <li ng-repeat="logEntry in viewState.logViewState.collection.models">{{logEntry.getLabel();}}</li>
+                        </ul>
+                    </div>
+                    <div ng-switch-when="attendanceRecords">
+                        DAT ATTENDANCE
+                        <ul>
+                            <li ng-repeat="span in viewState.attendanceViewState.collection.models">{{span.get('date')}}: {{span.get('timeIn')}} - {{span.get('timeOut')}}</li>
+                        </ul>
+                    </div>
+                </ng-switch>
 
             </main-pane>
             <main-pane title="Discuss">
