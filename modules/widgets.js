@@ -66,28 +66,19 @@ widgets.directive('counter', function () {
             var countContainer = element[0].children[1];
             var counterElement = countContainer.children[0];
 
-            // don't animate initially when the id has changed
-            scope.$watch('id', function (newId) {
-                scope.animate = false;
-                setTimeout(function () {
-                    scope.animate = true;
-                    oldId = newId;
-                }, 0);
-            });
-
-            // update the control when the value has changed, if the id is the same
             scope.$watch('value', function (newValue) {
-                if (scope.id === oldId) {
-                    animate();
-                } else {
-                    scope.animate = false;
-                    scope.currentValue = newValue;
-                    oldValue = newValue;
-                    oldId = scope.id;
-                    setTimeout(function () {
-                        scope.animate = true;
-                    }, 0);
-
+                if (scope.id !== undefined && newValue !== undefined) {
+                    if (scope.id === oldId) {
+                        animate();
+                    } else {
+                        scope.animate = false;
+                        scope.currentValue = newValue;
+                        oldValue = newValue;
+                        oldId = scope.id;
+                        setTimeout(function () {
+                            scope.animate = true;
+                        }, 0);
+                    }
                 }
             });
 
