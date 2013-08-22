@@ -38,20 +38,20 @@ describe("discussionPostCollectionFactories", function() {
                 // - ensure createdAt gets set to a sane value (by mocking clock) even if server is down
             });
 
-            it('should sort by date created', inject(function(DiscussionPost) {
+            it('should sort by newest first', inject(function(DiscussionPost) {
                 collection.add(new DiscussionPost({
                     id: 1,
-                    content: 'second',
-                    createdAt: new Date(2013, 0, 2, 12, 0, 0)
+                    content: 'first post',
+                    createdAt: new Date(2013, 0, 1, 12, 0, 0)
                 }));
                 collection.add(new DiscussionPost({
                     id: 2,
-                    content: 'first',
-                    createdAt: new Date(2013, 0, 1, 12, 0, 0)
+                    content: 'second post',
+                    createdAt: new Date(2013, 0, 2, 12, 0, 0)
                 }));
 
-                expect(collection.models[0].get('content')).toBe('first');
-                expect(collection.models[1].get('content')).toBe('second');
+                expect(collection.models[0].get('content')).toBe('second post');
+                expect(collection.models[1].get('content')).toBe('first post');
             }));
         });
     });

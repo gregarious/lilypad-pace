@@ -15,7 +15,14 @@ angular.module('pace').factory('discussionPostCollectionFactories', function(API
             var StudentPostCollection = APIBackedCollection.extend({
                 model: DiscussionPost,
                 url: student.get('postsUrl'),
-                comparator: 'createdAt',
+                comparator: function(post) {
+                    if (post.has('createdAt')) {
+                        return -post.get('createdAt');
+                    }
+                    else {
+                        return Infinity;
+                    }
+                },
 
                 /**
                  * Wrapper around Collection.create with student fixed. Don't
