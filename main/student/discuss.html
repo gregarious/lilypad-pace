@@ -1,0 +1,37 @@
+<form>
+    <select ng-model="data.author">
+        <option>Gabi</option>
+        <option>Greg</option>
+        <option>Hayden</option>
+    </select>
+    <input type="text" ng-model="data.content"/>
+    <button ng-click="newTopic()">Post comment</button>
+</form>
+<div id="discussions">
+    <div ng-repeat="discussion in discussViewState.collection.models">
+        <div class="post">
+            <div class="header"><span
+                    class="author">{{discussion.get('author')}} {{discussion.get('id')}}</span><span
+                    class="date">{{discussion.get('createdAt') | dateStamp}} </span>
+            </div>
+            <div class="content">{{discussion.get('content')}}</div>
+        </div>
+        <div class="post reply" ng-repeat="reply in discussion.get('replies').models">
+            <div class="header"><span class="author">{{reply.get('author')}}</span><span
+                    class="date">{{reply.get('createdAt') | dateStamp}}</span>
+            </div>
+            <div class="content">{{reply.get('content')}}</div>
+        </div>
+        <reply class="reply" text="Add reply">
+            <form>
+                <select ng-model="data.author">
+                    <option>Gabi</option>
+                    <option>Greg</option>
+                    <option>Hayden</option>
+                </select>
+                <input type="text" ng-model="discussion.newReply"/>
+                <button ng-click="newReply(discussion)">Add reply</button>
+            </form>
+        </reply>
+    </div>
+</div>
