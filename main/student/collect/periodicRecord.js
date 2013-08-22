@@ -20,7 +20,6 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, collect
     });
     // update the selectedPeriod if the PeriodRecord collection gets an update from the server
     $scope.$watch('viewState.collection.isSyncInProgress', function() {
-        console.log($scope.viewState.collection);
         $scope.selectedPeriod = $scope.viewState.collection.getByPeriod($scope.selectedPeriodNumber);
     });
 

@@ -2,7 +2,8 @@ describe('collectViewState', function() {
     // set up mock Student, PeriodicRecord and Loggable stores
     var studentA, recordsA, logsA;
     beforeEach(inject(function(APIBackedCollection,  Student, studentAccessors, dailyPeriodicRecordStore, dailyLogEntryStore) {
-        studentA = new Student({
+    // TODO: don't like the dependency on an explicit url setting. put these in Model defs
+    studentA = new Student({
             id: 1,
             periodicRecordsUrl: '/pr/1',
             behaviorIncidentsUrl: '/bi/1',
