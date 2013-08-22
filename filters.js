@@ -43,3 +43,12 @@ app.filter('dateStamp', ['moment', function () {
         return moment(input).calendar();
     }
 }]);
+
+// formats dates like '7/13/2013' or 'Today at 6:07 PM'
+app.filter('stripColons', ['moment', function () {
+    return function (input) {
+        if (!input)
+            return '';
+        return input.replace(/:/g, '');
+    }
+}]);

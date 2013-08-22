@@ -1,0 +1,13 @@
+<!-- TODO: Why are the angular filters destroying our times? -->
+<table class="log" ng-controller="MainStudentAnalyzeAttendanceLogCtrl">
+    <tr>
+        <th>Date</th>
+        <th>In</th>
+        <th>Out</th>
+    </tr>
+    <tr ng-repeat="logEntry in attendanceLog">
+        <td>{{logEntry.get('date') | date:'EEE MMMM d'}}</td>
+        <td>{{logEntry.get('timeIn') | stripColons | date:'shortTime'}}</td>
+        <td>{{logEntry.get('timeOut') | stripColons | date:'shortTime'}}</td>
+    </tr>
+</table>
