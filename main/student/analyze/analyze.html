@@ -1,0 +1,10 @@
+<form name="analyze" class="clearfix">
+    <select ng-model="analyzeView" ng-options="v.name for v in views"></select>
+    <span ng-hide="analyzeView == 'treatmentPeriods'">
+        <span><label><p>End date</p><input type="date"/></label></span>
+        <span><label><p>Start date</p><input type="date"/></label></span>
+    </span>
+</form>
+
+
+<ng-include src="analyzeView.url"/>

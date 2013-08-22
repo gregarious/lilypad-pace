@@ -47,6 +47,12 @@
     <script src="/lilypad-client/lilypad-pace/services/behaviorIncidents/studentBehaviorTypeCollection.js"></script>
     <script src="/lilypad-client/lilypad-pace/services/behaviorIncidents/behaviorIncidentAccessors.js"></script>
 
+    <!-- Analyze controllers -->
+    <script src="/lilypad-client/lilypad-pace/main/student/analyze/analyze.js"></script>
+    <script src="/lilypad-client/lilypad-pace/main/student/analyze/attendanceRecords.js"></script>
+    <script src="/lilypad-client/lilypad-pace/main/student/analyze/behaviorLogs.js"></script>
+    <script src="/lilypad-client/lilypad-pace/main/student/analyze/treatmentPeriod.js"></script>
+
     <!-- DiscussionPost-related services -->
     <script src="/lilypad-client/lilypad-pace/services/discussions/discussionPost.js"></script>
     <script src="/lilypad-client/lilypad-pace/services/discussions/discussionReply.js"></script>
@@ -257,25 +263,7 @@
                 </div>
             </main-pane>
             <main-pane title="Analyze">
-                <div class="clearfix">
-                    <form name="analyze" class="clearfix">
-                        <select ng-model="analyzeView">
-                            <option value="treatmentPeriods">Treatment Periods</option>
-                            <option value="behaviorLogs">Behavior Logs</option>
-                            <option value="attendanceRecords">Attendance Records</option>
-                        </select>
-                        <span ng-hide="analyzeView == 'treatmentPeriods'">
-                            <span><label><p>End date</p><input type="date"/></label></span>
-                            <span><label><p>Start date</p><input type="date"/></label></span>
-                        </span>
-                    </form>
-                </div>
-                <div class="divider"></div>
-                <ng-switch on="analyzeView">
-                    <div ng-switch-when="treatmentPeriods">Get yo treatments!</div>
-                    <div ng-switch-when="behaviorLogs">Rollin in da logs</div>
-                    <div ng-switch-when="attendanceRecords">DAT ATTENDANCE</div>
-                </ng-switch>
+                <div ng-controller="MainStudentAnalyzeCtrl" ng-include="'/lilypad-client/lilypad-pace/main/student/analyze/analyze.html'"></div>
 
             </main-pane>
             <main-pane title="Discuss">
