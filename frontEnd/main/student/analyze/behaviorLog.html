@@ -1,21 +1,28 @@
 <!-- TODO: View for if there are zero logEntries -->
-<div class="clearfix">
-    <div class="buttonGroup">
-        <button class="settings" ng-click="$parent.showSettings()"></button>
+<div ng-controller="MainStudentAnalyzeBehaviorLogCtrl">
+    <div class="clearfix">
+        <div class="buttonGroup">
+            <button class="settings" ng-click="showSettings()"></button>
+        </div>
     </div>
+
+    <table class="log">
+        <tr>
+            <th>Time</th>
+            <th>Incident</th>
+            <th>Duration</th>
+            <th>Comment</th>
+        </tr>
+        <tr ng-repeat="logEntry in behaviorLog">
+            <td>{{logEntry.getOccurredAt() | date: 'h:mm'}}</td>
+            <td>{{logEntry.getLabel()}}</td>
+            <td>{{logEntry.getDuration() | duration}}</td>
+            <td>{{logEntry.getComment()}}</td>
+        </tr>
+    </table>
+    <main-modal active="data.behaviorModalActive" title="STUDENT BEHAVIORS">
+        <ng-include src="'/lilypad-client/lilypad-pace/frontend/partials/behaviorSettings.html'"
+                    ng-controller="MainStudentCollectBehaviorsModalCtrl"></ng-include>
+    </main-modal>
 </div>
 
-<table class="log" ng-controller="MainStudentAnalyzeBehaviorLogCtrl">
-    <tr>
-        <th>Time</th>
-        <th>Incident</th>
-        <th>Duration</th>
-        <th>Comment</th>
-    </tr>
-    <tr ng-repeat="logEntry in behaviorLog">
-        <td>{{logEntry.getOccurredAt() | date: 'h:mm'}}</td>
-        <td>{{logEntry.getLabel()}}</td>
-        <td>{{logEntry.getDuration() | duration}}</td>
-        <td>{{logEntry.getComment()}}</td>
-    </tr>
-</table>

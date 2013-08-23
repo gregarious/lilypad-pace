@@ -360,6 +360,14 @@ td, th {
     margin-right: 0;
 }
 
+form .buttonGroup {
+    float: right;
+}
+
+form .buttonGroup button {
+    margin-right: 0.25em;
+}
+
 .modal {
     box-sizing: border-box;
     position: absolute;
@@ -454,21 +462,25 @@ form {
     display: block;
 }
 
-form[name=incident] label {
-    float: left;
-    margin-right: 3em;
+.bordered form  {
+    padding: 1em;
 }
 
-form[name=incident] label:last-child {
+.bordered form label {
+    float: left;
+    margin-right: 2em;
+}
+
+.bordered form label:last-child {
     margin-right: 0;
 }
 
-form[name=incident] input[type=text] {
-    width: 400px;
+form[name=behavior] input[type=text] {
+    width: 340px;
 }
 
-form[name=incident] {
-    padding: 1em;
+form[name=incident] input[type=text] {
+    width: 380px;
 }
 
 form[name=analyze] {

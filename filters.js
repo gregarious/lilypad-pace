@@ -4,7 +4,7 @@
 app.filter('duration', function () {
     return function (input) {
         if (typeof input !== 'number' || input < 1) {
-            return '';
+            return '-';
         }
         var duration = '';
         var longDuration = false;

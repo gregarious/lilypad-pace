@@ -19,7 +19,6 @@ widgets.directive('buttonset', function () {
 
         },
         template: '<div>' +
-            '<h3>{{label}}</h3>' +
             '<ul class="buttonset">' +
             '<li ng-repeat="option in options" ng-click="select($index)" ng-class="{selected: isSelected($index)}">{{option}}</li>' +
             '</ul>' +

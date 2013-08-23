@@ -6,6 +6,7 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, student
     $scope.selectedBehaviorType = null;
     $scope.data = {};
 
+    // TODO: This needs to be ported to the new paradigm
     var fetchStudent = studentAccessors.allStudents();
     fetchStudent.then(function(students) {
         $scope.$watch(function () {
