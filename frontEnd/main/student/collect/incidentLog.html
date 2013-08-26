@@ -1,3 +1,4 @@
+
 <div class="clearfix">
     <div class="buttonGroup">
         <button class="settings" ng-click="$parent.showSettings()"></button>
@@ -16,7 +17,7 @@
             <label>
                 <p>Behavior</p>
                 <select ng-model="data.type"
-                        ng-options="incidentType.get('label') group by incidentType.get('applicableStudent') for incidentType in incidentTypes"
+                        ng-options="incidentType.get('label') group by incidentType.get('applicableStudent') for incidentType in behaviorTrackerViewState.incidentTypeCollection.models"
                         required>
                 </select>
             </label>

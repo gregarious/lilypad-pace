@@ -1,25 +1,10 @@
 // controller for the incident log
-app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, collectViewState, viewService, studentAccessors, behaviorIncidentAccessors) {
+app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewState, collectViewState, viewService, studentAccessors, behaviorIncidentDataStore) {
     $scope.data = {};
     $scope.addingIncident = false;
-    $scope.incidentTypes = [];
 
+    $scope.behaviorTrackerViewState = collectViewState.behaviorTrackerViewState;
     $scope.activityLogViewState = collectViewState.activityLogViewState;
-
-    // still doing the old-style async handling for retrieving behavior types
-    var fetchStudent = studentAccessors.allStudents();
-    fetchStudent.then(function(students) {
-        $scope.$watch(function () {
-            return viewService;
-        }, function (data) {
-            $scope.student = students.get(data.parameters.id);
-
-            var fetchTypes = behaviorIncidentAccessors.studentBehaviorTypes($scope.student);
-            fetchTypes.then(function(collection) {
-                $scope.incidentTypes = collection.models;
-            });
-        }, true);
-    });
 
     /* View functions */
 
@@ -52,8 +37,8 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, collectVie
             $scope.data.endedAt = today;
         }
 
-        var newIncident = behaviorIncidentAccessors.createIncident(
-            $scope.student,
+        var newIncident = behaviorIncidentDataStore.createIncident(
+            mainViewState.getSelectedStudent,       // TODO: don't like this being directly view-state dependant
             $scope.data.type,
             $scope.data.startedAt,
             $scope.data.endedAt,

@@ -1,4 +1,4 @@
-angular.module('pace').factory('collectViewState', function(_, Backbone, APIBackedCollection, mainViewState, dailyPeriodicRecordStore, dailyLogEntryStore, timeTracker) {
+angular.module('pace').factory('collectViewState', function(_, Backbone, APIBackedCollection, mainViewState, dailyPeriodicRecordStore, dailyLogEntryStore, behaviorIncidentDataStore, timeTracker) {
     var _selectedPeriodNumber = timeTracker.currentPeriod;
     var selectedStudentPeriods = new APIBackedCollection();
 
@@ -19,6 +19,11 @@ angular.module('pace').factory('collectViewState', function(_, Backbone, APIBack
         collection: new APIBackedCollection()
     };
 
+    var behaviorTrackerViewState = {
+        incidentTypeCollection: new APIBackedCollection(),
+        studentTypes: []
+    }
+
     // callback function to trigger whenever selected student
     var updateSelectedPeriod = function() {
         periodicRecordViewState.selectedPeriod = selectedStudentPeriods.getByPeriod(_selectedPeriodNumber);
@@ -37,8 +42,24 @@ angular.module('pace').factory('collectViewState', function(_, Backbone, APIBack
         activityLogViewState.collection = dailyLogEntryStore.getForStudent(newSelected);
     });
 
+    var updateStudentTypes = function(typeCollection) {
+        behaviorTrackerViewState.studentTypes = typeCollection.filter(function(type) {
+            return type.get('applicableStudent') !== null
+        });
+    };
+
+    mainViewState.on('change:selectedStudent', function(newSelected) {
+        if (behaviorTrackerViewState.incidentTypeCollection) {
+            behaviorTrackerViewState.incidentTypeCollection.off('sync', updateStudentTypes);
+        }
+        behaviorTrackerViewState.incidentTypeCollection = behaviorIncidentDataStore.getTypesForStudent(newSelected);
+        behaviorTrackerViewState.incidentTypeCollection.on('sync', updateStudentTypes);
+        updateStudentTypes(behaviorTrackerViewState.incidentTypeCollection);
+    });
+
     return {
         periodicRecordViewState: periodicRecordViewState,
-        activityLogViewState: activityLogViewState
+        activityLogViewState: activityLogViewState,
+        behaviorTrackerViewState: behaviorTrackerViewState
     };
 });

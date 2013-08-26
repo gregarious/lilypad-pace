@@ -32,7 +32,7 @@
                     </button>
                 </td>
             </tr>
-            <tr ng-repeat="studentType in studentTypes">
+            <tr ng-repeat="studentType in behaviorTrackerViewState.studentTypes">
                 <td>{{studentType.get('label')}}</td>
                 <td>{{studentType.get('supportsDuration') | supportsDuration}}</td>
             </tr>
