@@ -1,5 +1,5 @@
 // controller for behavior options modal
-app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainViewState, studentAccessors, behaviorIncidentDataStore, viewService) {
+app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, collectViewState, studentAccessors, behaviorIncidentDataStore, viewService) {
     var students = studentAccessors.allStudents();
     $scope.addingBehavior = false;
     $scope.behaviorTypes = ['Frequency', 'Duration'];
