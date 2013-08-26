@@ -60,6 +60,7 @@ app.directive('mainPane', function () {
 })
 
 // directive for modals that cover main content area
+// TODO: Close button isn't floating right anymore
 app.directive('mainModal', function () {
     return {
         restrict: 'E',

@@ -1,0 +1,42 @@
+<!-- TODO: Fix this janky button -->
+<button ng-click="openNewBehavior()">+</button>
+<div class="bordered" ng-show="addingBehavior">
+    <h3>Adding Behavior</h3>
+
+    <form name="behavior">
+        <div class="clearfix">
+            <label>
+                <p>Behavior Name</p>
+                <input type="text" placeholder="Label" ng-model="label"/>
+            </label>
+            <label>
+                <p>Behavior Type</p>
+                <buttonset id="behaviorTypeInput" options="behaviorTypes"
+                           value="data.selectedBehaviorType"></buttonset>
+            </label>
+        </div>
+        <div class="clearfix">
+            <span class="buttonGroup">
+                <button ng-click="closeNewBehavior()">Cancel</button>
+                <button class="main" ng-disabled="!behavior.$valid" ng-click="submitNewBehavior()">Submit</button>
+            </span>
+        </div>
+    </form>
+</div>
+<!-- TODO: Display message for empty behavior types -->
+<table>
+    <thead>
+    <tr>
+        <th>Behavior</th>
+        <th>Type</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="studentType in studentTypes">
+        <td>{{studentType.get('label')}}</td>
+        <td>{{studentType.get('supportsDuration') | supportsDuration}}</td>
+    </tr>
+    </tbody>
+</table>
+
+

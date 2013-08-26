@@ -2,6 +2,7 @@
 app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewState, collectViewState, viewService, studentAccessors, behaviorIncidentDataStore) {
     $scope.data = {};
     $scope.addingIncident = false;
+    $scope.data.behaviorModalActive = false;
 
     $scope.behaviorTrackerViewState = collectViewState.behaviorTrackerViewState;
     $scope.activityLogViewState = collectViewState.activityLogViewState;
@@ -17,6 +18,11 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     $scope.closeNewIncident = function () {
         $scope.addingIncident = false;
         $scope.data.type = $scope.data.startedAt = $scope.data.endedAt = $scope.data.comment = null;
+    };
+
+    // shows the settings modal
+    $scope.showSettings = function () {
+        $scope.data.behaviorModalActive = true;
     };
 
     // TODO: Should be doing responsive form validation here

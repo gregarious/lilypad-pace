@@ -1,41 +1,17 @@
 
 <div class="clearfix">
     <div class="buttonGroup">
+         <!-- TODO: Fix this janky buttons -->
+        <!-- TODO: implement editing of existing incidents -->
         <button class="settings" ng-click="$parent.showSettings()"></button>
         <button ng-click="openNewIncident()">+</button>
     </div>
 </div>
 <div class="bordered" ng-show="addingIncident">
     <h3>Adding Incident</h3>
-
-    <form name="incident">
-        <div class="clearfix">
-            <label>
-                <p>Start time</p>
-                <input ng-model="data.startedAt" type="time" required/>
-            </label>
-            <label>
-                <p>Behavior</p>
-                <select ng-model="data.type"
-                        ng-options="incidentType.get('label') group by incidentType.get('applicableStudent') for incidentType in behaviorTrackerViewState.incidentTypeCollection.models"
-                        required>
-                </select>
-            </label>
-            <label ng-show="data.type.get('supportsDuration')">
-                <p>End time</p>
-                <input type="time" ng-model="data.endedAt"
-                       ng-required="data.type.get('supportsDuration')"/>
-            </label>
-        </div>
-        <div>
-            <input type="text" placeholder="Comment" ng-model="data.comment">
-            <button ng-click="closeNewIncident()">Cancel</button>
-            <button class="main" ng-disabled="!incident.$valid" ng-click="submitIncident()">
-                Submit
-            </button>
-        </div>
-    </form>
+    <ng-include src="'/lilypad-client/lilypad-pace/frontend/partials/behaviorIncident.html'"></ng-include>
 </div>
+<!-- TODO: Display message for empty behaviorLog-->
 <div id="behaviorIncidentsTable">
     <table class="log">
         <tr>
@@ -47,8 +23,13 @@
         <tr ng-repeat="logEntry in activityLogViewState.collection.models">
             <td>{{logEntry.getOccurredAt() | date: 'h:mm'}}</td>
             <td>{{logEntry.getLabel()}}</td>
+            <!-- TODO: Fix duration -->
             <td>{{logEntry.getDuration() | duration}}</td>
+            <!-- TODO: Truncate comments so they don't screw up the table -->
             <td>{{logEntry.getComment()}}</td>
         </tr>
     </table>
 </div>
+<main-modal active="data.behaviorModalActive" title="STUDENT BEHAVIORS">
+    <ng-include src="'/lilypad-client/lilypad-pace/frontend/partials/behaviorSettings.html'" ng-controller="MainStudentCollectBehaviorsModalCtrl"></ng-include>
+</main-modal>
