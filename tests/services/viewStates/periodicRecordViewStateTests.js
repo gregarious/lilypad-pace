@@ -1,14 +1,11 @@
-describe('collectViewState', function() {
+describe('periodicRecordViewState', function() {
     // set up mock Student, PeriodicRecord and Loggable stores
     var studentA, recordsA, logsA, period2A;
-    beforeEach(inject(function(APIBackedCollection, Student, studentAccessors, dailyPeriodicRecordStore, PeriodicRecord, periodicRecordCollectionFactories, dailyLogEntryStore) {
+    beforeEach(inject(function(APIBackedCollection, Student, studentAccessors, dailyPeriodicRecordStore, PeriodicRecord, periodicRecordCollectionFactories) {
         // TODO: don't like the dependency on an explicit url setting. put these in Model defs
         studentA = new Student({
             id: 1,
-            periodicRecordsUrl: '/pr/1',
-            behaviorIncidentsUrl: '/bi/1',
-            pointLossesUrl: '/pl/1',
-            postsUrl: '/po/1'
+            periodicRecordsUrl: '/pr/1'
         });
 
         var mockAllStudents = new APIBackedCollection([studentA]);
@@ -21,26 +18,20 @@ describe('collectViewState', function() {
         ]);
         logsA = new APIBackedCollection();
         spyOn(dailyPeriodicRecordStore, 'getForStudent').andReturn(recordsA);
-        spyOn(dailyLogEntryStore, 'getForStudent').andReturn(logsA);
     }));
 
     describe('.periodicRecordViewState', function() {
-        var periodicRecordViewState;
-        beforeEach(inject(function(collectViewState) {
-            periodicRecordViewState = collectViewState.periodicRecordViewState;
+        it('selectedPeriod defaults to null', inject(function(periodicRecordViewState) {
+            expect(periodicRecordViewState.selectedPeriod).toBeNull();
         }));
 
-        it('selectedPeriod defaults to null', function() {
-            expect(periodicRecordViewState.selectedPeriod).toBeNull();
-        });
-
-        xit('updates on student change', inject(function(mainViewState) {
+        xit('updates on student change', inject(function(mainViewState, periodicRecordViewState) {
             mainViewState.setSelectedStudent(studentA);
             expect(periodicRecordViewState.selectedPeriod).toBe(recordsA);
         }));
 
         describe('.getSelectedPeriodNumber', function() {
-            it('defaults to the app-wide current period', inject(function(timeTracker) {
+            it('defaults to the app-wide current period', inject(function(timeTracker, periodicRecordViewState) {
                 expect(periodicRecordViewState.getSelectedPeriodNumber()).toBe(timeTracker.currentPeriod);
             }));
         });
@@ -48,7 +39,7 @@ describe('collectViewState', function() {
         describe('.setSelectedPeriodNumber', function() {
             var changeTriggered;
 
-            beforeEach(inject(function(mainViewState) {
+            beforeEach(inject(function(mainViewState, periodicRecordViewState) {
                 // watch for change event for test below
                 changeTriggered = false;
                 periodicRecordViewState.on('change:selectedPeriod', function() {
@@ -59,33 +50,17 @@ describe('collectViewState', function() {
                 periodicRecordViewState.setSelectedPeriodNumber(2);
             }));
 
-            it('changes .getSelectedPeriodNumber value', function() {
+            it('changes .getSelectedPeriodNumber value', inject(function(periodicRecordViewState) {
                 expect(periodicRecordViewState.getSelectedPeriodNumber()).toBe(2);
-            });
+            }));
 
-            it('changes the `seletedPeriod` model', function() {
+            it('changes the `seletedPeriod` model', inject(function(periodicRecordViewState) {
                 expect(periodicRecordViewState.selectedPeriod).toBe(period2A);
-            });
+            }));
 
             it('triggers a change:selectedPeriod event', function() {
                 expect(changeTriggered).toBe(true);
             });
         });
-    });
-
-    describe('.activityLogViewState', function() {
-        var activityLogViewState;
-        beforeEach(inject(function(collectViewState) {
-            activityLogViewState = collectViewState.activityLogViewState;
-        }));
-
-        it('collection defaults to an empty Collection', function() {
-            expect(activityLogViewState.collection.length).toBe(0);
-        });
-
-        it('updates on student change', inject(function(mainViewState) {
-            mainViewState.setSelectedStudent(studentA);
-            expect(activityLogViewState.collection).toBe(logsA);
-        }));
     });
 });

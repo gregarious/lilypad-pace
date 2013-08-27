@@ -1,6 +1,6 @@
 // controller for periodic records
-app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, collectViewState, dailyLogEntryStore, timeTracker, _) {
-    $scope.viewState = collectViewState.periodicRecordViewState;
+app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, periodicRecordViewState, dailyLogEntryStore, timeTracker, _) {
+    $scope.viewState = periodicRecordViewState;
 
     // watch the time tracker: it will update when the current period changes
     $scope.timeTracker = timeTracker;

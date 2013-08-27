@@ -1,4 +1,4 @@
-angular.module('pace').factory('collectViewState', function(_, Backbone, APIBackedCollection, mainViewState, dailyPeriodicRecordStore, dailyLogEntryStore, behaviorIncidentDataStore, timeTracker) {
+angular.module('pace').factory('periodicRecordViewState', function(_, Backbone, APIBackedCollection, mainViewState, dailyPeriodicRecordStore, timeTracker) {
     var _selectedPeriodNumber = timeTracker.currentPeriod;
     var selectedStudentPeriods = new APIBackedCollection();
 
@@ -29,7 +29,5 @@ angular.module('pace').factory('collectViewState', function(_, Backbone, APIBack
         updateSelectedPeriod();
     });
 
-    return {
-        periodicRecordViewState: periodicRecordViewState,
-    };
+    return periodicRecordViewState;
 });
