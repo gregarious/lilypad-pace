@@ -1,5 +1,5 @@
 // controller for the behavior log
-app.controller('MainStudentAnalyzeAttendanceLogCtrl', function ($scope, mainViewState, attendanceSpanStore) {
+app.controller('MainStudentAnalyzeAttendanceLogCtrl', function ($scope, mainViewState, attendanceDataStore) {
     // set up $scope.attendanceSpanCollection
     var selectedStudent = mainViewState.getSelectedStudent();
     setAttendanceLogsForStudent(selectedStudent);
@@ -16,7 +16,7 @@ app.controller('MainStudentAnalyzeAttendanceLogCtrl', function ($scope, mainView
      */
     function setAttendanceLogsForStudent(student) {
         if (student) {
-            $scope.attendanceSpanCollection = attendanceSpanStore.getForStudent(student);
+            $scope.attendanceSpanCollection = attendanceDataStore.getForStudent(student);
         }
         else {
             $scope.attendanceSpanCollection = null;

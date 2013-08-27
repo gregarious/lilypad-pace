@@ -5,7 +5,7 @@
  * - getForStudent: Returns a Student-specific collection of AttendanceSpans
  *                  limited to a particular date range.
  */
-angular.module('pace').factory('attendanceSpanStore', function(timeTracker, moment, attendanceSpanCollectionFactories) {
+angular.module('pace').factory('attendanceDataStore', function(timeTracker, moment, attendanceSpanCollectionFactories) {
     var cache = {};
 
     return {

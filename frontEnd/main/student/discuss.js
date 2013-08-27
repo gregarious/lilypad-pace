@@ -1,11 +1,11 @@
 // controller for discussion tab
-app.controller('MainStudentDiscussCtrl', function ($scope, mainViewState, discussionPostStore) {
+app.controller('MainStudentDiscussCtrl', function ($scope, mainViewState, discussionDataStore) {
     $scope.data = {};
 
     // set up the discussionCollection
     var selectedStudent = mainViewState.getSelectedStudent();
     if (selectedStudent) {
-        $scope.discussionCollection = discussionPostStore.getForStudent(selectedStudent);
+        $scope.discussionCollection = discussionDataStore.getForStudent(selectedStudent);
     }
     else {
         $scope.discussionCollection = null;
@@ -24,7 +24,7 @@ app.controller('MainStudentDiscussCtrl', function ($scope, mainViewState, discus
 
     // listen for the selected student to change
     mainViewState.on('change:selectedStudent', function(newSelected) {
-        $scope.discussionCollection = discussionPostStore.getForStudent(newSelected);
+        $scope.discussionCollection = discussionDataStore.getForStudent(newSelected);
     });
 });
 

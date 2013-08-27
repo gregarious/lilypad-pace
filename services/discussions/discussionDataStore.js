@@ -6,7 +6,7 @@
  */
 
 
-angular.module('pace').factory('discussionPostStore', function(discussionPostCollectionFactories) {
+angular.module('pace').factory('discussionDataStore', function(discussionPostCollectionFactories) {
     // StudentDiscussionPostCollection cache, indexed by student
     var cache = {};
 

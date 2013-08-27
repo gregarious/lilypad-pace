@@ -1,5 +1,5 @@
 // TODO: re-enable (and reconfigure for promises) once I figure out why we're having trouble with $http
-describe('discussionPostStore', function() {
+describe('discussionDataStore', function() {
     describe(".getForStudent", function() {
         var student, dateString, studentPosts, posts;
         beforeEach(inject(function(Student) {
@@ -11,8 +11,8 @@ describe('discussionPostStore', function() {
 
         describe("on first access", function() {
             var posts;
-            beforeEach(inject(function(discussionPostStore) {
-                posts = discussionPostStore.getForStudent(student);
+            beforeEach(inject(function(discussionDataStore) {
+                posts = discussionDataStore.getForStudent(student);
             }));
 
             it("returns an empty Collection", function() {
@@ -27,15 +27,15 @@ describe('discussionPostStore', function() {
 
         xdescribe("after collection syncs", function() {
             var posts;
-            beforeEach(inject(function(discussionPostStore) {
-                posts = discussionPostStore.getForStudent(student);
+            beforeEach(inject(function(discussionDataStore) {
+                posts = discussionDataStore.getForStudent(student);
             }));
 
             describe("on subsequent accesses", function() {
                 var posts2;
-                beforeEach(inject(function(discussionPostStore) {
+                beforeEach(inject(function(discussionDataStore) {
                     // flush $http
-                    posts2 = discussionPostStore.getForStudent(student);
+                    posts2 = discussionDataStore.getForStudent(student);
                 }));
 
                 it("returns the same collection", function() {
