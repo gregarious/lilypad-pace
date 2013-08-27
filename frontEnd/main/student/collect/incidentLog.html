@@ -20,7 +20,7 @@
             <th>Duration</th>
             <th>Comment</th>
         </tr>
-        <tr ng-repeat="logEntry in activityLogViewState.collection.models">
+        <tr ng-repeat="logEntry in incidentLogCollection.models">
             <td>{{logEntry.getOccurredAt() | date: 'h:mm'}}</td>
             <td>{{logEntry.getLabel()}}</td>
             <!-- TODO: Fix duration -->

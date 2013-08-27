@@ -1,13 +1,14 @@
 // controller for the incident log
-app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewState, collectViewState, viewService, studentAccessors, behaviorIncidentDataStore) {
+app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewState, dailyLogEntryStore, viewService) {
     $scope.data = {};
     $scope.addingIncident = false;
     $scope.data.behaviorModalActive = false;
 
-    $scope.behaviorTrackerViewState = collectViewState.behaviorTrackerViewState;
-    $scope.activityLogViewState = collectViewState.activityLogViewState;
+    // initialize $scope.incidentLogCollection
+    var selectedStudent = mainViewState.getSelectedStudent();
+    setIncidentLogForStudent(selectedStudent);
 
-    /* View functions */
+    /** View functions **/
 
     // opens the "new incident" control
     $scope.openNewIncident = function () {
@@ -50,7 +51,26 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
             $scope.data.endedAt,
             $scope.data.comment);
 
-        $scope.activityLogViewState.collection.add(newIncident);
+        $scope.incidentLogCollection.add(newIncident);
         $scope.closeNewIncident();
     };
+
+    /** Listeners to ensure view stays in sync with mainViewState **/
+
+    // listen for the selected student to change
+    mainViewState.on('change:selectedStudent', function(newSelected) {
+        setIncidentLogForStudent(newSelected);
+    });
+
+    /**
+     * Hooks $scope.incidentLogCollection up to the given student's data.
+     */
+    function setIncidentLogForStudent(student) {
+        if (student) {
+            $scope.incidentLogCollection = dailyLogEntryStore.getForStudent(student);
+        }
+        else {
+            $scope.incidentLogCollection = null;
+        }
+    }
 });

@@ -15,10 +15,6 @@ angular.module('pace').factory('collectViewState', function(_, Backbone, APIBack
     };
     _.extend(periodicRecordViewState, Backbone.Events);
 
-    var activityLogViewState = {
-        collection: new APIBackedCollection()
-    };
-
     var behaviorTrackerViewState = {
         incidentTypeCollection: new APIBackedCollection(),
         studentTypes: []
@@ -38,9 +34,6 @@ angular.module('pace').factory('collectViewState', function(_, Backbone, APIBack
         updateSelectedPeriod();
     });
 
-    mainViewState.on('change:selectedStudent', function(newSelected) {
-        activityLogViewState.collection = dailyLogEntryStore.getForStudent(newSelected);
-    });
 
     var updateStudentTypes = function(typeCollection) {
         behaviorTrackerViewState.studentTypes = typeCollection.filter(function(type) {
@@ -59,7 +52,6 @@ angular.module('pace').factory('collectViewState', function(_, Backbone, APIBack
 
     return {
         periodicRecordViewState: periodicRecordViewState,
-        activityLogViewState: activityLogViewState,
         behaviorTrackerViewState: behaviorTrackerViewState
     };
 });
