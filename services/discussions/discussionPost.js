@@ -47,7 +47,7 @@ angular.module('pace').factory('DiscussionPost', function(Backbone, moment, Stud
          * Creates a new ReplyPost and hooks it up to the Collection living
          * in this Post's `replies`. Doesn't currently POST.
          */
-        createNewReply: function(author, content, options) {
+        createNewReply: function(content, author) {
             var newReply = new DiscussionReply({
                 author: author,
                 content: content

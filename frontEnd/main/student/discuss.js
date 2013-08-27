@@ -1,17 +1,35 @@
 // controller for discussion tab
-app.controller('MainStudentDiscussCtrl', function ($scope, discussViewState, viewService) {
+app.controller('MainStudentDiscussCtrl', function ($scope, mainViewState, discussionPostStore) {
     $scope.data = {};
-    $scope.discussViewState = discussViewState;
+
+    // set up the discussionCollection
+    var selectedStudent = mainViewState.getSelectedStudent();
+    if (selectedStudent) {
+        $scope.discussionCollection = discussionPostStore.getForStudent(selectedStudent);
+    }
+    else {
+        $scope.discussionCollection = null;
+    }
 
     // creating new comments and replies to comments
-    // NOTE: parameters are swapped between createNewPost and createNewReply
     $scope.newTopic = function () {
-        $scope.discussViewState.collection.createNewPost($scope.data.content, $scope.data.author);
+        $scope.discussionCollection.createNewPost($scope.data.content, $scope.data.author);
     };
 
     $scope.newReply = function (discussion) {
-        discussion.createNewReply($scope.data.author, discussion.newReply);
+        discussion.createNewReply(discussion.newReply, $scope.data.author);
     };
+
+    // Logic to ensure view is updated after selected student changes
+
+    // listen for the selected student to change
+    mainViewState.on('change:selectedStudent', function(newSelected) {
+        $scope.discussionCollection = discussionPostStore.getForStudent(newSelected);
+    });
+
+    function updateDiscussions(discussionCollection) {
+        $scope.discussionCollection = discussionCollection;
+    }
 
 });
 

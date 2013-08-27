@@ -1,3 +1,10 @@
+/**
+ * Service that tracks app-wide view state variables.
+ *
+ * Primarily tracks the currently selected student in the app sidebar.
+ * When this student changes, the service object will trigger a
+ * 'change:selectedStudent' event on itself.
+ */
 angular.module('pace').factory('mainViewState', function(_, Backbone, APIBackedCollection, dailyPeriodicRecordStore, dailyLogEntryStore, discussionPostStore) {
     var mainViewState = {};
     var _selectedStudent = null;

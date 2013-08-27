@@ -59,7 +59,7 @@ describe("DiscussionPost", function() {
     describe('.createNewReply', function() {
         var newReply;
         beforeEach(function() {
-            newReply = post.createNewReply('simple', 'More new words');
+            newReply = post.createNewReply('More new words', 'simple');
         });
 
         it('creates new reply object', inject(function(DiscussionReply) {
