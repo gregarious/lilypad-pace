@@ -5,7 +5,7 @@
  * When this student changes, the service object will trigger a
  * 'change:selectedStudent' event on itself.
  */
-angular.module('pace').factory('mainViewState', function(_, Backbone, APIBackedCollection, dailyPeriodicRecordStore, dailyLogEntryStore, discussionPostStore) {
+angular.module('pace').factory('mainViewState', function(_, Backbone, APIBackedCollection, periodicRecordDataStore, logEntryDataStore, discussionPostStore) {
     var mainViewState = {};
     var _selectedStudent = null;
 

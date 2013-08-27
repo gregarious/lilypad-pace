@@ -14,7 +14,7 @@
  *     - selectedPeriod: PeriodicRecord
  */
 
-app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, mainViewState, dailyPeriodicRecordStore, dailyLogEntryStore, timeTracker, _) {
+app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, mainViewState, periodicRecordDataStore, logEntryDataStore, timeTracker, _) {
     /** $scope initializing  **/
 
     // Initialize $scope.data.selectedPeriodNumber to be the current period
@@ -34,7 +34,7 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, mainVie
         var student = $scope.selectedPeriod.get('student');
 
         // TODO: move this logic inside store
-        var log = dailyLogEntryStore.getForStudent(student);
+        var log = logEntryDataStore.getDailyLogForStudent(student);
         log.add(pointLossRecord);
     };
 
@@ -83,7 +83,7 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, mainVie
         }
 
         if (student) {
-            selectedStudentPeriods = dailyPeriodicRecordStore.getForStudent(student);
+            selectedStudentPeriods = periodicRecordDataStore.getDailyRecordsForStudent(student);
             selectedStudentPeriods.on('sync', updateSelectedPeriod);
         }
         else {

@@ -1,5 +1,5 @@
-describe("dailyPeriodicRecordStore", function() {
-    describe(".getForStudent", function() {
+describe("periodicRecordDataStore", function() {
+    describe(".getDailyRecordsForStudent", function() {
         var student;
         beforeEach(inject(function(Student) {
             student = new Student({
@@ -10,8 +10,8 @@ describe("dailyPeriodicRecordStore", function() {
 
         describe("on first access", function() {
             var studentRecords;
-            beforeEach(inject(function(dailyPeriodicRecordStore) {
-                studentRecords = dailyPeriodicRecordStore.getForStudent(student);
+            beforeEach(inject(function(periodicRecordDataStore) {
+                studentRecords = periodicRecordDataStore.getDailyRecordsForStudent(student);
             }));
 
             it("returns an empty Collection", function() {
@@ -26,8 +26,8 @@ describe("dailyPeriodicRecordStore", function() {
 
         describe("after collection syncs", function() {
             var studentRecords;
-            beforeEach(inject(function(dailyPeriodicRecordStore) {
-                studentRecords = dailyPeriodicRecordStore.getForStudent(student);
+            beforeEach(inject(function(periodicRecordDataStore) {
+                studentRecords = periodicRecordDataStore.getDailyRecordsForStudent(student);
             }));
 
             // TODO: add a $http/timeTracker-mocked test to ensure filtering works
@@ -40,9 +40,9 @@ describe("dailyPeriodicRecordStore", function() {
 
             xdescribe("on subsequent accesses", function() {
                 var studentRecords2;
-                beforeEach(inject(function(dailyPeriodicRecordStore) {
+                beforeEach(inject(function(periodicRecordDataStore) {
                     // flush $http
-                    studentRecords2 = dailyPeriodicRecordStore.getForStudent(student);
+                    studentRecords2 = periodicRecordDataStore.getDailyRecordsForStudent(student);
                 }));
 
                 it("returns the same collection", function() {

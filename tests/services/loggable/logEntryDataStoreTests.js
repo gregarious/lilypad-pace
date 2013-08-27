@@ -1,5 +1,5 @@
-describe("dailyLogEntryStore", function() {
-    describe(".getForStudent", function() {
+describe("logEntryDataStore", function() {
+    describe(".getDailyLogForStudent", function() {
         var student;
         beforeEach(inject(function(Student) {
             student = new Student({
@@ -11,8 +11,8 @@ describe("dailyLogEntryStore", function() {
 
         describe("on first access", function() {
             var studentEntries;
-            beforeEach(inject(function(dailyLogEntryStore) {
-                studentEntries = dailyLogEntryStore.getForStudent(student);
+            beforeEach(inject(function(logEntryDataStore) {
+                studentEntries = logEntryDataStore.getDailyLogForStudent(student);
             }));
 
             it("returns an empty Collection", function() {
@@ -27,8 +27,8 @@ describe("dailyLogEntryStore", function() {
 
         describe("after collection syncs", function() {
             var studentEntries;
-            beforeEach(inject(function(dailyLogEntryStore) {
-                studentEntries = dailyLogEntryStore.getForStudent(student);
+            beforeEach(inject(function(logEntryDataStore) {
+                studentEntries = logEntryDataStore.getDailyLogForStudent(student);
             }));
 
             // TODO: add a $http/timeTracker-mocked test to ensure filtering works
@@ -41,9 +41,9 @@ describe("dailyLogEntryStore", function() {
 
             xdescribe("on subsequent accesses", function() {
                 var studentEntries2;
-                beforeEach(inject(function(dailyLogEntryStore) {
+                beforeEach(inject(function(logEntryDataStore) {
                     // flush $http
-                    studentEntries2 = dailyLogEntryStore.getForStudent(student);
+                    studentEntries2 = logEntryDataStore.getDailyLogForStudent(student);
                 }));
 
                 it("returns the same collection", function() {

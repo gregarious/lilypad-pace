@@ -1,5 +1,5 @@
 // controller for the incident log
-app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewState, dailyLogEntryStore, behaviorIncidentDataStore) {
+app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewState, logEntryDataStore, behaviorIncidentDataStore) {
     $scope.data = {};
     $scope.addingIncident = false;
     $scope.data.behaviorModalActive = false;
@@ -69,7 +69,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
      */
     function setIncidentDataForStudent(student) {
         if (student) {
-            $scope.incidentLogCollection = dailyLogEntryStore.getForStudent(student);
+            $scope.incidentLogCollection = logEntryDataStore.getDailyLogForStudent(student);
             $scope.incidentTypeCollection = behaviorIncidentDataStore.getTypesForStudent(student);
         }
         else {
