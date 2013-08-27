@@ -1,19 +1,6 @@
 // Karma configuration
 // Generated on Wed Aug 07 2013 14:43:44 GMT-0400 (EDT)
 
-// <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.js"></script>
-//     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular-mobile.js"></script>
-
-//     <!-- modules -->
-//     <script src="/lilypad-client/lilypad-pace/modules/underscore.js"></script>
-//     <script src="/lilypad-client/lilypad-pace/modules/backbone.js"></script>
-//     <script src="/lilypad-client/lilypad-pace/modules/backbone-store.js"></script>
-//     <script src="/lilypad-client/lilypad-pace/modules/backbone-patches.js"></script>
-//     <script src="/lilypad-client/lilypad-pace/modules/moment.js"></script>
-//     <script src="/lilypad-client/lilypad-pace/modules/modules.js"></script>
-//     <script src="/lilypad-client/lilypad-pace/modules/widgets.js"></script>
-
-
 module.exports = function(config) {
   config.set({
 
@@ -36,7 +23,6 @@ module.exports = function(config) {
 
         // our code
         'modules/underscore.js',
-        'modules/backbone-patches.js',
         'modules/backbone.js',
         'modules/moment.js',
         'modules/widgets.js',
