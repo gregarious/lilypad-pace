@@ -20,17 +20,12 @@ app.controller('MainStudentDiscussCtrl', function ($scope, mainViewState, discus
         discussion.createNewReply(discussion.newReply, $scope.data.author);
     };
 
-    // Logic to ensure view is updated after selected student changes
+    /** Listeners to ensure view stays in sync with mainViwState **/
 
     // listen for the selected student to change
     mainViewState.on('change:selectedStudent', function(newSelected) {
         $scope.discussionCollection = discussionPostStore.getForStudent(newSelected);
     });
-
-    function updateDiscussions(discussionCollection) {
-        $scope.discussionCollection = discussionCollection;
-    }
-
 });
 
 // directive for add reply toggle
