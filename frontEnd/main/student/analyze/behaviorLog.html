@@ -13,7 +13,7 @@
             <th>Duration</th>
             <th>Comment</th>
         </tr>
-        <tr ng-repeat="logEntry in behaviorLog">
+        <tr ng-repeat="logEntry in behaviorLogCollection.models">
             <td>{{logEntry.getOccurredAt() | date: 'h:mm'}}</td>
             <td>{{logEntry.getLabel()}}</td>
             <td>{{logEntry.getDuration() | duration}}</td>

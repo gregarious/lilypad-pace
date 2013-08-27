@@ -20,7 +20,7 @@ app.controller('MainStudentDiscussCtrl', function ($scope, mainViewState, discus
         discussion.createNewReply(discussion.newReply, $scope.data.author);
     };
 
-    /** Listeners to ensure view stays in sync with mainViwState **/
+    /** Listeners to ensure view stays in sync with mainViewState **/
 
     // listen for the selected student to change
     mainViewState.on('change:selectedStudent', function(newSelected) {
