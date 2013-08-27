@@ -30,13 +30,15 @@ module.exports = function(config) {
         // dependencies
         'https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.js',
         'https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular-mobile.js',
-        'modules/underscore.js',
-        'modules/backbone.js',
-        'modules/moment.js',
+        'lib/underscore.js',
+        'lib/backbone.js',
+        'lib/moment.js',
 
         // our code
+        'modules/underscore.js',
         'modules/backbone-patches.js',
-        'modules/modules.js',
+        'modules/backbone.js',
+        'modules/moment.js',
         'modules/widgets.js',
         'app.js',
         'services/**/*.js',
