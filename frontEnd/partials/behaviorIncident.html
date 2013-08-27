@@ -7,7 +7,7 @@
         <label>
             <p>Behavior</p>
             <select ng-model="data.type"
-                    ng-options="incidentType.get('label') group by incidentType.get('applicableStudent') for incidentType in behaviorTrackerViewState.incidentTypeCollection.models"
+                    ng-options="incidentType.get('label') group by incidentType.get('applicableStudent') for incidentType in incidentTypeCollection.models"
                     required>
             </select>
         </label>

@@ -15,11 +15,6 @@ angular.module('pace').factory('collectViewState', function(_, Backbone, APIBack
     };
     _.extend(periodicRecordViewState, Backbone.Events);
 
-    var behaviorTrackerViewState = {
-        incidentTypeCollection: new APIBackedCollection(),
-        studentTypes: []
-    }
-
     // callback function to trigger whenever selected student
     var updateSelectedPeriod = function() {
         periodicRecordViewState.selectedPeriod = selectedStudentPeriods.getByPeriod(_selectedPeriodNumber);
@@ -34,24 +29,7 @@ angular.module('pace').factory('collectViewState', function(_, Backbone, APIBack
         updateSelectedPeriod();
     });
 
-
-    var updateStudentTypes = function(typeCollection) {
-        behaviorTrackerViewState.studentTypes = typeCollection.filter(function(type) {
-            return type.get('applicableStudent') !== null
-        });
-    };
-
-    mainViewState.on('change:selectedStudent', function(newSelected) {
-        if (behaviorTrackerViewState.incidentTypeCollection) {
-            behaviorTrackerViewState.incidentTypeCollection.off('sync', updateStudentTypes);
-        }
-        behaviorTrackerViewState.incidentTypeCollection = behaviorIncidentDataStore.getTypesForStudent(newSelected);
-        behaviorTrackerViewState.incidentTypeCollection.on('sync', updateStudentTypes);
-        updateStudentTypes(behaviorTrackerViewState.incidentTypeCollection);
-    });
-
     return {
         periodicRecordViewState: periodicRecordViewState,
-        behaviorTrackerViewState: behaviorTrackerViewState
     };
 });

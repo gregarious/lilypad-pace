@@ -1,12 +1,12 @@
 // controller for the incident log
-app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewState, dailyLogEntryStore, viewService) {
+app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewState, dailyLogEntryStore, behaviorIncidentDataStore) {
     $scope.data = {};
     $scope.addingIncident = false;
     $scope.data.behaviorModalActive = false;
 
     // initialize $scope.incidentLogCollection
     var selectedStudent = mainViewState.getSelectedStudent();
-    setIncidentLogForStudent(selectedStudent);
+    setIncidentDataForStudent(selectedStudent);
 
     /** View functions **/
 
@@ -31,6 +31,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     $scope.submitIncident = function () {
         var today = new Date();
         var splitTime;
+        console.log($scope.data);
         splitTime = $scope.data.startedAt.split(':');
         today.setHours(splitTime[0]);
         today.setMinutes(splitTime[1]);
@@ -59,18 +60,21 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
 
     // listen for the selected student to change
     mainViewState.on('change:selectedStudent', function(newSelected) {
-        setIncidentLogForStudent(newSelected);
+        setIncidentDataForStudent(newSelected);
     });
 
     /**
-     * Hooks $scope.incidentLogCollection up to the given student's data.
+     * Hooks $scope.incidentLogCollection & $scope.incidentTypeCollection up
+     * to the given student's data
      */
-    function setIncidentLogForStudent(student) {
+    function setIncidentDataForStudent(student) {
         if (student) {
             $scope.incidentLogCollection = dailyLogEntryStore.getForStudent(student);
+            $scope.incidentTypeCollection = behaviorIncidentDataStore.getTypesForStudent(student);
         }
         else {
             $scope.incidentLogCollection = null;
+            $scope.incidentTypeCollection = null;
         }
     }
 });
