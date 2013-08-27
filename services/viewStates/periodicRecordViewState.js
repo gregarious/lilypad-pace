@@ -1,3 +1,7 @@
+/**
+ * Companion service to the MainStudentCollectPeriodicRecordCtrl to help
+ * keep view state logic outside code controller code.
+ */
 angular.module('pace').factory('periodicRecordViewState', function(_, Backbone, APIBackedCollection, mainViewState, dailyPeriodicRecordStore, timeTracker) {
     var _selectedPeriodNumber = timeTracker.currentPeriod;
     var selectedStudentPeriods = new APIBackedCollection();
