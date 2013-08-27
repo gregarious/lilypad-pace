@@ -6,14 +6,6 @@ app.run(function(timeTracker) {
     timeTracker.currentPeriod = 3;
 });
 
-app.run(function(mainViewState, periodicRecordViewState) {
-    // do nothing -- just want to eagerly load the view states so event
-    // listeners can hook into each other before their respective controllers
-    // are first loaded. otherwise the injector can initialize them (and
-    // therefore hook their listeners up) after events have already been
-    // triggered
-});
-
 app.controller('main', function ($scope) {
     $scope.login = {};
     $scope.authenticated = true;
