@@ -4,9 +4,12 @@
  * Interface:
  * - getForStudent: Returns a Student-specific collection of AttendanceSpans
  *                  limited to a particular date range.
+ * - getActiveSpans: Returns a Collection of AttendanceSpans that are currently
+ *                   active (i.e. no time out yet).
  */
-angular.module('pace').factory('attendanceDataStore', function(timeTracker, moment, attendanceSpanCollectionFactories) {
+angular.module('pace').factory('attendanceDataStore', function(timeTracker, moment, AttendanceSpan, attendanceSpanCollectionFactories) {
     var cache = {};
+    var activeSpans = null;
 
     return {
         getForStudent: function(student, startDate, endDate) {
@@ -18,6 +21,37 @@ angular.module('pace').factory('attendanceDataStore', function(timeTracker, mome
                 collection.fetch();
             }
             return collection;
+        },
+
+        getActiveSpans: function() {
+            // no caching this since it's ever-changing
+            // TODO: replace with timetracker based date/time
+            var now = moment().toDate();
+            now = moment('2013-08-20T11:00:00');        // DEBUG FIXING
+            var spans = attendanceSpanCollectionFactories.allActiveSpans(now);
+            spans.fetch();
+            return spans;
+        },
+
+        /**
+         * Creates new AttendanceSpan object.
+         *
+         * @param  {Student} student
+         * @param  {String} date    (ISO-formatted date string)
+         * @param  {String} timeIn  (ISO-formatted time string)
+         * @param  {String} timeOut (ISO-formatted time string)
+         *
+         * @return {AttendanceSpan}         [description]
+         */
+        createSpan: function(student, date, timeIn, timeOut) {
+            var span = new AttendanceSpan({
+                student: student,
+                date: date,
+                timeIn: timeIn,
+                timeOut: timeOut
+            });
+            span.save();
+            return span;
         }
     };
 });

@@ -1,10 +1,13 @@
 // controller for the student list in the left panel
-app.controller('MenuStudentListCtrl', function ($scope, mainViewState, viewService, studentAccessors) {
+app.controller('MenuStudentListCtrl', function ($scope, mainViewState, viewService, studentAccessors, activeAttendanceManager) {
     var fetchStudents = studentAccessors.allStudents();
     var studentCollection;
     fetchStudents.then(function(collection) {
         studentCollection = collection;
         $scope.students = studentCollection.models; // list of students in class
+
+        activeAttendanceManager.initializeSpans(studentCollection);
+        $scope.activeSpans = activeAttendanceManager.activeSpans;
     });
 
     $scope.$watch(function () {

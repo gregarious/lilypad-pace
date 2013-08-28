@@ -71,6 +71,7 @@
     <script src="/lilypad-client/lilypad-pace/services/attendance/attendanceSpan.js"></script>
     <script src="/lilypad-client/lilypad-pace/services/attendance/attendanceSpanCollectionFactories.js"></script>
     <script src="/lilypad-client/lilypad-pace/services/attendance/attendanceDataStore.js"></script>
+    <script src="/lilypad-client/lilypad-pace/services/attendance/activeAttendanceManager.js"></script>
 
     <!-- ViewState services -->
     <script src="/lilypad-client/lilypad-pace/services/viewStates/mainViewState.js"></script>
@@ -150,7 +151,7 @@
                            ng-repeat="student in students">
                     <div ng-click="$parent.handleClick(student.get('id'))">
                         <strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}
-                        <span class="circle attendance" ng-class="{absent: !student.get('isPresent')}" ng-show="attendance || !student.get('isPresent')"></span>
+                        <span class="circle attendance" ng-class="{absent: !activeSpans[student.id]}" ng-show="attendance || !activeSpans[student.id]"></span>
                     </div>
                 </menu-item>
             </menu>
