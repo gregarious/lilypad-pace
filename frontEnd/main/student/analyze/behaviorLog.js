@@ -1,5 +1,5 @@
 // controller for the behavior log
-app.controller('MainStudentAnalyzeBehaviorLogCtrl', function ($scope, mainViewState, logEntryStore) {
+app.controller('MainStudentAnalyzeBehaviorLogCtrl', function ($scope, mainViewState, logEntryDataStore) {
     $scope.data = {};
 
     // set up $scope.behaviorLogCollection
@@ -20,7 +20,7 @@ app.controller('MainStudentAnalyzeBehaviorLogCtrl', function ($scope, mainViewSt
      */
     function setBehaviorLogForStudent(student) {
         if (student) {
-            $scope.behaviorLogCollection = logEntryStore.getForStudent(student);
+            $scope.behaviorLogCollection = logEntryDataStore.getForStudent(student);
         }
         else {
             $scope.behaviorLogCollection = null;

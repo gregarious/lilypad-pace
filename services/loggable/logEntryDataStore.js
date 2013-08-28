@@ -3,16 +3,30 @@
  * to timeTracker).
  *
  * Interface:
+ * - getTodaysForStudent: Returns a Student-specific collection of
+ *     Loggables limited to a particular date.
  * - getForStudent: Returns a Student-specific collection of Loggables
  */
 angular.module('pace').factory('logEntryDataStore', function(timeTracker, moment, loggableCollectionFactories) {
+    var todayCache = {};
     var cache = {};
 
     return {
-        getDailyLogForStudent: function(student) {
+        getTodaysForStudent: function(student) {
+            var collection = todayCache[student.id];
+            if (!collection) {
+                collection = todayCache[student.id] = loggableCollectionFactories.dailyStudentLog(student, timeTracker.currentDate);
+                collection.fetch();
+            }
+            return collection;
+        },
+
+        getForStudent: function(student, startDate, endDate) {
+            // Note: endDate is an exclusive bound
             var collection = cache[student.id];
             if (!collection) {
-                collection = cache[student.id] = loggableCollectionFactories.dailyStudentLog(student, timeTracker.currentDate);
+                var factory = loggableCollectionFactories.studentLog;
+                collection = cache[student.id] = factory(student, startDate, endDate);
                 collection.fetch();
             }
             return collection;

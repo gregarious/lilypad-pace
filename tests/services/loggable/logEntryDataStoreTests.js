@@ -1,5 +1,5 @@
 describe("logEntryDataStore", function() {
-    describe(".getDailyLogForStudent", function() {
+    describe(".getTodaysForStudent", function() {
         var student;
         beforeEach(inject(function(Student) {
             student = new Student({
@@ -12,7 +12,7 @@ describe("logEntryDataStore", function() {
         describe("on first access", function() {
             var studentEntries;
             beforeEach(inject(function(logEntryDataStore) {
-                studentEntries = logEntryDataStore.getDailyLogForStudent(student);
+                studentEntries = logEntryDataStore.getTodaysForStudent(student);
             }));
 
             it("returns an empty Collection", function() {
@@ -28,7 +28,7 @@ describe("logEntryDataStore", function() {
         describe("after collection syncs", function() {
             var studentEntries;
             beforeEach(inject(function(logEntryDataStore) {
-                studentEntries = logEntryDataStore.getDailyLogForStudent(student);
+                studentEntries = logEntryDataStore.getTodaysForStudent(student);
             }));
 
             // TODO: add a $http/timeTracker-mocked test to ensure filtering works
@@ -43,7 +43,7 @@ describe("logEntryDataStore", function() {
                 var studentEntries2;
                 beforeEach(inject(function(logEntryDataStore) {
                     // flush $http
-                    studentEntries2 = logEntryDataStore.getDailyLogForStudent(student);
+                    studentEntries2 = logEntryDataStore.getTodaysForStudent(student);
                 }));
 
                 it("returns the same collection", function() {

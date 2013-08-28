@@ -69,7 +69,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
      */
     function setIncidentDataForStudent(student) {
         if (student) {
-            $scope.incidentLogCollection = logEntryDataStore.getDailyLogForStudent(student);
+            $scope.incidentLogCollection = logEntryDataStore.getTodaysForStudent(student);
             $scope.incidentTypeCollection = behaviorIncidentDataStore.getTypesForStudent(student);
         }
         else {
