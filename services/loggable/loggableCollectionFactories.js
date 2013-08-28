@@ -32,9 +32,17 @@ angular.module('pace').factory('loggableCollectionFactories', function(APIBacked
             url: student.get('behaviorIncidentsUrl') + '?' + (incidentArgs.length ? incidentArgs.join('&') : '')
         }))();
 
+        var pointLossArgs = [];
+        if (startDate) {
+            pointLossArgs.push('periodic_record__date__gte=' + moment(startDate).format());
+        }
+        if (endDate) {
+            pointLossArgs.push('periodic_record__date__lt=' + moment(endDate).format());
+        }
+
         var pointLosses = new (APIBackedCollection.extend({
             model: PointLoss,
-            url: student.get('pointLossesUrl')
+            url: student.get('pointLossesUrl') + '?' + (pointLossArgs.length ? pointLossArgs.join('&') : '')
         }))();
 
         var StudentLogEntryCollection = APIBackedCollection.extend({
