@@ -7,7 +7,6 @@ app.controller('MenuStudentListCtrl', function ($scope, mainViewState, viewServi
         $scope.students = studentCollection.models; // list of students in class
 
         activeAttendanceManager.initializeSpans(studentCollection);
-        $scope.activeSpans = activeAttendanceManager.activeSpans;
     });
 
     $scope.$watch(function () {
@@ -29,10 +28,10 @@ app.controller('MenuStudentListCtrl', function ($scope, mainViewState, viewServi
         var student = studentCollection.get(studentId);
         // are we taking attendance or switching main content views between students?
         if ($scope.attendance) {
-            if (student.get('isPresent')) {
-                student.markAbsent();
+            if (activeAttendanceManager.activeSpans[student.id]) {
+                activeAttendanceManager.deactivateSpanForStudent(student);
             } else {
-                student.markPresent();
+                activeAttendanceManager.activateSpanForStudent(student);
             }
         } else {
             // update the view service that we are looking at a different student

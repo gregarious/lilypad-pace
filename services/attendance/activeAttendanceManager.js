@@ -16,6 +16,7 @@ angular.module('pace').service('activeAttendanceManager', function(attendanceDat
                 student,
                 timeTracker.currentDate,
                 moment().format('HH:mm:ss'));
+            student.markPresent();
         }
     };
 
@@ -28,9 +29,10 @@ angular.module('pace').service('activeAttendanceManager', function(attendanceDat
     this.deactivateSpanForStudent = function(student) {
         if (this.activeSpans[student.id]) {
             var span = this.activeSpans[student.id];
-            span.timeOut = moment().format('HH:mm:ss');
+            span.set('timeOut', moment().format('HH:mm:ss'));
             span.save();
             this.activeSpans[student.id] = null;
+            student.markAbsent();
         }
     };
 
@@ -46,13 +48,18 @@ angular.module('pace').service('activeAttendanceManager', function(attendanceDat
         // initialize to null for each student
         studentCollection.each(function(student) {
             activeSpanObj[student.id] = null;
+            student.set('isPresent', false);
         });
 
         // get the active spans, and cycle through them to update the sapn object
         var spanCollection = attendanceDataStore.getActiveSpans();
         var updateSpans = function() {
             spanCollection.each(function(span) {
-                activeSpanObj[span.get('student').id] = span;
+                var student = studentCollection.get(span.get('student').id);
+                if (student) {
+                    activeSpanObj[student.id] = span;
+                    student.set('isPresent', true);
+                }
             });
         };
 
