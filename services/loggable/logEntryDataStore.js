@@ -15,7 +15,8 @@ angular.module('pace').factory('logEntryDataStore', function(timeTracker, moment
         getTodaysForStudent: function(student) {
             var collection = todayCache[student.id];
             if (!collection) {
-                collection = todayCache[student.id] = loggableCollectionFactories.dailyStudentLog(student, timeTracker.currentDate);
+                collection = todayCache[student.id] = loggableCollectionFactories.dailyStudentLog(
+                    student, timeTracker.getDateString());
                 collection.fetch();
             }
             return collection;

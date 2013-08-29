@@ -9,7 +9,6 @@
  */
 angular.module('pace').factory('attendanceDataStore', function(timeTracker, moment, AttendanceSpan, attendanceSpanCollectionFactories) {
     var cache = {};
-    var activeSpans = null;
 
     return {
         getForStudent: function(student, startDate, endDate) {
@@ -25,10 +24,8 @@ angular.module('pace').factory('attendanceDataStore', function(timeTracker, mome
 
         getActiveSpans: function() {
             // no caching this since it's ever-changing
-            // TODO: replace with timetracker based date/time
-            var now = moment().toDate();
-            now = moment('2013-08-20T11:00:00');        // DEBUG FIXING
-            var spans = attendanceSpanCollectionFactories.allActiveSpans(now);
+            var spans = attendanceSpanCollectionFactories.allActiveSpans(
+                timeTracker.getDateTimestamp());
             spans.fetch();
             return spans;
         },

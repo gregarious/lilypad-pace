@@ -14,8 +14,8 @@ angular.module('pace').service('activeAttendanceManager', function(attendanceDat
         else {
             this.activeSpans[student.id] = attendanceDataStore.createSpan(
                 student,
-                timeTracker.currentDate,
-                moment().format('HH:mm:ss'));
+                timeTracker.getDateString(),
+                timeTracker.getTimeString());
             student.markPresent();
         }
     };

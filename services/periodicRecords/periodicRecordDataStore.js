@@ -15,7 +15,7 @@ angular.module('pace').factory('periodicRecordDataStore', function(moment, timeT
             var collection = cache[student.id];
             if (!collection) {
                 var factory = periodicRecordCollectionFactories.dailyStudentRecords;
-                collection = cache[student.id] = factory(student, timeTracker.currentDate);
+                collection = cache[student.id] = factory(student, timeTracker.getDateString());
                 collection.fetch();
             }
             return collection;

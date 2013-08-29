@@ -20,11 +20,11 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, mainVie
     // Initialize $scope.data.selectedPeriodNumber to be the current period
     // according to the timeTracker
     $scope.data = {
-        selectedPeriodNumber: timeTracker.currentPeriod
+        selectedPeriodNumber: timeTracker.getCurrentPeriod()
     };
 
     // Initialize $scope.availablePeriods
-    setAvailablePeriods(timeTracker.currentPeriod);
+    setAvailablePeriods(timeTracker.getCurrentPeriod());
 
     // See bottom of function for $scope.selectedPeriod initialization
 

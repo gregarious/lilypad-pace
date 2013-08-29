@@ -112,7 +112,7 @@ angular.module('pace').factory('loggableCollectionFactories', function(APIBacked
      *
      * @param  {Student} student    (must have `behaviorIncidentsUrl` and
      *                              `pointLossesUrl` attributes defined)
-     * @param  {Date} date          (ISO formatted string)
+     * @param  {String/Date} date   (ISO formatted string or Date)
      *
      * @return {Collection instance}
      */
