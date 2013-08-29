@@ -4,7 +4,7 @@ app.controller('MenuStudentListCtrl', function ($scope, mainViewState, viewServi
     var studentCollection;
     fetchStudents.then(function(collection) {
         studentCollection = collection;
-        _g = $scope.students = studentCollection.models; // list of students in class
+        $scope.students = studentCollection.models; // list of students in class
     });
 
     $scope.$watch(function () {
