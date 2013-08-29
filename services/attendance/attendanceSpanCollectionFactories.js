@@ -37,26 +37,5 @@ angular.module('pace').factory('attendanceSpanCollectionFactories', function(API
 
             return new AttendanceSpanCollection();
         },
-
-        /**
-         * Returns a new Collection of AttendanceSpans that are active
-         * as of the given Date.
-         *
-         * @param  {Date} date
-         */
-        allActiveSpans: function(date) {
-            var args = [
-                'date=' + moment(date).format('YYYY-MM-DD'),
-                'time_in__gte=' + moment(date).format('HH:mm:ss'),
-                'time_out=' + null
-            ];
-
-            var ActiveAttendanceSpanCollection = APIBackedCollection.extend({
-                model: AttendanceSpan,
-                url: '/pace/attendancespans/?' + args.join('&')
-            });
-
-            return new ActiveAttendanceSpanCollection();
-        }
     };
 });

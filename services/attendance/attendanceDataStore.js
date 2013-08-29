@@ -4,8 +4,8 @@
  * Interface:
  * - getForStudent: Returns a Student-specific collection of AttendanceSpans
  *                  limited to a particular date range.
- * - getActiveSpans: Returns a Collection of AttendanceSpans that are currently
- *                   active (i.e. no time out yet).
+ * - getActiveForStudent: Returns an AttendanceSpan that is currently active
+ *                  as of the date provided, or null if it doesn't exist.
  */
 angular.module('pace').factory('attendanceDataStore', function(timeTracker, AttendanceSpan, attendanceSpanCollectionFactories) {
     var cache = {};
@@ -20,14 +20,6 @@ angular.module('pace').factory('attendanceDataStore', function(timeTracker, Atte
                 collection.fetch();
             }
             return collection;
-        },
-
-        getActiveSpans: function() {
-            // no caching this since it's ever-changing
-            var spans = attendanceSpanCollectionFactories.allActiveSpans(
-                timeTracker.getTimestamp());
-            spans.fetch();
-            return spans;
         },
 
         /**
@@ -49,6 +41,10 @@ angular.module('pace').factory('attendanceDataStore', function(timeTracker, Atte
             });
             span.save();
             return span;
+        },
+
+        fetchActiveForStudent: function(student) {
+
         }
     };
 });
