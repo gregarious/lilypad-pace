@@ -52,10 +52,12 @@ angular.module('backbone', ['underscore']).
                     var snakeData = {};
                     // TODO: use proper modularized version of underscore
                     _.each(_.pairs(data), function(kv_pair) {
-                        // first serialize any sub models
+                        // first serialize any sub models into stubs (don't go recursive)
                         var value = kv_pair[1];
-                        if(value && value.toJSON) {
-                            value = value.toJSON();
+                        if(value && value.id) {
+                            value = {
+                                'id': value.id,
+                            };
                         }
 
                         // now transform key
