@@ -1,4 +1,4 @@
-angular.module('pace').factory('DiscussionReply', function(Backbone) {
+angular.module('pace').factory('DiscussionReply', function(Backbone, moment) {
 	return Backbone.Model.extend({
         /*
             Note: this model has no API endpoint. Always nested in Post object.

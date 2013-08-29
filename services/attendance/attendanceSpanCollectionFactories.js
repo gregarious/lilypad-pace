@@ -1,7 +1,7 @@
 /**
  * Provides factories to create new Collections of AttendanceSpan objects
  */
-angular.module('pace').factory('attendanceSpanCollectionFactories', function(APIBackedCollection, AttendanceSpan) {
+angular.module('pace').factory('attendanceSpanCollectionFactories', function(APIBackedCollection, AttendanceSpan, moment) {
     return {
         /**
          * Returns a new Collection of AttendanceSpans for a given student

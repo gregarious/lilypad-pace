@@ -7,7 +7,7 @@
  *     Loggables limited to a particular date.
  * - getForStudent: Returns a Student-specific collection of Loggables
  */
-angular.module('pace').factory('logEntryDataStore', function(timeTracker, moment, loggableCollectionFactories) {
+angular.module('pace').factory('logEntryDataStore', function(timeTracker, loggableCollectionFactories) {
     var todayCache = {};
     var cache = {};
 
@@ -15,8 +15,9 @@ angular.module('pace').factory('logEntryDataStore', function(timeTracker, moment
         getTodaysForStudent: function(student) {
             var collection = todayCache[student.id];
             if (!collection) {
+                var today = timeTracker.getTimestampAsMoment().format('YYYY-MM-DD');
                 collection = todayCache[student.id] = loggableCollectionFactories.dailyStudentLog(
-                    student, timeTracker.getDateString());
+                    student, today);
                 collection.fetch();
             }
             return collection;

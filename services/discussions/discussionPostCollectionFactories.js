@@ -1,7 +1,7 @@
 /**
  * Provides factories to create new Collections of post objects
  */
-angular.module('pace').factory('discussionPostCollectionFactories', function(APIBackedCollection, DiscussionPost) {
+angular.module('pace').factory('discussionPostCollectionFactories', function(APIBackedCollection, timeTracker, DiscussionPost) {
     return {
         /**
          * Returns a new Collection of DiscussionPost models for a student,
@@ -43,7 +43,7 @@ angular.module('pace').factory('discussionPostCollectionFactories', function(API
 
                     // don't want to POST this to server, but just set it
                     // client-side now while the async call is in progress
-                    post.set('createdAt', new Date());
+                    post.set('createdAt', timeTracker.getTimestamp());
                     // manually sort: apparently setting createdAt after adding doesn't trigger sorting?
                     this.sort();
 

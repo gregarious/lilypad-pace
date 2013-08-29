@@ -1,4 +1,4 @@
-angular.module('pace').factory('PeriodicRecord', function(_, Backbone, Student, PointLoss) {
+angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTracker, Student, PointLoss) {
     // utilities in use below
     var validPointpointTypes = ['kw', 'cw', 'fd', 'bs'];
     var isValidPointType = function(code) {
@@ -108,7 +108,7 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, Student, 
                     var lossRecord = new PointLoss({
                         pointType: pointType,
                         periodicRecord: this,
-                        occurredAt: new Date()
+                        occurredAt: timeTracker.getTimestamp()
                     });
                     lossRecord.save();
                     return lossRecord;

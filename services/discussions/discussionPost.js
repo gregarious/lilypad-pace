@@ -1,4 +1,4 @@
-angular.module('pace').factory('DiscussionPost', function(Backbone, moment, Student, DiscussionReply) {
+angular.module('pace').factory('DiscussionPost', function(Backbone, moment, timeTracker, Student, DiscussionReply) {
     var ReplyCollection = Backbone.Collection.extend({'model': DiscussionReply});
 
     return Backbone.Model.extend({
@@ -55,7 +55,7 @@ angular.module('pace').factory('DiscussionPost', function(Backbone, moment, Stud
 
             // don't want to POST this to server, but just set it
             // client-side now while the async call is in progress
-            newReply.set('createdAt', new Date());
+            newReply.set('createdAt', timeTracker.getTimestamp());
 
             // TODO: hook this up to POST endpoint
 

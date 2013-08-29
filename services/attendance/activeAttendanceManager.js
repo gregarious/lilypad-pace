@@ -1,4 +1,4 @@
-angular.module('pace').service('activeAttendanceManager', function(attendanceDataStore, moment, timeTracker) {
+angular.module('pace').service('activeAttendanceManager', function(attendanceDataStore, timeTracker) {
     // TODO: tie the spans in with the Student model
     this.activeSpans = {};      // map from student ids to AttendanceSpan objects (or null)
 
@@ -12,10 +12,12 @@ angular.module('pace').service('activeAttendanceManager', function(attendanceDat
             throw Error('student already has an active attendance span');
         }
         else {
+            var now = timeTracker.getTimestampAsMoment();
             this.activeSpans[student.id] = attendanceDataStore.createSpan(
                 student,
-                timeTracker.getDateString(),
-                timeTracker.getTimeString());
+                now.format('YYYY-MM-DD'),
+                now.format('HH:mm:ss')
+            );
             student.markPresent();
         }
     };
@@ -29,7 +31,8 @@ angular.module('pace').service('activeAttendanceManager', function(attendanceDat
     this.deactivateSpanForStudent = function(student) {
         if (this.activeSpans[student.id]) {
             var span = this.activeSpans[student.id];
-            span.set('timeOut', moment().format('HH:mm:ss'));
+            var now = timeTracker.getTimestampAsMoment();
+            span.set('timeOut', now.format('YYYY-MM-DD'));
             span.save();
             this.activeSpans[student.id] = null;
             student.markAbsent();

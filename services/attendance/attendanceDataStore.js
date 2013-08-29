@@ -7,7 +7,7 @@
  * - getActiveSpans: Returns a Collection of AttendanceSpans that are currently
  *                   active (i.e. no time out yet).
  */
-angular.module('pace').factory('attendanceDataStore', function(timeTracker, moment, AttendanceSpan, attendanceSpanCollectionFactories) {
+angular.module('pace').factory('attendanceDataStore', function(timeTracker, AttendanceSpan, attendanceSpanCollectionFactories) {
     var cache = {};
 
     return {
@@ -25,7 +25,7 @@ angular.module('pace').factory('attendanceDataStore', function(timeTracker, mome
         getActiveSpans: function() {
             // no caching this since it's ever-changing
             var spans = attendanceSpanCollectionFactories.allActiveSpans(
-                timeTracker.getDateTimestamp());
+                timeTracker.getTimestamp());
             spans.fetch();
             return spans;
         },

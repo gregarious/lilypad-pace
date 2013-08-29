@@ -1,5 +1,5 @@
 // controller for the incident log
-app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewState, logEntryDataStore, behaviorIncidentDataStore) {
+app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewState, timeTracker, logEntryDataStore, behaviorIncidentDataStore) {
     $scope.data = {};
     $scope.addingIncident = false;
     $scope.data.behaviorModalActive = false;
@@ -29,7 +29,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     // TODO: Should be doing responsive form validation here
     // TODO: Should confirm new incidents for students marked absent
     $scope.submitIncident = function () {
-        var today = new Date();
+        var today = timeTracker.getTimestamp();
         var splitTime;
         console.log($scope.data);
         splitTime = $scope.data.startedAt.split(':');
@@ -38,7 +38,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
         $scope.data.startedAt = today;
 
         if ($scope.data.endedAt) {
-            today = new Date();
+            today = timeTracker.getTimestamp();
             splitTime = $scope.data.endedAt.split(':');
             today.setHours(splitTime[0]);
             today.setMinutes(splitTime[1]);

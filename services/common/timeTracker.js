@@ -1,4 +1,4 @@
-angular.module('pace').factory('timeTracker', function() {
+angular.module('pace').provider('timeTracker', function() {
     var periodStarts = [
         '08:00',
         '09:00',
@@ -12,51 +12,51 @@ angular.module('pace').factory('timeTracker', function() {
         '17:00',
     ];
 
-    var _currentPeriod = null;
+    var anchorOffset = 0;
+    this.setAnchorTime = function(date) {
+        anchorOffset = new Date() - date;
+    };
 
-    var updateCurrentPeriod = function() {
-        var nowTime = moment(timeTracker.getDateTimestamp()).format('HH:mm');
-        var pd = null;
-        for (var i = 0; i < periodStarts.length; i++) {
-            if (nowTime >= periodStarts[i]) {
-                pd = i+1;
+    this.$get = function(moment) {
+        var _currentPeriod = null;
+
+        var timeTracker = {
+            getTimestamp: function() {
+                return new Date(new Date() - anchorOffset);
+            },
+
+            getTimestampAsMoment: function() {
+                return moment(timeTracker.getTimestamp());
+            },
+
+            getCurrentPeriod: function() {
+                return _currentPeriod;
             }
-            else {
-                break;
+        };
+        _.extend(timeTracker, Backbone.Events);
+
+        var updateCurrentPeriod = function() {
+            var nowTime = timeTracker.getTimestampAsMoment().format('HH:mm');
+            var pd = null;
+            for (var i = 0; i < periodStarts.length; i++) {
+                if (nowTime >= periodStarts[i]) {
+                    pd = i+1;
+                }
+                else {
+                    break;
+                }
+            }
+
+            if(_currentPeriod !== pd) {
+                _currentPeriod = pd;
+                timeTracker.trigger('change:currentPeriod', _currentPeriod);
             }
         };
 
-        if(_currentPeriod !== pd) {
-            _currentPeriod = pd;
-            timeTracker.trigger('change:currentPeriod', _currentPeriod);
-        }
+        // TODO: need to add logic to call updateCurrentPeriod periodically
+        updateCurrentPeriod();
+
+        return timeTracker;
     };
 
-    var timeTracker = {
-        getDateTimestamp: function() {
-            return moment().toDate();
-        },
-
-        getTimeString: function() {
-            return moment().format('HH:mm:ss');
-        },
-
-        getDateString: function() {
-            return moment().format('YYYY-MM-DD');
-        },
-
-        getCurrentPeriod: function() {
-            return _currentPeriod;
-        }
-    };
-
-    // add support for event triggering
-    _.extend(timeTracker, Backbone.Events);
-
-    // intialize the _currentPeriod value
-    updateCurrentPeriod();
-
-    // TODO: need to add logic to call updateCurrentPeriod periodically
-
-    return timeTracker;
 });
