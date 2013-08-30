@@ -5,7 +5,35 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
     $scope.selectedBehaviorType = null;
     $scope.data = {};
 
-    // initialize $scope.incidentTypeCollection and $scope.studentTypes
+    /** Functions needed to keep scope up to date with store changes **/
+    // TODO: not great. could use a refactor
+
+    // Hooks $scope.incidentTypeCollection up to the given student's data
+    var setIncidentTypesForStudent = function(student) {
+        if (student) {
+            var incidentTypeCollection = behaviorIncidentDataStore.getTypesForStudent(student);
+
+            // Can't guarantee the incident types have synced yet. If not, set up a callback
+            if (incidentTypeCollection.isSyncInProgress) {
+                incidentTypeCollection.once("sync", updateStudentOnlyTypes);
+            }
+            else {
+                updateStudentOnlyTypes(incidentTypeCollection);
+            }
+        }
+        else {
+            $scope.studentOnlyTypes = [];
+        }
+    };
+
+    var updateStudentOnlyTypes = function(incidentTypeCollection) {
+        // Note this creates a bare array of IncidentTypes, *not* a Collection!
+        $scope.studentOnlyTypes = incidentTypeCollection.filter(function(type) {
+            return type.get('applicableStudent') !== null;
+        });
+    };
+
+    // initialize $scope.incidentTypeCollection and $scope.studentOnlyTypes
     var selectedStudent = mainViewState.getSelectedStudent();
     setIncidentTypesForStudent(selectedStudent);
 
@@ -24,10 +52,12 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
     // TODO: Should be doing responsive form validation here
     $scope.submitNewBehavior = function () {
         $scope.incidentTypeCollection.createIncidentType(
-            $scope.label,
+            $scope.data.label,
             $scope.data.selectedBehaviorType === 'Duration',
             null);
+        updateStudentOnlyTypes($scope.incidentTypeCollection);
         $scope.closeNewBehavior();
+
     };
 
     /** Listeners to ensure view stays in sync with mainViewState **/
@@ -36,29 +66,4 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
     mainViewState.on('change:selectedStudent', function(newSelected) {
         setIncidentTypesForStudent(newSelected);
     });
-
-    // Hooks $scope.incidentTypeCollection up to the given student's data
-    function setIncidentTypesForStudent(student) {
-        if (student) {
-            var incidentTypeCollection = behaviorIncidentDataStore.getTypesForStudent(student);
-
-            var setStudentTypes = function() {
-                // Note this creates a bare array of IncidentTypes, *not* a Collection!
-                $scope.studentTypes = incidentTypeCollection.filter(function(type) {
-                    return type.get('applicableStudent') !== null;
-                });
-            };
-
-            // Can't guarantee the incident types have synced yet. If not, set up a callback
-            if (incidentTypeCollection.isSyncInProgress) {
-                incidentTypeCollection.once("sync", setStudentTypes);
-            }
-            else {
-                setStudentTypes();
-            }
-        }
-        else {
-            $scope.studentTypes = [];
-        }
-    }
 });

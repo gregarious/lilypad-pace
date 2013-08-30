@@ -7,7 +7,7 @@
         <div class="clearfix">
             <label>
                 <p>Behavior Name</p>
-                <input type="text" placeholder="Label" ng-model="label"/>
+                <input type="text" placeholder="Label" ng-model="data.label"/>
             </label>
             <label>
                 <p>Behavior Type</p>
@@ -32,7 +32,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="studentType in studentTypes">
+    <tr ng-repeat="studentType in studentOnlyTypes">
         <td>{{studentType.get('label')}}</td>
         <td>{{studentType.get('supportsDuration') | supportsDuration}}</td>
     </tr>
