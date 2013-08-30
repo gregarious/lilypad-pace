@@ -288,3 +288,11 @@ over the place.
 In Angular, you try to avoid thinking in terms of events. Instead, you just lay out all your view
 behaviors at once in the HTML, in a way that directly relates them to your data, and then leave it to
 your controllers to let the data dictate the view state via setting parameters on $scope.
+
+## Other good intro resources
+
+- http://docs.angularjs.org/guide/overview
+- http://docs.angularjs.org/guide/concepts
+- 9-minute intro on Angular: http://www.youtube.com/watch?v=k4qVkWh1EAo
+- AngularJS Fundamentals In 60-ish Minutes: http://www.youtube.com/watch?feature=fvwp&NR=1&v=i9MHigUZKEM
+- Lots of links: http://kahlil.github.io/angular-resources/
