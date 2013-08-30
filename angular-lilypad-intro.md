@@ -1,4 +1,4 @@
-# Quick Angular primer
+# Primer on Angular and our codebase
 
 Here's an overview of our stack, as well as an overview of Angular.js and the features we
 use most. This guide will go from the View layer (HTML) to the API with the server.
