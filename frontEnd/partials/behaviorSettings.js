@@ -41,11 +41,20 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
     function setIncidentTypesForStudent(student) {
         if (student) {
             var incidentTypeCollection = behaviorIncidentDataStore.getTypesForStudent(student);
+            var setStudentTypes = function() {
+                // Note this creates a bare array of IncidentTypes, *not* a Collection!
+                $scope.studentTypes = incidentTypeCollection.filter(function(type) {
+                    return type.get('applicableStudent') !== null;
+                });
+            };
 
-            // Note this creates a bare array of IncidentTypes, *not* a Collection!
-            $scope.studentTypes = incidentTypeCollection.filter(function(type) {
-                return type.get('applicableStudent') !== null;
-            });
+            // Can't guarantee the incident types have synced yet. If not, set up a callback
+            if (incidentTypeCollection.isSyncInProgress) {
+                incidentTypeCollection.once("sync", setStudentTypes);
+            }
+            else {
+                setStudentTypes();
+            }
         }
         else {
             $scope.studentTypes = [];
