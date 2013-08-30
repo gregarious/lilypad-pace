@@ -1,30 +1,18 @@
 // controller for the student list in the left panel
-app.controller('MenuStudentListCtrl', function ($scope, mainViewState, viewService, studentAccessors) {
-    var fetchStudents = studentAccessors.allStudents();
-    var studentCollection;
-    fetchStudents.then(function(collection) {
-        studentCollection = collection;
-        $scope.students = studentCollection.models; // list of students in class
-    });
-
-    $scope.$watch(function () {
-        return viewService;
-    }, function (data) {
-        if (data.parameters.id !== undefined) {
-            $scope.currentStudentId = data.parameters.id;
-        }
-        $scope.attendance = data.parameters.attendance; // whether attendance is being taken
-    }, true);
+app.controller('MenuStudentListCtrl', function ($scope, mainViewState, studentDataStore) {
+    // var fetchStudents = studentDataStore.getAllStudents();
+    $scope.studentCollection = studentDataStore.getAllStudents();
+    $scope.mainViewState = mainViewState;
 
     // toggles attendance controls
     $scope.toggleAttendance = function () {
-        viewService.parameters.attendance = !viewService.parameters.attendance;
+        $scope.mainViewState.editingAttendance = !$scope.mainViewState.editingAttendance;
     };
 
     // handles click events on student list
     $scope.handleClick = function (student) {
         // are we taking attendance or switching main content views between students?
-        if ($scope.attendance) {
+        if ($scope.mainViewState.editingAttendance) {
             if (student.isPresent()) {
                 student.markAbsent();
             }
@@ -32,10 +20,6 @@ app.controller('MenuStudentListCtrl', function ($scope, mainViewState, viewServi
                 student.markPresent();
             }
         } else {
-            // update the view service that we are looking at a different student
-            viewService.currentView = 'student';
-            viewService.parameters['id'] = student.id;
-
             mainViewState.setSelectedStudent(student);
         }
     };

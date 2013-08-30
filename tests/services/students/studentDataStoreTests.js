@@ -1,6 +1,6 @@
-// TODO: re-enable once I figure out why we're having trouble with $http
-xdescribe('studentAccessors', function() {
-	describe('.allStudents', function() {
+// TODO: re-write with new specs once I figure out why we're having trouble with $http
+xdescribe('studentDataStore', function() {
+	describe('.getAllStudents', function() {
 		beforeEach(inject(function($injector) {
 			$httpBackend = $injector.get('$httpBackend');
 			$httpBackend.when('GET', '/pace/students/').respond([
@@ -16,9 +16,9 @@ xdescribe('studentAccessors', function() {
 		});
 
 		var students;
-		beforeEach(inject(function(studentAccessors) {
+		beforeEach(inject(function(studentDataStore) {
 			runs(function() {
-				studentAccessors.allStudents().then(function(collection) {
+				studentDataStore.getAllStudents().then(function(collection) {
 					students = collection;
 				});
 				$httpBackend.flush();
@@ -37,7 +37,7 @@ xdescribe('studentAccessors', function() {
 		it('always returns the same Collection reference', function(){
 			var secondResponse;
 			runs(function() {
-				allStudents().then(function(collection) {
+				getAllStudents().then(function(collection) {
 					secondResponse = collection;
 					expect(secondResponse).toBe(students);
 				});

@@ -42,7 +42,7 @@
 
     <!-- Student-related services -->
     <script src="/lilypad-client/lilypad-pace/services/students/student.js"></script>
-    <script src="/lilypad-client/lilypad-pace/services/students/studentAccessors.js"></script>
+    <script src="/lilypad-client/lilypad-pace/services/students/studentDataStore.js"></script>
 
     <!-- PeriodicRecord-related services -->
     <script src="/lilypad-client/lilypad-pace/services/periodicRecords/periodicRecord.js"></script>
@@ -141,18 +141,18 @@
                 <menu-item id="signout" ng-show="systemMenuActive" ng-click="signOut()">
                     <span>SIGN OUT</span>
                 </menu-item>
-                <menu-item id="attendanceToggle" ng-click="$parent.toggleAttendance()">
-                    <ng-switch on="attendance">
+                <menu-item id="attendanceToggle" ng-click="toggleAttendance()">
+                    <ng-switch on="mainViewState.editingAttendance">
                         <!-- TODO: Highligh the save attendance button when attendance is being edited -->
                         <span ng-switch-default>EDIT ATTENDANCE</span>
                         <span ng-switch-when="true">SAVE ATTENDANCE</span>
                     </ng-switch>
                 </menu-item>
-                <menu-item ng-class="{selected: currentStudentId == student.get('id') && !attendance}"
-                           ng-repeat="student in students">
-                    <div ng-click="$parent.handleClick(student)">
+                <menu-item ng-class="{selected: mainViewState.getSelectedStudent() == student && !mainViewState.editingAttendance}"
+                           ng-repeat="student in studentCollection.models">
+                    <div ng-click="handleClick(student)">
                         <strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}
-                        <span class="circle attendance" ng-class="{absent: !student.isPresent()}" ng-show="attendance || !student.isPresent()"></span>
+                        <span class="circle attendance" ng-class="{absent: !student.isPresent()}" ng-show="mainViewState.editingAttendance || !student.isPresent()"></span>
                     </div>
                 </menu-item>
             </menu>
@@ -160,29 +160,28 @@
     </div>
 </div>
 <div id="main" ng-controller="MainCtrl">
-<ng-switch on="view">
-<div id="student" ng-switch-when="student">
-    <div class="mainContent" ng-class="{disabled: (attendance)}" ng-controller="MainStudentCtrl">
-        <main-tabs>
-            <h1><strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}</h1>
-            <main-pane title="Collect">
-                <ng-include src="'/lilypad-client/lilypad-pace/frontEnd/main/student/collect.html'" ng-controller="MainStudentCollectCtrl"></ng-include>
-            </main-pane>
-            <main-pane title="Analyze">
-                <ng-include src="'/lilypad-client/lilypad-pace/frontEnd/main/student/analyze.html'" ng-controller="MainStudentAnalyzeCtrl"></ng-include>
-            </main-pane>
-            <main-pane title="Discuss">
-                <ng-include src="'/lilypad-client/lilypad-pace/frontEnd/main/student/discuss.html'" ng-controller="MainStudentDiscussCtrl"></ng-include>
-            </main-pane>
-        </main-tabs>
+    <div id="student" ng-show="mainViewState.getSelectedStudent()">
+        <div class="mainContent" ng-class="{disabled: (mainViewState.editingAttendance)}" ng-controller="MainStudentCtrl">
+            <main-tabs>
+                <h1><strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}</h1>
+                <main-pane title="Collect">
+                    <ng-include src="'/lilypad-client/lilypad-pace/frontEnd/main/student/collect.html'" ng-controller="MainStudentCollectCtrl"></ng-include>
+                </main-pane>
+                <main-pane title="Analyze">
+                    <ng-include src="'/lilypad-client/lilypad-pace/frontEnd/main/student/analyze.html'" ng-controller="MainStudentAnalyzeCtrl"></ng-include>
+                </main-pane>
+                <main-pane title="Discuss">
+                    <ng-include src="'/lilypad-client/lilypad-pace/frontEnd/main/student/discuss.html'" ng-controller="MainStudentDiscussCtrl"></ng-include>
+                </main-pane>
+            </main-tabs>
+        </div>
     </div>
 
-</div>
-<div ng-switch-default>
-    <!-- TODO: Pretty up the default screen -->
-    <h1>default screen</h1>
-</div>
-</ng-switch>
+    <div ng-hide="mainViewState.getSelectedStudent()">
+        <!-- TODO: Pretty up the default screen -->
+        <h1>default screen</h1>
+    </div>
+
 </div>
 <!-- TODO: look into fixing the rubberband effect on app boundaries -->
 <script>

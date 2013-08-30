@@ -1,7 +1,7 @@
 describe("mainViewState", function() {
     // set up mock student store
     var studentA;
-    beforeEach(inject(function(APIBackedCollection, Student, studentAccessors) {
+    beforeEach(inject(function(APIBackedCollection, Student, studentDataStore) {
         // TODO: don't like the dependency on an explicit url setting. put these in Model defs
         studentA = new Student({
             id: 1,
@@ -11,8 +11,8 @@ describe("mainViewState", function() {
             postsUrl: '/po/1'
         });
 
-        var mockAllStudents = new APIBackedCollection([studentA]);
-        spyOn(studentAccessors, 'allStudents').andReturn(mockAllStudents);
+        var mockgetAllStudents = new APIBackedCollection([studentA]);
+        spyOn(studentDataStore, 'getAllStudents').andReturn(mockgetAllStudents);
     }));
 
     describe('.getSelectedStudent', function() {

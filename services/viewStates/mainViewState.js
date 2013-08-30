@@ -4,6 +4,9 @@
  * Primarily tracks the currently selected student in the app sidebar.
  * When this student changes, the service object will trigger a
  * 'change:selectedStudent' event on itself.
+ *
+ * Also tracks whether attendance is being taken. No need for an event
+ * trigger here, so it's a simple variable.
  */
 angular.module('pace').factory('mainViewState', function(_, Backbone) {
     var mainViewState = {};
@@ -17,6 +20,9 @@ angular.module('pace').factory('mainViewState', function(_, Backbone) {
         _selectedStudent = student;
         mainViewState.trigger('change:selectedStudent', _selectedStudent);
     };
+
+    // simple variable for attendance.
+    mainViewState.editingAttendance = false;
 
     _.extend(mainViewState, Backbone.Events);
 

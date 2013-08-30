@@ -1,11 +1,6 @@
 // maintains viewstate for main content area
-app.controller('MainCtrl', function ($scope, viewService) {
-    $scope.$watch(function () {
-        return viewService
-    }, function (data) {
-        $scope.view = data.currentView; // the current view (currently only student views exist)
-        $scope.attendance = data.parameters.attendance; // whether attendance is being taken
-    }, true);
+app.controller('MainCtrl', function ($scope, mainViewState) {
+    $scope.mainViewState = mainViewState;
 });
 
 // directive for the navigation tabs

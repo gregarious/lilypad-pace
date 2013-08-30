@@ -41,6 +41,7 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
     function setIncidentTypesForStudent(student) {
         if (student) {
             var incidentTypeCollection = behaviorIncidentDataStore.getTypesForStudent(student);
+
             var setStudentTypes = function() {
                 // Note this creates a bare array of IncidentTypes, *not* a Collection!
                 $scope.studentTypes = incidentTypeCollection.filter(function(type) {
