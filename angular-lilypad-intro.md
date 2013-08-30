@@ -46,7 +46,7 @@ the HTML can access). So here's an example implementation of the `SimpleCtrl` fr
 ```
 
 This controller initializes the timestamp and also declares a function that will update
-that timestamp anytime its called.
+that timestamp anytime it's called.
 
 If you define a controller within DOM whose parent is already under a controller, that
 inner controller's `$scope` will prototypically inherit from the outer controller's
@@ -187,27 +187,30 @@ to try hard to keep the client-side data model consistent and keep track of what
 yet been synced with the server. If we let the controllers create models at will, then the
 controllers would have to worry about these issues.
 
+We are using Backbone models and collections instead of basic Javascript objects and arrays
+because it greatly simplifies the tasks involved with syncing our data with the server.
+
 You'll typically see stores used this way:
 
-HTML
-```html
-<div>
-    Authors for posts about {{student.get('first_name')}}:
-    <ul ng-controller="DiscussionCtrl">
-        <li ng-repeat="post in discussionPostCollection.models">{{post.get('author')}}</li>
-    </ul>
-</div>
-```
-
-JS
-```js
-var ctrl = function($scope, mainViewState, discussionDataStore) {
-    $scope.student = mainViewState.getSelectedStudent();
-    $scope.discussionPostCollection = discussionDataStore.getForStudent(student);
-});
-
-angular.module('pace').controller('DiscussionCtrl', ctrl);
-```
+> HTML
+> ```html
+> <div ng-controller="DiscussionCtrl">
+>     Authors for posts about {{student.get('first_name')}}:
+>     <ul>
+>         <li ng-repeat="post in discussionPostCollection.models">{{post.get('author')}}</li>
+>     </ul>
+> </div>
+> ```
+>
+> JS
+> ```js
+> var ctrl = function($scope, mainViewState, discussionDataStore) {
+>     $scope.student = mainViewState.getSelectedStudent();
+>     $scope.discussionPostCollection = discussionDataStore.getForStudent(student);
+> });
+>
+> angular.module('pace').controller('DiscussionCtrl', ctrl);
+> ```
 
 If you're not familiar with Backbone, note that `discussionPostCollection.models` is the array of
 `DiscussionPost` objects in the collection, and `post.get('author')` uses Backbone.Model's
@@ -218,7 +221,7 @@ It's easy to miss exactly how much complexity Angular (and our data store paradi
 that little snippet. Consider the fact that the the `discussionDataStore.getForStudent()`
 call actually returns a Collection with no models at first. In the background, the store has fired
 off an asynchronous call to the server, and only after it returns will `discussionPostCollection`
-get its models.
+be updated with an array of actual models.
 
 So at first, that `<ul>` will have no items. But because Angular automatically watches for changes
 on values binded to in the DOM, once the API call returns and `discussionPostCollection.models` is
