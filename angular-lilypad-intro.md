@@ -11,14 +11,15 @@ world, you bind parts of the DOM to controllers with the HTML attribute `ng-cont
 The details on controllers are spelled out more below, but for now just look at this
 example HTML to get an idea of how it works:
 
-```html
-    <div id="outer">
-        <div id="inner" ng-controller="SimpleCtrl">
-            <h1>The time is: {{timestamp}}</h1>
-            <button ng-click="updateTimestamp()">Update Time</button>
-        </div>
-    </div>
-```
+> HTML
+> ```html
+>     <div id="outer">
+>         <div id="inner" ng-controller="SimpleCtrl">
+>             <h1>The time is: {{timestamp}}</h1>
+>             <button ng-click="updateTimestamp()">Update Time</button>
+>         </div>
+>     </div>
+> ```
 
 This hooks a controller called `SimpleCtrl` to the "inner" div, meaning that the div and everything
 inside it has access to values that `SimpleCtrl` makes available (in this case,
@@ -36,13 +37,14 @@ A controller is a Javascript function. The function always has an argument calle
 and it's this `$scope` that declares the public interface of the controller (i.e. the values
 the HTML can access). So here's an example implementation of the `SimpleCtrl` from above.
 
-```js
-    function SimpleCtrl($scope) {
-        $scope.timestamp = new Date();
-        $scope.updateTimestamp = function() {
-            $scope.timestamp = new Date();
-        }
-    }
+> JS
+> ```js
+>     function SimpleCtrl($scope) {
+>         $scope.timestamp = new Date();
+>         $scope.updateTimestamp = function() {
+>             $scope.timestamp = new Date();
+>         }
+>     }
 ```
 
 This controller initializes the timestamp and also declares a function that will update
@@ -53,30 +55,30 @@ inner controller's `$scope` will prototypically inherit from the outer controlle
 `$scope`. That basically means that the inner `$scope` will get a reference to everything
 defined on the outer `$scope`.
 
-HTML
-```html
-<div id="outer" ng-controller="OuterCtrl">
-    Outer: {{outerValue}}, {{innerValue}}
-    <div id="inner" ng-controller="InnerCtrl">
-        Inner: {{outerValue}}, {{innerValue}}
-    </div>
-</div>
-```
-
-JS
-```js
-function OuterCtrl($scope) {
-    $scope.outerValue = 1;
-}
-function InnerCtrl($scope) {
-    $scope.innerValue = $scope.outerValue + 1;
-}
-```
-
-Output:
-
-    Outer: 1,
-    Inner: 1, 2
+> HTML
+> ```html
+> <div id="outer" ng-controller="OuterCtrl">
+>     Outer: {{outerValue}}, {{innerValue}}
+>     <div id="inner" ng-controller="InnerCtrl">
+>         Inner: {{outerValue}}, {{innerValue}}
+>     </div>
+> </div>
+> ```
+>
+> JS
+> ```js
+> function OuterCtrl($scope) {
+>     $scope.outerValue = 1;
+> }
+> function InnerCtrl($scope) {
+>     $scope.innerValue = $scope.outerValue + 1;
+> }
+> ```
+>
+> Output:
+>
+>     Outer: 1,
+>     Inner: 1, 2
 
 This can be useful, but don't abuse it too much. It's not great form if a controller is assuming
 that some value will be made available for it in some parent `$scope`. If you need to share view
@@ -110,26 +112,26 @@ given.
 
 The best way to explain is an example:
 
-HTML:
-```html
-<div ng-controller="DirectiveExampleCtrl">
-    <button ng-click="toggleNames()">Show the names</button>
-    <ul ng-show="areNamesVisible">
-        <li ng-repeat="name in names">{{name}}</li>
-    </ul>
-</div>
-```
-
-JS:
-```js
-function DirectiveExampleCtrl($scope) {
-    $scope.areNamesVisible = false;
-    $scope.names = ['Leslie', 'Ron', 'Tom'];
-    $scope.showNames = function() {
-        $scope.areNamesVisible = !$scope.areNamesVisible;
-    }
-}
-```
+> HTML:
+> ```html
+> <div ng-controller="DirectiveExampleCtrl">
+>     <button ng-click="toggleNames()">Show the names</button>
+>     <ul ng-show="areNamesVisible">
+>         <li ng-repeat="name in names">{{name}}</li>
+>     </ul>
+> </div>
+> ```
+>
+> JS:
+> ```js
+> function DirectiveExampleCtrl($scope) {
+>     $scope.areNamesVisible = false;
+>     $scope.names = ['Leslie', 'Ron', 'Tom'];
+>     $scope.showNames = function() {
+>         $scope.areNamesVisible = !$scope.areNamesVisible;
+>     }
+> }
+> ```
 
 In this example, I'm using 3 directives:
 
@@ -231,16 +233,16 @@ code to set that up.
 Unfortunately, Angular isn't smart enough to automatically watch for changes in the controller,
 so for example, adding this to the example above won't work as you might first expect:
 
-HTML
-```html
-<p>Post count: {{postCount}}</p>
-```
-
-JS
-```js
-$scope.discussionPostCollection = discussionDataStore.getForStudent(student);
-$scope.postCount = $scope.discussionPostCollection.length;
-```
+> HTML
+> ```html
+> <p>Post count: {{postCount}}</p>
+> ```
+>
+> JS
+> ```js
+> $scope.discussionPostCollection = discussionDataStore.getForStudent(student);
+> $scope.postCount = $scope.discussionPostCollection.length;
+> ```
 
 In this example, you're setting `$scope.postCount` to a simple integer value. Even though
 `$scope.discussionPostCollection.length` will change momentarily, at assignment time,
