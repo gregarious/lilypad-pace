@@ -10,6 +10,9 @@
  */
 angular.module('pace').factory('mainViewState', function(_, Backbone) {
     var mainViewState = {};
+
+    // don't give public access to bare selectedStudent, wrap in get/setters
+    // so we can trigger events on value change
     var _selectedStudent = null;
 
     mainViewState.getSelectedStudent = function() {
