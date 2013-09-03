@@ -1,5 +1,6 @@
 angular.module('pace').provider('timeTracker', function() {
     var periodStarts = [
+        '07:00',
         '08:00',
         '09:00',
         '10:00',
@@ -8,8 +9,6 @@ angular.module('pace').provider('timeTracker', function() {
         '13:00',
         '14:00',
         '15:00',
-        '16:00',
-        '17:00',
     ];
 
     var anchorOffset = 0;
