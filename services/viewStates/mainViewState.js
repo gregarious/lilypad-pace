@@ -15,6 +15,10 @@ angular.module('pace').factory('mainViewState', function(_, Backbone) {
     // so we can trigger events on value change
     var _selectedStudent = null;
 
+    mainViewState.isStudentSelected = function() {
+        return Boolean(_selectedStudent);
+    };
+
     mainViewState.getSelectedStudent = function() {
         return _selectedStudent;
     };

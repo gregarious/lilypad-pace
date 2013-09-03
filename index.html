@@ -169,8 +169,8 @@
         getSelectedStudent() returns null or not. To get rid of this the right way,
         we'll have to dig in and fix some of the counter widget code.
      -->
-    <ng-switch on="mainViewState.getSelectedStudent()">
-        <div id="student" ng-switch-default>
+    <ng-switch on="mainViewState.isStudentSelected()">
+        <div id="student" ng-switch-when="true">
             <div class="mainContent" ng-class="{disabled: (mainViewState.editingAttendance)}" ng-controller="MainStudentCtrl">
                 <main-tabs>
                     <h1><strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}</h1>
@@ -187,7 +187,7 @@
             </div>
         </div>
 
-        <div ng-switch-when="null">
+        <div ng-switch-default>
             <!-- TODO: Pretty up the default screen -->
             <h1>default screen</h1>
         </div>
