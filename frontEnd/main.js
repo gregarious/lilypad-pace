@@ -17,12 +17,12 @@ app.directive('mainTabs', function () {
                     pane.selected = false;
                 });
                 pane.selected = true;
-            }
+            };
 
             this.addPane = function (pane) {
-                if (panes.length == 0) $scope.select(pane);
+                if (panes.length === 0) $scope.select(pane);
                 panes.push(pane);
-            }
+            };
         },
         template: '<div>' +
             '<div class="clearfix">' +
@@ -52,10 +52,10 @@ app.directive('mainPane', function () {
             '</div>',
         replace: true
     };
-})
+});
 
 // directive for modals that cover main content area
-// TODO: Close button isn't floating right anymore
+// TODO: Close button isn't floating right anymore; card #69
 app.directive('mainModal', function () {
     return {
         restrict: 'E',
@@ -64,7 +64,7 @@ app.directive('mainModal', function () {
         controller: function ($scope) {
             $scope.closeModal = function () {
                 $scope.active = false;
-            }
+            };
         },
         template: '<div class="mainModal modal hidden" ng-class="{active: active}">' +
             '<div class="clearfix">' +
@@ -74,5 +74,5 @@ app.directive('mainModal', function () {
             '<div ng-transclude></div>' +
             '</div>',
         replace: true
-    }
+    };
 });

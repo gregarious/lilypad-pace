@@ -6,7 +6,7 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
     $scope.data = {};
 
     /** Functions needed to keep scope up to date with store changes **/
-    // TODO: not great. could use a refactor
+    // TODO: not great. could use a refactor; see after completing card #63
 
     // Hooks $scope.incidentTypeCollection up to the given student's data
     var setIncidentTypesForStudent = function(student) {
@@ -49,7 +49,7 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
     };
 
     // submit a new behavior
-    // TODO: Should be doing responsive form validation here
+    // TODO: Should be doing responsive form validation here; card #80
     $scope.submitNewBehavior = function () {
         $scope.incidentTypeCollection.createIncidentType(
             $scope.data.label,

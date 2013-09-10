@@ -25,7 +25,7 @@ angular.module('pace').factory('DiscussionPost', function(Backbone, moment, time
             // transform student stub dict into Student model, handle
             // createdAt Date deserialization, and create lightweight
             // collection of ReplyPost models from replies
-            // TODO: handle author deserialization when User model in place
+            // TODO: handle author deserialization when User model in place; card #47
 
             response = Backbone.Model.prototype.parse.apply(this, arguments);
             response.student = new Student(response.student);
@@ -57,7 +57,7 @@ angular.module('pace').factory('DiscussionPost', function(Backbone, moment, time
             // client-side now while the async call is in progress
             newReply.set('createdAt', timeTracker.getTimestamp());
 
-            // TODO: hook this up to POST endpoint
+            // TODO: hook this up to POST endpoint; card #82
 
             this.get('replies').add(newReply);
             return newReply;

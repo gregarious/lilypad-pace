@@ -33,7 +33,7 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, mainVie
         var pointLossRecord = $scope.selectedPeriod.registerPointLoss(category);
         var student = $scope.selectedPeriod.get('student');
 
-        // TODO: move this logic inside store
+        // TODO: move this logic inside store; card #77
         var log = logEntryDataStore.getTodaysForStudent(student);
         log.add(pointLossRecord);
     };
@@ -45,7 +45,7 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, mainVie
         updateSelectedPeriod();
     });
 
-    // TODO: insert logic to watch for current time/period changes
+    // TODO: insert logic to watch for current time/period changes; card #33
 
     /** Private utilities **/
     function setAvailablePeriods(maxPeriod) {

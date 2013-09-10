@@ -113,7 +113,7 @@
 
 </head>
 <body ng-controller="main">
-<!-- TODO: We need to actually implement authentication -->
+<!-- TODO: We need to actually implement authentication; card #48 -->
 <div id="login" ng-hide="authenticated">
     <div>
         <form name="login">
@@ -126,15 +126,14 @@
 </div>
 <div id="sidebar" ng-controller="MenuCtrl">
     <div id="logo" ng-click="toggleSystemMenu()">
-        <!-- TODO: We should be using the user's real name here -->
+        <!-- TODO: We should be using the user's real name here; fix after card #47 -->
         Valerie Frizzle's Lilypad
     </div>
-    <!-- TODO: fix touching extreme left side of menu item -->
+    <!-- TODO: fix touching extreme left side of menu item; card #65 -->
     <div id="menu">
         <!-- Different menu views go here class list, student list etc.-->
         <!-- We will need to implement this later using ng-switch-->
         <!-- Every menu view would get its own controller-->
-        <!-- TODO: Classroom switching needs to be implemented-->
         <div ng-controller="MenuStudentListCtrl">
             <menu>
                 <menu-item id="signout" ng-show="systemMenuActive" ng-click="signOut()">
@@ -142,7 +141,7 @@
                 </menu-item>
                 <menu-item id="attendanceToggle" ng-click="toggleAttendance()">
                     <ng-switch on="mainViewState.editingAttendance">
-                        <!-- TODO: Highligh the save attendance button when attendance is being edited -->
+                        <!-- TODO: Highligh the save attendance button when attendance is being edited; card #66 -->
                         <span ng-switch-default>EDIT ATTENDANCE</span>
                         <span ng-switch-when="true">SAVE ATTENDANCE</span>
                     </ng-switch>
@@ -188,7 +187,7 @@
         </div>
 
         <div ng-switch-default>
-            <!-- TODO: Pretty up the default screen -->
+            <!-- TODO: Pretty up the default screen; card #67 -->
             <h1>default screen</h1>
         </div>
     </ng-switch>

@@ -1,7 +1,7 @@
 // Defines a customized version of Backbone and encapsulates it as an Angular
 // service
 angular.module('backbone', ['underscore']).
-    provider('Backbone', function() {
+    provider('Backbone', function(_) {
         /**
          * Return the Backbone object with the following overrides:
          * 1. Backbone.ajax: use $http
@@ -41,7 +41,6 @@ angular.module('backbone', ['underscore']).
             Backbone.Model = Backbone.Model.extend({
                 parse: function(response, options) {
                     var camelResponse = {};
-                    // TODO: use proper modularized version of underscore
                     _.each(_.pairs(response), function(kv_pair) {
                         camelResponse[camelize(kv_pair[0])] = kv_pair[1];
                     });
@@ -50,7 +49,6 @@ angular.module('backbone', ['underscore']).
                 toJSON: function() {
                     var data = originalToJSON.apply(this, arguments);
                     var snakeData = {};
-                    // TODO: use proper modularized version of underscore
                     _.each(_.pairs(data), function(kv_pair) {
                         // first serialize any sub models into stubs (don't go recursive)
                         var value = kv_pair[1];

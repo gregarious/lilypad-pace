@@ -1,6 +1,6 @@
 // formats durations for behavior incidents
-// TODO: Update duration for incidents
-// TODO: Update duration to use minute level fidelity
+// TODO: Update duration for incidents; card #64
+// TODO: Update duration to use minute level fidelity; card #64
 app.filter('duration', function () {
     return function (input) {
         if (typeof input !== 'number' || input < 1) {

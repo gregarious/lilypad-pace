@@ -52,7 +52,7 @@ angular.module('pace').provider('timeTracker', function() {
             }
         };
 
-        // TODO: need to add logic to call updateCurrentPeriod periodically
+        // TODO: need to add logic to call updateCurrentPeriod periodically; card #81
         updateCurrentPeriod();
 
         return timeTracker;
