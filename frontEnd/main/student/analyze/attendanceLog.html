@@ -8,7 +8,7 @@
     </tr>
     <tr ng-repeat="logEntry in attendanceSpanCollection.models">
         <td>{{logEntry.get('date') | date:'EEE MMMM d'}}</td>
-        <td>{{logEntry.get('timeIn') | date:'shortTime'}}</td>
-        <td>{{logEntry.get('timeOut') | date:'shortTime'}}</td>
+        <td>{{logEntry.get('timeIn')}}</td>
+        <td>{{logEntry.get('timeOut')}}</td>
     </tr>
 </table>
