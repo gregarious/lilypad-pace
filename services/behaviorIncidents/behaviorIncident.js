@@ -34,6 +34,7 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Lo
             return this.get('startedAt');
         },
 
+        // if incident has an end time, returns duration of incident in seconds
         getDuration: function() {
             if (this.has('endedAt')) {
                 return (this.get('endedAt') - this.get('startedAt')) / 1000;

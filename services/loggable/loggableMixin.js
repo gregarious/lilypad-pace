@@ -6,7 +6,7 @@
  * - getLabel() -> String
  * - getComment() -> String
  * - getStudent() -> Student
- * - getDuration() -> Date (null also acceptable)
+ * - getDuration() -> Number (in seconds, null if not applicable)
  *
  *
  * Loggable Mixin:
