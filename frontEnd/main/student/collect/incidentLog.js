@@ -26,7 +26,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
         $scope.data.behaviorModalActive = true;
     };
 
-    // TODO: Should be doing responsive form validation here; card #76
+    // TODO: Should be doing responsive form validation here
     // TODO: Should confirm new incidents for students marked absent; card #76
     $scope.submitIncident = function () {
         var today = timeTracker.getTimestamp();
