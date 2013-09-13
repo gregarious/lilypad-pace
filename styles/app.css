@@ -501,11 +501,14 @@ form[name=analyze] span span:last-child {
     margin-right: 3em;
 }
 
+#nostudent{
+    box-sizing: border-box;
+    background-color: #ddd;
 
+    font-size: 20px;
+    text-align: center;
 
-
-
-
-
-
-
+    padding-top: -webkit-calc(50% - 20px);
+    height: 100%;
+    width: 100%;
+}
