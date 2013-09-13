@@ -157,40 +157,7 @@
         </div>
     </div>
 </div>
-<div id="main" ng-controller="MainCtrl">
-    <!--
-        Using ng-switch here is a hack: really it should be ng-show on getSelectedStudent(),
-        but the counter widgets don't behave right when you use ng-show (I'm pretty sure it's
-        because the counters are expecting to be loaded after student selection. ng-switch
-        lazy-loads controllers, while ng-show does not. Ask Greg if you want to know more.)
-
-        Anyway, we're hacking ng-switch to basically act like an if/else on whether
-        getSelectedStudent() returns null or not. To get rid of this the right way,
-        we'll have to dig in and fix some of the counter widget code.
-     -->
-    <ng-switch on="mainViewState.isStudentSelected()">
-        <div id="student" ng-switch-when="true">
-            <div class="mainContent" ng-class="{disabled: (mainViewState.editingAttendance)}" ng-controller="MainStudentCtrl">
-                <main-tabs>
-                    <h1><strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}</h1>
-                    <main-pane title="Collect">
-                        <ng-include src="'/lilypad-client/lilypad-pace/frontEnd/main/student/collect.html'" ng-controller="MainStudentCollectCtrl"></ng-include>
-                    </main-pane>
-                    <main-pane title="Analyze">
-                        <ng-include src="'/lilypad-client/lilypad-pace/frontEnd/main/student/analyze.html'" ng-controller="MainStudentAnalyzeCtrl"></ng-include>
-                    </main-pane>
-                    <main-pane title="Discuss">
-                        <ng-include src="'/lilypad-client/lilypad-pace/frontEnd/main/student/discuss.html'" ng-controller="MainStudentDiscussCtrl"></ng-include>
-                    </main-pane>
-                </main-tabs>
-            </div>
-        </div>
-
-        <div id="nostudent" ng-switch-default>
-            <!-- TODO: Pretty up the default screen; card #67 -->
-            Select a Student
-        </div>
-    </ng-switch>
+<
 
 </div>
 <!-- TODO: look into fixing the rubberband effect on app boundaries -->
