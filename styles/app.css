@@ -167,7 +167,7 @@ td, th {
 
 .bordered {
     margin-bottom: 1em;
-    border: 1px solid #7f7f7f;
+    border: 1px solid #b3b3b3;
 }
 
 .settings {
@@ -248,20 +248,21 @@ td, th {
     box-sizing: border-box;
     position: relative;
     float: left;
-    width: 254px;
+    width: 280px;
     height: 748px;
-    border-right: 1px solid #f1f1f1;
+    border-right: 1px solid #CBCACA;
 }
 
 #logo {
     width: 100%;
-    height: 44px;
-    line-height: 2.5;
+    height: 42px;
+    line-height: 2.7;
     background-color: #3DBEA5;
     color: #f9f9f9;
-    padding-left: 10px;
     box-sizing: border-box;
-
+    text-align: center;
+    font-size: 12pt;
+    padding-left: 0px;
 }
 
 #menu {
@@ -274,9 +275,9 @@ td, th {
 
 #menu li {
     position: relative;
-    line-height: 2.5;
-    height: 44px;
-    border-bottom: 1px solid #f1f1f1;
+    line-height: 2.9;
+    height: 56px;
+    border-bottom: 1px solid #CBCACA;
     padding-left: 10px;
 }
 
@@ -305,7 +306,7 @@ td, th {
     box-sizing: border-box;
     position: relative;
     float: left;
-    width: 770px;
+    width: 744px;
     height: 100%;
 }
 
@@ -337,6 +338,7 @@ td, th {
 .tab-content {
     height: 704px;
     overflow: auto;
+    padding-top: 35px;
 }
 
 .divider {
@@ -344,6 +346,11 @@ td, th {
     width: 100%;
     margin-top: 1em;
     margin-bottom: 1em;
+}
+
+.divider.clear {
+    border-bottom: 0px solid #B3B3B3;
+    height: 5px;
 }
 
 .buttonGroup {
@@ -389,8 +396,9 @@ form .buttonGroup button {
 #menu #attendanceToggle {
     background-image: url(../images/icon_attendance.png);
     background-repeat: no-repeat;
-    background-position: 10px 8px;
+    background-position: 35px 15px;
     text-align: center;
+    line-height: 3.3;
 }
 
 #menu #attendanceToggle.highlighted {
@@ -515,4 +523,8 @@ form[name=analyze] span span:last-child {
     padding-top: -webkit-calc(50% - 20px);
     height: 100%;
     width: 100%;
+}
+
+.studentName {
+    text-transform: uppercase;
 }

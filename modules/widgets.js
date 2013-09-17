@@ -118,14 +118,14 @@ widgets.directive('counter', function () {
             '<ng-switch on="inc">' +
             '<div ng-switch-when="true" ng-class="{arrowDisabled: value == max, animated: animate}" class="arrow-container up" ng-click="increment()"><div class="arrow-up"></div></div>' +
             '</ng-switch>' +
-            '<div class="countWrapper">' +
+            '<div class="countWrapper" ng-click="decrement()">' +
             '<div class="count">{{upValue}}</div>' +
             '<div class="count">{{currentValue}}</div>' +
             '<div class="count">{{downValue}}</div>' +
             '</div>' +
             '<div class="name">{{text}} {{inTransition}}</div>' +
             '<ng-switch on="dec">' +
-            '<div ng-switch-when="true" ng-class="{arrowDisabled: value == min, animated: animate }" class="arrow-container down" ng-click="decrement()"><div class="arrow-down"></div></div>' +
+            '<div ng-switch-when="true" ng-class="{arrowDisabled: value == min, animated: animate }" class="arrow-container down"><div class="arrow-down"></div></div>' +
             '</ng-switch>' +
             '</div>',
         replace: true
