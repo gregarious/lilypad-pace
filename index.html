@@ -148,9 +148,8 @@
                 </menu-item>
                 <menu-item ng-class="{selected: mainViewState.getSelectedStudent() == student && !mainViewState.editingAttendance}"
                            ng-repeat="student in studentCollection.models">
-                    <div ng-click="handleClick(student)">
+                    <div ng-click="handleClick(student)" ng-class="{absent: !student.isPresent()}">
                         <strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}
-                        <span class="circle attendance" ng-class="{absent: !student.isPresent()}" ng-show="mainViewState.editingAttendance || !student.isPresent()"></span>
                     </div>
                 </menu-item>
             </menu>
@@ -172,7 +171,8 @@
         <div id="student" ng-switch-when="true">
             <div class="mainContent" ng-class="{disabled: (mainViewState.editingAttendance)}" ng-controller="MainStudentCtrl">
                 <main-tabs>
-                    <h1><strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}</h1>
+                    <h1 class="studentName"><strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}</h1>
+                    <div class="divider clear"></div>
                     <main-pane title="Collect">
                         <ng-include src="'/lilypad-client/lilypad-pace/frontEnd/main/student/collect.html'" ng-controller="MainStudentCollectCtrl"></ng-include>
                     </main-pane>

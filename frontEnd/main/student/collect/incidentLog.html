@@ -21,7 +21,7 @@
             <th>Comment</th>
         </tr>
         <tr ng-repeat="logEntry in incidentLogCollection.models">
-            <td>{{logEntry.getOccurredAt() | date: 'h:mm'}}</td>
+            <td>{{logEntry.getOccurredAt() | date: 'h:mm a'}}</td>
             <td>{{logEntry.getLabel()}}</td>
             <!-- TODO: Fix duration -->
             <td>{{logEntry.getDuration() | duration}}</td>
