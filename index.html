@@ -139,7 +139,7 @@
                 <menu-item id="signout" ng-show="systemMenuActive" ng-click="signOut()">
                     <span>SIGN OUT</span>
                 </menu-item>
-                <menu-item id="attendanceToggle" ng-click="toggleAttendance()">
+                <menu-item id="attendanceToggle" ng-click="toggleAttendance()" ng-class="{highlighted: mainViewState.editingAttendance}">
                     <ng-switch on="mainViewState.editingAttendance">
                         <!-- TODO: Highligh the save attendance button when attendance is being edited; card #66 -->
                         <span ng-switch-default>EDIT ATTENDANCE</span>

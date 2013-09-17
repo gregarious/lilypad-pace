@@ -321,7 +321,6 @@ td, th {
     margin-right: -50px;
     background-color: #48bea4;
     color: #ffffff;
-    padding-left: 15px;
     padding-right: 15px;
 }
 
@@ -392,6 +391,11 @@ form .buttonGroup button {
     background-repeat: no-repeat;
     background-position: 10px 8px;
     text-align: center;
+}
+
+#menu #attendanceToggle.highlighted {
+    background-color: #3DBEA5;
+    color: #FFF;
 }
 
 /* Student Main Styles */

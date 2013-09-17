@@ -35,6 +35,17 @@ app.filter('supportsDuration', function () {
     }
 });
 
+// formats times '07:04:00'
+app.filter('formatTimeString', function () {
+    return function (input) {
+        if (input != null) {
+            return moment(input, "HH-mm-ss").format("h:mm a");
+        } else {
+            return input;
+        }
+    }
+});
+
 // formats dates like '7/13/2013' or 'Today at 6:07 PM'
 app.filter('dateStamp', ['moment', function () {
     return function (input) {
