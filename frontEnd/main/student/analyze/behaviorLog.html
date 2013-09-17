@@ -20,6 +20,7 @@
             <td>{{logEntry.getComment()}}</td>
         </tr>
     </table>
+    <div class="noData" ng-hide="behaviorLogCollection.models.length > 0">No behaviors yet logged</div>
     <main-modal active="data.behaviorModalActive" title="STUDENT BEHAVIORS">
         <ng-include src="'/lilypad-client/lilypad-pace/frontend/partials/behaviorSettings.html'"
                     ng-controller="MainStudentCollectBehaviorsModalCtrl"></ng-include>

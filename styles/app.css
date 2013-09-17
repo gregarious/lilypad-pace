@@ -183,7 +183,7 @@ td, th {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
+    right: 0;   
     bottom: 0;
     background-image: url(../images/background_login.png);
     background-position: center left;
@@ -278,7 +278,7 @@ td, th {
     line-height: 2.9;
     height: 56px;
     border-bottom: 1px solid #CBCACA;
-    padding-left: 10px;
+    padding-left: 18px;
 }
 
 /*#menu li:last-child {*/
@@ -444,6 +444,31 @@ form .buttonGroup button {
 
 #periodBehaviorCounters {
     font-size: 0;
+}
+
+#behaviorIncidentsTable th:nth-child(1), #behaviorIncidentsTable td:nth-child(1) {
+    width: 13%;
+}
+
+#behaviorIncidentsTable th:nth-child(2), #behaviorIncidentsTable td:nth-child(2) {
+    width: 24%;
+}
+
+#behaviorIncidentsTable th:nth-child(3), #behaviorIncidentsTable td:nth-child(3) {
+    width: 13%;
+}
+
+#behaviorIncidentsTable th:nth-child(4), #behaviorIncidentsTable td:nth-child(4) {
+    width: 50%;
+}
+
+.noData {
+    text-align: center;
+    padding-top: 27px;
+    height: 48px;
+    border: 1px solid #b3b3b3;
+    border-top: 0px;
+    color: #98989F;
 }
 
 #discussions .post {
