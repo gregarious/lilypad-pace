@@ -125,10 +125,6 @@
     </div>
 </div>
 <div id="sidebar" ng-controller="MenuCtrl">
-    <div id="logo" ng-click="toggleSystemMenu()">
-        <!-- TODO: We should be using the user's real name here; fix after card #47 -->
-        Valerie Frizzle's Lilypad
-    </div>
     <!-- TODO: fix touching extreme left side of menu item; card #65 -->
     <div id="menu">
         <!-- Different menu views go here class list, student list etc.-->
@@ -136,9 +132,6 @@
         <!-- Every menu view would get its own controller-->
         <div ng-controller="MenuStudentListCtrl">
             <menu>
-                <menu-item id="signout" ng-show="systemMenuActive" ng-click="signOut()">
-                    <span>SIGN OUT</span>
-                </menu-item>
                 <menu-item id="attendanceToggle" ng-click="toggleAttendance()" ng-class="{highlighted: mainViewState.editingAttendance}">
                     <ng-switch on="mainViewState.editingAttendance">
                         <!-- TODO: Highligh the save attendance button when attendance is being edited; card #66 -->
@@ -151,6 +144,9 @@
                     <div ng-click="handleClick(student)" ng-class="{absent: !student.isPresent()}">
                         <strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}
                     </div>
+                </menu-item>
+                <menu-item id="signout" ng-click="signOut()">
+                    <span>SIGN OUT</span>
                 </menu-item>
             </menu>
         </div>
