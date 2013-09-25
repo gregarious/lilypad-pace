@@ -52,12 +52,12 @@ strong {
 button {
     box-sizing: border-box;
     height: 44px;
-    background-color: #f9f9f9;
-    border: 1px solid #b3b3b3;
+    background-color: #F4F4F4;
+    border: 1px solid #DBDBDB;
     padding: 0.5em;
     padding-left: 1em;
     padding-right: 1em;
-    font-size: 18px;
+    font-size: 11pt;
     color: #58585b;
 }
 
@@ -87,11 +87,12 @@ select {
 
 table {
     width: 100%;
+    border: 1px solid #DBDBDB;
 }
 
 th {
-    font-family: allerbold;
-    background-color: #f9f9f9 ;
+    font-family: aller_lightregular;
+    background-color: #F4F4F4 ;
 }
 
 .input {
@@ -100,16 +101,25 @@ th {
 }
 
 tr {
-    border-bottom: 1px solid #CBCACA;
-    border-top: 1px solid #CBCACA;
+    border-bottom: 1px solid #DBDBDB;
 }
 
 td, th {
-    padding: 1.1em .5em 1.1em .5em;
-    font-size: 14px;
+    padding: 1.1em .8em 1.1em .8em;
+    font-size: 10pt;
     line-height: 1.25em;
     letter-spacing: 0px;
     text-align: left;
+}
+
+th {
+    font-size: 12pt;
+    text-align: center;
+}
+
+tr th {
+    padding: .7em .5em .5em .5em;
+    color: #8C8E90;
 }
 
 .disabled {
@@ -171,13 +181,12 @@ td, th {
     border: 1px solid #b3b3b3;
 }
 
-.settings {
-    background-image: url(../images/icon_settings.png);
-    background-repeat: no-repeat;
-    background-position: center center;
-    text-align: center;
-    padding-left: 1.5em;
-    padding-right: 1.5em
+.edit {
+    float: left;
+}
+
+.newIncident { 
+    float: right;
 }
 
 #login {
@@ -251,7 +260,7 @@ td, th {
     float: left;
     width: 280px;
     height: 748px;
-    border-right: 1px solid #CBCACA;
+    border-right: 1px solid #DBDBDB;
 }
 
 #logo {
@@ -276,10 +285,11 @@ td, th {
 
 #menu li {
     position: relative;
-    line-height: 2.9;
+    line-height: 3.45;
     height: 56px;
-    border-bottom: 1px solid #CBCACA;
+    border-bottom: 1px solid #DBDBDB;
     padding-left: 18px;
+    font-size: 13pt;
 }
 
 /*#menu li:last-child {*/
@@ -312,7 +322,7 @@ td, th {
 }
 
 .mainContent {
-    padding: 0px 50px;
+    padding: 0px 65px;
 }
 
 .mainTabs {
@@ -354,13 +364,8 @@ td, th {
     height: 5px;
 }
 
-.buttonGroup {
-    float: right;
-    margin-bottom: 1em;
-}
-
 .buttonGroup button {
-    margin-right: 1em;
+    margin-bottom: 20px;
 }
 
 .buttonGroup button:last-child {
@@ -390,22 +395,21 @@ form .buttonGroup button {
 #menu #signout {
     background-image: url(../images/icon_signout.png);
     background-repeat: no-repeat;
-    background-position: 77px 15px;
+    background-position: 85px 18px;
     text-align: center;
     position: absolute;
-    width: 260px;
-    padding-left: 19px;
-    border-top: 1px solid #CBCACA;
+    width: 268px;
+    padding-left: 11px;
+    border-top: 1px solid #DBDBDB;
     border-bottom: 0px;
     bottom: 0px;
+    letter-spacing: 0px;
 }
 
 #menu #attendanceToggle {
-    background-image: url(../images/icon_attendance.png);
-    background-repeat: no-repeat;
-    background-position: 35px 15px;
     text-align: center;
     line-height: 3.3;
+    padding-left: 0px;
 }
 
 #menu #attendanceToggle.highlighted {
@@ -437,8 +441,8 @@ form .buttonGroup button {
 /*}*/
 
 #periodBehaviorCounters .frequency-counter {
-    width: 23.5%;
-    margin-right: 2%;
+    width: 23.1%;
+    margin-right: 2.5%;
 }
 
 #periodBehaviorCounters .frequency-counter:last-child {
@@ -455,10 +459,12 @@ form .buttonGroup button {
 
 #behaviorIncidentsTable th:nth-child(1), #behaviorIncidentsTable td:nth-child(1) {
     width: 13%;
+    background: #F4F4F4;
+    text-align: center;
 }
 
 #behaviorIncidentsTable th:nth-child(2), #behaviorIncidentsTable td:nth-child(2) {
-    width: 24%;
+    width: 40%;
 }
 
 #behaviorIncidentsTable th:nth-child(3), #behaviorIncidentsTable td:nth-child(3) {
@@ -466,7 +472,7 @@ form .buttonGroup button {
 }
 
 #behaviorIncidentsTable th:nth-child(4), #behaviorIncidentsTable td:nth-child(4) {
-    width: 50%;
+    width: 34%;
 }
 
 .noData {
