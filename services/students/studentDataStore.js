@@ -13,13 +13,12 @@ angular.module('pace').factory('studentDataStore', function(Backbone, Student, t
         }
     });
 
-    var _getAllStudents = new StudentCollection();
-
     /** Public interface of service **/
     return {
         getAllStudents: function(options) {
-            _getAllStudents.fetch();
-            return _getAllStudents;
+            var students = new StudentCollection();
+            students.fetch();
+            return students;
         }
     };
 });

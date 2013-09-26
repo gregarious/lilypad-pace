@@ -19,7 +19,7 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
                     'bs' : Integer
                 }
                 isEligible : Boolean
-                student : Student
+                student : Object (Student stub)
          */
         urlRoot: '/pace/periodicrecords/',
 

@@ -3,22 +3,16 @@
  * to timeTracker).
  *
  * Interface:
- * - getForStudent: Returns a Student-specific collection of PeriodicRecords
+ * - getDailyRecordsForStudent: Returns a Student-specific collection of
+ *     PeriodicRecords applicable to the current date
  */
 
 angular.module('pace').factory('periodicRecordDataStore', function(timeTracker, periodicRecordCollectionFactories) {
-    // PeriodicRecordCollection cache, indexed by student
-    var cache = {};
-
     return {
         getDailyRecordsForStudent: function(student) {
-            var collection = cache[student.id];
-            if (!collection) {
-                var today = timeTracker.getTimestampAsMoment().format('YYYY-MM-DD');
-                var factory = periodicRecordCollectionFactories.dailyStudentRecords;
-                collection = cache[student.id] = factory(student, today);
-                collection.fetch();
-            }
+            var today = timeTracker.getTimestampAsMoment().format('YYYY-MM-DD');
+            var collection = periodicRecordCollectionFactories.dailyStudentRecords(student, today);
+            collection.fetch();
             return collection;
         }
     };
