@@ -1,5 +1,5 @@
 angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, LoggableMixin, BehaviorIncidentType, Student) {
-    return Backbone.Model.extend(_.extend(new LoggableMixin(), {
+    return Backbone.PersistentModel.extend(_.extend(new LoggableMixin(), {
         /*
             Attributes:
                 id : String
@@ -17,9 +17,7 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Lo
             // do basic parsing and case transformation
             response = Backbone.Model.prototype.parse.apply(this, arguments);
 
-            // transform student stub dict into Student model and
-            // type dict into (full) BehaviorIncidentType model
-            response.student = new Student(response.student);
+            // transform type dict into (full) BehaviorIncidentType model
             response.type = new BehaviorIncidentType(response.type);
 
             // parse ISO date string into Date
@@ -27,6 +25,16 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Lo
             response.endedAt = response.endedAt && moment(response.endedAt).toDate();
 
             return response;
+        },
+
+        toJSON: function() {
+            // do basic case transformation
+            var data = Backbone.Model.prototype.toJSON.apply(this);
+            // manually transform the type subresource and dates
+            data['type'] = this.get('type').toJSON();
+            data['started_at'] = moment(this.get('startedAt')).format();
+            data['ended_at'] = moment(this.get('endedAt')).format();
+            return data;
         },
 
         // Loggable mixin overrides
