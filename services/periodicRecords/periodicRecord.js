@@ -5,7 +5,7 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
         return _.indexOf(validPointpointTypes, code) !== -1;
     };
 
-    return Backbone.Model.extend({
+    return Backbone.PersistentModel.extend({
         /*
             Attributes:
                 id : String
@@ -34,11 +34,8 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
         },
 
         parse: function(response, options) {
-            // transform student stub dict into Student model and pack all
-            // point records into a `points` object
-
+            // pack all point records into a `points` object
             response = Backbone.Model.prototype.parse.apply(this, arguments);
-            response.student = new Student(response.student);
 
             var valueOrNull = function(val) {return !_.isUndefined(val) ? val : null; };
             response.points = {
@@ -111,6 +108,11 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
                         occurredAt: timeTracker.getTimestamp()
                     });
                     lossRecord.save();
+
+                    // persist changes to points object: server already has
+                    // logic to update its record resource itself
+                    this.localSave();
+
                     return lossRecord;
                 }
             }
