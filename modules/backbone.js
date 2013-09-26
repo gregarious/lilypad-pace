@@ -3,10 +3,11 @@
 angular.module('backbone', ['underscore']).
     provider('Backbone', function(_) {
         /**
-         * Return the Backbone object with the following overrides:
+         * Return the Backbone object with the following changes:
          * 1. Backbone.ajax: use $http
          * 2. Backbone.Model.parse: convert server snake-case to camel-case
          * 3. Backbone.Model.toJSON: convert camel-case to server-friendly snake-case
+         * 4. Backbone.PersistentModel and Backbone.PersistentCollection definitions
          */
         this.$get = function($http) {
             // assumes Backbone is globally available

@@ -1,6 +1,7 @@
 angular.module('pace').factory('studentDataStore', function(Backbone, Student, timeTracker, $q) {
-    var StudentCollection = Backbone.Collection.extend({
+    var StudentCollection = Backbone.PersistentCollection.extend({
         model: Student,
+        localStorage: new Backbone.LocalStorage("AllStudents"),
         url: function() {
             // add the query arg to get back active_attendance_span subresources
             return '/pace/students/?attendance_anchor=' + timeTracker.getTimestampAsMoment().format();
