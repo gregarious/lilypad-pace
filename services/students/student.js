@@ -37,7 +37,7 @@ angular.module('pace').factory('Student', function(Backbone, timeTracker, $injec
             // manually replace whatever toJSON did with activeAttendanceSpan
             if (this.get('activeAttendanceSpan')) {
                 var attendanceSpanJSON = this.get('activeAttendanceSpan').toJSON();
-                data.active_attendance_span = attendanceSpanJSON;
+                data['active_attendance_span'] = attendanceSpanJSON;
             }
 
             return data;
