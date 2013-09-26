@@ -12,9 +12,122 @@ angular.module('backbone', ['underscore']).
             // assumes Backbone is globally available
             var Backbone = window.Backbone;
             patchModelParsing(Backbone);
+            definePersistentExtensions(Backbone);
             patchAjax(Backbone, $http);
+
+            Backbone.$ = {};    // BB.localStorage assumes this is an Object
             return Backbone;
         };
+
+        /**
+         * Define two extension classes to allow Models/Collections to
+         * retain persistent copies of server resources:
+         *
+         * PersistentCollection: A Backbone.localStorage-supported Collection
+         *     that refers routes all fetch calls to the local store before
+         *     fetching remotely.
+         *
+         * PersistentModel: routes all fetch/save/destroy calls through a
+         *     local store defined on an instance's collection before making
+         *     the remote calls. These models *must* belong to a
+         *     PersistentCollection.
+         */
+        function definePersistentExtensions(Backbone) {
+            Backbone.PersistentModel = Backbone.Model.extend({
+                initialize: function(attributes, options) {
+                    options = options || {};
+                    if(!options.collection || !(options.collection instanceof Backbone.PersistentCollection)) {
+                        throw Error("Configuration error: PersistentModel must be linked to PersistentCollection");
+                    }
+                },
+
+                // to be used when an object should be saved without notifying the server
+                localSave: function() {
+                    method = this.collection.isPersisted(this) ? 'update' : 'create';
+                    Backbone.localSync(method, this);
+                },
+
+                // All ajax sync methods but 'destory' involve returning the current
+                // state of the relevant resource. As a result, we need to ensure we
+                // save any model changes this response dictates: "The server is
+                // always right".
+                //
+                // This helper method wraps the fetch/save calls to acheive this.
+                _wrapSuccess: function(options) {
+                    options = options || {};
+
+                    // create wrapper for persisting changes to a model made in
+                    // Backbone's internal post-AJAX response handling
+                    var origSuccess = options.success;
+                    options.success = function(model, response, options) {
+                        // origSuccess should have been set up in fetch/save.
+                        // do it first so any response-driven model changes get set
+                        if (origSuccess) {
+                            origSuccess(model, response, options);
+                        }
+                        model.localSave();
+                    };
+                },
+
+                fetch: function(options) {
+                    this._wrapSuccess(options);
+                    Backbone.Model.prototype.fetch.call(this, options);
+                },
+
+                save: function(attributes, options) {
+                    this._wrapSuccess(options);
+                    Backbone.Model.prototype.save.call(this, attributes, options);
+                },
+
+                sync: function(method, model, options) {
+                    // TODO: need to fix the option situation. BB internal callbacks need
+                    // executed for both, but user ones should only be executed after remote sync
+                    Backbone.localSync(method, model, options);
+                    return Backbone.ajaxSync(method, model, options);
+                }
+            });
+
+            Backbone.PersistentCollection = Backbone.Collection.extend({
+                initialize: function() {
+                    if (!this.localStorage) {
+                        throw Error("Configuration error: PersistentCollection needs `localStorage` defined");
+                    }
+                },
+
+                fetch: function(options) {
+                    options = options || {};
+
+                    // create wrapper for persisting changes to a model made in
+                    // Backbone's internal post-AJAX response handling
+                    var origSuccess = options.success;
+                    options.success = function(collection, response, options) {
+                        collection.each(function(model) {
+                            model.localSave();
+                        });
+                        if (origSuccess) {
+                            origSuccess(collection, response, options);
+                        }
+                    };
+
+                    Backbone.Collection.prototype.fetch.call(this, options);
+                },
+
+                sync: function(method, collection, options) {
+                    if (method !== "read") {
+                        throw Error("Should only be using the 'read' sync method");
+                    }
+
+                    // TODO: need to fix the option situation. BB internal callbacks need
+                    // executed for both, but user ones should only be executed after remote sync
+                    Backbone.localSync(method, collection, options);
+                    return Backbone.ajaxSync(method, collection, options);
+                },
+
+                isPersisted: function(model) {
+                    return this.localStorage.find(model) !== null;
+                }
+            });
+        }
 
         /**
          * Monkey-patch Backbone.Model.parse and Backbone.Model.toJSON to
