@@ -6,7 +6,7 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Lo
                 type : BehaviorIncidentType
                 startedAt : Date
                 endedAt : Date or null
-                student : Student
+                student : Object (Student stub)
                 comment : String
          */
 
@@ -16,9 +16,6 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Lo
         parse: function(response, options) {
             // do basic parsing and case transformation
             response = Backbone.Model.prototype.parse.apply(this, arguments);
-
-            // transform type dict into (full) BehaviorIncidentType model
-            response.type = new BehaviorIncidentType(response.type);
 
             // parse ISO date string into Date
             response.startedAt = moment(response.startedAt).toDate();
@@ -30,10 +27,12 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Lo
         toJSON: function() {
             // do basic case transformation
             var data = Backbone.Model.prototype.toJSON.apply(this);
-            // manually transform the type subresource and dates
-            data['type'] = this.get('type').toJSON();
+
+            // manually transform the dates
             data['started_at'] = moment(this.get('startedAt')).format();
-            data['ended_at'] = moment(this.get('endedAt')).format();
+            if (data['ended_at']) {
+                data['ended_at'] = moment(this.get('endedAt')).format();
+            }
             return data;
         },
 
@@ -52,7 +51,7 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Lo
 
         getLabel: function() {
             if (this.has('type')) {
-                return this.get('type').get('label');
+                return this.get('type').label;
             }
             return undefined;
         }

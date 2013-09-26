@@ -83,8 +83,12 @@ angular.module('backbone', ['underscore']).
                 sync: function(method, model, options) {
                     // TODO: need to fix the option situation. BB internal callbacks need
                     // executed for both, but user ones should only be executed after remote sync
+
+                    // run ajaxSync first: localSync will change the object's id
+                    // TODO: handle POST-id situation
+                    var retVal = Backbone.ajaxSync(method, model, options);
                     Backbone.localSync(method, model, options);
-                    return Backbone.ajaxSync(method, model, options);
+                    return retVal;
                 }
             });
 

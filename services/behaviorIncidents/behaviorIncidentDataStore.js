@@ -2,15 +2,14 @@
  * Manages collections of BehaviorIncident/BehaviorIncidentsTypes.
  *
  * Interface:
- * - getForStudent: Returns a Student-specific collection of BehaviorIncidentTypes
+ * - getDailyIncidentsForStudent: Returns a Student-specific collection of
+ *     BehaviorIncidents for current timeTracker date
+ * - getIncidentsForStudent: Returns a Student-specific collection of BehaviorIncidents
+ * - getTypesForStudent: Returns a Student-specific collection of BehaviorIncidentTypes
  * - createIncident: Creates and POSTs a new incident
- * - createIncidentTypeForStudent: Creates and POSTs a new incident
  */
 
-angular.module('pace').factory('behaviorIncidentDataStore', function(moment, BehaviorIncident, behaviorIncidentCollectionFactories) {
-    // BehaviorIncidentType cache, indexed by student
-    var cache = {};
-
+angular.module('pace').factory('behaviorIncidentDataStore', function(moment, timeTracker, behaviorIncidentCollectionFactories) {
     return {
         /**
          * Returns a Collection of BehaviorIncidentTypes applicable
@@ -21,44 +20,23 @@ angular.module('pace').factory('behaviorIncidentDataStore', function(moment, Beh
          * @return {Collection}
          */
         getTypesForStudent: function(student) {
-            var collection = cache[student.id];
-            if (!collection) {
-                var factory = behaviorIncidentCollectionFactories.studentTypes;
-                collection = cache[student.id] = factory(student);
-                collection.fetch();
-            }
+            var collection = behaviorIncidentCollectionFactories.studentTypes(student);
+            collection.fetch();
             return collection;
         },
 
         /**
-         * Wrapper around BehaviorIncident model creation and saving.
+         * Returns a Collection of BehaviorIncidents applicable to the given
+         * student for the current date.
          *
          * @param  {Student} student
-         * @param  {BehaviorIncidentType} type
-         * @param  {Date} startedAt
-         * @param  {Date or null} endedAt
-         * @param  {String} comment
-         * @return {BehaviorIncident}
+         * @return {Collection}
          */
-        createIncident: function(student, type, startedAt, endedAt, comment) {
-            // set arugment defaults
-            endedAt = _.isUndefined(endedAt) ? null : endedAt;
-            comment = _.isUndefined(comment) ? "" : comment;
-
-            // mandate that dates are actual Date objects
-            startedAt = moment(startedAt).toDate();
-            endedAt = endedAt ? moment(endedAt).toDate() : null;
-
-            var newIncident = new BehaviorIncident({
-                student: student,
-                type: type,
-                startedAt: startedAt,
-                endedAt: endedAt,
-                comment: comment
-            });
-            newIncident.save();
-
-            return newIncident;
-        }
+        getDailyIncidentsForStudent: function(student) {
+            var today = timeTracker.getTimestampAsMoment().format('YYYY-MM-DD');
+            var collection = behaviorIncidentCollectionFactories.dailyStudentIncidents(student, today);
+            collection.fetch();
+            return collection;
+        },
     };
 });
