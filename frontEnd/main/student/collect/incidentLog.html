@@ -14,7 +14,7 @@
             <th>Time</th>
             <th>Incident</th>
             <th>Duration</th>
-            <th>Comment</th>
+            <th>Comment {{behaviorModalActive}}</th>
         </tr>
         <tr ng-repeat="logEntry in incidentLogCollection.models">
             <td>{{logEntry.getOccurredAt() | date: 'h:mm a'}}</td>
