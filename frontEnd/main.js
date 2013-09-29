@@ -60,18 +60,16 @@ app.directive('mainModal', function () {
     return {
         restrict: 'E',
         transclude: true,
-        scope: {active: '=', title: '@'},
+        scope: {active: '='},
         controller: function ($scope) {
             $scope.closeModal = function () {
                 $scope.active = false;
             };
         },
-        template: '<div class="mainModal modal hidden" ng-class="{active: active}">' +
-            '<div class="clearfix">' +
-            '<h2>{{title}}</h2>' +
-            '<button class="close" ng-click="closeModal()">Close</button>' +
-            '</div>' +
+        template: '<div class="modalWrapper hidden" ng-class="{active: active}">' + 
+            '<div class="mainModal modal">' +
             '<div ng-transclude></div>' +
+            '</div>' +
             '</div>',
         replace: true
     };

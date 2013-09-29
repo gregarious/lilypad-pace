@@ -1,42 +1,53 @@
-<!-- TODO: Fix this janky button; card #73 -->
-<button ng-click="openNewBehavior()">+</button>
-<div class="bordered" ng-show="addingBehavior">
-    <h3>Adding Behavior</h3>
+<div class="clearfix header">
+    <button class="close" ng-click="closeNewIncident()">Cancel</button>
+    <h4>Add New Incident</h4>
+    <button class="close" ng-click="submitIncident()">Done</button>
+</div>
 
-    <form name="behavior">
+<div class="behaviorSelection">
+    <div ng-show="addingBehavior">
+        <form name="behavior" class="newBehaviorForm">
+            <div class="clearfix">
+                <span class="buttonGroup">
+                    <button ng-click="closeNewBehavior()" class="cancel">Cancel</button>
+                    <button class="main submit" ng-disabled="!behavior.$valid" ng-click="submitNewBehavior()">Done</button>
+                </span>
+            </div>
+            <table class="behaviors">
+                <tbody>
+                <tr>
+                    <td><input type="text" placeholder="Behavior Name" ng-model="data.label"/></td>
+                </tr>
+                <tr>
+                    <td><buttonset id="behaviorTypeInput" options="behaviorTypes"
+                               value="data.selectedBehaviorType"></buttonset></td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <table class="behaviors">
+        <tbody>
+        <tr ng-repeat="studentType in studentOnlyTypes" ng-click="setBehavior(studentType)" ng-class="{selected: label.attributes.label == studentType.attributes.label}">
+            <td>{{studentType.get('label')}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <button ng-click="openNewBehavior()" class="newCustomBehavior">Add New Behavior +</button>
+</div>
+<div class="behaviorDetails">
+    <form name="incident">
         <div class="clearfix">
             <label>
-                <p>Behavior Name</p>
-                <input type="text" placeholder="Label" ng-model="data.label"/>
+                <input ng-model="data.startedAt" type="time" required/>
             </label>
-            <label>
-                <p>Behavior Type</p>
-                <buttonset id="behaviorTypeInput" options="behaviorTypes"
-                           value="data.selectedBehaviorType"></buttonset>
+            <label ng-show="data.type.get('supportsDuration')">
+                <input type="time" ng-model="data.endedAt"
+                       ng-required="data.type.get('supportsDuration')"/>
             </label>
         </div>
-        <div class="clearfix">
-            <span class="buttonGroup">
-                <button ng-click="closeNewBehavior()">Cancel</button>
-                <button class="main" ng-disabled="!behavior.$valid" ng-click="submitNewBehavior()">Submit</button>
-            </span>
+        <div>
+            <textarea placeholder="Comment" ng-model="data.comment"></textarea>
         </div>
     </form>
 </div>
-<!-- TODO: Display message for empty behavior types; card #79 -->
-<table>
-    <thead>
-    <tr>
-        <th>Behavior</th>
-        <th>Type</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="studentType in studentOnlyTypes">
-        <td>{{studentType.get('label')}}</td>
-        <td>{{studentType.get('supportsDuration') | supportsDuration}}</td>
-    </tr>
-    </tbody>
-</table>
-
-
