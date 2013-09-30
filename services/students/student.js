@@ -1,5 +1,5 @@
 angular.module('pace').factory('Student', function(Backbone, timeTracker, $injector){
-    return Backbone.PersistentModel.extend({
+    return Backbone.Model.extend({
         /*
             Attributes:
                 id : Integer
@@ -22,7 +22,7 @@ angular.module('pace').factory('Student', function(Backbone, timeTracker, $injec
 
         // need to deserialze into a new AttendanceSpan instance if applicable
         parse: function(response) {
-            response = Backbone.PersistentModel.prototype.parse.apply(this, arguments);
+            response = Backbone.Model.prototype.parse.apply(this, arguments);
             if (response.activeAttendanceSpan) {
                 var AttendanceSpan = $injector.get('AttendanceSpan');
                 response.activeAttendanceSpan = new AttendanceSpan(response.activeAttendanceSpan);
@@ -32,7 +32,7 @@ angular.module('pace').factory('Student', function(Backbone, timeTracker, $injec
 
         // need to serialize the AttendanceSpan instance if applicable
         toJSON: function() {
-            var data = Backbone.PersistentModel.prototype.toJSON.apply(this, arguments);
+            var data = Backbone.Model.prototype.toJSON.apply(this, arguments);
 
             // manually replace whatever toJSON did with activeAttendanceSpan
             if (this.get('activeAttendanceSpan')) {
@@ -57,10 +57,7 @@ angular.module('pace').factory('Student', function(Backbone, timeTracker, $injec
                 span.set('timeOut', now.format('YYYY-MM-DD'));
                 span.save();
                 this.set('activeAttendanceSpan', null);
-
-                // local save the new attendance span value (no need remote sync:
-                // the student's active span attribute is read-only on server)
-                this.localSave();
+                this.save();
             }
         },
 
@@ -87,10 +84,7 @@ angular.module('pace').factory('Student', function(Backbone, timeTracker, $injec
             newSpan.save();
 
             this.set('activeAttendanceSpan', newSpan);
-
-            // local save the new attendance span value (no need remote sync:
-            // the student's active span attribute is read-only on server)
-            this.localSave();
+            this.save();
         }
     });
 });
