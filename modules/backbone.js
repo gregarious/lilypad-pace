@@ -7,13 +7,14 @@ angular.module('backbone', ['underscore']).
          * 1. Backbone.ajax: use $http
          * 2. Backbone.Model.parse: convert server snake-case to camel-case
          * 3. Backbone.Model.toJSON: convert camel-case to server-friendly snake-case
-         * 4. Backbone.PersistentModel and Backbone.PersistentCollection definitions
+         * 4. Backbone.Collection: supports dataStore property that enables mirroring
+         *     all resource operations locally (fetch, save, & destroy)
          */
         this.$get = function($http) {
             // assumes Backbone is globally available
             var Backbone = window.Backbone;
             patchModelParsing(Backbone);
-            definePersistentExtensions(Backbone);
+            patchDataStore(Backbone);
             patchAjax(Backbone, $http);
 
             Backbone.$ = {};    // BB.localStorage assumes this is an Object
@@ -21,123 +22,185 @@ angular.module('backbone', ['underscore']).
         };
 
         /**
-         * Define two extension classes to allow Models/Collections to
+         * Define two extension to Backbone allow Models/Collections to
          * retain persistent copies of server resources:
          *
-         * PersistentCollection: A Backbone.localStorage-supported Collection
-         *     that refers routes all fetch calls to the local store before
-         *     fetching remotely.
+         * 1. PersistentStore "class": A Backbone.localStorage-supported
+         *     Collection designed to be used as a flat store of canonical
+         *     model instances.
          *
-         * PersistentModel: routes all fetch/save/destroy calls through a
-         *     local store defined on an instance's collection before making
-         *     the remote calls. These models *must* belong to a
-         *     PersistentCollection.
+         * 2. Backbone.sync extensions: Changes to sync functionality
+         *     to integrate models and collections into using a
+         *     PersistentStore.
          */
-        function definePersistentExtensions(Backbone) {
-            Backbone.PersistentModel = Backbone.Model.extend({
-                // to be used when an object should be saved without notifying the server
-                localSave: function() {
-                    if (this._isConnectedToPersistentCollection()) {
-                        method = this.collection.isPersisted(this) ? 'update' : 'create';
-                        Backbone.localSync(method, this);
+        function patchDataStore(Backbone) {
+
+            /** Stub store constructor for initial development **/
+            Backbone.PersistentStore = function(modelType, label) {
+                if (!modelType && !label) {
+                    throw Error("PersistentStore configuration error");
+                }
+
+                var storeCollection = new (Backbone.Collection.extend({
+                    model: modelType,
+                    localStorage: new Backbone.LocalStorage(label)
+                }))();
+                storeCollection.fetch();
+
+                /**
+                 * Returns a copy of the stored model with the id that matched
+                 * the argument model's id.
+                 *
+                 * @param  {Model} model
+                 * @return {Model}
+                 */
+                this.find = function(model) {
+                    if (!model.id) {
+                        return null;
+                    }
+                    var wasFound = true;
+                    console.log('finding model %o', model);
+
+                    var storeModel = storeCollection.get(model.id);
+                    return storeModel;
+                };
+
+                /**
+                 * Returns a copy of the stored models that pass the test by
+                 * the provided filter function.
+                 *
+                 * @param  {Function} filterFn  Function that takes a model and
+                 *                              returns true or false.
+                 * @return {Array}              Array of models
+                 */
+                this.findAll = function(filterFn) {
+                    console.log('finding all models that satisfy function %o', filterFn);
+                    // needs to return cloned models
+                    var models = storeCollection.filter(filterFn);
+                    return _.map(models, function(model) {
+                        return model.clone();
+                    });
+                };
+
+                /**
+                 * Saves a copy of the given model to the store. Will create
+                 * a model if the given model's id isn't found in the store,
+                 * otherwise it will update the found model.
+                 *
+                 * @param  {Model} model
+                 */
+                this.save = function(model) {
+                    var storeModel = storeCollection.get(model.id);
+                    if (storeModel) {
+                        console.log('saving existing model for %o', model);
+                        storeModel.set(_.clone(model.attributes));
+                        storeModel.save();
                     }
                     else {
-                        console.warn('localSave() called on non-persistent model');
+                        console.log('creating new model for %o', model);
+                        storeCollection.create(model.clone());
                     }
-                },
+                };
 
-                _isConnectedToPersistentCollection: function() {
-                    return (this.collection instanceof Backbone.PersistentCollection);
-                },
+                /**
+                 * Removes a model from the store which matches the argument
+                 * model's id.
+                 *
+                 * @param  {Model} model
+                 */
+                this.remove = function(model) {
+                    var storeModel = storeCollection.get(model.id);
+                    if (!storeModel) {
+                        return false;
+                    }
+                    storeModel.destroy();
+                    console.log('removing model %o' + model);
+                };
+            };
 
-                // All ajax sync methods but 'destory' involve returning the current
-                // state of the relevant resource. As a result, we need to ensure we
-                // save any model changes this response dictates: "The server is
-                // always right".
-                //
-                // This helper method wraps the fetch/save calls to acheive this.
-                _wrapSuccess: function(options) {
-                    options = options || {};
-
-                    // create wrapper for persisting changes to a model made in
-                    // Backbone's internal post-AJAX response handling
-                    var origSuccess = options.success;
-                    options.success = function(model, response, options) {
-                        // origSuccess should have been set up in fetch/save.
-                        // do it first so any response-driven model changes get set
-                        if (origSuccess) {
-                            origSuccess(model, response, options);
-                        }
-
-                        if (this._isConnectedToPersistentCollection()) {
-                            model.localSave();
-                        }
-                    };
-                },
-
+            var origModel = Backbone.Model;
+            Backbone.Model = Backbone.Model.extend({
                 fetch: function(options) {
-                    this._wrapSuccess(options);
-                    Backbone.Model.prototype.fetch.call(this, options);
-                },
+                    options = options ? _.clone(options) : {};
+                    if (this.collection && this.collection.dataStore) {
+                        var dataStore = this.collection.dataStore;
+                        var success = options.success;
+                        options.success = function(model, resp, options) {
+                            console.log('saving server-response model to store');
+                            dataStore.save(model);
+                            if (success) success(model, resp, options);
+                        };
 
-                save: function(attributes, options) {
-                    this._wrapSuccess(options);
-                    Backbone.Model.prototype.save.call(this, attributes, options);
-                },
-
-                sync: function(method, model, options) {
-                    // TODO: need to fix the option situation. BB internal callbacks need
-                    // executed for both, but user ones should only be executed after remote sync
-
-                    // run ajaxSync first: localSync will change the object's id
-                    // TODO: handle POST-id situation
-                    var retVal = Backbone.ajaxSync(method, model, options);
-
-                    if (this._isConnectedToPersistentCollection()) {
-                        Backbone.localSync(method, model, options);
+                        // get store attribute
+                        var storeModel = this.collection.dataStore.find(this);
+                        if (storeModel) {
+                            console.log('setting model attrs from store model');
+                            this.set(storeModel);
+                        }
+                        else {
+                            console.log('no model found in the store');
+                        }
                     }
-                    return retVal;
+                    console.log('defering to ajax-based Model.fetch');
+                    return origModel.prototype.fetch.call(this, options);
+                },
+
+                save: function(key, val, options) {
+                    options = options ? _.clone(options) : {};
+                    if (this.collection && this.collection.dataStore) {
+                        var dataStore = this.collection.dataStore;
+                        console.log('saving model to store');
+                        this.collection.dataStore.save(this);
+                        var success = options.success;
+                        options.success = function(model, resp, options) {
+                            console.log('saving server-response model to store');
+                            dataStore.save(model);
+                            if (success) success(model, resp, options);
+                        };
+                    }
+                    console.log('defering to ajax-based Model.save');
+                    return origModel.prototype.save.call(this, key, val, options);
+                },
+
+                destroy: function(options) {
+                    options = options ? _.clone(options) : {};
+                    if (this.collection && this.collection.dataStore) {
+                        console.log('destroying store model');
+                        this.collection.dataStore.remove(this);
+                    }
+                    console.log('defering to ajax-based Model.destroy');
+                    return origModel.prototype.destroy.call(this, options);
                 }
             });
 
-            Backbone.PersistentCollection = Backbone.Collection.extend({
-                initialize: function() {
-                    if (!this.localStorage) {
-                        throw Error("Configuration error: PersistentCollection needs `localStorage` defined");
-                    }
-                },
-
+            var origCollection = Backbone.Collection;
+            Backbone.Collection = Backbone.Collection.extend({
                 fetch: function(options) {
-                    options = options || {};
+                    options = options ? _.clone(options) : {};
+                    if (this.dataStore) {
+                        var dataStore = this.dataStore;
+                        var success = options.success;
+                        options.success = function(collection, resp, options) {
+                            console.log('saving server-response collection to store');
+                            collection.each(function(model) {
+                                dataStore.save(model);
+                            });
+                            if (success) success(collection, resp, options);
+                        };
 
-                    // create wrapper for persisting changes to a model made in
-                    // Backbone's internal post-AJAX response handling
-                    var origSuccess = options.success;
-                    options.success = function(collection, response, options) {
-                        collection.each(function(model) {
-                            model.localSave();
-                        });
-                        if (origSuccess) {
-                            origSuccess(collection, response, options);
+                        // get store filter
+                        var filter = this.storeFilter || function() { return true; };
+                        var storeModels = this.dataStore.findAll(filter);
+                        if (storeModels && storeModels.length > 0) {
+                            console.log('setting collection models from store collection');
+                            this.set(storeModels);
                         }
-                    };
-
-                    Backbone.Collection.prototype.fetch.call(this, options);
-                },
-
-                sync: function(method, collection, options) {
-                    if (method !== "read") {
-                        throw Error("Should only be using the 'read' sync method");
+                        else {
+                            console.log('no applicable models found in store');
+                        }
                     }
-
-                    // TODO: need to fix the option situation. BB internal callbacks need
-                    // executed for both, but user ones should only be executed after remote sync
-                    Backbone.localSync(method, collection, options);
-                    return Backbone.ajaxSync(method, collection, options);
-                },
-
-                isPersisted: function(model) {
-                    return this.localStorage.find(model) !== null;
+                    console.log('defering to ajax-based Collection.fetch');
+                    return origCollection.prototype.fetch.call(this, options);
                 }
             });
         }
