@@ -13,8 +13,8 @@ angular.module('pace').factory('periodicRecordCollectionFactories', function(Per
          * @return {Collection instance}
          */
         dailyStudentRecords: function(student, date) {
-            if (student.id === void 0) {
-                throw Error("Valid student instance is required.");
+            if (student.id === void 0 || !date) {
+                throw Error("Valid student instance and date string are required.");
             }
 
             var PeriodicRecordCollection = Backbone.PersistentCollection.extend({

@@ -35,17 +35,19 @@ angular.module('backbone', ['underscore']).
          */
         function definePersistentExtensions(Backbone) {
             Backbone.PersistentModel = Backbone.Model.extend({
-                initialize: function(attributes, options) {
-                    options = options || {};
-                    if(!options.collection || !(options.collection instanceof Backbone.PersistentCollection)) {
-                        throw Error("Configuration error: PersistentModel must be linked to PersistentCollection");
+                // to be used when an object should be saved without notifying the server
+                localSave: function() {
+                    if (this._isConnectedToPersistentCollection()) {
+                        method = this.collection.isPersisted(this) ? 'update' : 'create';
+                        Backbone.localSync(method, this);
+                    }
+                    else {
+                        console.warn('localSave() called on non-persistent model');
                     }
                 },
 
-                // to be used when an object should be saved without notifying the server
-                localSave: function() {
-                    method = this.collection.isPersisted(this) ? 'update' : 'create';
-                    Backbone.localSync(method, this);
+                _isConnectedToPersistentCollection: function() {
+                    return (this.collection instanceof Backbone.PersistentCollection);
                 },
 
                 // All ajax sync methods but 'destory' involve returning the current
@@ -66,7 +68,10 @@ angular.module('backbone', ['underscore']).
                         if (origSuccess) {
                             origSuccess(model, response, options);
                         }
-                        model.localSave();
+
+                        if (this._isConnectedToPersistentCollection()) {
+                            model.localSave();
+                        }
                     };
                 },
 
@@ -87,7 +92,10 @@ angular.module('backbone', ['underscore']).
                     // run ajaxSync first: localSync will change the object's id
                     // TODO: handle POST-id situation
                     var retVal = Backbone.ajaxSync(method, model, options);
-                    Backbone.localSync(method, model, options);
+
+                    if (this._isConnectedToPersistentCollection()) {
+                        Backbone.localSync(method, model, options);
+                    }
                     return retVal;
                 }
             });

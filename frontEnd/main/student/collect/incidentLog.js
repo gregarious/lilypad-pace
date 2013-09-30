@@ -45,8 +45,8 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
             $scope.data.endedAt = today;
         }
 
-        var newIncident = $scope.incidentLogCollection.createIncident(
-            mainViewState.getSelectedStudent,       // TODO: don't like this being directly view-state dependant; card #72
+        var newIncident = behaviorIncidentDataStore.createIncident(
+            mainViewState.getSelectedStudent(),       // TODO: don't like this being directly view-state dependant; card #72
             $scope.data.type,
             $scope.data.startedAt,
             $scope.data.endedAt,
@@ -68,7 +68,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
      */
     function setIncidentDataForStudent(student) {
         if (student) {
-            $scope.incidentLogCollection = behaviorIncidentDataStore.getDailyIncidentsForStudent(student);
+            $scope.incidentLogCollection = behaviorIncidentDataStore.getIncidentsForStudentToday(student);
             // $scope.incidentLogCollection = pointLossDataStore.getDailyForStudent(student);
             // BIG TODO: get this working right
             // $scope.incidentLogCollection = behaviorIncidentDataStore.getTodaysForStudent(student);

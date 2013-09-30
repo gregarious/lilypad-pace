@@ -6,9 +6,12 @@
  *
  * studentTypes: Returns a new Collection of student-specific
  *                 BehaviorIncidentTypes
+ * studentIndcidentsForToday: Returns a new Collection of
+ *                 BehaviorIncident instances that happened
+ *                 on today's date
  */
 
-angular.module('pace').factory('behaviorIncidentCollectionFactories', function(BehaviorIncidentType, BehaviorIncident) {
+angular.module('pace').factory('behaviorIncidentCollectionFactories', function(timeTracker, BehaviorIncidentType, BehaviorIncident) {
     return {
         /**
          * Returns a new Collection of BehaviorIncidentType for a given
@@ -48,52 +51,33 @@ angular.module('pace').factory('behaviorIncidentCollectionFactories', function(B
         },
 
         /**
-         * Returns a new Collection of BehaviorIncidents for a given student
-         * and date.
+         * Returns a new Collection of BehaviorIncidents for today's date.
          *
          * @param  {[type]} student Student
-         * @param  {[type]} date    String (ISO-formatted)
          * @return {Collection}
          */
-        dailyStudentIncidents: function(student, date) {
-            if (student.id === void 0 || !date) {
-                throw Error("Valid student instance and date string are required.");
+        studentIncidentsForToday: function(student) {
+            if (student.id === void 0) {
+                throw Error("Valid student instance is required.");
             }
 
+            var date = timeTracker.getTimestamp();
             var startDate = moment(date).startOf('day').format();
             var endDate = moment(date).add(1, 'day').startOf('day').format();
             var queryString = '?started_at__gte=' + startDate + '&started_at__lt=' + endDate;
 
             var url = student.get('behaviorIncidentsUrl') + queryString;
-            var localStorageKey = 'BehaviorIncidents-' + student.id + '-' + date;
+            var localStorageKey = 'TodayBehaviorIncidents-' + student.id;
 
-            var DailyIncidentCollection = Backbone.PersistentCollection.extend({
+            var TodayIncidentCollection = Backbone.PersistentCollection.extend({
                 model: BehaviorIncident,
-                dateString: date,
                 url: url,
+                date: date,
 
-                localStorage: new Backbone.LocalStorage(localStorageKey),
-
-                createIncident: function(student, type, startedAt, endedAt, comment) {
-                    // set arugment defaults
-                    endedAt = _.isUndefined(endedAt) ? null : endedAt;
-                    comment = _.isUndefined(comment) ? "" : comment;
-
-                    // mandate that dates are actual Date objects
-                    startedAt = moment(startedAt).toDate();
-                    endedAt = endedAt ? moment(endedAt).toDate() : null;
-
-                    return this.create({
-                        student: student,
-                        type: type,
-                        startedAt: startedAt,
-                        endedAt: endedAt,
-                        comment: comment
-                    });
-                }
+                localStorage: new Backbone.LocalStorage(localStorageKey)
             });
 
-            return new DailyIncidentCollection();
+            return new TodayIncidentCollection();
         }
     };
 });
