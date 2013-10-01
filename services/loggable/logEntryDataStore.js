@@ -3,35 +3,87 @@
  * to timeTracker).
  *
  * Interface:
- * - getTodaysForStudent: Returns a Student-specific collection of
+ * - getTodayForStudent: Returns a Student-specific collection of
  *     Loggables limited to a particular date.
  * - getForStudent: Returns a Student-specific collection of Loggables
  */
-angular.module('pace').factory('logEntryDataStore', function(timeTracker, loggableCollectionFactories) {
-    var todayCache = {};
+angular.module('pace').service('logEntryDataStore', function(timeTracker, behaviorIncidentDataStore, pointLossDataStore, $q) {
+
+    var compositeLogCollectionFactory = function(collections) {
+        var CompositeCollection = Backbone.Collection.extend({
+            // order by newest first
+            comparator: function(loggableModel) {
+                return -loggableModel.getOccurredAt();
+            },
+
+            // override fetch to allow for composite promise behavior
+            fetch: function(options) {
+                var deferreds = [];
+                _.each(collections, function(subcollection) {
+                    var subpromise = $q.defer();
+                    subcollection.fetch({
+                        success: function(collection) {
+                            subpromise.resolve();
+                        },
+                        error: function() {
+                            subpromise.reject();
+                        }
+                    });
+                    deferreds.push(subpromise);
+                });
+
+                // promise that will be returned from this meta-fetch call
+                var promise = $q.defer();
+
+                var thisCollection = this;
+                $q.all(deferreds).then(function(subcollections) {
+                    // main collection will already have been filled by 'add' listeners below
+                    promise.resolve(thisCollection);
+                }, function(reasons) {
+                    promise.reject('error fetching collections');
+                });
+
+                return promise;
+            }
+        });
+
+        var compositeCollection = new CompositeCollection();
+
+        // add each component collection model to the composite
+        _.each(collections, function(subcollection) {
+            subcollection.on('add', function(model) {
+                compositeCollection.add(model);
+            });
+            compositeCollection.add(subcollection.models);
+        });
+
+        return compositeCollection;
+    };
+
     var cache = {};
 
-    return {
-        getTodaysForStudent: function(student) {
-            var collection = todayCache[student.id];
-            if (!collection) {
-                var today = timeTracker.getTimestampAsMoment().format('YYYY-MM-DD');
-                collection = todayCache[student.id] = loggableCollectionFactories.dailyStudentLog(
-                    student, today);
-                collection.fetch();
-            }
-            return collection;
-        },
+    this.getTodayForStudent = function(student) {
+        var collection = cache[student.id];
+        if (!collection) {
+            var incidentCollection = behaviorIncidentDataStore.getTodayIncidentsForStudent(student);
+            var pointLossCollection = pointLossDataStore.getTodayPointLossesForStudent(student);
 
-        getForStudent: function(student, startDate, endDate) {
-            // Note: endDate is an exclusive bound
-            var collection = cache[student.id];
-            if (!collection) {
-                var factory = loggableCollectionFactories.studentLog;
-                collection = cache[student.id] = factory(student, startDate, endDate);
-                collection.fetch();
-            }
-            return collection;
+            collection = cache[student.id] = compositeLogCollectionFactory(
+                [incidentCollection, pointLossCollection]);
         }
+
+        collection.fetch();
+        return collection;
     };
+
+    // this.getForStudent = function(student, startDate, endDate) {
+    //     // Note: endDate is an exclusive bound
+    //     var collection = cache[student.id];
+    //     if (!collection) {
+    //         var factory = loggableCollectionFactories.studentLog;
+    //         collection = cache[student.id] = factory(student, startDate, endDate);
+    //         collection.fetch();
+    //     }
+    //     return collection;
+    // };
 });

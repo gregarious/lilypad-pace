@@ -34,7 +34,7 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, mainVie
         var student = $scope.selectedPeriod.get('student');
 
         // TODO: move this logic inside store; card #77
-        // var log = logEntryDataStore.getTodaysForStudent(student);
+        // var log = logEntryDataStore.getTodayForStudent(student);
         // log.add(pointLossRecord);
     };
 
