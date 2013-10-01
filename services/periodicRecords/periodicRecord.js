@@ -1,4 +1,4 @@
-angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTracker, Student, PointLoss) {
+angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTracker, Student, pointLossDataStore) {
     // utilities in use below
     var validPointpointTypes = ['kw', 'cw', 'fd', 'bs'];
     var isValidPointType = function(code) {
@@ -102,14 +102,13 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
             if (this.get('isEligible') && isValidPointType(pointType)) {
                 if (this.get('points')[pointType] >= 1) {
                     this.get('points')[pointType]--;
-                    var lossRecord = new PointLoss({
-                        pointType: pointType,
-                        periodicRecord: this,
-                        occurredAt: timeTracker.getTimestamp()
-                    });
-                    lossRecord.save();
+                    var lossRecord = pointLossDataStore.createPointLoss(
+                        this,
+                        pointType,
+                        timeTracker.getTimestamp()
+                    );
 
-                    // TODO: this could be a race condition on the server
+                    // TODO: resolve this potential race condition on the server
                     this.save();
 
                     return lossRecord;

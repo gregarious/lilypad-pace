@@ -1,10 +1,9 @@
 /**
- * Manages collections of BehaviorIncident/BehaviorIncidentsTypes.
+ * Manages collections of BehaviorIncidents.
  *
  * Interface:
  * - getTodayIncidentsForStudent: Returns a Student-specific collection of
  *     BehaviorIncidents for current timeTracker date
- * - getTypesForStudent: Returns a Student-specific collection of BehaviorIncidentTypes
  * - createIncident: Creates and POSTs a new incident
  */
 
@@ -30,14 +29,16 @@ angular.module('pace').service('behaviorIncidentDataStore', function(moment, tim
         var url = student.get('behaviorIncidentsUrl') + queryString;
         var storeKey = 'BehaviorIncidents-' + student.id;
 
+        var today = moment(date).format('YYYY-MM-DD');
+
         var TodayIncidentCollection = Backbone.Collection.extend({
             model: BehaviorIncident,
             url: url,
 
             dataStore: new Backbone.PersistentStore(BehaviorIncident, storeKey),
             storeFilter: function(incident) {
-                var startedAt = incident.get('startedAt');
-                return startedAt >= startDate && startedAt < endDate;
+                var day = moment(incident.get('startedAt')).format('YYYY-MM-DD');
+                return day === today;
             }
         });
 
@@ -45,7 +46,7 @@ angular.module('pace').service('behaviorIncidentDataStore', function(moment, tim
     };
 
     // cache indexed by student id
-    var cache = _g = {};
+    var cache = {};
 
     /**
      * Returns a Collection of BehaviorIncidents applicable to the given

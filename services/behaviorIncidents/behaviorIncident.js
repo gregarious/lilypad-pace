@@ -34,11 +34,8 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Lo
                 data['ended_at'] = moment(this.get('endedAt')).format();
             }
 
-            var type = this.get('type');
-            if (type) {
-                // TODO: make deep reference
-                data['type'] = _.clone(type);
-            }
+            // type is just a plan old JS object, `parse` does nothing to the API subresource
+            data['type'] = _.clone(this.get('type'));
 
             return data;
         },
