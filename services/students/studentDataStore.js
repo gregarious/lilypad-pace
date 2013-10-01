@@ -19,7 +19,9 @@ angular.module('pace').factory('studentDataStore', function(Backbone, Student, t
         }
     });
 
-    var allStudents = _g = new AllStudentCollection();
+    // cached collection
+    var allStudents = new AllStudentCollection();
+
     /** Public interface of service **/
     return {
         getAllStudents: function(options) {
