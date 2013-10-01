@@ -36,12 +36,12 @@ angular.module('pace').service('behaviorIncidentTypeDataStore', function(Behavio
      * @param  {Student} student
      * @return {Collection}
      */
-    this.getTypesForStudent = function(student) {
+    this.getTypesForStudent = function(student, options) {
         var collection = cache[student.id];
         if (!collection) {
             cache[student.id] = collection = studentTypesFactory(student);
         }
-        collection.fetch();
+        collection.fetch(options);
         return collection;
     };
 

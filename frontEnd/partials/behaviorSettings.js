@@ -11,15 +11,11 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
     // Hooks $scope.incidentTypeCollection up to the given student's data
     var setIncidentTypesForStudent = function(student) {
         if (student) {
-            var incidentTypeCollection = behaviorIncidentTypeDataStore.getTypesForStudent(student);
-
-            // Can't guarantee the incident types have synced yet. If not, set up a callback
-            if (incidentTypeCollection.isSyncInProgress) {
-                incidentTypeCollection.once("sync", updateStudentOnlyTypes);
-            }
-            else {
-                updateStudentOnlyTypes(incidentTypeCollection);
-            }
+            var incidentTypeCollection = behaviorIncidentTypeDataStore.getTypesForStudent(student, {
+                success: function() {
+                    updateStudentOnlyTypes(incidentTypeCollection);
+                }
+            });
         }
         else {
             $scope.studentOnlyTypes = [];

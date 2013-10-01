@@ -1,7 +1,7 @@
 /**
  * Provides factories to create new Collections of post objects
  */
-angular.module('pace').factory('discussionPostCollectionFactories', function(APIBackedCollection, timeTracker, DiscussionPost) {
+angular.module('pace').factory('discussionPostCollectionFactories', function(timeTracker, DiscussionPost) {
     return {
         /**
          * Returns a new Collection of DiscussionPost models for a student,
@@ -12,7 +12,7 @@ angular.module('pace').factory('discussionPostCollectionFactories', function(API
          * @return {Collection instance}
          */
         studentPosts: function(student) {
-            var StudentPostCollection = APIBackedCollection.extend({
+            var StudentPostCollection = Backbone.Collection.extend({
                 model: DiscussionPost,
                 url: student.get('postsUrl'),
                 comparator: function(post) {
