@@ -34,8 +34,18 @@ angular.module('backbone', ['underscore']).
          *     PersistentStore.
          */
         function patchDataStore(Backbone) {
+            /** utilities taken from backbone-localstorage for clietn-side id setting **/
+            // Generate four random hex digits.
+            function S4() {
+               return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+            };
 
-            /** Stub store constructor for initial development **/
+            // Generate a pseudo-GUID by concatenating random hexadecimal.
+            function guid() {
+               return 'local-' + (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+            };
+
+            /** Store constructor **/
             Backbone.PersistentStore = function(modelType, label) {
                 if (!modelType && !label) {
                     throw Error("PersistentStore configuration error");
@@ -126,6 +136,10 @@ angular.module('backbone', ['underscore']).
 
             var origModel = Backbone.Model;
             Backbone.Model = Backbone.Model.extend({
+                isNew: function(options) {
+                    return toString().slice(0,6) === "local-" || origModel.prototype.isNew.call(this);
+                },
+
                 fetch: function(options) {
                     options = options ? _.clone(options) : {};
                     if (this.collection && this.collection.dataStore) {
@@ -153,6 +167,15 @@ angular.module('backbone', ['underscore']).
 
                 save: function(key, val, options) {
                     options = options ? _.clone(options) : {};
+
+                    // take a page out of BB LocalStorage. Having null ids is bad for referencing.
+                    // The post-save success callback will fix the id later
+                    if (this.id !== 0 && !this.id) {
+                        console.warn(this.id);
+                        this.set(this.idAttribute, guid());
+                        console.warn(this.id);
+                    }
+
                     if (this.collection && this.collection.dataStore) {
                         var dataStore = this.collection.dataStore;
                         console.log('saving model to store');

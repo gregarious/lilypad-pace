@@ -47,7 +47,7 @@ angular.module('pace').service('pointLossDataStore', function(moment, timeTracke
     };
 
     // cache indexed by student id
-    var cache = _p = {};
+    var cache = {};
 
     /**
      * Returns a Collection of PointLosses applicable to the given
