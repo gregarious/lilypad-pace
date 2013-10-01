@@ -1,5 +1,5 @@
 angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, LoggableMixin, BehaviorIncidentType, Student) {
-    return Backbone.PersistentModel.extend(_.extend(new LoggableMixin(), {
+    return Backbone.Model.extend(_.extend(new LoggableMixin(), {
         /*
             Attributes:
                 id : String
@@ -33,6 +33,13 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Lo
             if (data['ended_at']) {
                 data['ended_at'] = moment(this.get('endedAt')).format();
             }
+
+            var type = this.get('type');
+            if (type) {
+                // TODO: make deep reference
+                data['type'] = _.clone(type);
+            }
+
             return data;
         },
 

@@ -1,5 +1,5 @@
 angular.module('pace').factory('BehaviorIncidentType', function(Backbone, Student) {
-    return Backbone.PersistentModel.extend({
+    return Backbone.Model.extend({
         /*
             Attibutes:
                 id : String
@@ -13,5 +13,16 @@ angular.module('pace').factory('BehaviorIncidentType', function(Backbone, Studen
         },
 
         urlRoot: '/pace/behaviortypes/',
+
+        toJSON: function() {
+            // stub out the student
+            var data = Backbone.Model.prototype.toJSON.apply(this);
+            if (data.student) {
+                data.student = {
+                    id: data.student.id
+                };
+            }
+            return data;
+        }
     });
 });

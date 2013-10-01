@@ -76,7 +76,13 @@ angular.module('backbone', ['underscore']).
                 this.findAll = function(filterFn) {
                     console.log('finding all models that satisfy function %o', filterFn);
                     // needs to return cloned models
-                    var models = storeCollection.filter(filterFn);
+                    var models;
+                    if (filterFn) {
+                        models = storeCollection.filter(filterFn);
+                    }
+                    else {
+                        models = storeCollection.models;
+                    }
                     return _.map(models, function(model) {
                         return model.clone();
                     });

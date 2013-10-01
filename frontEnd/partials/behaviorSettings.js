@@ -1,5 +1,5 @@
 // controller for behavior options modal
-app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainViewState, behaviorIncidentDataStore) {
+app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainViewState, behaviorIncidentTypeDataStore) {
     $scope.addingBehavior = false;
     $scope.behaviorTypes = ['Frequency', 'Duration'];
     $scope.selectedBehaviorType = null;
@@ -11,7 +11,7 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
     // Hooks $scope.incidentTypeCollection up to the given student's data
     var setIncidentTypesForStudent = function(student) {
         if (student) {
-            var incidentTypeCollection = behaviorIncidentDataStore.getTypesForStudent(student);
+            var incidentTypeCollection = behaviorIncidentTypeDataStore.getTypesForStudent(student);
 
             // Can't guarantee the incident types have synced yet. If not, set up a callback
             if (incidentTypeCollection.isSyncInProgress) {
@@ -51,10 +51,11 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
     // submit a new behavior
     // TODO: Should be doing responsive form validation here; card #80
     $scope.submitNewBehavior = function () {
-        $scope.incidentTypeCollection.createIncidentType(
+        behaviorIncidentTypeDataStore.createIncidentType(
             $scope.data.label,
             $scope.data.selectedBehaviorType === 'Duration',
-            null);
+            null,
+            mainViewState.getSelectedStudent());
         updateStudentOnlyTypes($scope.incidentTypeCollection);
         $scope.closeNewBehavior();
 
