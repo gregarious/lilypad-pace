@@ -5,7 +5,7 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
         return _.indexOf(validPointpointTypes, code) !== -1;
     };
 
-    return Backbone.PersistentModel.extend({
+    return Backbone.Model.extend({
         /*
             Attributes:
                 id : String
@@ -109,9 +109,8 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
                     });
                     lossRecord.save();
 
-                    // persist changes to points object: server already has
-                    // logic to update its record resource itself
-                    this.localSave();
+                    // TODO: this could be a race condition on the server
+                    this.save();
 
                     return lossRecord;
                 }

@@ -83,7 +83,7 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, mainVie
         }
 
         if (student) {
-            selectedStudentPeriods = periodicRecordDataStore.getDailyRecordsForStudent(student);
+            selectedStudentPeriods = periodicRecordDataStore.getTodayRecordsForStudent(student);
             selectedStudentPeriods.on('sync', updateSelectedPeriod);
         }
         else {
