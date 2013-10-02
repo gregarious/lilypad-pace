@@ -70,9 +70,10 @@ angular.module('pace').service('logEntryDataStore', function(timeTracker, behavi
 
             collection = cache[student.id] = compositeLogCollectionFactory(
                 [incidentCollection, pointLossCollection]);
+            // TODO: move this outside after card #87 is out there
+            collection.fetch();
         }
 
-        collection.fetch();
         return collection;
     };
 

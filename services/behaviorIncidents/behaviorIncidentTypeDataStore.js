@@ -40,8 +40,8 @@ angular.module('pace').service('behaviorIncidentTypeDataStore', function(Behavio
         var collection = cache[student.id];
         if (!collection) {
             cache[student.id] = collection = studentTypesFactory(student);
+            collection.fetch(options);
         }
-        collection.fetch(options);
         return collection;
     };
 

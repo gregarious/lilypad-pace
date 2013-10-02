@@ -60,8 +60,9 @@ angular.module('pace').service('pointLossDataStore', function(moment, timeTracke
         var collection = cache[student.id];
         if (!collection) {
             collection = cache[student.id] = todayStudentPointLossFactory(student);
+            // TODO: move this outside after card #87 is out there
+            collection.fetch();
         }
-        collection.fetch();
         return collection;
     };
 
