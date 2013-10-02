@@ -51,9 +51,14 @@ angular.module('pace').service('logEntryDataStore', function(timeTracker, behavi
 
         // add each component collection model to the composite
         _.each(collections, function(subcollection) {
+            // hook up add/remove actions
             subcollection.on('add', function(model) {
                 compositeCollection.add(model);
             });
+            subcollection.on('remove', function(model) {
+                compositeCollection.remove(model);
+            });
+
             compositeCollection.add(subcollection.models);
         });
 

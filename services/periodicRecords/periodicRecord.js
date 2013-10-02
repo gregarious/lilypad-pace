@@ -108,13 +108,22 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
                         timeTracker.getTimestamp()
                     );
 
-                    // TODO: resolve this potential race condition on the server
+                    // TODO-greg: resolve this potential race condition on the server (have a localSave method?)
                     this.save();
 
                     return lossRecord;
                 }
             }
             return null;
+        },
+
+        reversePointLoss: function(pointType) {
+            if(isValidPointType(pointType)) {
+                this.get('points')[pointType]++;
+            }
+
+            // TODO: resolve this potential race condition on the server
+            this.save();
         },
 
         /**

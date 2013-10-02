@@ -65,10 +65,20 @@ angular.module('pace').service('periodicRecordDataStore', function(_, timeTracke
     this.getTodayRecordsForStudent = function(student) {
         var collection = cache[student.id];
         if (!collection) {
+            console.warn('caching student '+student.id);
             collection = cache[student.id] = todayStudentRecordFactory(student);
             // TODO: move this outside after card #87 is out there
             collection.fetch();
         }
         return collection;
+    };
+
+    this.getById = function(id) {
+        for (var key in cache) {
+            var collection = cache[key];
+            var record = collection.get(id);
+            return record;
+        }
+        return null;
     };
 });

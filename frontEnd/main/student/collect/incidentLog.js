@@ -1,5 +1,5 @@
 // controller for the incident log
-app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewState, timeTracker, logEntryDataStore, behaviorIncidentDataStore, behaviorIncidentTypeDataStore, pointLossDataStore) {
+app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewState, timeTracker, logEntryDataStore, behaviorIncidentDataStore, behaviorIncidentTypeDataStore, pointLossDataStore, periodicRecordDataStore) {
     $scope.data = {};
     $scope.addingIncident = false;
     $scope.data.behaviorModalActive = false;
@@ -53,6 +53,22 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
             $scope.data.comment);
 
         $scope.closeNewIncident();
+    };
+
+    $scope.removeIncident = function(logEntry) {
+        // Note that since logEntry is connected to a PersistentStore-based
+        // collection, it will automatically be removed from this collection
+        // TODO: this is terrible. terrible.
+        if (logEntry.has('periodicRecord')) {
+            var record = logEntry.get('periodicRecord');
+            if (record && !_.isUndefined(record.id)) {
+                record = periodicRecordDataStore.getById(record.id);
+                if (record) {
+                    record.reversePointLoss(logEntry.get('pointType'));
+                }
+            }
+        }
+        logEntry.destroy();
     };
 
     /** Listeners to ensure view stays in sync with mainViewState **/

@@ -137,7 +137,7 @@ angular.module('backbone', ['underscore']).
             var origModel = Backbone.Model;
             Backbone.Model = Backbone.Model.extend({
                 isNew: function(options) {
-                    return toString().slice(0,6) === "local-" || origModel.prototype.isNew.call(this);
+                    return this.id.toString().slice(0,6) === "local-" || origModel.prototype.isNew.call(this);
                 },
 
                 fetch: function(options) {
