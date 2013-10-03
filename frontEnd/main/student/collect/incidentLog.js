@@ -58,7 +58,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     $scope.removeIncident = function(logEntry) {
         // Note that since logEntry is connected to a PersistentStore-based
         // collection, it will automatically be removed from this collection
-        // TODO: this is terrible. terrible.
+        // TODO-greg: this is terrible. terrible.
         if (logEntry.has('periodicRecord')) {
             var record = logEntry.get('periodicRecord');
             if (record && !_.isUndefined(record.id)) {
