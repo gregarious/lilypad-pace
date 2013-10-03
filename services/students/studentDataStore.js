@@ -1,6 +1,13 @@
-angular.module('pace').factory('studentDataStore', function(Backbone, Student, timeTracker, $q) {
-    var StudentCollection = Backbone.Collection.extend({
+angular.module('pace').factory('studentDataStore', function(Backbone, Student, timeTracker) {
+    var studentStore = new Backbone.PersistentStore(Student, 'Students');
+
+    var AllStudentCollection = Backbone.Collection.extend({
         model: Student,
+        dataStore: studentStore,
+        storeFilter: function(m) {
+            return true;
+        },
+
         url: function() {
             // add the query arg to get back active_attendance_span subresources
             return '/pace/students/?attendance_anchor=' + timeTracker.getTimestampAsMoment().format();
@@ -12,13 +19,14 @@ angular.module('pace').factory('studentDataStore', function(Backbone, Student, t
         }
     });
 
-    var _getAllStudents = new StudentCollection();
+    // cached collection
+    var allStudents = new AllStudentCollection();
 
     /** Public interface of service **/
     return {
         getAllStudents: function(options) {
-            _getAllStudents.fetch();
-            return _getAllStudents;
+            allStudents.fetch();
+            return allStudents;
         }
     };
 });

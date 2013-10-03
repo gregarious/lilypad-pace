@@ -1,4 +1,4 @@
-angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTracker, Student, PointLoss) {
+angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTracker, Student, pointLossDataStore) {
     // utilities in use below
     var validPointpointTypes = ['kw', 'cw', 'fd', 'bs'];
     var isValidPointType = function(code) {
@@ -19,7 +19,7 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
                     'bs' : Integer
                 }
                 isEligible : Boolean
-                student : Student
+                student : Object (Student stub)
          */
         urlRoot: '/pace/periodicrecords/',
 
@@ -34,11 +34,8 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
         },
 
         parse: function(response, options) {
-            // transform student stub dict into Student model and pack all
-            // point records into a `points` object
-
+            // pack all point records into a `points` object
             response = Backbone.Model.prototype.parse.apply(this, arguments);
-            response.student = new Student(response.student);
 
             var valueOrNull = function(val) {return !_.isUndefined(val) ? val : null; };
             response.points = {
@@ -105,16 +102,28 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
             if (this.get('isEligible') && isValidPointType(pointType)) {
                 if (this.get('points')[pointType] >= 1) {
                     this.get('points')[pointType]--;
-                    var lossRecord = new PointLoss({
-                        pointType: pointType,
-                        periodicRecord: this,
-                        occurredAt: timeTracker.getTimestamp()
-                    });
-                    lossRecord.save();
+                    var lossRecord = pointLossDataStore.createPointLoss(
+                        this,
+                        pointType,
+                        timeTracker.getTimestamp()
+                    );
+
+                    // TODO-greg: resolve this potential race condition on the server (have a localSave method?)
+                    this.save();
+
                     return lossRecord;
                 }
             }
             return null;
+        },
+
+        reversePointLoss: function(pointType) {
+            if(isValidPointType(pointType)) {
+                this.get('points')[pointType]++;
+            }
+
+            // TODO: resolve this potential race condition on the server
+            this.save();
         },
 
         /**

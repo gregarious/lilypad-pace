@@ -20,32 +20,25 @@ angular.module('pace').factory('Student', function(Backbone, timeTracker, $injec
         },
         urlRoot: '/pace/students/',
 
+        // need to deserialze into a new AttendanceSpan instance if applicable
         parse: function(response) {
-            // need to get the AttendanceSpan type from the $injector
-            // manually: it causes circular dep otherwise
-            var AttendanceSpan = $injector.get('AttendanceSpan');
-
             response = Backbone.Model.prototype.parse.apply(this, arguments);
             if (response.activeAttendanceSpan) {
+                var AttendanceSpan = $injector.get('AttendanceSpan');
                 response.activeAttendanceSpan = new AttendanceSpan(response.activeAttendanceSpan);
             }
             return response;
         },
 
+        // need to serialize the AttendanceSpan instance if applicable
         toJSON: function() {
-            // camelize the data keys first
             var data = Backbone.Model.prototype.toJSON.apply(this, arguments);
 
-            // don't want to send relation urls in requests
-            delete data['periodic_records_url'];
-            delete data['behavior_types_url'];
-            delete data['behavior_incidents_url'];
-            delete data['posts_url'];
-            delete data['attendance_spans_url'];
-            delete data['point_losses_url'];
-
-            // also don't bother with this, it's read-only
-            delete data['active_attendance_span'];
+            // manually replace whatever toJSON did with activeAttendanceSpan
+            if (this.get('activeAttendanceSpan')) {
+                var attendanceSpanJSON = this.get('activeAttendanceSpan').toJSON();
+                data['active_attendance_span'] = attendanceSpanJSON;
+            }
 
             return data;
         },
@@ -64,6 +57,7 @@ angular.module('pace').factory('Student', function(Backbone, timeTracker, $injec
                 span.set('timeOut', now.format('YYYY-MM-DD'));
                 span.save();
                 this.set('activeAttendanceSpan', null);
+                this.save();
             }
         },
 
@@ -74,17 +68,23 @@ angular.module('pace').factory('Student', function(Backbone, timeTracker, $injec
                 throw Error('student already has an active attendance span');
             }
 
-            // need to get the attendanceDataStore from the $injector
+            // need to get it from the $injector
             // manually: it causes circular dep otherwise
-            var attendanceDataStore = $injector.get('attendanceDataStore');
+            var AttendanceSpan = $injector.get('AttendanceSpan');
 
             var now = timeTracker.getTimestampAsMoment();
-            var newSpan = attendanceDataStore.createSpan(
-                this,
-                now.format('YYYY-MM-DD'),
-                now.format('HH:mm:ss')
-            );
+
+            // TODO: handle this in AttSpan services
+            var newSpan = new AttendanceSpan({
+                student: {id: this.id},
+                date: now.format('YYYY-MM-DD'),
+                timeIn: now.format('HH:mm:ss'),
+                timeOut: null
+            });
+            newSpan.save();
+
             this.set('activeAttendanceSpan', newSpan);
+            this.save();
         }
     });
 });

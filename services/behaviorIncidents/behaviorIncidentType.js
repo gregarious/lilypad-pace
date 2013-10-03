@@ -6,7 +6,7 @@ angular.module('pace').factory('BehaviorIncidentType', function(Backbone, Studen
                 code : String
                 label : String
                 supportsDuration : Boolean
-                applicableStudent : Student or null
+                applicableStudent : Object (student stub)
          */
         defaults: {
             supportsDuration: false
@@ -14,13 +14,15 @@ angular.module('pace').factory('BehaviorIncidentType', function(Backbone, Studen
 
         urlRoot: '/pace/behaviortypes/',
 
-        parse: function(response, options) {
-            // transform student stub dict into Student model
-            response = Backbone.Model.prototype.parse.apply(this, arguments);
-            if (response.applicableStudent) {
-                response.applicableStudent = new Student(response.applicableStudent);
+        toJSON: function() {
+            // stub out the student
+            var data = Backbone.Model.prototype.toJSON.apply(this);
+            if (data.student) {
+                data.student = {
+                    id: data.student.id
+                };
             }
-            return response;
+            return data;
         }
     });
 });

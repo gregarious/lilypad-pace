@@ -14,25 +14,39 @@ angular.module('pace').factory('PointLoss', function(Backbone, moment, LoggableM
 	return Backbone.Model.extend(_.extend(new LoggableMixin(), {
 		urlRoot: '/pace/pointlosses/',
 
+        initialize: function() {
+            var pdRecord = this.get('periodicRecord');
+            if (pdRecord && pdRecord.attributes) {
+                this.set('periodicRecord', {id: pdRecord.get('id')});
+            }
+        },
+
         parse: function(response, options) {
             response = Backbone.Model.prototype.parse.apply(this, arguments);
             // transform ISO date string to Date
             if (response.occurredAt) {
                 response.occurredAt = moment(response.occurredAt).toDate();
             }
-            // TODO: handle PeriodicRecord stubbing if necessary (naive impl
-            // causes circular reference)
 
             return response;
         },
 
+        toJSON: function() {
+            // do basic case transformation
+            var data = Backbone.Model.prototype.toJSON.apply(this);
+
+            // manually transform the dates
+            data['started_at'] = moment(this.get('startedAt')).format();
+
+            // `periodic_record` is just a plan old JS object, `parse` does nothing to the API subresource
+            data['periodic_record'] = _.clone(this.get('periodicRecord'));
+
+            return data;
+        },
+
 		getStudent: function() {
-			if (this.has('periodicRecord')) {
-				var pdRecord = this.get('periodicRecord');
-				if (pdRecord.has('student')) {
-					return pdRecord.get('student');
-				}
-			}
+            // TODO: this is broken since periodicRecord is just a shallow POJO
+            //  Need to use new store to get the full resource
 			return null;
 		},
 
@@ -67,6 +81,5 @@ angular.module('pace').factory('PointLoss', function(Backbone, moment, LoggableM
 
 			return "";
 		}
-
 	}));
 });
