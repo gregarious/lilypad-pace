@@ -13,6 +13,14 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Lo
         // needed to allow for creating and saving isolated incidents
         urlRoot: '/pace/behaviorincidents/',
 
+        initialize: function() {
+            // assert type subresource is a plain old js object
+            var type = this.get('type');
+            if (type && type.attributes) {
+                this.set('type', _.clone(type.attributes));
+            }
+        },
+
         parse: function(response, options) {
             // do basic parsing and case transformation
             response = Backbone.Model.prototype.parse.apply(this, arguments);
