@@ -68,11 +68,7 @@ angular.module('backbone', ['underscore']).
                     if (!model.id) {
                         return null;
                     }
-                    var wasFound = true;
-                    console.log('finding model %o', model);
-
-                    var storeModel = storeCollection.get(model.id);
-                    return storeModel;
+                    return storeCollection.get(model.id);
                 };
 
                 /**
@@ -84,7 +80,6 @@ angular.module('backbone', ['underscore']).
                  * @return {Array}              Array of models
                  */
                 this.findAll = function(filterFn) {
-                    console.log('finding all models that satisfy function %o', filterFn);
                     // needs to return cloned models
                     var models;
                     if (filterFn) {
@@ -108,12 +103,10 @@ angular.module('backbone', ['underscore']).
                 this.save = function(model) {
                     var storeModel = storeCollection.get(model.id);
                     if (storeModel) {
-                        console.log('saving existing model for %o', model);
                         storeModel.set(_.clone(model.attributes));
                         storeModel.save();
                     }
                     else {
-                        console.log('creating new model for %o', model);
                         storeCollection.create(model.clone());
                     }
                 };
@@ -130,7 +123,6 @@ angular.module('backbone', ['underscore']).
                         return false;
                     }
                     storeModel.destroy();
-                    console.log('removing model %o' + model);
                 };
             };
 
@@ -146,7 +138,6 @@ angular.module('backbone', ['underscore']).
                         var dataStore = this.collection.dataStore;
                         var success = options.success;
                         options.success = function(model, resp, options) {
-                            console.log('saving server-response model to store');
                             dataStore.save(model);
                             if (success) success(model, resp, options);
                         };
@@ -154,14 +145,9 @@ angular.module('backbone', ['underscore']).
                         // get store attribute
                         var storeModel = this.collection.dataStore.find(this);
                         if (storeModel) {
-                            console.log('setting model attrs from store model');
                             this.set(storeModel);
                         }
-                        else {
-                            console.log('no model found in the store');
-                        }
                     }
-                    console.log('defering to ajax-based Model.fetch');
                     return origModel.prototype.fetch.call(this, options);
                 },
 
@@ -178,26 +164,21 @@ angular.module('backbone', ['underscore']).
 
                     if (this.collection && this.collection.dataStore) {
                         var dataStore = this.collection.dataStore;
-                        console.log('saving model to store');
                         this.collection.dataStore.save(this);
                         var success = options.success;
                         options.success = function(model, resp, options) {
-                            console.log('saving server-response model to store');
                             dataStore.save(model);
                             if (success) success(model, resp, options);
                         };
                     }
-                    console.log('defering to ajax-based Model.save');
                     return origModel.prototype.save.call(this, key, val, options);
                 },
 
                 destroy: function(options) {
                     options = options ? _.clone(options) : {};
                     if (this.collection && this.collection.dataStore) {
-                        console.log('destroying store model');
                         this.collection.dataStore.remove(this);
                     }
-                    console.log('defering to ajax-based Model.destroy');
                     return origModel.prototype.destroy.call(this, options);
                 }
             });
@@ -210,7 +191,6 @@ angular.module('backbone', ['underscore']).
                         var dataStore = this.dataStore;
                         var success = options.success;
                         options.success = function(collection, resp, options) {
-                            console.log('saving server-response collection to store');
                             collection.each(function(model) {
                                 dataStore.save(model);
                             });
@@ -221,14 +201,9 @@ angular.module('backbone', ['underscore']).
                         var filter = this.storeFilter || function() { return true; };
                         var storeModels = this.dataStore.findAll(filter);
                         if (storeModels && storeModels.length > 0) {
-                            console.log('setting collection models from store collection');
                             this.set(storeModels);
                         }
-                        else {
-                            console.log('no applicable models found in store');
-                        }
                     }
-                    console.log('defering to ajax-based Collection.fetch');
                     return origCollection.prototype.fetch.call(this, options);
                 }
             });
