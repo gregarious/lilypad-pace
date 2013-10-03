@@ -6,8 +6,13 @@ app.controller('MainStudentAnalyzeBehaviorLogCtrl', function ($scope, mainViewSt
     var selectedStudent = mainViewState.getSelectedStudent();
     setBehaviorLogForStudent(selectedStudent);
 
-    $scope.showSettings = function() {
-        $scope.data.behaviorModalActive = true;
+    // state object for behavior modal
+    $scope.behaviorModalState.active = true;
+    $scope.showBehaviorModel = function() {
+        $scope.behaviorModalState.active = true;
+    };
+    $scope.showBehaviorModel = function() {
+        $scope.behaviorModalState.active = false;
     };
 
     /** Listeners to ensure view stays in sync with mainViewState **/

@@ -3,13 +3,9 @@
     <div class="buttonGroup">
         <!-- TODO: Fix this janky buttons; card #78 -->
         <!-- TODO: implement editing of existing incidents; card #74 -->
-        <button class="edit" ng-click="$parent.showSettings()">Add Incident</button>
-        <button class="newIncident" ng-click="openNewIncident()">Edit Incident</button>
+        <button class="edit" ng-click="showBehaviorModel()">Add Incident</button>
+        <button class="newIncident">Edit Incident</button>
     </div>
-</div>
-<div class="bordered" ng-show="addingIncident">
-    <h3>Adding Incident</h3>
-    <ng-include src="'/lilypad-client/lilypad-pace/frontend/partials/behaviorIncident.html'"></ng-include>
 </div>
 <!-- TODO: Display message for empty behaviorLog; card #75-->
 <div id="behaviorIncidentsTable">
@@ -31,6 +27,7 @@
     </table>
     <div class="noData" ng-hide="incidentLogCollection.models.length > 0">No incidents yet logged</div>
 </div>
-<main-modal active="data.behaviorModalActive" title="STUDENT BEHAVIORS">
-    <ng-include src="'/lilypad-client/lilypad-pace/frontend/partials/behaviorSettings.html'" ng-controller="MainStudentCollectBehaviorsModalCtrl"></ng-include>
+
+<main-modal display-state="behaviorModalState">
+    <ng-include src="'/lilypad-client/lilypad-pace/frontend/partials/behaviorSettings.html'"></ng-include>
 </main-modal>

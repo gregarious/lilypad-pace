@@ -22,7 +22,7 @@ body {
     color: #58585b;
     font-family: aller_lightregular;
     font-size: 18px;
-    letter-spacing: 0.1em;
+    /*letter-spacing: 0.1em;*/
 }
 
 h1 {
@@ -380,16 +380,122 @@ form .buttonGroup button {
     margin-right: 0.25em;
 }
 
+.modal table.behaviors {
+    width: 230px;
+    max-height: 280px;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    background: #FCFDFF;
+}
+
+.modal button.newCustomBehavior {
+    margin-left: 0px;
+    border-top: 0px;
+    width: 230px;
+    background: #FCFDFF;
+    color: #CACBCF;
+}
+
+.modal .behaviorSelection {
+    float: left;
+    width: 45%;
+}
+
+.modal .behaviorDetails {
+    float: left;
+    width: 55%;
+}
+
+.modal .behaviorDetails input[type=time] {
+    margin-bottom: 15px;
+}
+
+.modal .behaviorDetails textarea {
+    width: 275px;
+    height: 212px;
+    font-size: 12pt;
+    padding: 13px;
+    border-color: #DBDBDB;
+}
+
+.modal .newBehaviorForm {
+    position: absolute;
+    background: #FCFDFF;
+    width: 230px;
+    height: auto;
+}
+
+.modal .newBehaviorForm input {
+    border: 0px;
+    background: transparent;
+    outline: 0px;
+}
+
+.modal .newBehaviorForm tr.selected {
+    background: #898B8D;
+    color: #FFF;
+}
+
+.modal .newBehaviorForm .buttonGroup {
+    float: none;
+}
+
+.modal .newBehaviorForm .buttonGroup button {
+    margin: 0px;
+    float: left;
+    width: 50%;
+    border: 0px;
+}
+
+.modalWrapper {
+    box-sizing: border-box;
+    position: absolute;
+    top: 0px;
+    left: -280px;
+    right: 0px;
+    height: 100%;
+    padding: 1em;
+    background-color: rgba(0,0,0,.6);
+}
+
 .modal {
     box-sizing: border-box;
     position: absolute;
-    top: 100px;
-    left: 5%;
-    right: 5%;
-    height: 80%;
+    top: 161px;
+    left: 21%;
+    right: 21%;
+    height: 55.5%;
     padding: 1em;
     background-color: #fff;
-    border: 1px solid #333333;
+}
+
+.modal .header {
+    margin: -1em -1em 20px -1em;
+    background: #F1F2F2;
+}
+
+.modal .header h4 {
+    font-size: 12pt;
+    margin-left: 125px;
+    margin-top: 15px;
+    float: left;
+}
+
+.modal .header button:first-child {
+    float:left;
+    border: 0px;
+    border-right: 1px solid #DBDBDB;
+    background: #F1F2F2;
+    width: 105px;
+} 
+
+.modal .header button:last-child {
+    float: right;
+    border: 0px;
+    background: #49BDA4;
+    color: #FFF;
+    margin: 0px;
+    width: 105px;
 }
 
 #menu #signout {
@@ -425,7 +531,7 @@ form .buttonGroup button {
 
 #behaviorTypeInput li {
     font-size: 14px;
-    width: 120px;
+    width: 101px;
 }
 
 /*#behaviorTypeInput li {*/
@@ -523,8 +629,8 @@ form {
     margin-right: 0;
 }
 
-form[name=behavior] input[type=text] {
-    width: 340px;
+form[name=behavior] input[type=text], input[type=textarea] {
+    width: 207px;
 }
 
 form[name=incident] input[type=text] {
