@@ -3,7 +3,7 @@
     <div class="buttonGroup">
         <!-- TODO: Fix this janky buttons; card #78 -->
         <!-- TODO: implement editing of existing incidents; card #74 -->
-        <button class="edit" ng-click="$parent.showSettings()">Add Incident</button>
+        <button class="edit" ng-click="showBehaviorModel()">Add Incident</button>
         <button class="newIncident">Edit Incident</button>
     </div>
 </div>
@@ -14,7 +14,7 @@
             <th>Time</th>
             <th>Incident</th>
             <th>Duration</th>
-            <th>Comment {{behaviorModalActive}}</th>
+            <th>Comment</th>
         </tr>
         <tr ng-repeat="logEntry in incidentLogCollection.models">
             <td>{{logEntry.getOccurredAt() | date: 'h:mm a'}}</td>
@@ -28,6 +28,6 @@
     <div class="noData" ng-hide="incidentLogCollection.models.length > 0">No incidents yet logged</div>
 </div>
 
-<main-modal active="behaviorModalActive">
-    <ng-include src="'/lilypad-client/lilypad-pace/frontend/partials/behaviorSettings.html'" ng-controller="MainStudentCollectIncidentLogCtrl"></ng-include>
+<main-modal display-state="behaviorModalState">
+    <ng-include src="'/lilypad-client/lilypad-pace/frontend/partials/behaviorSettings.html'"></ng-include>
 </main-modal>

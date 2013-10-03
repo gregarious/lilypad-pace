@@ -2,7 +2,10 @@
 app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewState, timeTracker, logEntryDataStore, behaviorIncidentDataStore) {
     $scope.data = {};
     $scope.addingIncident = false;
-    $scope.behaviorModalActive = false;
+
+    // state object needed by modal state
+    $scope.behaviorModalState = {'active': false};
+
     $scope.addingBehavior = false;
     $scope.behaviorTypes = ['Frequency', 'Duration'];
     $scope.selectedBehaviorType = null;
@@ -15,19 +18,17 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     /** View functions **/
 
     // closes and clears the "new incident" control
-    $scope.closeNewIncident = function () {
+    $scope.closeBehaviorModel = function () {
         $scope.addingIncident = false;
         $scope.data.type = $scope.data.startedAt = $scope.data.endedAt = $scope.data.comment = null;
         $scope.label = null;
-        
-        $scope.behaviorModalActive = false;
-        // ^^^ BehaviorModalActive is now false. Why is the modal still visible?
+
+        $scope.behaviorModalState.active = false;
     };
 
     // shows the settings modal
-    $scope.showSettings = function () {
-        $scope.behaviorModalActive = true;
-        console.log($scope.behaviorModalActive);
+    $scope.showBehaviorModel = function () {
+        $scope.behaviorModalState.active = true;
     };
 
     // TODO: Should be doing responsive form validation here
@@ -56,7 +57,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
             $scope.data.comment);
 
         $scope.incidentLogCollection.add(newIncident);
-        $scope.closeNewIncident();
+        $scope.closeBehaviorModel();
     };
 
     /**
