@@ -2,9 +2,12 @@
 app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewState, timeTracker, logEntryDataStore, behaviorIncidentDataStore) {
     $scope.data = {};
     $scope.addingIncident = false;
+    $scope.editingIncidents = false;
+    $scope.currentIncidentEditing = null;
+    $scope.confirmDeleteFor = null;
 
     // state object needed by modal state
-    $scope.behaviorModalState = {'active': false};
+    $scope.behaviorModalState = {'active': false, 'title': "Add New Incident"};
 
     $scope.addingBehavior = false;
     $scope.behaviorTypes = ['Frequency', 'Duration'];
@@ -27,13 +30,87 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     };
 
     // shows the settings modal
-    $scope.showBehaviorModel = function () {
+    $scope.showBehaviorModel = function (incident) {
+        if (incident != undefined) {
+            if (!$scope.editingIncidents || !incident.attributes.startedAt) {
+                return;
+            }
+
+            $scope.currentIncidentEditing = incident;
+            $scope.behaviorModalState.title = "Edit Incident";
+
+            $scope.label = incident.attributes.type;
+            $scope.data.startedAt = moment(incident.attributes.startedAt).format("hh:mm")
+            $scope.data.comment = incident.attributes.comment;
+
+            if (incident.attributes.endedAt != null) {
+                $scope.data.endedAt = moment(incident.attributes.endedAt).format("hh:mm");
+            }
+
+        } else {
+            $scope.currentIncidentEditing = null;
+            $scope.behaviorModalState.title = "Add New Incident";
+        }
+
         $scope.behaviorModalState.active = true;
     };
+
+    $scope.editIncidents = function() {
+        $scope.editingIncidents = !$scope.editingIncidents;
+        $scope.confirmDeleteFor = null
+    }
+
+    $scope.confirmDelete = function(incident) {
+        if ($scope.confirmDeleteFor != null) {
+            if ($scope.confirmDeleteFor.id == incident.id) {
+                $scope.confirmDeleteFor = null
+                return;
+            }
+        }
+
+        $scope.confirmDeleteFor = incident;
+    }
+
+    $scope.deleteIncident = function() {
+
+        // TODO: DELETE INCIDENT HERE.
+
+        $scope.confirmDeleteFor = null
+    }
 
     // TODO: Should be doing responsive form validation here
     // TODO: Should confirm new incidents for students marked absent; card #76
     $scope.submitIncident = function () {
+
+        // Handle updates to existing incidents
+        if ($scope.currentIncidentEditing) {
+            var startedAt = $scope.currentIncidentEditing.attributes.startedAt;
+            var splitTime;
+            splitTime = $scope.data.startedAt.split(':');
+            startedAt.setHours(splitTime[0]);
+            startedAt.setMinutes(splitTime[1]);
+
+            $scope.currentIncidentEditing.attributes.startedAt = startedAt;
+
+            if ($scope.data.endedAt) {
+                var endedAt = $scope.currentIncidentEditing.attributes.endedAt;
+                splitTime = $scope.data.endedAt.split(':');
+                startedAt.setHours(splitTime[0]);
+                startedAt.setMinutes(splitTime[1]);
+
+                $scope.currentIncidentEditing.attributes.endedAt = endedAt;
+            }
+
+            // TODO: FIGURE OUT WHY LABEL WONT UPDATE ON EDIT
+
+            $scope.currentIncidentEditing.attributes.label = $scope.label;
+            $scope.currentIncidentEditing.attributes.comment = $scope.data.comment;
+            
+            $scope.closeBehaviorModel();
+
+            return;
+        }
+
         var today = timeTracker.getTimestamp();
         var splitTime;
         splitTime = $scope.data.startedAt.split(':');
