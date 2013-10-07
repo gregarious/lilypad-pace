@@ -71,13 +71,6 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
         $scope.confirmDeleteFor = incident;
     }
 
-    $scope.deleteIncident = function() {
-
-        // TODO: DELETE INCIDENT HERE.
-
-        $scope.confirmDeleteFor = null
-    }
-
     // TODO: Should be doing responsive form validation here
     // TODO: Should confirm new incidents for students marked absent; card #76
     $scope.submitIncident = function () {
@@ -150,6 +143,8 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
             }
         }
         logEntry.destroy();
+
+        $scope.confirmDeleteFor = null
     };
 
     /** Listeners to ensure view stays in sync with mainViewState **/

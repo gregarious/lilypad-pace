@@ -29,7 +29,7 @@
             <!-- TODO: Truncate comments so they don't screw up the table -->
             <td class="comment">
                 <span ng-click="showBehaviorModel(logEntry)">{{logEntry.getComment()}}</span>
-                <span class="deleteBtn" ng-show="(confirmDeleteFor != undefined) && (confirmDeleteFor.id == logEntry.id)" ng-click="deleteIncident()">Delete</span>
+                <span class="deleteBtn" ng-show="(confirmDeleteFor != undefined) && (confirmDeleteFor.id == logEntry.id)" ng-click="removeIncident(logEntry)">Delete</span>
             </td>
         </tr>
     </table>
