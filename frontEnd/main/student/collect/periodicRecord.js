@@ -34,8 +34,8 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, mainVie
         var student = $scope.selectedPeriod.get('student');
 
         // TODO: move this logic inside store; card #77
-        var log = logEntryDataStore.getTodaysForStudent(student);
-        log.add(pointLossRecord);
+        // var log = logEntryDataStore.getTodayForStudent(student);
+        // log.add(pointLossRecord);
     };
 
     /** Watches on $scope **/
@@ -83,7 +83,7 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, mainVie
         }
 
         if (student) {
-            selectedStudentPeriods = periodicRecordDataStore.getDailyRecordsForStudent(student);
+            selectedStudentPeriods = periodicRecordDataStore.getTodayRecordsForStudent(student);
             selectedStudentPeriods.on('sync', updateSelectedPeriod);
         }
         else {

@@ -6,27 +6,46 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Lo
                 type : BehaviorIncidentType
                 startedAt : Date
                 endedAt : Date or null
-                student : Student
+                student : Object (Student stub)
                 comment : String
          */
 
         // needed to allow for creating and saving isolated incidents
         urlRoot: '/pace/behaviorincidents/',
 
+        initialize: function() {
+            // assert type subresource is a plain old js object
+            var type = this.get('type');
+            if (type && type.attributes) {
+                this.set('type', _.clone(type.attributes));
+            }
+        },
+
         parse: function(response, options) {
             // do basic parsing and case transformation
             response = Backbone.Model.prototype.parse.apply(this, arguments);
-
-            // transform student stub dict into Student model and
-            // type dict into (full) BehaviorIncidentType model
-            response.student = new Student(response.student);
-            response.type = new BehaviorIncidentType(response.type);
 
             // parse ISO date string into Date
             response.startedAt = moment(response.startedAt).toDate();
             response.endedAt = response.endedAt && moment(response.endedAt).toDate();
 
             return response;
+        },
+
+        toJSON: function() {
+            // do basic case transformation
+            var data = Backbone.Model.prototype.toJSON.apply(this);
+
+            // manually transform the dates
+            data['started_at'] = moment(this.get('startedAt')).format();
+            if (data['ended_at']) {
+                data['ended_at'] = moment(this.get('endedAt')).format();
+            }
+
+            // type is just a plan old JS object, `parse` does nothing to the API subresource
+            data['type'] = _.clone(this.get('type'));
+
+            return data;
         },
 
         // Loggable mixin overrides
@@ -44,7 +63,7 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Lo
 
         getLabel: function() {
             if (this.has('type')) {
-                return this.get('type').get('label');
+                return this.get('type').label;
             }
             return undefined;
         }

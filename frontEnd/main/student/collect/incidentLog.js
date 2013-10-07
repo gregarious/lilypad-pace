@@ -1,5 +1,5 @@
 // controller for the incident log
-app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewState, timeTracker, logEntryDataStore, behaviorIncidentDataStore) {
+app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewState, timeTracker, logEntryDataStore, behaviorIncidentDataStore, behaviorIncidentTypeDataStore, pointLossDataStore, periodicRecordDataStore) {
     $scope.data = {};
     $scope.addingIncident = false;
     $scope.editingIncidents = false;
@@ -127,15 +127,37 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
         }
 
         var newIncident = behaviorIncidentDataStore.createIncident(
-            mainViewState.getSelectedStudent,       // TODO: don't like this being directly view-state dependant; card #72
+            mainViewState.getSelectedStudent(),       // TODO: don't like this being directly view-state dependant; card #72
             $scope.label,
             $scope.data.startedAt,
             $scope.data.endedAt,
             $scope.data.comment);
 
-        $scope.incidentLogCollection.add(newIncident);
         $scope.closeBehaviorModel();
     };
+
+    $scope.removeIncident = function(logEntry) {
+        // Note that since logEntry is connected to a PersistentStore-based
+        // collection, it will automatically be removed from this collection
+        // TODO-greg: this is terrible. terrible.
+        if (logEntry.has('periodicRecord')) {
+            var record = logEntry.get('periodicRecord');
+            if (record && !_.isUndefined(record.id)) {
+                record = periodicRecordDataStore.getById(record.id);
+                if (record) {
+                    record.reversePointLoss(logEntry.get('pointType'));
+                }
+            }
+        }
+        logEntry.destroy();
+    };
+
+    /** Listeners to ensure view stays in sync with mainViewState **/
+
+    // listen for the selected student to change
+    mainViewState.on('change:selectedStudent', function(newSelected) {
+        setIncidentDataForStudent(newSelected);
+    });
 
     /**
      * Hooks $scope.incidentLogCollection & $scope.incidentTypeCollection up
@@ -143,8 +165,8 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
      */
     function setIncidentDataForStudent(student) {
         if (student) {
-            $scope.incidentLogCollection = logEntryDataStore.getTodaysForStudent(student);
-            $scope.incidentTypeCollection = behaviorIncidentDataStore.getTypesForStudent(student);
+            $scope.incidentLogCollection = logEntryDataStore.getTodayForStudent(student);
+            $scope.incidentTypeCollection = behaviorIncidentTypeDataStore.getTypesForStudent(student);
         }
         else {
             $scope.incidentLogCollection = null;
@@ -155,7 +177,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
         // Hooks $scope.incidentTypeCollection up to the given student's data
     var setIncidentTypesForStudent = function(student) {
         if (student) {
-            var incidentTypeCollection = behaviorIncidentDataStore.getTypesForStudent(student);
+            var incidentTypeCollection = behaviorIncidentTypeDataStore.getTypesForStudent(student);
 
             // Can't guarantee the incident types have synced yet. If not, set up a callback
             if (incidentTypeCollection.isSyncInProgress) {
@@ -200,10 +222,11 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     // submit a new behavior
     // TODO: Should be doing responsive form validation here; card #80
     $scope.submitNewBehavior = function () {
-        $scope.incidentTypeCollection.createIncidentType(
+        behaviorIncidentTypeDataStore.createIncidentType(
             $scope.data.label,
             $scope.data.selectedBehaviorType === 'Duration',
-            null);
+            null,
+            mainViewState.getSelectedStudent());
         updateStudentOnlyTypes($scope.incidentTypeCollection);
         $scope.closeNewBehavior();
 

@@ -22,13 +22,11 @@ angular.module('pace').factory('DiscussionPost', function(Backbone, moment, time
         },
 
         parse: function(response, options) {
-            // transform student stub dict into Student model, handle
-            // createdAt Date deserialization, and create lightweight
+            // handle createdAt Date deserialization, and create lightweight
             // collection of ReplyPost models from replies
             // TODO: handle author deserialization when User model in place; card #47
 
             response = Backbone.Model.prototype.parse.apply(this, arguments);
-            response.student = new Student(response.student);
             response.createdAt = moment(response.createdAt).toDate();
 
             // necessary to manually change inner object case, recursive support doesn't exist right now
