@@ -1,28 +1,36 @@
 
 <div class="clearfix">
     <div class="buttonGroup">
-        <!-- TODO: Fix this janky buttons; card #78 -->
-        <!-- TODO: implement editing of existing incidents; card #74 -->
-        <button class="edit" ng-click="showBehaviorModel()">Add Incident</button>
-        <button class="newIncident">Edit Incident</button>
+        <button class="editIncident" ng-click="editIncidents()" ng-class="{ highlighted: editingIncidents }">
+            <span ng-show="!editingIncidents">Edit Incidents</span>
+            <span ng-show="editingIncidents">Save Incidents</span>
+        </button>
+        <button class="newIncident" ng-click="showBehaviorModel()">Add Incident</button>
     </div>
 </div>
 <!-- TODO: Display message for empty behaviorLog; card #75-->
 <div id="behaviorIncidentsTable">
     <table class="log">
         <tr>
-            <th>Time</th>
-            <th>Incident</th>
-            <th>Duration</th>
-            <th>Comment</th>
+            <th class="delete" ng-show="editingIncidents"></th>
+            <th class="time">Time</th>
+            <th class="label">Incident</th>
+            <th class="duration">Duration</th>
+            <th class="comment">Comment</th>
         </tr>
         <tr ng-repeat="logEntry in incidentLogCollection.models">
-            <td>{{logEntry.getOccurredAt() | date: 'h:mm a'}}</td>
-            <td>{{logEntry.getLabel()}}</td>
+            <td class="delete" ng-show="editingIncidents" ng-click="confirmDelete(logEntry)">
+                <div class="deleteCircle" ng-class="{active:(confirmDeleteFor != null) && (confirmDeleteFor.id == logEntry.id)}">-</div>
+            </td>
+            <td class="time" ng-click="showBehaviorModel(logEntry)">{{logEntry.getOccurredAt() | date: 'h:mm a'}}</td>
+            <td class="label" ng-click="showBehaviorModel(logEntry)">{{logEntry.getLabel()}}</td>
             <!-- TODO: Fix duration -->
-            <td>{{logEntry.getDuration() | duration}}</td>
+            <td class="duration" ng-click="showBehaviorModel(logEntry)">{{logEntry.getDuration() | duration}}</td>
             <!-- TODO: Truncate comments so they don't screw up the table -->
-            <td>{{logEntry.getComment()}}</td>
+            <td class="comment">
+                <span ng-click="showBehaviorModel(logEntry)">{{logEntry.getComment()}}</span>
+                <span class="deleteBtn" ng-show="(confirmDeleteFor != undefined) && (confirmDeleteFor.id == logEntry.id)" ng-click="removeIncident(logEntry)">Delete</span>
+            </td>
         </tr>
     </table>
     <div class="noData" ng-hide="incidentLogCollection.models.length > 0">No incidents yet logged</div>
