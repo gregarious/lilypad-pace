@@ -105,7 +105,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
 
             $scope.currentIncidentEditing.attributes.label = $scope.label;
             $scope.currentIncidentEditing.attributes.comment = $scope.data.comment;
-            
+
             $scope.closeBehaviorModel();
 
             return;
@@ -139,7 +139,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     $scope.removeIncident = function(logEntry) {
         // Note that since logEntry is connected to a PersistentStore-based
         // collection, it will automatically be removed from this collection
-        // TODO-greg: this is terrible. terrible.
+        // TODO-greg: this is kind of not great.
         if (logEntry.has('periodicRecord')) {
             var record = logEntry.get('periodicRecord');
             if (record && !_.isUndefined(record.id)) {
