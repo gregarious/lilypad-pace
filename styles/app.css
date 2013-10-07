@@ -102,6 +102,7 @@ th {
 
 tr {
     border-bottom: 1px solid #DBDBDB;
+    position: relative;
 }
 
 td, th {
@@ -179,14 +180,22 @@ tr th {
 .bordered {
     margin-bottom: 1em;
     border: 1px solid #b3b3b3;
-}
-
-.edit {
-    float: left;
+    outline: 0px;
 }
 
 .newIncident { 
     float: right;
+    outline: 0px;
+}
+
+.editIncident { 
+    float: left;
+    outline: 0px;
+}
+
+.editIncident.highlighted {
+    background-color: #8C8C8C;
+    color: #FFF;
 }
 
 #login {
@@ -394,6 +403,11 @@ form .buttonGroup button {
     width: 230px;
     background: #FCFDFF;
     color: #CACBCF;
+    outline: 0px;
+}
+
+.modal button{
+    outline: 0px;
 }
 
 .modal .behaviorSelection {
@@ -563,22 +577,55 @@ form .buttonGroup button {
     font-size: 0;
 }
 
-#behaviorIncidentsTable th:nth-child(1), #behaviorIncidentsTable td:nth-child(1) {
+#behaviorIncidentsTable .time {
     width: 13%;
     background: #F4F4F4;
     text-align: center;
 }
 
-#behaviorIncidentsTable th:nth-child(2), #behaviorIncidentsTable td:nth-child(2) {
+#behaviorIncidentsTable .label {
     width: 40%;
 }
 
-#behaviorIncidentsTable th:nth-child(3), #behaviorIncidentsTable td:nth-child(3) {
+#behaviorIncidentsTable .duration {
     width: 13%;
 }
 
-#behaviorIncidentsTable th:nth-child(4), #behaviorIncidentsTable td:nth-child(4) {
+#behaviorIncidentsTable .comment {
     width: 34%;
+}
+
+#behaviorIncidentsTable .delete {
+    width: 8%;
+    text-align: center;
+}
+
+#behaviorIncidentsTable .deleteCircle {
+    width: 15px;
+    height: 15px;
+    border-radius: 20px;
+    background-color: #8C8C8C;
+    margin: 0px 0px 0px 5px;
+    color: #FFF;
+    font-size: 15pt;
+    -webkit-transition: all .2s;
+}
+
+#behaviorIncidentsTable .deleteCircle.active {
+    -webkit-transform: rotate(90deg);
+    background-color: #DC6564;
+}
+
+#behaviorIncidentsTable .deleteBtn {
+    position: absolute;
+    right: 77px;
+    width: 72px;
+    height: 23px;
+    margin-top: -6px;
+    padding-top: 7px;
+    background-color: #DC6564;
+    color: #FFF;
+    text-align: center;
 }
 
 .noData {
