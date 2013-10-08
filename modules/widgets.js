@@ -114,11 +114,11 @@ widgets.directive('counter', function () {
                 }
             }
         },
-        template: '<div class="frequency-counter">' +
+        template: '<div class="frequency-counter" ng-click="decrement()">' +
             '<ng-switch on="inc">' +
             '<div ng-switch-when="true" ng-class="{arrowDisabled: value == max, animated: animate}" class="arrow-container up" ng-click="increment()"><div class="arrow-up"></div></div>' +
             '</ng-switch>' +
-            '<div class="countWrapper" ng-click="decrement()">' +
+            '<div class="countWrapper">' +
             '<div class="count">{{upValue}}</div>' +
             '<div class="count">{{currentValue}}</div>' +
             '<div class="count">{{downValue}}</div>' +

@@ -28,7 +28,7 @@
     </div>
     <table class="behaviors">
         <tbody>
-        <tr ng-repeat="studentType in studentOnlyTypes" ng-click="setBehavior(studentType)" ng-class="{selected: label.attributes.label == studentType.attributes.label}">
+        <tr ng-repeat="studentType in studentOnlyTypes" ng-click="setBehavior(studentType)" ng-class="{selected: type.label == studentType.get('label')}">
             <td>{{studentType.get('label')}}</td>
         </tr>
         </tbody>

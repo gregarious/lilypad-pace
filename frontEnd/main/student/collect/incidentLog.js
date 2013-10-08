@@ -12,7 +12,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     $scope.addingBehavior = false;
     $scope.behaviorTypes = ['Frequency', 'Duration'];
     $scope.selectedBehaviorType = null;
-    $scope.label = null;
+    $scope.type = null;
 
     // initialize $scope.incidentLogCollection
     var selectedStudent = mainViewState.getSelectedStudent();
@@ -24,7 +24,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     $scope.closeBehaviorModel = function () {
         $scope.addingIncident = false;
         $scope.data.type = $scope.data.startedAt = $scope.data.endedAt = $scope.data.comment = null;
-        $scope.label = null;
+        $scope.type = null;
 
         $scope.behaviorModalState.active = false;
     };
@@ -39,12 +39,12 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
             $scope.currentIncidentEditing = incident;
             $scope.behaviorModalState.title = "Edit Incident";
 
-            $scope.label = incident.attributes.type;
-            $scope.data.startedAt = moment(incident.attributes.startedAt).format("hh:mm")
-            $scope.data.comment = incident.attributes.comment;
+            $scope.type = incident.get('type');
+            $scope.data.startedAt = moment(incident.get('startedAt')).format("hh:mm")
+            $scope.data.comment = incident.get('comment');
 
             if (incident.attributes.endedAt != null) {
-                $scope.data.endedAt = moment(incident.attributes.endedAt).format("hh:mm");
+                $scope.data.endedAt = moment(incident.get('endedAt')).format("hh:mm");
             }
 
         } else {
@@ -74,36 +74,6 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     // TODO: Should be doing responsive form validation here
     // TODO: Should confirm new incidents for students marked absent; card #76
     $scope.submitIncident = function () {
-
-        // Handle updates to existing incidents
-        if ($scope.currentIncidentEditing) {
-            var startedAt = $scope.currentIncidentEditing.attributes.startedAt;
-            var splitTime;
-            splitTime = $scope.data.startedAt.split(':');
-            startedAt.setHours(splitTime[0]);
-            startedAt.setMinutes(splitTime[1]);
-
-            $scope.currentIncidentEditing.attributes.startedAt = startedAt;
-
-            if ($scope.data.endedAt) {
-                var endedAt = $scope.currentIncidentEditing.attributes.endedAt;
-                splitTime = $scope.data.endedAt.split(':');
-                startedAt.setHours(splitTime[0]);
-                startedAt.setMinutes(splitTime[1]);
-
-                $scope.currentIncidentEditing.attributes.endedAt = endedAt;
-            }
-
-            // TODO: FIGURE OUT WHY LABEL WONT UPDATE ON EDIT
-
-            $scope.currentIncidentEditing.attributes.label = $scope.label;
-            $scope.currentIncidentEditing.attributes.comment = $scope.data.comment;
-
-            $scope.closeBehaviorModel();
-
-            return;
-        }
-
         var today = timeTracker.getTimestamp();
         var splitTime;
         splitTime = $scope.data.startedAt.split(':');
@@ -119,12 +89,24 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
             $scope.data.endedAt = today;
         }
 
-        var newIncident = behaviorIncidentDataStore.createIncident(
-            mainViewState.getSelectedStudent(),       // TODO: don't like this being directly view-state dependant; card #72
-            $scope.label,
-            $scope.data.startedAt,
-            $scope.data.endedAt,
-            $scope.data.comment);
+        // If editing existing incident
+        if ($scope.currentIncidentEditing) {
+            // TODO: FIGURE OUT WHY LABEL WONT UPDATE ON EDIT
+
+            $scope.currentIncidentEditing.set('type', $scope.type);
+            $scope.currentIncidentEditing.set('comment', $scope.data.comment);
+
+            $scope.currentIncidentEditing.save();
+
+            $scope.currentIncidentEditing = null;
+        } else {
+            var newIncident = behaviorIncidentDataStore.createIncident(
+                mainViewState.getSelectedStudent(),       // TODO: don't like this being directly view-state dependant; card #72
+                $scope.type,
+                $scope.data.startedAt,
+                $scope.data.endedAt,
+                $scope.data.comment);
+        }   
 
         $scope.closeBehaviorModel();
     };
@@ -201,17 +183,21 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     // open the "add custom behavior" control
     $scope.openNewBehavior = function () {
         $scope.addingBehavior = true;
+
+        // Close editing mode if open
+        $scope.editingIncidents = false;
+        $scope.confirmDeleteFor = null
     };
 
     // close and clear the "add custom behavior" control
     $scope.closeNewBehavior = function () {
         $scope.addingBehavior = false;
-        $scope.label = $scope.data.selectedBehaviorType = null;
+        $scope.type = $scope.data.selectedBehaviorType = null;
     };
 
     // set the desired behavior type
     $scope.setBehavior = function(selectedType) {
-        $scope.label = selectedType;
+        $scope.type = selectedType.attributes;
     };
 
     // submit a new behavior
