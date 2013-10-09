@@ -28,6 +28,22 @@ angular.module('pace').factory('mainViewState', function(_, Backbone) {
         mainViewState.trigger('change:selectedStudent', _selectedStudent);
     };
 
+    // same observable setup as for selected student above
+    var _selectedClassroom = null;
+
+    mainViewState.isClassroomSelected = function() {
+        return Boolean(_selectedClassroom);
+    };
+
+    mainViewState.getSelectedClassroom = function() {
+        return _selectedClassroom;
+    };
+
+    mainViewState.setSelectedClassroom = function(student) {
+        _selectedClassroom = student;
+        mainViewState.trigger('change:selectedClassroom', _selectedClassroom);
+    };
+
     // simple variable for attendance.
     mainViewState.editingAttendance = false;
 

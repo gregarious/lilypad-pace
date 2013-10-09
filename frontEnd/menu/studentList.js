@@ -1,18 +1,43 @@
 // controller for the student list in the left panel
 app.controller('MenuStudentListCtrl', function ($scope, mainViewState, studentDataStore) {
-    // var fetchStudents = studentDataStore.getAllStudents();
-    $scope.studentCollection = studentDataStore.getAllStudents();
+    /** $scope interface **/
     $scope.mainViewState = mainViewState;
+    $scope.studentCollection = null;
+
+    $scope.toggleAttendance = toggleAttendance;
+    $scope.handleClick = handleClick;
+
+
+    /** Actions on controller initialization **/
+
+    // initialize the student list for the given classroom (will result in
+    // null if there is no selected classroom)
+    resetStudentListForClassroom(mainViewState.getSelectedClassroom());
+
+    // also listen for future changes in selectedClassroom
+    mainViewState.on('change:selectedClassroom', resetStudentListForClassroom);
+
+
+    /** Implementation details **/
+
+    function resetStudentListForClassroom(classroom) {
+        if (classroom) {
+            $scope.studentCollection = studentDataStore.getForClassroom(classroom);
+        }
+        else {
+            $scope.studentCollection = null;
+        }
+    }
 
     // toggles attendance controls
-    $scope.toggleAttendance = function () {
-        $scope.mainViewState.editingAttendance = !$scope.mainViewState.editingAttendance;
-    };
+    function toggleAttendance() {
+        mainViewState.editingAttendance = !mainViewState.editingAttendance;
+    }
 
     // handles click events on student list
-    $scope.handleClick = function (student) {
+    function handleClick(student) {
         // are we taking attendance or switching main content views between students?
-        if ($scope.mainViewState.editingAttendance) {
+        if (mainViewState.editingAttendance) {
             if (student.isPresent()) {
                 student.markAbsent();
             }
@@ -22,5 +47,5 @@ app.controller('MenuStudentListCtrl', function ($scope, mainViewState, studentDa
         } else {
             mainViewState.setSelectedStudent(student);
         }
-    };
+    }
 });
