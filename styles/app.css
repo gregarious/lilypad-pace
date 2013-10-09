@@ -358,7 +358,6 @@ tr th {
 .tab-content {
     height: 669px;
     overflow: auto;
-    -webkit-overflow-scrolling: touch;
     padding-top: 35px;
 }
 
@@ -437,7 +436,7 @@ form .buttonGroup button {
     position: absolute;
     background: #FCFDFF;
     width: 230px;
-    height: auto;
+    height: 350px;
 }
 
 .modal .newBehaviorForm input {

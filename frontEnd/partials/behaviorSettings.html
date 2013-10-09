@@ -6,7 +6,7 @@
 
 <div class="behaviorSelection">
     <div ng-show="addingBehavior">
-        <form name="behavior" class="newBehaviorForm">
+        <form name="behavior" class="newBehaviorForm" ng-submit="submitNewBehavior()">
             <div class="clearfix">
                 <span class="buttonGroup">
                     <button ng-click="closeNewBehavior()" class="cancel">Cancel</button>

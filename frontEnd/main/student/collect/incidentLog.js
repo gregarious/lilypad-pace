@@ -48,7 +48,11 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
             }
 
         } else {
+            // Close editing mode if open
+            $scope.editingIncidents = false;
+            $scope.confirmDeleteFor = null
             $scope.currentIncidentEditing = null;
+
             $scope.behaviorModalState.title = "Add New Incident";
         }
 
@@ -183,10 +187,6 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     // open the "add custom behavior" control
     $scope.openNewBehavior = function () {
         $scope.addingBehavior = true;
-
-        // Close editing mode if open
-        $scope.editingIncidents = false;
-        $scope.confirmDeleteFor = null
     };
 
     // close and clear the "add custom behavior" control
