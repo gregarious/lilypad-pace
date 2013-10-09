@@ -45,6 +45,11 @@
     <script src="/lilypad-client/lilypad-pace/services/students/student.js"></script>
     <script src="/lilypad-client/lilypad-pace/services/students/studentDataStore.js"></script>
 
+    <!-- Classroom-related services -->
+    <script src="/lilypad-client/lilypad-pace/services/classrooms/classroom.js"></script>
+    <script src="/lilypad-client/lilypad-pace/services/classrooms/classroomDataStore.js"></script>
+
+
     <!-- PeriodicRecord-related services -->
     <script src="/lilypad-client/lilypad-pace/services/periodicRecords/periodicRecord.js"></script>
     <script src="/lilypad-client/lilypad-pace/services/periodicRecords/periodicRecordDataStore.js"></script>
@@ -90,6 +95,7 @@
     <!-- Main controllers -->
     <script src="/lilypad-client/lilypad-pace/frontEnd/main.js"></script>
     <script src="/lilypad-client/lilypad-pace/frontEnd/main/student.js"></script>
+    <script src="/lilypad-client/lilypad-pace/frontEnd/main/loginPrompt.js"></script>
 
     <!-- Main/collect controllers -->
     <script src="/lilypad-client/lilypad-pace/frontEnd/main/student/collect.js"></script>
@@ -109,16 +115,15 @@
     <script src="/lilypad-client/lilypad-pace/config.js"></script>
 
 </head>
-<body ng-controller="main">
+<body>
 <!-- TODO: We need to actually implement authentication; card #48 -->
-<div id="login" ng-hide="authenticated">
+<div id="login" ng-controller="LoginPromptCtrl" ng-hide="authenticated">
     <div>
         <form name="login">
             <label>Username<input type="text" ng-model="login.username" required/></label>
             <label>Password <input type="password" ng-model="login.password" required/></label>
         </form>
         <button ng-disabled="!login.$valid" ng-click="logIn()">Log In</button>
-
     </div>
 </div>
 <div id="sidebar" ng-controller="MenuCtrl">
