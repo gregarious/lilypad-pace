@@ -31,8 +31,8 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
 
     // shows the settings modal
     $scope.showBehaviorModel = function (incident) {
-        if (incident != undefined) {
-            if (!$scope.editingIncidents || incident.attributes.periodicRecord) {
+        if (incident) {
+            if (!$scope.editingIncidents || incident.has('periodicRecord')) {
                  return;
              }
 
@@ -40,8 +40,6 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
             $scope.behaviorModalState.title = "Edit Incident";
 
             $scope.type = incident.get('type');
-
-            console.log($scope.type.supports_duration);
 
             $scope.data.startedAt = moment(incident.get('startedAt')).format("hh:mm")
             $scope.data.comment = incident.get('comment');
@@ -108,6 +106,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
             }
 
             $scope.currentIncidentEditing.save();
+            $scope.incidentLogCollection.sort();
             $scope.currentIncidentEditing = null;
         } else {
             var newIncident = behaviorIncidentDataStore.createIncident(
@@ -116,7 +115,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
                 $scope.data.startedAt,
                 $scope.data.endedAt,
                 $scope.data.comment);
-        }   
+        }
 
         $scope.closeBehaviorModel();
     };
