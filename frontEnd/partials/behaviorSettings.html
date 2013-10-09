@@ -6,7 +6,7 @@
 
 <div class="behaviorSelection">
     <div ng-show="addingBehavior">
-        <form name="behavior" class="newBehaviorForm">
+        <form name="behavior" class="newBehaviorForm" ng-submit="submitNewBehavior()">
             <div class="clearfix">
                 <span class="buttonGroup">
                     <button ng-click="closeNewBehavior()" class="cancel">Cancel</button>
@@ -28,7 +28,7 @@
     </div>
     <table class="behaviors">
         <tbody>
-        <tr ng-repeat="studentType in studentOnlyTypes" ng-click="setBehavior(studentType)" ng-class="{selected: label.attributes.label == studentType.attributes.label}">
+        <tr ng-repeat="studentType in studentOnlyTypes" ng-click="setBehavior(studentType)" ng-class="{selected: type.label == studentType.get('label')}">
             <td>{{studentType.get('label')}}</td>
         </tr>
         </tbody>
@@ -41,9 +41,9 @@
             <label>
                 <input ng-model="data.startedAt" type="time" required/>
             </label>
-            <label ng-show="data.type.get('supportsDuration')">
+            <label ng-show="type.supports_duration">
                 <input type="time" ng-model="data.endedAt"
-                       ng-required="data.type.get('supportsDuration')"/>
+                       ng-required="type.supports_duration"/>
             </label>
         </div>
         <div>

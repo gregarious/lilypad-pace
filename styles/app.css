@@ -79,6 +79,13 @@ input[type=text], input[type=password] {
     box-sizing: border-box;
     height: 44px;
     font-size: 14px;
+    color: #58585b;
+    outline: 0px;
+}
+
+textarea {
+    color: #58585b;
+    outline: 0px;
 }
 
 select {
@@ -223,6 +230,7 @@ tr th {
     background: none;
     color: #f9f9f9;
     border: 1px solid #f9f9f9;
+    padding-left: 10px;
 }
 
 #login label {
@@ -356,7 +364,7 @@ tr th {
 }
 
 .tab-content {
-    height: 704px;
+    height: 669px;
     overflow: auto;
     padding-top: 35px;
 }
@@ -436,7 +444,7 @@ form .buttonGroup button {
     position: absolute;
     background: #FCFDFF;
     width: 230px;
-    height: auto;
+    height: 351px;
 }
 
 .modal .newBehaviorForm input {
