@@ -41,9 +41,9 @@
             <label>
                 <input ng-model="data.startedAt" type="time" required/>
             </label>
-            <label ng-show="data.type.get('supportsDuration')">
+            <label ng-show="type.supports_duration">
                 <input type="time" ng-model="data.endedAt"
-                       ng-required="data.type.get('supportsDuration')"/>
+                       ng-required="type.supports_duration"/>
             </label>
         </div>
         <div>

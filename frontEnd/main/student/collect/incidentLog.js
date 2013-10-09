@@ -32,14 +32,17 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     // shows the settings modal
     $scope.showBehaviorModel = function (incident) {
         if (incident != undefined) {
-            if (!$scope.editingIncidents || !incident.attributes.startedAt) {
-                return;
-            }
+            if (!$scope.editingIncidents || incident.attributes.periodicRecord) {
+                 return;
+             }
 
             $scope.currentIncidentEditing = incident;
             $scope.behaviorModalState.title = "Edit Incident";
 
             $scope.type = incident.get('type');
+
+            console.log($scope.type.supports_duration);
+
             $scope.data.startedAt = moment(incident.get('startedAt')).format("hh:mm")
             $scope.data.comment = incident.get('comment');
 
@@ -53,6 +56,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
             $scope.confirmDeleteFor = null
             $scope.currentIncidentEditing = null;
 
+            $scope.data.startedAt = moment(Date.now()).format("hh:mm")
             $scope.behaviorModalState.title = "Add New Incident";
         }
 
@@ -95,13 +99,15 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
 
         // If editing existing incident
         if ($scope.currentIncidentEditing) {
-            // TODO: FIGURE OUT WHY LABEL WONT UPDATE ON EDIT
-
+            $scope.currentIncidentEditing.set('startedAt', $scope.data.startedAt);
             $scope.currentIncidentEditing.set('type', $scope.type);
             $scope.currentIncidentEditing.set('comment', $scope.data.comment);
 
-            $scope.currentIncidentEditing.save();
+            if ($scope.data.endedAt) {
+                $scope.currentIncidentEditing.set('endedAt', $scope.data.endedAt);
+            }
 
+            $scope.currentIncidentEditing.save();
             $scope.currentIncidentEditing = null;
         } else {
             var newIncident = behaviorIncidentDataStore.createIncident(
