@@ -9,6 +9,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
 
+    <link rel="apple-touch-icon" href="images/icon.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="images/icon-72.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="images/icon@2x.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="images/icon-72@2x.png" />
+
     <!-- stylesheets -->
     <link rel="stylesheet" href="/lilypad-client/lilypad-pace/styles/reset.css">
     <link rel="stylesheet" href="/lilypad-client/lilypad-pace/styles/aller/aller.css">
@@ -119,9 +124,10 @@
 <!-- TODO: We need to actually implement authentication; card #48 -->
 <div id="login" ng-controller="LoginPromptCtrl" ng-hide="authenticated">
     <div>
-        <form name="login">
-            <label>Username<input type="text" ng-model="login.username" required/></label>
-            <label>Password <input type="password" ng-model="login.password" required/></label>
+        <form name="login" ng-submit="logIn()">
+            <label>Username<input type="text" ng-model="login.username" required autocorrect="off" autocapitalize="off"/></label>
+            <label>Password <input type="password" ng-model="login.password" required autocorrect="off" autocapitalize="off"/></label>
+            <input type="submit" style="position: absolute; left: -9999px"/>
         </form>
         <button ng-disabled="!login.$valid" ng-click="logIn()">Log In</button>
     </div>

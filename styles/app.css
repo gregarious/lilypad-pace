@@ -25,6 +25,10 @@ body {
     /*letter-spacing: 0.1em;*/
 }
 
+a:link { 
+    -webkit-tap-highlight-color: rgba(0,0,0,0); 
+}
+
 h1 {
     font-size: 32px;
     margin-bottom: 0.5em;
@@ -206,7 +210,7 @@ tr th {
 }
 
 #login {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;   
@@ -225,12 +229,13 @@ tr th {
 }
 
 #login input {
-    width: 200px;
+    width: 215px;
     margin-left: 0.5em;
     background: none;
     color: #f9f9f9;
     border: 1px solid #f9f9f9;
     padding-left: 10px;
+    font-size: 18pt;
 }
 
 #login label {
@@ -239,6 +244,7 @@ tr th {
     margin-right: auto;
     margin-bottom: 0.25em;
     display: block;
+    font-size: 17pt;
 }
 
 #login label:last-child {
@@ -251,6 +257,8 @@ tr th {
     margin-right: auto;
     width: 92px; /* shim for old iOS safari */
     color: #48bea4;
+    width: 324px;
+    margin-top: 30px;
 }
 
 .bs {
@@ -347,7 +355,7 @@ tr th {
     display: inline-block;
     height: 44px;
     float: right;
-    margin-right: -50px;
+    margin-right: -65px;
     background-color: #48bea4;
     color: #ffffff;
     padding-right: 15px;
@@ -366,6 +374,7 @@ tr th {
 .tab-content {
     height: 669px;
     overflow: auto;
+    /*-webkit-overflow-scrolling: touch;*/
     padding-top: 35px;
 }
 
