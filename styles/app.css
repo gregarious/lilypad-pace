@@ -373,9 +373,9 @@ tr th {
 
 .tab-content {
     height: 669px;
-    overflow: auto;
-    /*-webkit-overflow-scrolling: touch;*/
     padding-top: 35px;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 .divider {
