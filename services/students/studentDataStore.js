@@ -24,11 +24,11 @@ angular.module('pace').factory('studentDataStore', function(Backbone, Student, t
 
     /** Public interface of service **/
     return {
-        getForClassroom: function(classroom) {
+        getForClassroom: function(classroom, success, error) {
             var students = cache[classroom.id];
             if (!students) {
                 students = cache[classroom.id] = classroomStudentsFactory(classroom);
-                students.fetch();
+                students.fetch({success: success, error: error});
             }
             return students;
         }
