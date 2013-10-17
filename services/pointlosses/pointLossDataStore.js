@@ -92,6 +92,9 @@ angular.module('pace').service('pointLossDataStore', function(moment, timeTracke
             comment: comment
         };
 
+        // mixpanel tracking
+        mixpanel.track("Point loss");
+
         // TODO: currently not mandating we'll have a deep PdRecord here
         var student = periodicRecord.get('student');
 

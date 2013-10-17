@@ -72,6 +72,8 @@ app.controller('MenuStudentListCtrl', function ($scope, mainViewState, studentDa
             }
         } else {
             mainViewState.setSelectedStudent(student);
+            // mixpanel tracking
+            mixpanel.track( 'Changed students');
         }
     }
 });

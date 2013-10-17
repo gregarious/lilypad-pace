@@ -47,6 +47,7 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
     // submit a new behavior
     // TODO: Should be doing responsive form validation here; card #80
     $scope.submitNewBehavior = function () {
+        mixpanel.track("Custom behavior added"); // mixpanel tracking
         behaviorIncidentTypeDataStore.createIncidentType(
             $scope.data.label,
             $scope.data.selectedBehaviorType === 'Duration',
