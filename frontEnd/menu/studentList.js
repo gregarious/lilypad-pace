@@ -5,7 +5,6 @@ app.controller('MenuStudentListCtrl', function ($scope, mainViewState, studentDa
 
     // main student data
     $scope.studentCollection = null;
-    var activeAttendanceCollection = null;
 
     // various local view state properties
     $scope.dataLoading = false;
