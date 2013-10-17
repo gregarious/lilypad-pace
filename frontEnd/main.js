@@ -16,6 +16,7 @@ app.directive('mainTabs', function () {
                 angular.forEach(panes, function (pane) {
                     pane.selected = false;
                 });
+                mixpanel.track('Switched to ' + pane.title); // mixpanel tracking
                 pane.selected = true;
             };
 
