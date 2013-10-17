@@ -94,9 +94,6 @@ angular.module('pace').service('behaviorIncidentDataStore', function(moment, tim
             comment: comment
         };
 
-        // mixpanel tracking
-        mixpanel.track("Incident added");
-
         // if there's already a collection for the given student, use it to
         // create the new instance
         if (cache[student.id]) {
