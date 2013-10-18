@@ -1,7 +1,7 @@
 angular.module('pace').service('behaviorIncidentTypeDataStore', function(BehaviorIncidentType, $q) {
 
     // Collection of app-wide canonical BehaviorIncidentType models
-    var typeRegistry = _tr = new (Backbone.Collection.extend({
+    var typeRegistry = new (Backbone.Collection.extend({
         model: BehaviorIncidentType,
         url: '/pace/behaviortypes/'
     }))();
