@@ -35,12 +35,6 @@ angular.module('pace').service('pointLossDataStore', function(moment, timeTracke
         var TodayPointLossCollection = Backbone.Collection.extend({
             model: PointLoss,
             url: url,
-
-            dataStore: new Backbone.PersistentStore(PointLoss, storeKey),
-            storeFilter: function(pointLoss) {
-                var day = moment(pointLoss.get('occurredAt')).format('YYYY-MM-DD');
-                return day === today;
-            }
         });
 
         return new TodayPointLossCollection();

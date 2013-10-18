@@ -122,18 +122,14 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     };
 
     $scope.removeIncident = function(logEntry) {
-        // Note that since logEntry is connected to a PersistentStore-based
-        // collection, it will automatically be removed from this collection
-        // TODO-greg: this is kind of not great.
-        if (logEntry.has('periodicRecord')) {
-            var record = logEntry.get('periodicRecord');
-            if (record && !_.isUndefined(record.id)) {
-                record = periodicRecordDataStore.getById(record.id);
-                if (record) {
-                    record.reversePointLoss(logEntry.get('pointType'));
-                }
-            }
+        // if record has a periodicRecord, it's a PointLoss and needs to go
+        // through its parent PeriodicRecord to be destoryed correctly
+        // TODO-greg: wouldn't hurt to hide these details in the collect store
+        var record = logEntry.get('periodicRecord');
+        if (record) {
+            record.reversePointLoss(logEntry.get('pointType'));
         }
+
         logEntry.destroy();
 
         $scope.confirmDeleteFor = null;
@@ -153,7 +149,11 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
      */
     function resetIncidentData(student) {
         if (student) {
-            $scope.incidentTypeCollection = behaviorIncidentTypeDataStore.getTypesForStudent(student);
+            behaviorIncidentTypeDataStore.getTypesForStudent(student).then(function(collection) {
+                $scope.incidentTypeCollection = collection;
+            }, function(err) {
+                $scope.incidentTypeCollection = null;
+            });
         }
         else {
             $scope.incidentTypeCollection = null;
@@ -163,15 +163,12 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
         // Hooks $scope.incidentTypeCollection up to the given student's data
     var setIncidentTypesForStudent = function(student) {
         if (student) {
-            var incidentTypeCollection = behaviorIncidentTypeDataStore.getTypesForStudent(student);
-
-            // Can't guarantee the incident types have synced yet. If not, set up a callback
-            if (incidentTypeCollection.isSyncInProgress) {
-                incidentTypeCollection.once("sync", updateStudentOnlyTypes);
-            }
-            else {
-                updateStudentOnlyTypes(incidentTypeCollection);
-            }
+            behaviorIncidentTypeDataStore.getTypesForStudent(student).then(
+                updateStudentOnlyTypes,
+                function(err) {
+                   $scope.studentOnlyTypes = [];
+                }
+            );
         }
         else {
             $scope.studentOnlyTypes = [];

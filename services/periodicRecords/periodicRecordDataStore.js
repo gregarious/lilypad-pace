@@ -24,16 +24,11 @@ angular.module('pace').service('periodicRecordDataStore', function(_, timeTracke
         }
 
         var today = timeTracker.getTimestampAsMoment().format('YYYY-MM-DD');
-        var storeKey = 'PeriodicRecord-' + student.id;
 
         var TodayPeriodicRecordCollection = Backbone.Collection.extend({
             model: PeriodicRecord,
-            dataStore: new Backbone.PersistentStore(PeriodicRecord, storeKey),
 
             url: student.get('periodicRecordsUrl') + '?date=' + today,
-            storeFilter: function(model) {
-                return model.get('date') === today;
-            },
 
             comparator: 'period',
 
@@ -85,14 +80,5 @@ angular.module('pace').service('periodicRecordDataStore', function(_, timeTracke
 
         cachedPromises[student.id] = deferred.promise;
         return deferred.promise;
-    };
-
-    this.getById = function(id) {
-        for (var key in cache) {
-            var collection = cache[key];
-            var record = collection.get(id);
-            return record;
-        }
-        return null;
     };
 });

@@ -22,7 +22,7 @@ app.controller('MainStudentCollectCtrl', function ($scope, mainViewState, collec
             $scope.collectData = null;
             collectDataStore.loadTodayDataForStudent(student).then(
                 function (data) {
-                    $scope.collectData = data;
+                    _g = $scope.collectData = data;
                     $scope.statusMessage = '';
                 },
                 function (errorMsg) {

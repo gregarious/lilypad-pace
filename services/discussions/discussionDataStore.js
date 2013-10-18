@@ -37,8 +37,6 @@ angular.module('pace').factory('discussionDataStore', function(DiscussionPost) {
             model: DiscussionPost,
             url: student.get('postsUrl'),
 
-            dataStore: new Backbone.PersistentStore(DiscussionPost, 'Discussions-'+student.id),
-
             comparator: function(post) {
                 if (post.has('createdAt')) {
                     return -post.get('createdAt');

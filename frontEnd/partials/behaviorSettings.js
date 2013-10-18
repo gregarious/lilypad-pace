@@ -11,11 +11,13 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
     // Hooks $scope.incidentTypeCollection up to the given student's data
     var setIncidentTypesForStudent = function(student) {
         if (student) {
-            var incidentTypeCollection = behaviorIncidentTypeDataStore.getTypesForStudent(student, {
-                success: function() {
+            var incidentTypeCollection = behaviorIncidentTypeDataStore.getTypesForStudent(student).
+                then(function() {
                     updateStudentOnlyTypes(incidentTypeCollection);
+                }, function(err) {
+                    $scope.studentOnlyTypes = [];
                 }
-            });
+            );
         }
         else {
             $scope.studentOnlyTypes = [];

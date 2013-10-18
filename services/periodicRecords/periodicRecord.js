@@ -26,6 +26,7 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
                     'bs' : Integer
                 }
                 isEligible : Boolean
+                pointLosses : Collection
                 student : Object (Student stub)
          */
         urlRoot: '/pace/periodicrecords/',
@@ -39,38 +40,45 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
                 this.set('points', pts);
             }
 
-            // if `pointLosses` is not a collection, make it one
             var pointLosses = this.get('pointLosses');
-            if (pointLosses && !pointLosses.models) {
-                this.set('pointLosses', new InnerPointLossCollection(pointLosses));
+            if (pointLosses) {
+                // if `pointLosses` is a bare array, make it a Collection
+                if(!pointLosses.models) {
+                    pointLosses = new InnerPointLossCollection(pointLosses);
+                    this.set('pointLosses', pointLosses);
+                }
+                // ensure each PointLoss has a reference to it's parent PdRecord (this)
+                pointLosses.each(function(pl) {
+                    pl.set('periodicRecord', this);
+                }, this);
             }
         },
 
         parse: function(response, options) {
             // pack all point records into a `points` object
-            response = Backbone.Model.prototype.parse.apply(this, arguments);
+            var camelResponse = Backbone.Model.prototype.parse.apply(this, arguments);
 
             var valueOrNull = function(val) {return !_.isUndefined(val) ? val : null; };
-            response.points = {
-                kw: valueOrNull(response.kindWordsPoints),
-                cw: valueOrNull(response.completeWorkPoints),
-                fd: valueOrNull(response.followDirectionsPoints),
-                bs: valueOrNull(response.beSafePoints)
+            camelResponse.points = {
+                kw: valueOrNull(camelResponse.kindWordsPoints),
+                cw: valueOrNull(camelResponse.completeWorkPoints),
+                fd: valueOrNull(camelResponse.followDirectionsPoints),
+                bs: valueOrNull(camelResponse.beSafePoints)
             };
 
-            delete response.kindWordsPoints;
-            delete response.completeWorkPoints;
-            delete response.followDirectionsPoints;
-            delete response.beSafePoints;
+            delete camelResponse.kindWordsPoints;
+            delete camelResponse.completeWorkPoints;
+            delete camelResponse.followDirectionsPoints;
+            delete camelResponse.beSafePoints;
 
-            if (response.pointLosses) {
-                // transform case for embedded point loss attributes
-                response.pointLosses = _.map(response.pointLosses, function(attrs) {
+            // transform case for embedded point loss attributes
+            if (camelResponse.pointLosses) {
+                camelResponse.pointLosses = _.map(camelResponse.pointLosses, function(attrs) {
                     return PointLoss.prototype.parse(attrs);
                 });
             }
 
-            return response;
+            return camelResponse;
         },
 
         toJSON: function() {

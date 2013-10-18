@@ -33,13 +33,7 @@ angular.module('pace').service('behaviorIncidentDataStore', function(moment, tim
 
         var TodayIncidentCollection = Backbone.Collection.extend({
             model: BehaviorIncident,
-            url: url,
-
-            dataStore: new Backbone.PersistentStore(BehaviorIncident, storeKey),
-            storeFilter: function(incident) {
-                var day = moment(incident.get('startedAt')).format('YYYY-MM-DD');
-                return day === today;
-            }
+            url: url
         });
 
         return new TodayIncidentCollection();
