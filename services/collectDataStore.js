@@ -1,4 +1,4 @@
-angular.module('pace').service('collectDataStore', function(Backbone, $q, periodicRecordDataStore, behaviorIncidentDataStore) {
+angular.module('pace').service('collectDataStore', function(Backbone, $q, periodicRecordDataStore, behaviorIncidentDataStore, behaviorIncidentTypeDataStore) {
 
     var LoggableCollection = Backbone.Collection.extend({
         comparator: function(loggableModel) {
@@ -41,15 +41,22 @@ angular.module('pace').service('collectDataStore', function(Backbone, $q, period
             }
         );
 
+        var derferredTypes = $q.defer();
+        behaviorIncidentTypeDataStore.getTypesForStudent(student).then(
+            function(collection) {
+                derferredTypes.resolve(collection);
+            },
+            function(err) {
+                derferredTypes.reject(err);
+            }
+        );
+
+
         var compiledPromise = $q.all({
             periodicRecords: deferredRecords.promise,
-            behaviorIncidents: deferredIncidents.promise
+            behaviorIncidents: deferredIncidents.promise,
+            behaviorTypes: derferredTypes.promise
         });
-
-        var responseData = {
-            periodicRecordCollection: null,
-            incidentLogCollection: null
-        };
 
         // once both collections have been built/one has failed, we can respond to
         // the original external promise
@@ -65,7 +72,8 @@ angular.module('pace').service('collectDataStore', function(Backbone, $q, period
 
                 deferredResponse.resolve({
                     periodicRecordCollection: collections.periodicRecords,
-                    incidentLogCollection: new LoggableCollection(incidentModels)
+                    incidentLogCollection: new LoggableCollection(incidentModels),
+                    behaviorTypeCollection: collections.behaviorTypes
                 });
             },
             function(errors) {

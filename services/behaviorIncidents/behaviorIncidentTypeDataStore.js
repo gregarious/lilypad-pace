@@ -12,22 +12,6 @@ angular.module('pace').service('behaviorIncidentTypeDataStore', function(Behavio
         }
     };
 
-    // Re-enable this when needing general behavior types
-    // var initializePromise = null;
-    // this.initializeRegistry = function() {
-    //     if (!initializePromise) {
-    //         var deferred = $q.defer();
-    //         typeRegistry.fetch(function(collection) {
-    //             deferred.resolve(collection);
-    //         }, function(err) {
-    //             deferred.reject(err);
-    //         });
-
-    //         initializePromise = deferred.promise;
-    //     }
-    //     return initializePromise;
-    // };
-
     // cache indexed by student id
     var cache = {};
     var promiseCache = {};
@@ -72,13 +56,16 @@ angular.module('pace').service('behaviorIncidentTypeDataStore', function(Behavio
         // app-wide
         var serverCollection = studentTypesFactory(student);
         var deferred = $q.defer();
-        serverCollection.fetch(function(serverCollection) {
-            var registryModels = typeRegistry.add(serverCollection.models, {merge: true});
-            var collection = new Backbone.Collection(registryModels);
-            cache[student.id] = collection;
-            deferred.resolve(collection);
-        }, function(err) {
-            deferred.reject(err);
+        serverCollection.fetch({
+            success: function(serverCollection) {
+                var registryModels = typeRegistry.add(serverCollection.models, {merge: true});
+                var collection = new Backbone.Collection(registryModels);
+                cache[student.id] = collection;
+                deferred.resolve(collection);
+            },
+            error: function(err) {
+                deferred.reject(err);
+            }
         });
 
         promiseCache[student.id] = deferred.promise;

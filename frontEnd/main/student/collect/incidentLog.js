@@ -135,57 +135,6 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
         $scope.confirmDeleteFor = null;
     };
 
-    /** Listeners to ensure view stays in sync with mainViewState **/
-
-    // initialize the collect data for the given student (will result in
-    // null if there is no selected student)
-    resetIncidentData(mainViewState.getSelectedStudent());
-
-    // also listen for future changes in selectedClassroom
-    mainViewState.on('change:selectedStudent', resetIncidentData);
-
-    /**
-     * Hooks $scope.incidentTypeCollection up to the given student's data
-     */
-    function resetIncidentData(student) {
-        if (student) {
-            behaviorIncidentTypeDataStore.getTypesForStudent(student).then(function(collection) {
-                $scope.incidentTypeCollection = collection;
-            }, function(err) {
-                $scope.incidentTypeCollection = null;
-            });
-        }
-        else {
-            $scope.incidentTypeCollection = null;
-        }
-    }
-
-        // Hooks $scope.incidentTypeCollection up to the given student's data
-    var setIncidentTypesForStudent = function(student) {
-        if (student) {
-            behaviorIncidentTypeDataStore.getTypesForStudent(student).then(
-                updateStudentOnlyTypes,
-                function(err) {
-                   $scope.studentOnlyTypes = [];
-                }
-            );
-        }
-        else {
-            $scope.studentOnlyTypes = [];
-        }
-    };
-
-    var updateStudentOnlyTypes = function(incidentTypeCollection) {
-        // Note this creates a bare array of IncidentTypes, *not* a Collection!
-        $scope.studentOnlyTypes = incidentTypeCollection.filter(function(type) {
-            return type.get('applicableStudent') !== null;
-        });
-    };
-
-    // initialize $scope.incidentTypeCollection and $scope.studentOnlyTypes
-    var selectedStudent = mainViewState.getSelectedStudent();
-    setIncidentTypesForStudent(selectedStudent);
-
     // open the "add custom behavior" control
     $scope.openNewBehavior = function () {
         $scope.addingBehavior = true;
@@ -201,24 +150,4 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     $scope.setBehavior = function(selectedType) {
         $scope.type = selectedType.attributes;
     };
-
-    // submit a new behavior
-    // TODO: Should be doing responsive form validation here; card #80
-    $scope.submitNewBehavior = function () {
-        behaviorIncidentTypeDataStore.createIncidentType(
-            $scope.data.label,
-            $scope.data.selectedBehaviorType === 'Duration',
-            null,
-            mainViewState.getSelectedStudent());
-        updateStudentOnlyTypes($scope.incidentTypeCollection);
-        $scope.closeNewBehavior();
-
-    };
-
-    /** Listeners to ensure view stays in sync with mainViewState **/
-
-    // listen for the selected student to change
-    mainViewState.on('change:selectedStudent', function(newSelected) {
-        setIncidentTypesForStudent(newSelected);
-    });
 });

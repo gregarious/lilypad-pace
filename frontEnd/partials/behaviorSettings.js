@@ -8,32 +8,12 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
     /** Functions needed to keep scope up to date with store changes **/
     // TODO: not great. could use a refactor; see after completing card #63
 
-    // Hooks $scope.incidentTypeCollection up to the given student's data
-    var setIncidentTypesForStudent = function(student) {
-        if (student) {
-            var incidentTypeCollection = behaviorIncidentTypeDataStore.getTypesForStudent(student).
-                then(function() {
-                    updateStudentOnlyTypes(incidentTypeCollection);
-                }, function(err) {
-                    $scope.studentOnlyTypes = [];
-                }
-            );
-        }
-        else {
-            $scope.studentOnlyTypes = [];
-        }
-    };
+    // NOTE!!!
+    // We are inheriting $scope.collectData from parent controller.
+    // TODO: change this
 
-    var updateStudentOnlyTypes = function(incidentTypeCollection) {
-        // Note this creates a bare array of IncidentTypes, *not* a Collection!
-        $scope.studentOnlyTypes = incidentTypeCollection.filter(function(type) {
-            return type.get('applicableStudent') !== null;
-        });
-    };
-
-    // initialize $scope.incidentTypeCollection and $scope.studentOnlyTypes
-    var selectedStudent = mainViewState.getSelectedStudent();
-    setIncidentTypesForStudent(selectedStudent);
+    $scope.$watch('collectData.behaviorTypeCollection', updateStudentOnlyTypes);
+    updateStudentOnlyTypes($scope.collectData.behaviorTypeCollection);
 
     // open the "add custom behavior" control
     $scope.openNewBehavior = function () {
@@ -60,10 +40,10 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
 
     };
 
-    /** Listeners to ensure view stays in sync with mainViewState **/
-
-    // listen for the selected student to change
-    mainViewState.on('change:selectedStudent', function(newSelected) {
-        setIncidentTypesForStudent(newSelected);
-    });
+    function updateStudentOnlyTypes(incidentTypeCollection) {
+        // Note this creates a bare array of IncidentTypes, *not* a Collection!
+        $scope.studentOnlyTypes = incidentTypeCollection.filter(function(type) {
+            return type.get('applicableStudent') !== null;
+        });
+    }
 });

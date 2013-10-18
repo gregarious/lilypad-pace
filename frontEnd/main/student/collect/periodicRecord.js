@@ -28,7 +28,7 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, mainVie
     });
 
     // when the recordCollection changes
-    $scope.$watch('collectData', function(recordCollection) {
+    $scope.$watch('collectData.periodicRecordCollection', function(recordCollection) {
         showPeriod($scope.data.selectedPeriodNumber);
     });
 
