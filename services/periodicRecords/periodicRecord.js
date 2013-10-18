@@ -1,9 +1,16 @@
-angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTracker, Student, pointLossDataStore) {
+angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTracker, Student, PointLoss, pointLossDataStore) {
     // utilities in use below
     var validPointpointTypes = ['kw', 'cw', 'fd', 'bs'];
     var isValidPointType = function(code) {
         return _.indexOf(validPointpointTypes, code) !== -1;
     };
+
+    var InnerPointLossCollection = Backbone.Collection.extend({
+        model: PointLoss,
+        comparator: function(model) {
+            return model.get('occurredAt');
+        }
+    });
 
     return Backbone.Model.extend({
         /*
@@ -31,6 +38,12 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
                 });
                 this.set('points', pts);
             }
+
+            // if `pointLosses` is not a collection, make it one
+            var pointLosses = this.get('pointLosses');
+            if (pointLosses && !pointLosses.models) {
+                this.set('pointLosses', new InnerPointLossCollection(pointLosses));
+            }
         },
 
         parse: function(response, options) {
@@ -50,6 +63,13 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
             delete response.followDirectionsPoints;
             delete response.beSafePoints;
 
+            if (response.pointLosses) {
+                // transform case for embedded point loss attributes
+                response.pointLosses = _.map(response.pointLosses, function(attrs) {
+                    return PointLoss.prototype.parse(attrs);
+                });
+            }
+
             return response;
         },
 
@@ -64,6 +84,9 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
             data['complete_work_points'] = points && points.cw;
             data['follow_directions_points'] = points && points.fd;
             data['be_safe_points'] = points && points.bs;
+
+            // remove nested point losses
+            delete data.point_losses;
 
             return data;
         },

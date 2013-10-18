@@ -1,5 +1,9 @@
 // controller for the incident log
 app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewState, timeTracker, logEntryDataStore, behaviorIncidentDataStore, behaviorIncidentTypeDataStore, pointLossDataStore, periodicRecordDataStore) {
+    // NOTE!!!
+    // We are inheriting $scope.collectData from parent controller.
+    // TODO: change this
+
     $scope.data = {};
     $scope.addingIncident = false;
     $scope.editingIncidents = false;
@@ -13,10 +17,6 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     $scope.behaviorTypes = ['Frequency', 'Duration'];
     $scope.selectedBehaviorType = null;
     $scope.type = null;
-
-    // initialize $scope.incidentLogCollection
-    var selectedStudent = mainViewState.getSelectedStudent();
-    setIncidentDataForStudent(selectedStudent);
 
     /** View functions **/
 
@@ -41,20 +41,20 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
 
             $scope.type = incident.get('type');
 
-            $scope.data.startedAt = moment(incident.get('startedAt')).format("hh:mm")
+            $scope.data.startedAt = moment(incident.get('startedAt')).format("hh:mm");
             $scope.data.comment = incident.get('comment');
 
-            if (incident.attributes.endedAt != null) {
+            if (incident.attributes.endedAt) {
                 $scope.data.endedAt = moment(incident.get('endedAt')).format("hh:mm");
             }
 
         } else {
             // Close editing mode if open
             $scope.editingIncidents = false;
-            $scope.confirmDeleteFor = null
+            $scope.confirmDeleteFor = null;
             $scope.currentIncidentEditing = null;
 
-            $scope.data.startedAt = moment(Date.now()).format("hh:mm")
+            $scope.data.startedAt = moment(Date.now()).format("hh:mm");
             $scope.behaviorModalState.title = "Add New Incident";
         }
 
@@ -63,19 +63,19 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
 
     $scope.editIncidents = function() {
         $scope.editingIncidents = !$scope.editingIncidents;
-        $scope.confirmDeleteFor = null
-    }
+        $scope.confirmDeleteFor = null;
+    };
 
     $scope.confirmDelete = function(incident) {
-        if ($scope.confirmDeleteFor != null) {
+        if ($scope.confirmDeleteFor) {
             if ($scope.confirmDeleteFor.id == incident.id) {
-                $scope.confirmDeleteFor = null
+                $scope.confirmDeleteFor = null;
                 return;
             }
         }
 
         $scope.confirmDeleteFor = incident;
-    }
+    };
 
     // TODO: Should be doing responsive form validation here
     // TODO: Should confirm new incidents for students marked absent; card #76
@@ -106,7 +106,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
             }
 
             $scope.currentIncidentEditing.save();
-            $scope.incidentLogCollection.sort();
+            $scope.collectData.incidentLogCollection.sort();
             $scope.currentIncidentEditing = null;
         } else {
             mixpanel.track("Incident added"); // mixpanel tracking
@@ -136,27 +136,26 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
         }
         logEntry.destroy();
 
-        $scope.confirmDeleteFor = null
+        $scope.confirmDeleteFor = null;
     };
 
     /** Listeners to ensure view stays in sync with mainViewState **/
 
-    // listen for the selected student to change
-    mainViewState.on('change:selectedStudent', function(newSelected) {
-        setIncidentDataForStudent(newSelected);
-    });
+    // initialize the collect data for the given student (will result in
+    // null if there is no selected student)
+    resetIncidentData(mainViewState.getSelectedStudent());
+
+    // also listen for future changes in selectedClassroom
+    mainViewState.on('change:selectedStudent', resetIncidentData);
 
     /**
-     * Hooks $scope.incidentLogCollection & $scope.incidentTypeCollection up
-     * to the given student's data
+     * Hooks $scope.incidentTypeCollection up to the given student's data
      */
-    function setIncidentDataForStudent(student) {
+    function resetIncidentData(student) {
         if (student) {
-            $scope.incidentLogCollection = logEntryDataStore.getTodayForStudent(student);
             $scope.incidentTypeCollection = behaviorIncidentTypeDataStore.getTypesForStudent(student);
         }
         else {
-            $scope.incidentLogCollection = null;
             $scope.incidentTypeCollection = null;
         }
     }

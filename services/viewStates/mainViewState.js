@@ -13,19 +13,19 @@ angular.module('pace').factory('mainViewState', function(_, Backbone) {
 
     // don't give public access to bare selectedStudent, wrap in get/setters
     // so we can trigger events on value change
-    var _selectedStudent = null;
+    mainViewState._selectedStudent = null;
 
     mainViewState.isStudentSelected = function() {
-        return Boolean(_selectedStudent);
+        return Boolean(mainViewState._selectedStudent);
     };
 
     mainViewState.getSelectedStudent = function() {
-        return _selectedStudent;
+        return mainViewState._selectedStudent;
     };
 
     mainViewState.setSelectedStudent = function(student) {
-        _selectedStudent = student;
-        mainViewState.trigger('change:selectedStudent', _selectedStudent);
+        mainViewState._selectedStudent = student;
+        mainViewState.trigger('change:selectedStudent', student);
     };
 
     // same observable setup as for selected student above
