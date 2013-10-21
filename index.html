@@ -88,6 +88,7 @@
     <!-- Other services -->
     <script src="/lilypad-client/lilypad-pace/services/common/timeTracker.js"></script>
     <script src="/lilypad-client/lilypad-pace/services/common/authManager.js"></script>
+    <script src="/lilypad-client/lilypad-pace/services/collectDataStore.js"></script>
 
     <!----------------------------->
     <!-- CONTROLLERS -->
@@ -106,6 +107,7 @@
     <script src="/lilypad-client/lilypad-pace/frontEnd/main/student/collect.js"></script>
     <script src="/lilypad-client/lilypad-pace/frontEnd/main/student/collect/incidentLog.js"></script>
     <script src="/lilypad-client/lilypad-pace/frontEnd/main/student/collect/periodicRecord.js"></script>
+    <script src="/lilypad-client/lilypad-pace/frontEnd/partials/behaviorSettings.js"></script>
 
     <!-- Main/analyze controllers -->
     <script src="/lilypad-client/lilypad-pace/frontEnd/main/student/analyze.js"></script>
@@ -145,24 +147,23 @@
         <!-- We will need to implement this later using ng-switch-->
         <!-- Every menu view would get its own controller-->
         <div ng-controller="MenuStudentListCtrl">
-            <menu>
-                <menu-item id="attendanceToggle" ng-click="toggleAttendance()" ng-class="{highlighted: mainViewState.editingAttendance}">
-                    <ng-switch on="mainViewState.editingAttendance">
-                        <!-- TODO: Highligh the save attendance button when attendance is being edited; card #66 -->
-                        <span ng-switch-default>Edit Attendance</span>
-                        <span ng-switch-when="true">Save Attendance</span>
-                    </ng-switch>
-                </menu-item>
-                <menu-item ng-class="{selected: mainViewState.getSelectedStudent() == student && !mainViewState.editingAttendance}"
-                           ng-repeat="student in studentCollection.models">
+            <ul ng-show="studentCollection">
+                <li id="attendanceToggle" ng-click="toggleAttendance()" ng-class="{highlighted: mainViewState.editingAttendance}">
+                    <span ng-show="mainViewState.editingAttendance">Save Attendance</span>
+                    <span ng-show="!mainViewState.editingAttendance">Edit Attendance</span>
+                </li>
+                <li ng-class="{selected: mainViewState.getSelectedStudent() == student && !mainViewState.editingAttendance}"
+                    ng-repeat="student in studentCollection.models">
                     <div ng-click="handleClick(student)" ng-class="{absent: !student.isPresent()}">
                         {{student.get('firstName')}} {{student.get('lastName')}}
                     </div>
-                </menu-item>
-                <menu-item id="signout" ng-click="signOut()">
+                </li>
+                <li id="signout" ng-click="signOut()">
                     <span>Sign Out</span>
-                </menu-item>
-            </menu>
+                </li>
+            </ul>
+            <ul ng-show="dataLoading"><li>Loading...</li></ul>
+            <ul ng-show="dataError"><li>{{dataError}}</li></ul>
         </div>
     </div>
 </div>
@@ -173,9 +174,9 @@
         because the counters are expecting to be loaded after student selection. ng-switch
         lazy-loads controllers, while ng-show does not. Ask Greg if you want to know more.)
 
-        Anyway, we're hacking ng-switch to basically act like an if/else on whether
-        getSelectedStudent() returns null or not. To get rid of this the right way,
-        we'll have to dig in and fix some of the counter widget code.
+        Anyway, we're hacking ng-switch to basically act like an if/else isStudentSelected
+        To get rid of this the right way, we'll have to dig in and fix some of the counter
+        widget code.
      -->
     <ng-switch on="mainViewState.isStudentSelected()">
         <div id="student" ng-switch-when="true">
@@ -197,7 +198,6 @@
         </div>
 
         <div id="nostudent" ng-switch-default>
-            <!-- TODO: Pretty up the default screen; card #67 -->
             Select a Student
         </div>
     </ng-switch>

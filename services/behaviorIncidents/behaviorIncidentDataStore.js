@@ -7,7 +7,7 @@
  * - createIncident: Creates and POSTs a new incident
  */
 
-angular.module('pace').service('behaviorIncidentDataStore', function(moment, timeTracker, BehaviorIncident, _) {
+angular.module('pace').service('behaviorIncidentDataStore', function(moment, timeTracker, BehaviorIncident, _, $q) {
 
     /**
      * Returns a new Collection of BehaviorIncidents for today's date.
@@ -33,13 +33,7 @@ angular.module('pace').service('behaviorIncidentDataStore', function(moment, tim
 
         var TodayIncidentCollection = Backbone.Collection.extend({
             model: BehaviorIncident,
-            url: url,
-
-            dataStore: new Backbone.PersistentStore(BehaviorIncident, storeKey),
-            storeFilter: function(incident) {
-                var day = moment(incident.get('startedAt')).format('YYYY-MM-DD');
-                return day === today;
-            }
+            url: url
         });
 
         return new TodayIncidentCollection();
@@ -47,22 +41,36 @@ angular.module('pace').service('behaviorIncidentDataStore', function(moment, tim
 
     // cache indexed by student id
     var cache = {};
+    var cachedPromises = {};
 
     /**
-     * Returns a Collection of BehaviorIncidents applicable to the given
-     * student for the current date.
+     * Returns a promise for a Collection of BehaviorIncidents applicable
+     * to the given student for the current date.
      *
      * @param  {Student} student
      * @return {Collection}
      */
     this.getTodayIncidentsForStudent = function(student) {
-        var collection = cache[student.id];
-        if (!collection) {
-            collection = cache[student.id] = todayStudentIncidentFactory(student);
-            // TODO: move this outside after card #87 is out there
-            collection.fetch();
+        // if a promise was already made for this student, just return it. currently not supporting refresh.
+        var oldPromise = cachedPromises[student.id];
+        if (oldPromise) {
+            return oldPromise;
         }
-        return collection;
+
+        var collection = cache[student.id] = todayStudentIncidentFactory(student);
+        var deferred = $q.defer();
+
+        collection.fetch({
+            success: function(collection) {
+                deferred.resolve(collection);
+            },
+            error: function(err) {
+                deferred.reject(err);
+            }
+        });
+
+        cachedPromises[student.id] = deferred.promise;
+        return deferred.promise;
     };
 
     /**

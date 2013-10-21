@@ -7,7 +7,7 @@
  *     PeriodicRecords applicable to the current date
  */
 
-angular.module('pace').service('periodicRecordDataStore', function(_, timeTracker, PeriodicRecord) {
+angular.module('pace').service('periodicRecordDataStore', function(_, timeTracker, PeriodicRecord, $q) {
 
     /**
      * Factory to return a new Collection of PeriodicRecords for a
@@ -24,16 +24,11 @@ angular.module('pace').service('periodicRecordDataStore', function(_, timeTracke
         }
 
         var today = timeTracker.getTimestampAsMoment().format('YYYY-MM-DD');
-        var storeKey = 'PeriodicRecord-' + student.id;
 
         var TodayPeriodicRecordCollection = Backbone.Collection.extend({
             model: PeriodicRecord,
-            dataStore: new Backbone.PersistentStore(PeriodicRecord, storeKey),
 
             url: student.get('periodicRecordsUrl') + '?date=' + today,
-            storeFilter: function(model) {
-                return model.get('date') === today;
-            },
 
             comparator: 'period',
 
@@ -61,23 +56,28 @@ angular.module('pace').service('periodicRecordDataStore', function(_, timeTracke
     };
 
     var cache = {};
+    var cachedPromises = {};
 
-    this.getTodayRecordsForStudent = function(student) {
-        var collection = cache[student.id];
-        if (!collection) {
-            collection = cache[student.id] = todayStudentRecordFactory(student);
-            // TODO: move this outside after card #87 is out there
-            collection.fetch();
+    this.getTodayRecordsForStudent = function(student, success, error) {
+        // if a promise was already made for this student, just return it. currently not supporting refresh.
+        var oldPromise = cachedPromises[student.id];
+        if (oldPromise) {
+            return oldPromise;
         }
-        return collection;
-    };
 
-    this.getById = function(id) {
-        for (var key in cache) {
-            var collection = cache[key];
-            var record = collection.get(id);
-            return record;
-        }
-        return null;
+        var collection = cache[student.id] = todayStudentRecordFactory(student);
+        var deferred = $q.defer();
+
+        collection.fetch({
+            success: function(collection) {
+                deferred.resolve(collection);
+            },
+            error: function(err) {
+                deferred.reject(err);
+            }
+        });
+
+        cachedPromises[student.id] = deferred.promise;
+        return deferred.promise;
     };
 });

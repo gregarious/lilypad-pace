@@ -1,4 +1,4 @@
-angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, LoggableMixin, BehaviorIncidentType, Student) {
+angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, LoggableMixin, BehaviorIncidentType, behaviorIncidentTypeDataStore, Student) {
     return Backbone.Model.extend(_.extend(new LoggableMixin(), {
         /*
             Attributes:
@@ -16,20 +16,28 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Lo
         initialize: function() {
             // assert type subresource is a plain old js object
             var type = this.get('type');
-            if (type && type.attributes) {
-                this.set('type', _.clone(type.attributes));
+            if (type && type.id) {
+                // need to assign the `type` attribute a store registry-based model
+                var registeredType = behaviorIncidentTypeDataStore.findOrRegister(type,
+                    {merge: true});
+                this.set('type', registeredType);
             }
         },
 
         parse: function(response, options) {
             // do basic parsing and case transformation
-            response = Backbone.Model.prototype.parse.apply(this, arguments);
+            var camelResponse = Backbone.Model.prototype.parse.apply(this, arguments);
 
             // parse ISO date string into Date
-            response.startedAt = moment(response.startedAt).toDate();
-            response.endedAt = response.endedAt && moment(response.endedAt).toDate();
+            camelResponse.startedAt = moment(camelResponse.startedAt).toDate();
+            camelResponse.endedAt = response.endedAt && moment(camelResponse.endedAt).toDate();
 
-            return response;
+            // transform case for embedded point loss attributes
+            if (camelResponse.type) {
+                camelResponse.type = BehaviorIncidentType.prototype.parse(camelResponse.type);
+            }
+
+            return camelResponse;
         },
 
         toJSON: function() {
@@ -63,7 +71,7 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Lo
 
         getLabel: function() {
             if (this.has('type')) {
-                return this.get('type').label;
+                return this.get('type').get('label');
             }
             return undefined;
         }

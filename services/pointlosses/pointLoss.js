@@ -14,13 +14,6 @@ angular.module('pace').factory('PointLoss', function(Backbone, moment, LoggableM
 	return Backbone.Model.extend(_.extend(new LoggableMixin(), {
 		urlRoot: '/pace/pointlosses/',
 
-        initialize: function() {
-            var pdRecord = this.get('periodicRecord');
-            if (pdRecord && pdRecord.attributes) {
-                this.set('periodicRecord', {id: pdRecord.get('id')});
-            }
-        },
-
         parse: function(response, options) {
             response = Backbone.Model.prototype.parse.apply(this, arguments);
             // transform ISO date string to Date
@@ -38,8 +31,10 @@ angular.module('pace').factory('PointLoss', function(Backbone, moment, LoggableM
             // manually transform the dates
             data['started_at'] = moment(this.get('startedAt')).format();
 
-            // `periodic_record` is just a plan old JS object, `parse` does nothing to the API subresource
-            data['periodic_record'] = _.clone(this.get('periodicRecord'));
+            // need to turn `periodic_record` into a stub if it's a model
+            if (data['periodic_record'].attributes) {
+                data['periodic_record'] = {id: data['periodic_record'].id};
+            }
 
             return data;
         },

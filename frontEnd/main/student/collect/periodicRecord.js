@@ -1,21 +1,10 @@
-//
-/**
- * Controller for periodic records
- *
- * $scope variables defined here:
- *     - data: {
- *         selectedPeriodNumber: Number
- *     }
- *     - availablePeriods: [{
- *         label: String
- *         value: Number
- *     }, ...]
- *     - decrement: function(String)
- *     - selectedPeriod: PeriodicRecord
- */
 
 app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, mainViewState, periodicRecordDataStore, logEntryDataStore, timeTracker, _) {
     /** $scope initializing  **/
+
+    // NOTE!!!
+    // We are inheriting $scope.collectData from parent controller.
+    // TODO: change this
 
     // Initialize $scope.data.selectedPeriodNumber to be the current period
     // according to the timeTracker
@@ -24,33 +13,31 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, mainVie
     };
 
     // Initialize $scope.availablePeriods
-    setAvailablePeriods(timeTracker.getCurrentPeriod());
+    $scope.availablePeriods = calculateAvailablePeriods(timeTracker.getCurrentPeriod());
 
-    // See bottom of function for $scope.selectedPeriod initialization
+    /** actions on $scope **/
+    // decrement points
+    $scope.decrement = decrementCategory;
 
-    // decrement the current student in the given category
-    $scope.decrement = function (category) {
-        var pointLossRecord = $scope.selectedPeriod.registerPointLoss(category);
-        var student = $scope.selectedPeriod.get('student');
-
-        // TODO: move this logic inside store; card #77
-        // var log = logEntryDataStore.getTodayForStudent(student);
-        // log.add(pointLossRecord);
-    };
 
     /** Watches on $scope **/
 
     // watch the select input for changes
     $scope.$watch('data.selectedPeriodNumber', function(val) {
-        updateSelectedPeriod();
+        showPeriod(val);
+    });
+
+    // when the recordCollection changes
+    $scope.$watch('collectData.periodicRecordCollection', function(recordCollection) {
+        showPeriod($scope.data.selectedPeriodNumber);
     });
 
     // TODO: insert logic to watch for current time/period changes; card #33
 
-    /** Private utilities **/
-    function setAvailablePeriods(maxPeriod) {
+    /** Implementation details **/
+    function calculateAvailablePeriods(maxPeriod) {
         if (maxPeriod) {
-            $scope.availablePeriods = _.map(_.range(1, maxPeriod+1), function(pd) {
+            return _.map(_.range(1, maxPeriod+1), function(pd) {
                 return {
                     label: 'Period ' + pd,
                     value: pd
@@ -58,59 +45,22 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, mainVie
             });
         }
         else {
-            $scope.availablePeriods = [];
+            return [];
         }
     }
 
-    // Collection to be kept in sync with the currently selected student
-    // app-wide. This collection will be consulted when it comes to displaying
-    // the selected period.
-    var selectedStudentPeriods = null;
-
-    /** Listeners to ensure view stays in sync with mainViewState **/
-
-    mainViewState.on('change:selectedStudent', function(newSelected) {
-        setSelectedPeriodsForStudent(newSelected);
-    });
-
-    /**
-     * Hooks private selectedStudentPeriods variable up to the given
-     * student's data. Also cascades this change into $scope.selectedPeriod.
-     */
-    var setSelectedPeriodsForStudent = function(student) {
-        if (selectedStudentPeriods) {
-            selectedStudentPeriods.off('sync', updateSelectedPeriod);
-        }
-
-        if (student) {
-            selectedStudentPeriods = periodicRecordDataStore.getTodayRecordsForStudent(student);
-            selectedStudentPeriods.on('sync', updateSelectedPeriod);
-        }
-        else {
-            selectedStudentPeriods = null;
-        }
-
-        // update $scope.selectedPeriod to reflect the new student setting
-        updateSelectedPeriod();
-    };
-
-    /**
-     * Hooks $scope.selectedPeriod variable up to the currently selected
-     * period number, using the the PeriodicRecord collection previously
-     * set in `setSelectedPeriodsForStudent`.
-     */
-    var updateSelectedPeriod = function() {
-        var pd = parseInt($scope.data.selectedPeriodNumber, 10);
-        if (selectedStudentPeriods && pd) {
-            $scope.selectedPeriod = selectedStudentPeriods.getByPeriod(pd);
+    function showPeriod(period) {
+        var pd = parseInt(period, 10);
+        if ($scope.collectData && pd) {
+            $scope.selectedPeriod = $scope.collectData.periodicRecordCollection.getByPeriod(pd);
         }
         else {
             $scope.selectedPeriod = null;
         }
-    };
+    }
 
-    // initialize $scope.selectedPeriod
-    var selectedStudent = mainViewState.getSelectedStudent();
-    setSelectedPeriodsForStudent(selectedStudent);
-
+    function decrementCategory(category) {
+        var pointLossRecord = $scope.selectedPeriod.registerPointLoss(category);
+        $scope.collectData.incidentLogCollection.add(pointLossRecord);
+    }
 });

@@ -1,5 +1,7 @@
-<ng-include src="'/lilypad-client/lilypad-pace/frontend/main/student/collect/periodicRecord.html'" ng-controller="MainStudentCollectPeriodicRecordCtrl"></ng-include>
-<div class="divider clear"></div>
-<ng-include src="'/lilypad-client/lilypad-pace/frontend/main/student/collect/incidentLog.html'" ng-controller="MainStudentCollectIncidentLogCtrl" /></ng-include>
-
+<div ng-show="collectData">
+    <ng-include src="'/lilypad-client/lilypad-pace/frontend/main/student/collect/periodicRecord.html'" ng-controller="MainStudentCollectPeriodicRecordCtrl"></ng-include>
+    <div class="divider clear"></div>
+    <ng-include src="'/lilypad-client/lilypad-pace/frontend/main/student/collect/incidentLog.html'" ng-controller="MainStudentCollectIncidentLogCtrl" /></ng-include>
+</div>
+<div ng-show="statusMessage">{{statusMessage}}</div>
 

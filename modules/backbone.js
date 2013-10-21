@@ -14,7 +14,7 @@ angular.module('backbone', ['underscore']).
             // assumes Backbone is globally available
             var Backbone = window.Backbone;
             patchModelParsing(Backbone);
-            patchDataStore(Backbone);
+            // patchDataStore(Backbone);
             patchAjax(Backbone, $http, authManager);
 
             Backbone.$ = {};    // BB.localStorage assumes this is an Object

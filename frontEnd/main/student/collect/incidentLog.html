@@ -18,7 +18,7 @@
             <th class="duration">Duration</th>
             <th class="comment">Comment</th>
         </tr>
-        <tr ng-repeat="logEntry in incidentLogCollection.models">
+        <tr ng-repeat="logEntry in collectData.incidentLogCollection.models">
             <td class="delete" ng-show="editingIncidents" ng-click="confirmDelete(logEntry)">
                 <div class="deleteCircle" ng-class="{active:(confirmDeleteFor != null) && (confirmDeleteFor.id == logEntry.id)}">-</div>
             </td>
@@ -33,9 +33,9 @@
             </td>
         </tr>
     </table>
-    <div class="noData" ng-hide="incidentLogCollection.models.length > 0">No incidents yet logged</div>
+    <div class="noData" ng-hide="collectData.incidentLogCollection.models.length > 0">No incidents yet logged</div>
 </div>
 
 <main-modal display-state="behaviorModalState">
-    <ng-include src="'/lilypad-client/lilypad-pace/frontend/partials/behaviorSettings.html'"></ng-include>
+    <ng-include src="'/lilypad-client/lilypad-pace/frontend/partials/behaviorSettings.html'" ng-controller="MainStudentCollectBehaviorsModalCtrl"></ng-include>
 </main-modal>

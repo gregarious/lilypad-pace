@@ -2,11 +2,17 @@
 app.controller('MenuStudentListCtrl', function ($scope, mainViewState, studentDataStore) {
     /** $scope interface **/
     $scope.mainViewState = mainViewState;
+
+    // main student data
     $scope.studentCollection = null;
 
+    // various local view state properties
+    $scope.dataLoading = false;
+    $scope.dataError = '';
+
+    // UI event handling functions
     $scope.toggleAttendance = toggleAttendance;
     $scope.handleClick = handleClick;
-
 
     /** Actions on controller initialization **/
 
@@ -22,16 +28,35 @@ app.controller('MenuStudentListCtrl', function ($scope, mainViewState, studentDa
 
     function resetStudentListForClassroom(classroom) {
         if (classroom) {
-            $scope.studentCollection = studentDataStore.getForClassroom(classroom);
+            // show the loading indicator
+            $scope.dataLoading = true;
+            $scope.dataError = '';
+
+            // fetch the students for the classroom
+            studentDataStore.getForClassroom(classroom, function(collection) {
+                // on success, set the collection and clear error/loading states
+                $scope.studentCollection = collection;
+                $scope.dataError = '';
+                $scope.dataLoading = false;
+            }, function() {
+                // on failure, set an error and clear the collection & loading state
+                $scope.dataError = 'Error loading';
+                $scope.studentCollection = null;
+                $scope.dataLoading = false;
+                mainViewState.editingAttendance = false;
+            });
         }
         else {
             $scope.studentCollection = null;
+            $scope.dataError = '';
         }
     }
 
     // toggles attendance controls
     function toggleAttendance() {
-        mainViewState.editingAttendance = !mainViewState.editingAttendance;
+        if (!$scope.dataError) {
+            mainViewState.editingAttendance = !mainViewState.editingAttendance;
+        }
     }
 
     // handles click events on student list

@@ -1,4 +1,4 @@
-angular.module('pace').factory('AttendanceSpan', function(Backbone, Student) {
+angular.module('pace').factory('AttendanceSpan', function(Backbone) {
     /*
         Attributes:
             id : Number

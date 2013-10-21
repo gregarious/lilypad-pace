@@ -35,12 +35,6 @@ angular.module('pace').service('pointLossDataStore', function(moment, timeTracke
         var TodayPointLossCollection = Backbone.Collection.extend({
             model: PointLoss,
             url: url,
-
-            dataStore: new Backbone.PersistentStore(PointLoss, storeKey),
-            storeFilter: function(pointLoss) {
-                var day = moment(pointLoss.get('occurredAt')).format('YYYY-MM-DD');
-                return day === today;
-            }
         });
 
         return new TodayPointLossCollection();
@@ -94,9 +88,6 @@ angular.module('pace').service('pointLossDataStore', function(moment, timeTracke
 
         // mixpanel tracking
         mixpanel.track("Point loss");
-
-        // TODO: currently not mandating we'll have a deep PdRecord here
-        var student = periodicRecord.get('student');
 
         // if there's already a collection for the given student, use it to
         // create the new instance
