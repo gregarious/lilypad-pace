@@ -22,6 +22,8 @@ app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, 
 
             if ($scope.authenticated) {
                 initializeClassroomList();
+                // mixpanel tracking
+                mixpanel.track("Logged in");
             }
             else {
                 console.log('invalid credentials');

@@ -109,6 +109,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
             $scope.incidentLogCollection.sort();
             $scope.currentIncidentEditing = null;
         } else {
+            mixpanel.track("Incident added"); // mixpanel tracking
             var newIncident = behaviorIncidentDataStore.createIncident(
                 mainViewState.getSelectedStudent(),       // TODO: don't like this being directly view-state dependant; card #72
                 $scope.type,
