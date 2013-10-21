@@ -4,7 +4,7 @@ app.controller('MainCtrl', function ($scope, mainViewState) {
 });
 
 // directive for the navigation tabs
-app.directive('mainTabs', function () {
+app.directive('mainTabs', function (mixpanel) {
     return {
         restrict: 'E',
         transclude: true,

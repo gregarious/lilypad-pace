@@ -1,4 +1,4 @@
-app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, classroomDataStore) {
+app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, classroomDataStore, mixpanel) {
     /** $scope interface **/
 
     $scope.login = {};

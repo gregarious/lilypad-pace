@@ -1,5 +1,5 @@
 // controller for the student list in the left panel
-app.controller('MenuStudentListCtrl', function ($scope, mainViewState, studentDataStore) {
+app.controller('MenuStudentListCtrl', function ($scope, mainViewState, studentDataStore, mixpanel) {
     /** $scope interface **/
     $scope.mainViewState = mainViewState;
 

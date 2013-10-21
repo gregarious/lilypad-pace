@@ -7,7 +7,7 @@
  * - createPointLoss: Creates and POSTs a new PointLoss
  */
 
-angular.module('pace').service('pointLossDataStore', function(moment, timeTracker, PointLoss, _) {
+angular.module('pace').service('pointLossDataStore', function(moment, timeTracker, PointLoss, _, mixpanel) {
 
     /**
      * Returns a new Collection of PointLosses for today's date.

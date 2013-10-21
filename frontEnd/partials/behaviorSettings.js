@@ -1,5 +1,5 @@
 // controller for behavior options modal
-app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainViewState, timeTracker, behaviorIncidentDataStore, behaviorIncidentTypeDataStore) {
+app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainViewState, timeTracker, behaviorIncidentDataStore, behaviorIncidentTypeDataStore, mixpanel) {
     // NOTE!!!
     // We are inheriting $scope.behaviorModalState and $scope.incidentFormData
     //   from MainStudentCollectIncidentLogCtrl so we can split the logic into
