@@ -1,49 +1,90 @@
 // controller for behavior options modal
-app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainViewState, behaviorIncidentTypeDataStore) {
-    $scope.addingBehavior = false;
-    $scope.behaviorTypes = ['Frequency', 'Duration'];
-    $scope.selectedBehaviorType = null;
-    $scope.data = {};
-
-    /** Functions needed to keep scope up to date with store changes **/
-    // TODO: not great. could use a refactor; see after completing card #63
+app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainViewState, timeTracker, behaviorIncidentDataStore, behaviorIncidentTypeDataStore) {
+    // NOTE!!!
+    // We are inheriting $scope.behaviorModalState and $scope.incidentFormData
+    //   from MainStudentCollectIncidentLogCtrl so we can split the logic into
+    //   two controllers.
+    // TODO-greg: reevaluate this design
 
     // NOTE!!!
     // We are inheriting $scope.collectData from parent controller.
     // TODO: change this
 
-    $scope.$watch('collectData.behaviorTypeCollection', updateStudentOnlyTypes);
-    updateStudentOnlyTypes($scope.collectData.behaviorTypeCollection);
+    $scope.addingBehaviorType = false;
+    $scope.behaviorTypes = ['Frequency', 'Duration'];
+    $scope.behaviorTypeFormData = {};
+
+    // TODO: Should be doing responsive form validation here
+    // TODO: Should confirm new incidents for students marked absent; card #76
+    $scope.submitIncident = function () {
+        var today = timeTracker.getTimestamp();
+        var splitTime;
+        splitTime = $scope.incidentFormData.startedAt.split(':');
+        today.setHours(splitTime[0]);
+        today.setMinutes(splitTime[1]);
+        $scope.incidentFormData.startedAt = today;
+
+        if ($scope.incidentFormData.endedAt) {
+            today = timeTracker.getTimestamp();
+            splitTime = $scope.incidentFormData.endedAt.split(':');
+            today.setHours(splitTime[0]);
+            today.setMinutes(splitTime[1]);
+            $scope.incidentFormData.endedAt = today;
+        }
+
+        // If editing existing incident
+        if ($scope.currentIncidentEditing) {
+            $scope.currentIncidentEditing.set('startedAt', $scope.incidentFormData.startedAt);
+            $scope.currentIncidentEditing.set('type', $scope.incidentFormData.typeModel);
+            $scope.currentIncidentEditing.set('comment', $scope.incidentFormData.comment);
+
+            if ($scope.incidentFormData.endedAt) {
+                $scope.currentIncidentEditing.set('endedAt', $scope.incidentFormData.endedAt);
+            }
+
+            $scope.currentIncidentEditing.save();
+
+            // manually re-sort the collection in case time changed
+            $scope.collectData.incidentLogCollection.sort();
+        } else {
+            mixpanel.track("Incident added"); // mixpanel tracking
+            var newIncident = behaviorIncidentDataStore.createIncident(
+                mainViewState.getSelectedStudent(),       // TODO: don't like this being directly view-state dependant; card #72
+                $scope.incidentFormData.typeModel,
+                $scope.incidentFormData.startedAt,
+                $scope.incidentFormData.endedAt,
+                $scope.incidentFormData.comment);
+            $scope.collectData.incidentLogCollection.add(newIncident);
+        }
+
+        $scope.closeBehaviorModel();
+    };
+
+    // set the desired behavior type
+    $scope.setBehavior = function(selectedType) {
+        _g = $scope.incidentFormData.typeModel = selectedType;
+    };
 
     // open the "add custom behavior" control
-    $scope.openNewBehavior = function () {
-        $scope.addingBehavior = true;
+    $scope.openNewBehaviorType = function () {
+        $scope.addingBehaviorType = true;
     };
 
     // close and clear the "add custom behavior" control
-    $scope.closeNewBehavior = function () {
-        $scope.addingBehavior = false;
-        $scope.label = $scope.data.selectedBehaviorType = null;
+    $scope.closeNewBehaviorType = function () {
+        $scope.addingBehaviorType = false;
+        $scope.behaviorTypeFormData.label = $scope.behaviorTypeFormData.selectedBehaviorType = null;
     };
 
     // submit a new behavior
     // TODO: Should be doing responsive form validation here; card #80
-    $scope.submitNewBehavior = function () {
+    $scope.submitNewBehaviorType = function () {
         mixpanel.track("Custom behavior added"); // mixpanel tracking
         behaviorIncidentTypeDataStore.createIncidentType(
-            $scope.data.label,
-            $scope.data.selectedBehaviorType === 'Duration',
+            $scope.behaviorTypeFormData.label,
+            $scope.behaviorTypeFormData.selectedBehaviorType === 'Duration',
             null,
             mainViewState.getSelectedStudent());
-        updateStudentOnlyTypes($scope.incidentTypeCollection);
-        $scope.closeNewBehavior();
-
+        // this operation will automatically add the type to collectData.behaviorTypeCollection
     };
-
-    function updateStudentOnlyTypes(incidentTypeCollection) {
-        // Note this creates a bare array of IncidentTypes, *not* a Collection!
-        $scope.studentOnlyTypes = incidentTypeCollection.filter(function(type) {
-            return type.get('applicableStudent') !== null;
-        });
-    }
 });

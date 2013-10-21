@@ -5,22 +5,22 @@
 </div>
 
 <div class="behaviorSelection">
-    <div ng-show="addingBehavior">
-        <form name="behavior" class="newBehaviorForm" ng-submit="submitNewBehavior()">
+    <div ng-show="addingBehaviorType">
+        <form name="behavior" class="newBehaviorForm" ng-submit="submitNewBehaviorType()">
             <div class="clearfix">
                 <span class="buttonGroup">
-                    <button ng-click="closeNewBehavior()" class="cancel">Cancel</button>
-                    <button class="main submit" ng-disabled="!behavior.$valid" ng-click="submitNewBehavior()">Done</button>
+                    <button ng-click="closeNewBehaviorType()" class="cancel">Cancel</button>
+                    <button class="main submit" ng-disabled="!behavior.$valid" ng-click="submitNewBehaviorType()">Done</button>
                 </span>
             </div>
             <table class="behaviors">
                 <tbody>
                 <tr>
-                    <td><input type="text" placeholder="Behavior Name" ng-model="data.label"/></td>
+                    <td><input type="text" placeholder="Behavior Name" ng-model="behaviorTypeFormData.label"/></td>
                 </tr>
                 <tr>
                     <td><buttonset id="behaviorTypeInput" options="behaviorTypes"
-                               value="data.selectedBehaviorType"></buttonset></td>
+                               value="behaviorTypeFormData.selectedBehaviorType"></buttonset></td>
                 </tr>
                 </tbody>
             </table>
@@ -28,26 +28,26 @@
     </div>
     <table class="behaviors">
         <tbody>
-        <tr ng-repeat="studentType in studentOnlyTypes" ng-click="setBehavior(studentType)" ng-class="{selected: type.label == studentType.get('label')}">
+        <tr ng-repeat="studentType in collectData.behaviorTypeCollection.models" ng-click="setBehavior(studentType)" ng-class="{selected: incidentFormData.typeModel.get('label') == studentType.get('label')}">
             <td>{{studentType.get('label')}}</td>
         </tr>
         </tbody>
     </table>
-    <button ng-click="openNewBehavior()" class="newCustomBehavior">Add New Behavior +</button>
+    <button ng-click="openNewBehaviorType()" class="newCustomBehavior">Add New Behavior +</button>
 </div>
 <div class="behaviorDetails">
     <form name="incident">
         <div class="clearfix">
             <label>
-                <input ng-model="data.startedAt" type="time" required/>
+                <input ng-model="incidentFormData.startedAt" type="time" required/>
             </label>
-            <label ng-show="type.supports_duration">
-                <input type="time" ng-model="data.endedAt"
-                       ng-required="type.supports_duration"/>
+            <label ng-show="incidentFormData.typeModel.get('supportsDuration')">
+                <input type="time" ng-model="incidentFormData.endedAt"
+                       ng-required="incidentFormData.typeModel.get('supportsDuration')"/>
             </label>
         </div>
         <div>
-            <textarea placeholder="Comment" ng-model="data.comment"></textarea>
+            <textarea placeholder="Comment" ng-model="incidentFormData.comment"></textarea>
         </div>
     </form>
 </div>

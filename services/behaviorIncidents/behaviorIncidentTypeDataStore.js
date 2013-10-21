@@ -5,12 +5,6 @@ angular.module('pace').service('behaviorIncidentTypeDataStore', function(Behavio
         model: BehaviorIncidentType,
         url: '/pace/behaviortypes/'
     }))();
-    var updateRegistry = function(model) {
-        var registryModel = typeRegistry.get(model);
-        if (registryModel) {
-            typeRegistry.add(model, {merge: true});
-        }
-    };
 
     // cache indexed by student id
     var cache = {};
@@ -59,7 +53,8 @@ angular.module('pace').service('behaviorIncidentTypeDataStore', function(Behavio
         serverCollection.fetch({
             success: function(serverCollection) {
                 var registryModels = typeRegistry.add(serverCollection.models, {merge: true});
-                var collection = new Backbone.Collection(registryModels);
+                var collection = studentTypesFactory(student);
+                collection.reset(registryModels);
                 cache[student.id] = collection;
                 deferred.resolve(collection);
             },
@@ -100,15 +95,14 @@ angular.module('pace').service('behaviorIncidentTypeDataStore', function(Behavio
             applicableStudent: student
         };
 
-        // if there's already a collection for the given student, use it to
-        // create the new instance
+        var newType = new BehaviorIncidentType(attrs);
+        newType = this.findOrRegister(newType);
+        newType.save();
+
+        // if there's already a collection for the given student, manually add the new instance
         if (student && cache[student.id]) {
-            return cache[student.id].create(attrs);
+            cache[student.id].add(newType);
         }
-        else {
-            var newType = new BehaviorIncidentType(attrs);
-            newType.save();
-            return newType;
-        }
+        return newType;
     };
 });

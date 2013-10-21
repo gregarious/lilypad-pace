@@ -1,51 +1,46 @@
 // controller for the incident log
-app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewState, timeTracker, logEntryDataStore, behaviorIncidentDataStore, behaviorIncidentTypeDataStore, pointLossDataStore, periodicRecordDataStore) {
+app.controller('MainStudentCollectIncidentLogCtrl', function ($scope) {
     // NOTE!!!
-    // We are inheriting $scope.collectData from parent controller.
+    // We are inheriting $scope.collectData from parent controller and passing it to child.
     // TODO: change this
 
-    $scope.data = {};
-    $scope.addingIncident = false;
+    // various view control state values
     $scope.editingIncidents = false;
-    $scope.currentIncidentEditing = null;
     $scope.confirmDeleteFor = null;
 
-    // state object needed by modal state
+    // state object needed by modal directive
     $scope.behaviorModalState = {'active': false, 'title': "Add New Incident"};
 
-    $scope.addingBehavior = false;
-    $scope.behaviorTypes = ['Frequency', 'Duration'];
-    $scope.selectedBehaviorType = null;
-    $scope.type = null;
+    // form-related objects shared with MainStudentCollectBehaviorsModalCtrl (needed
+    //  in this scope for initiation reasons)
+    $scope.incidentFormData = {};
+    $scope.currentIncidentEditing = null;
 
     /** View functions **/
 
     // closes and clears the "new incident" control
     $scope.closeBehaviorModel = function () {
-        $scope.addingIncident = false;
-        $scope.data.type = $scope.data.startedAt = $scope.data.endedAt = $scope.data.comment = null;
-        $scope.type = null;
-
         $scope.behaviorModalState.active = false;
+        $scope.incidentFormData = {};
     };
 
     // shows the settings modal
     $scope.showBehaviorModel = function (incident) {
         if (incident) {
             if (!$scope.editingIncidents || incident.has('periodicRecord')) {
-                 return;
-             }
+                return;
+            }
 
             $scope.currentIncidentEditing = incident;
             $scope.behaviorModalState.title = "Edit Incident";
 
-            $scope.type = incident.get('type');
+            $scope.incidentFormData.typeModel = incident.get('type');
 
-            $scope.data.startedAt = moment(incident.get('startedAt')).format("hh:mm");
-            $scope.data.comment = incident.get('comment');
+            $scope.incidentFormData.startedAt = moment(incident.get('startedAt')).format("HH:mm");
+            $scope.incidentFormData.comment = incident.get('comment');
 
             if (incident.attributes.endedAt) {
-                $scope.data.endedAt = moment(incident.get('endedAt')).format("hh:mm");
+                $scope.incidentFormData.endedAt = moment(incident.get('endedAt')).format("HH:mm");
             }
 
         } else {
@@ -54,7 +49,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
             $scope.confirmDeleteFor = null;
             $scope.currentIncidentEditing = null;
 
-            $scope.data.startedAt = moment(Date.now()).format("hh:mm");
+            $scope.incidentFormData.startedAt = moment(Date.now()).format("HH:mm");
             $scope.behaviorModalState.title = "Add New Incident";
         }
 
@@ -69,56 +64,17 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     $scope.confirmDelete = function(incident) {
         if ($scope.confirmDeleteFor) {
             if ($scope.confirmDeleteFor.id == incident.id) {
+                // remove incident from log and destroy resource
+                $scope.collectData.incidentLogCollection.remove(incident);
+                incident.destroy();
+
+                // reset confirm delete state
                 $scope.confirmDeleteFor = null;
                 return;
             }
         }
 
         $scope.confirmDeleteFor = incident;
-    };
-
-    // TODO: Should be doing responsive form validation here
-    // TODO: Should confirm new incidents for students marked absent; card #76
-    $scope.submitIncident = function () {
-        var today = timeTracker.getTimestamp();
-        var splitTime;
-        splitTime = $scope.data.startedAt.split(':');
-        today.setHours(splitTime[0]);
-        today.setMinutes(splitTime[1]);
-        $scope.data.startedAt = today;
-
-        if ($scope.data.endedAt) {
-            today = timeTracker.getTimestamp();
-            splitTime = $scope.data.endedAt.split(':');
-            today.setHours(splitTime[0]);
-            today.setMinutes(splitTime[1]);
-            $scope.data.endedAt = today;
-        }
-
-        // If editing existing incident
-        if ($scope.currentIncidentEditing) {
-            $scope.currentIncidentEditing.set('startedAt', $scope.data.startedAt);
-            $scope.currentIncidentEditing.set('type', $scope.type);
-            $scope.currentIncidentEditing.set('comment', $scope.data.comment);
-
-            if ($scope.data.endedAt) {
-                $scope.currentIncidentEditing.set('endedAt', $scope.data.endedAt);
-            }
-
-            $scope.currentIncidentEditing.save();
-            $scope.collectData.incidentLogCollection.sort();
-            $scope.currentIncidentEditing = null;
-        } else {
-            mixpanel.track("Incident added"); // mixpanel tracking
-            var newIncident = behaviorIncidentDataStore.createIncident(
-                mainViewState.getSelectedStudent(),       // TODO: don't like this being directly view-state dependant; card #72
-                $scope.type,
-                $scope.data.startedAt,
-                $scope.data.endedAt,
-                $scope.data.comment);
-        }
-
-        $scope.closeBehaviorModel();
     };
 
     $scope.removeIncident = function(logEntry) {
@@ -133,21 +89,5 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
         logEntry.destroy();
 
         $scope.confirmDeleteFor = null;
-    };
-
-    // open the "add custom behavior" control
-    $scope.openNewBehavior = function () {
-        $scope.addingBehavior = true;
-    };
-
-    // close and clear the "add custom behavior" control
-    $scope.closeNewBehavior = function () {
-        $scope.addingBehavior = false;
-        $scope.type = $scope.data.selectedBehaviorType = null;
-    };
-
-    // set the desired behavior type
-    $scope.setBehavior = function(selectedType) {
-        $scope.type = selectedType.attributes;
     };
 });
