@@ -408,10 +408,13 @@ form .buttonGroup button {
 
 .modal table.behaviors {
     width: 230px;
+    background: #FCFDFF;
+}
+
+.modal .behaviorsTableWrapper {
     max-height: 280px;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
-    background: #FCFDFF;
 }
 
 .modal button.newCustomBehavior {
@@ -421,6 +424,7 @@ form .buttonGroup button {
     background: #FCFDFF;
     color: #CACBCF;
     outline: 0px;
+    border-top: 1px solid #DBDBDB;
 }
 
 .modal button{

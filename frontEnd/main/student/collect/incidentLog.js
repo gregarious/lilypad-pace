@@ -197,7 +197,8 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     // close and clear the "add custom behavior" control
     $scope.closeNewBehavior = function () {
         $scope.addingBehavior = false;
-        $scope.type = $scope.data.selectedBehaviorType = null;
+        $scope.data.label = null;
+        $scope.data.selectedBehaviorType = null;
     };
 
     // set the desired behavior type
@@ -215,7 +216,6 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
             mainViewState.getSelectedStudent());
         updateStudentOnlyTypes($scope.incidentTypeCollection);
         $scope.closeNewBehavior();
-
     };
 
     /** Listeners to ensure view stays in sync with mainViewState **/

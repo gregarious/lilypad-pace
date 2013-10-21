@@ -6,7 +6,7 @@
 
 <div class="behaviorSelection">
     <div ng-show="addingBehavior">
-        <form name="behavior" class="newBehaviorForm" ng-submit="submitNewBehavior()">
+        <form name="behavior" class="newBehaviorForm">
             <div class="clearfix">
                 <span class="buttonGroup">
                     <button ng-click="closeNewBehavior()" class="cancel">Cancel</button>
@@ -26,13 +26,15 @@
             </table>
         </form>
     </div>
-    <table class="behaviors">
-        <tbody>
-        <tr ng-repeat="studentType in studentOnlyTypes" ng-click="setBehavior(studentType)" ng-class="{selected: type.label == studentType.get('label')}">
-            <td>{{studentType.get('label')}}</td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="behaviorsTableWrapper">
+        <table class="behaviors">
+            <tbody>
+            <tr ng-repeat="studentType in studentOnlyTypes" ng-click="setBehavior(studentType)" ng-class="{selected: type.label == studentType.get('label')}">
+                <td>{{studentType.get('label')}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
     <button ng-click="openNewBehavior()" class="newCustomBehavior">Add New Behavior +</button>
 </div>
 <div class="behaviorDetails">
