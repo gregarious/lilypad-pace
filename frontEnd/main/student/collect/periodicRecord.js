@@ -61,9 +61,6 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, mainVie
 
     function decrementCategory(category) {
         var pointLossRecord = $scope.selectedPeriod.registerPointLoss(category);
-        var student = $scope.selectedPeriod.get('student');
-
-        // TODO: move this logic inside store; card #77
-        var log = $scope.collectData.incidentLogCollection.add(pointLossRecord);
+        $scope.collectData.incidentLogCollection.add(pointLossRecord);
     }
 });

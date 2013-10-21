@@ -89,9 +89,6 @@ angular.module('pace').service('pointLossDataStore', function(moment, timeTracke
         // mixpanel tracking
         mixpanel.track("Point loss");
 
-        // TODO: currently not mandating we'll have a deep PdRecord here
-        var student = periodicRecord.get('student');
-
         // if there's already a collection for the given student, use it to
         // create the new instance
         if (cache[student.id]) {
