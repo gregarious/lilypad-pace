@@ -29,13 +29,22 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
                 pointLosses : Collection
                 student : Object (Student stub)
          */
+        defaults: function () {
+            return {
+                dateString: timeTracker.getTimestampAsMoment().format('YYYY-MM-DD'),
+                isEligible: true,
+                pointLosses: new InnerPointLossCollection()
+            };
+        },
+
         urlRoot: '/pace/periodicrecords/',
 
         initialize: function(attributes, options) {
-            if(!this.get('isEligible')) {
+            if(!this.get('points')) {
                 var pts = {};
+                var isEligible = this.get('isEligible');
                 _.each(validPointpointTypes, function(code) {
-                    pts[code] = null;
+                    pts[code] = isEligible ? 2 : null;
                 });
                 this.set('points', pts);
             }

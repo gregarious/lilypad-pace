@@ -1,4 +1,4 @@
-angular.module('pace').factory('Student', function(Backbone, timeTracker, $injector){
+angular.module('pace').factory('Student', function(Backbone, timeTracker, AttendanceSpan){
     return Backbone.Model.extend({
         /*
             Attributes:
@@ -20,14 +20,24 @@ angular.module('pace').factory('Student', function(Backbone, timeTracker, $injec
         },
         urlRoot: '/pace/students/',
 
+        initialize: function() {
+            var span = this.get('activeAttendanceSpan');
+            if (span) {
+                // if `activeAttendanceSpan` is a bare object, make it an AttendanceSpan
+                if(!span.attributes) {
+                    this.set('activeAttendanceSpan', new AttendanceSpan(span));
+                }
+            }
+        },
+
         // need to deserialze into a new AttendanceSpan instance if applicable
         parse: function(response) {
-            response = Backbone.Model.prototype.parse.apply(this, arguments);
-            if (response.activeAttendanceSpan) {
-                var AttendanceSpan = $injector.get('AttendanceSpan');
-                response.activeAttendanceSpan = new AttendanceSpan(response.activeAttendanceSpan);
+            camelResponse = Backbone.Model.prototype.parse.apply(this, arguments);
+            var spanAttrs = camelResponse.activeAttendanceSpan;
+            if (spanAttrs) {
+                camelResponse.activeAttendanceSpan = AttendanceSpan.prototype.parse(spanAttrs);
             }
-            return response;
+            return camelResponse;
         },
 
         // need to serialize the AttendanceSpan instance if applicable

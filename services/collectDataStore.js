@@ -1,4 +1,4 @@
-angular.module('pace').service('collectDataStore', function(Backbone, $q, periodicRecordDataStore, behaviorIncidentDataStore, behaviorIncidentTypeDataStore) {
+angular.module('pace').service('collectDataStore', function(Backbone, $q, timeTracker, periodicRecordDataStore, behaviorIncidentDataStore, behaviorIncidentTypeDataStore) {
 
     var LoggableCollection = Backbone.Collection.extend({
         comparator: function(loggableModel) {
@@ -24,6 +24,10 @@ angular.module('pace').service('collectDataStore', function(Backbone, $q, period
         var deferredRecords = $q.defer();
         periodicRecordDataStore.getTodayRecordsForStudent(student).then(
             function(collection) {
+                // Before returning, ensure we have a PeriodicRecord set for
+                // the current period. If not, we need to create one client-side.
+                // `syncPeriodicRecords` handles all of this.
+                timeTracker.syncPeriodicRecords(student, collection);
                 deferredRecords.resolve(collection);
             },
             function(err) {
