@@ -49,14 +49,14 @@ app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, 
                     console.log('classroom auto-selected: only one option available for user');
                     // skip the classroom list setup and set the selected one immediately
                     var onlyClassroom = classroomCollection.models[0];
-                    mainViewState.setSelectedClassroom(onlyClassroom);
+                    mainViewState.selectedClassroom = onlyClassroom;
                 }
                 else {
                     // TODO: need to prompt user to select classroom (this is just a stub
                     //  that auto-selects the first classroom in the collection)
                     console.log('select a classroom (' + classroomCollection.length + ' found)');
                     var randomClassroom = classroomCollection.models[0];
-                    mainViewState.setSelectedClassroom(randomClassroom);
+                    mainViewState.selectedClassroom = randomClassroom;
                 }
             },
             error: function() {

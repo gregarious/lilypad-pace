@@ -1,8 +1,9 @@
 // parent controller to all student main views (collect, analyze, discuss)
 app.controller('MainStudentCtrl', function ($scope, studentDataStore, mainViewState) {
-    $scope.student = mainViewState.getSelectedStudent();
+    $scope.mainViewState = mainViewState;
+    $scope.student = mainViewState.selectedStudent;
 
-    mainViewState.on('change:selectedStudent', function(student) {
+    $scope.$watch('mainViewState.selectedStudent', function(student) {
         $scope.student = student;
     });
 });

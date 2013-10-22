@@ -3,7 +3,7 @@ app.controller('MainStudentDiscussCtrl', function ($scope, mainViewState, discus
     $scope.data = {};
 
     // set up the discussionCollection
-    var selectedStudent = mainViewState.getSelectedStudent();
+    var selectedStudent = mainViewState.selectedStudent;
     if (selectedStudent) {
         $scope.discussionCollection = discussionDataStore.getForStudent(selectedStudent);
     }
@@ -23,7 +23,7 @@ app.controller('MainStudentDiscussCtrl', function ($scope, mainViewState, discus
     /** Listeners to ensure view stays in sync with mainViewState **/
 
     // listen for the selected student to change
-    mainViewState.on('change:selectedStudent', function(newSelected) {
+    $scope.$watch('mainViewState.selectedStudent', function(newSelected) {
         $scope.discussionCollection = discussionDataStore.getForStudent(newSelected);
     });
 });

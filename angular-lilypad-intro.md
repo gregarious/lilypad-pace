@@ -207,7 +207,7 @@ You'll typically see stores used this way:
 > JS
 > ```js
 > var ctrl = function($scope, mainViewState, discussionDataStore) {
->     $scope.student = mainViewState.getSelectedStudent();
+>     $scope.student = mainViewState.selectedStudent;
 >     $scope.discussionPostCollection = discussionDataStore.getForStudent(student);
 > });
 >

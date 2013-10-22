@@ -1,5 +1,5 @@
 
-app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, mainViewState, periodicRecordDataStore, logEntryDataStore, timeTracker, _) {
+app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, periodicRecordDataStore, logEntryDataStore, timeTracker, _) {
     /** $scope initializing  **/
 
     // NOTE!!!
@@ -9,11 +9,11 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, mainVie
     // Initialize $scope.data.selectedPeriodNumber to be the current period
     // according to the timeTracker
     $scope.data = {
-        selectedPeriodNumber: timeTracker.getCurrentPeriod()
+        selectedPeriodNumber: timeTracker.currentPeriod
     };
 
     // Initialize $scope.availablePeriods
-    $scope.availablePeriods = calculateAvailablePeriods(timeTracker.getCurrentPeriod());
+    $scope.availablePeriods = calculateAvailablePeriods(timeTracker.currentPeriod);
 
     /** actions on $scope **/
     // decrement points

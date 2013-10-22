@@ -1,15 +1,11 @@
 // controller for the behavior log
 app.controller('MainStudentAnalyzeAttendanceLogCtrl', function ($scope, mainViewState, attendanceDataStore) {
-    // set up $scope.attendanceSpanCollection
-    var selectedStudent = mainViewState.getSelectedStudent();
-    setAttendanceLogsForStudent(selectedStudent);
-
 
     /** Listeners to ensure view stays in sync with mainViewState **/
+    $scope.mainViewState = mainViewState;
+    $scope.$watch('mainViewState.selectedStudent', setAttendanceLogsForStudent);
 
-    mainViewState.on('change:selectedStudent', function(newSelected) {
-        setAttendanceLogsForStudent(newSelected);
-    });
+    setAttendanceLogsForStudent($scope.mainViewState.selectedStudent);
 
     /**
      * Hooks $scope.attendanceSpanCollection up to the given student's data.

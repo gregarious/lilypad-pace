@@ -10,8 +10,8 @@ app.controller('MainStudentCollectCtrl', function ($scope, mainViewState, collec
     $scope.mainViewState = mainViewState;
 
     // on student changes, reset all of the collect view data
-    $scope.$watch('mainViewState._selectedStudent', resetCollectDataForStudent);
-    resetCollectDataForStudent(mainViewState._selectedStudent);
+    $scope.$watch('mainViewState.selectedStudent', resetCollectDataForStudent);
+    resetCollectDataForStudent(mainViewState.selectedStudent);
 
     /** Implementation details **/
 

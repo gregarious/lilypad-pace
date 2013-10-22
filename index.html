@@ -147,7 +147,7 @@
                     <span ng-show="mainViewState.editingAttendance">Save Attendance</span>
                     <span ng-show="!mainViewState.editingAttendance">Edit Attendance</span>
                 </li>
-                <li ng-class="{selected: mainViewState.getSelectedStudent() == student && !mainViewState.editingAttendance}"
+                <li ng-class="{selected: mainViewState.selectedStudent == student && !mainViewState.editingAttendance}"
                     ng-repeat="student in studentCollection.models">
                     <div ng-click="handleClick(student)" ng-class="{absent: !student.isPresent()}">
                         {{student.get('firstName')}} {{student.get('lastName')}}
@@ -164,7 +164,7 @@
 </div>
 <div id="main" ng-controller="MainCtrl">
     <!--
-        Using ng-switch here is a hack: really it should be ng-show on getSelectedStudent(),
+        Using ng-switch here is a hack: really it should be ng-show on isStudentSelected(),
         but the counter widgets don't behave right when you use ng-show (I'm pretty sure it's
         because the counters are expecting to be loaded after student selection. ng-switch
         lazy-loads controllers, while ng-show does not. Ask Greg if you want to know more.)

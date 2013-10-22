@@ -2,10 +2,6 @@
 app.controller('MainStudentAnalyzeBehaviorLogCtrl', function ($scope, mainViewState, logEntryDataStore) {
     $scope.data = {};
 
-    // set up $scope.behaviorLogCollection
-    var selectedStudent = mainViewState.getSelectedStudent();
-    setBehaviorLogForStudent(selectedStudent);
-
     // state object for behavior modal
     $scope.behaviorModalState.active = true;
     $scope.showBehaviorModel = function() {
@@ -16,9 +12,10 @@ app.controller('MainStudentAnalyzeBehaviorLogCtrl', function ($scope, mainViewSt
     };
 
     /** Listeners to ensure view stays in sync with mainViewState **/
-    mainViewState.on('change:selectedStudent', function(newSelected) {
-        setBehaviorLogForStudent(newSelected);
-    });
+    $scope.mainViewState = mainViewState;
+    $scope.$watch('mainViewState.selectedStudent', setBehaviorLogForStudent);
+
+    setBehaviorLogForStudent($scope.mainViewState.selectedStudent);
 
     /**
      * Hooks $scope.behaviorLogCollection up to the given student's data.

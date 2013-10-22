@@ -18,10 +18,10 @@ app.controller('MenuStudentListCtrl', function ($scope, mainViewState, studentDa
 
     // initialize the student list for the given classroom (will result in
     // null if there is no selected classroom)
-    resetStudentListForClassroom(mainViewState.getSelectedClassroom());
+    resetStudentListForClassroom(mainViewState.selectedClassroom);
 
     // also listen for future changes in selectedClassroom
-    mainViewState.on('change:selectedClassroom', resetStudentListForClassroom);
+    $scope.$watch('mainViewState.selectedClassroom', resetStudentListForClassroom);
 
 
     /** Implementation details **/
@@ -70,7 +70,7 @@ app.controller('MenuStudentListCtrl', function ($scope, mainViewState, studentDa
                 student.markPresent();
             }
         } else {
-            mainViewState.setSelectedStudent(student);
+            mainViewState.selectedStudent = student;
             // mixpanel tracking
             mixpanel.track( 'Changed students');
         }

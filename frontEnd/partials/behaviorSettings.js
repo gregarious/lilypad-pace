@@ -49,7 +49,7 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
         } else {
             mixpanel.track("Incident added"); // mixpanel tracking
             var newIncident = behaviorIncidentDataStore.createIncident(
-                mainViewState.getSelectedStudent(),       // TODO: don't like this being directly view-state dependant; card #72
+                mainViewState.selectedStudent,       // TODO: don't like this being directly view-state dependant; card #72
                 $scope.incidentFormData.typeModel,
                 $scope.incidentFormData.startedAt,
                 $scope.incidentFormData.endedAt,
@@ -85,7 +85,7 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
             $scope.behaviorTypeFormData.label,
             $scope.behaviorTypeFormData.selectedBehaviorType === 'Duration',
             null,
-            mainViewState.getSelectedStudent());
+            mainViewState.selectedStudent);
         // this operation will automatically add the type to collectData.behaviorTypeCollection
     };
 });

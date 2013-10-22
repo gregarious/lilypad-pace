@@ -17,8 +17,6 @@ angular.module('pace').provider('timeTracker', function() {
     };
 
     this.$get = function(moment) {
-        var _currentPeriod = null;
-
         var timeTracker = {
             getTimestamp: function() {
                 return new Date(new Date() - anchorOffset);
@@ -28,11 +26,8 @@ angular.module('pace').provider('timeTracker', function() {
                 return moment(timeTracker.getTimestamp());
             },
 
-            getCurrentPeriod: function() {
-                return _currentPeriod;
-            }
+            currentPeriod: null
         };
-        _.extend(timeTracker, Backbone.Events);
 
         var updateCurrentPeriod = function() {
             var nowTime = timeTracker.getTimestampAsMoment().format('HH:mm');
@@ -46,9 +41,8 @@ angular.module('pace').provider('timeTracker', function() {
                 }
             }
 
-            if(_currentPeriod !== pd) {
-                _currentPeriod = pd;
-                timeTracker.trigger('change:currentPeriod', _currentPeriod);
+            if(timeTracker.currentPeriod !== pd) {
+                timeTracker.currentPeriod = pd;
             }
         };
 
