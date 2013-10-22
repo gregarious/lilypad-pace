@@ -17,15 +17,18 @@ angular.module('pace').provider('timeTracker', function() {
     };
 
     var timeTracker = {
+        /** Access to the current time stamp and period **/
         getTimestamp: function() {
             return new Date(new Date() - anchorOffset);
         },
 
+        currentPeriod: null,
+
+        /** Utility methods **/
+
         getTimestampAsMoment: function() {
             return moment(timeTracker.getTimestamp());
         },
-
-        currentPeriod: null,
 
         syncPeriodicRecords: syncPeriodicRecords
     };
@@ -41,6 +44,8 @@ angular.module('pace').provider('timeTracker', function() {
 
         return timeTracker;
     };
+
+    /** Implementation details **/
 
     /**
      * Returns the given period number that the given time falls in.
