@@ -24,7 +24,7 @@ angular.module('mixpanel', []).
         this.logStubCalls = function() {
             mockMixpanel = {
                 track: function() {
-                    console.log('mixpanel.track: %o', arguments);
+                    console.log('Mock: mixpanel.track %o', arguments);
                 }
             };
         };
