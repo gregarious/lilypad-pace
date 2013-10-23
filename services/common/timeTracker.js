@@ -25,22 +25,23 @@ angular.module('pace').provider('timeTracker', function() {
         currentPeriod: null,
 
         /** Utility methods **/
+        getPeriodForTime: getPeriodForTime,
 
         getTimestampAsMoment: function() {
             return moment(timeTracker.getTimestamp());
-        },
-
-        syncPeriodicRecords: syncPeriodicRecords
+        }
     };
 
-    this.$get = function(moment) {
+    this.$get = function(moment, $interval) {
         var updateCurrentPeriod = function() {
             var nowTime = timeTracker.getTimestampAsMoment().format('HH:mm');
-            timeTracker.currentPeriod = getPeriodForTime(nowTime);
+            timeTracker.currentPeriodNumber = getPeriodForTime(nowTime);
         };
 
-        // TODO: need to add logic to call updateCurrentPeriod periodically; card #81
+        // initialize the current period based on the time and keep an eye on it
         updateCurrentPeriod();
+        $interval(updateCurrentPeriod, 10000);
+
 
         return timeTracker;
     };
@@ -68,42 +69,5 @@ angular.module('pace').provider('timeTracker', function() {
             }
         }
         return pd;
-    }
-
-    /**
-     * If student is present, function will cycle through all periods
-     * in the active attendance span ensuring that a PeriodicRecord
-     * exists for each.
-     *
-     * If student is absent, will fill in any missing PeriodicRecords
-     * between the beginning of the day and now with records with
-     * isEligible = false.
-     *
-     * @param  {Student} student (must support `isPresent` method
-     *                   and `activeAttendanceSpan` attribute)
-     * @param  {Collection} todayRecordCollection (must support
-     *                  `getByPeriod` method)
-     */
-    function syncPeriodicRecords(student, todayRecordCollection) {
-        var activeSpan = student.get('activeAttendanceSpan');
-        var iterPd;
-        if (activeSpan) {
-            iterPd = getPeriodForTime(activeSpan.get('timeIn'));
-        }
-        else {
-            iterPd = 1;
-        }
-        var lastPd = getPeriodForTime(timeTracker.getTimestampAsMoment().format('HH:mm'));
-
-        while(iterPd <= lastPd) {
-            if (!todayRecordCollection.getByPeriod(iterPd)) {
-                todayRecordCollection.create({
-                    period: iterPd,
-                    student: student,
-                    isEligible: !!activeSpan
-                });
-            }
-            ++iterPd;
-        }
     }
 });

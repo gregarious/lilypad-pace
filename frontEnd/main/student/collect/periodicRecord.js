@@ -9,16 +9,17 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, periodi
     // Initialize $scope.data.selectedPeriodNumber to be the current period
     // according to the timeTracker
     $scope.data = {
-        selectedPeriodNumber: timeTracker.currentPeriod
+        selectedPeriodNumber: timeTracker.currentPeriodNumber
     };
 
     // Initialize $scope.availablePeriods
-    $scope.availablePeriods = calculateAvailablePeriods(timeTracker.currentPeriod);
+    $scope.availablePeriods = calculateAvailablePeriods(timeTracker.currentPeriodNumber);
 
     /** actions on $scope **/
     // decrement points
     $scope.decrement = decrementCategory;
 
+    $scope.timeTracker = timeTracker;
 
     /** Watches on $scope **/
 
@@ -27,12 +28,24 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, periodi
         showPeriod(val);
     });
 
-    // when the recordCollection changes
+    // when the recordCollection changes, need to update $scope.selectedPeriod
     $scope.$watch('collectData.periodicRecordCollection', function(recordCollection) {
         showPeriod($scope.data.selectedPeriodNumber);
     });
 
-    // TODO: insert logic to watch for current time/period changes; card #33
+    // when the the length of the records change, update the dropdown of available periods
+    $scope.$watch('collectData.periodicRecordCollection.length', function(recordCollection) {
+        $scope.availablePeriods = calculateAvailablePeriods(timeTracker.currentPeriodNumber);
+    });
+
+    // if the current period changes, and we're currently displaying the current period,
+    // we should auto-increment to the next one
+    // TODO: consider way of notifying user?
+    $scope.$watch('timeTracker.currentPeriodNumber', function(newPeriodNumber) {
+        if ($scope.data.selectedPeriodNumber === newPeriodNumber-1) {
+            $scope.data.selectedPeriodNumber = newPeriodNumber;
+        }
+    });
 
     /** Implementation details **/
     function calculateAvailablePeriods(maxPeriod) {
