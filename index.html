@@ -21,8 +21,8 @@
     <link rel="stylesheet" href="/lilypad-client/lilypad-pace/styles/widgets.css">
 
     <!-- angular -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular-mobile.js"></script>
+    <script src="/lilypad-client/lilypad-pace/lib/angular-1.2.0-rc.3.js"></script>
+    <script src="/lilypad-client/lilypad-pace/lib/angular-touch-1.2.0-rc.3.js"></script>
 
     <!-- third-party packages -->
     <script src="/lilypad-client/lilypad-pace/lib/underscore.js"></script>
@@ -180,13 +180,19 @@
                     <h1 class="studentName"><strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}</h1>
                     <div class="divider clear"></div>
                     <main-pane title="Collect">
-                        <ng-include src="'/lilypad-client/lilypad-pace/frontEnd/main/student/collect.html'" ng-controller="MainStudentCollectCtrl"></ng-include>
+                        <div ng-controller="MainStudentCollectCtrl">
+                            <div ng-include="'/lilypad-client/lilypad-pace/frontEnd/main/student/collect.html'"></div>
+                        </div>
                     </main-pane>
                     <main-pane title="Analyze">
-                        <ng-include src="'/lilypad-client/lilypad-pace/frontEnd/main/student/analyze.html'" ng-controller="MainStudentAnalyzeCtrl"></ng-include>
+                        <div ng-controller="MainStudentAnalyzeCtrl">
+                            <div ng-include="'/lilypad-client/lilypad-pace/frontEnd/main/student/analyze.html'"></div>
+                        </div>
                     </main-pane>
                     <main-pane title="Discuss">
-                        <ng-include src="'/lilypad-client/lilypad-pace/frontEnd/main/student/discuss.html'" ng-controller="MainStudentDiscussCtrl"></ng-include>
+                        <div ng-controller="MainStudentDiscussCtrl">
+                            <div ng-include src="'/lilypad-client/lilypad-pace/frontEnd/main/student/discuss.html'"></div>
+                        </div>
                     </main-pane>
                 </main-tabs>
             </div>

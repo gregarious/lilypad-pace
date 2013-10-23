@@ -1,7 +1,11 @@
 <div ng-show="collectData">
-    <ng-include src="'/lilypad-client/lilypad-pace/frontend/main/student/collect/periodicRecord.html'" ng-controller="MainStudentCollectPeriodicRecordCtrl"></ng-include>
+    <div ng-controller="MainStudentCollectPeriodicRecordCtrl">
+        <div ng-include="'/lilypad-client/lilypad-pace/frontend/main/student/collect/periodicRecord.html'"></div>
+    </div>
     <div class="divider clear"></div>
-    <ng-include src="'/lilypad-client/lilypad-pace/frontend/main/student/collect/incidentLog.html'" ng-controller="MainStudentCollectIncidentLogCtrl" /></ng-include>
+    <div ng-controller="MainStudentCollectIncidentLogCtrl">
+        <div ng-include="'/lilypad-client/lilypad-pace/frontend/main/student/collect/incidentLog.html'"></div>
+    </div>
 </div>
 <div ng-show="statusMessage">{{statusMessage}}</div>
 

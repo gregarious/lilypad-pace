@@ -37,5 +37,7 @@
 </div>
 
 <main-modal display-state="behaviorModalState">
-    <ng-include src="'/lilypad-client/lilypad-pace/frontend/partials/behaviorSettings.html'" ng-controller="MainStudentCollectBehaviorsModalCtrl"></ng-include>
+    <div ng-controller="MainStudentCollectBehaviorsModalCtrl">
+        <div ng-include="'/lilypad-client/lilypad-pace/frontend/partials/behaviorSettings.html'"></div>
+    </div>
 </main-modal>
