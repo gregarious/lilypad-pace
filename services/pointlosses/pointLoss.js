@@ -39,12 +39,6 @@ angular.module('pace').factory('PointLoss', function(Backbone, moment, LoggableM
             return data;
         },
 
-		getStudent: function() {
-            // TODO: this is broken since periodicRecord is just a shallow POJO
-            //  Need to use new store to get the full resource
-			return null;
-		},
-
 		getDuration: function() {
 			return null;
 		},

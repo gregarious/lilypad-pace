@@ -8,7 +8,6 @@
         <button class="newIncident" ng-click="showBehaviorModel()">Add Incident</button>
     </div>
 </div>
-<!-- TODO: Display message for empty behaviorLog; card #75-->
 <div id="behaviorIncidentsTable">
     <table class="log">
         <tr>
@@ -24,9 +23,7 @@
             </td>
             <td class="time" ng-click="showBehaviorModel(logEntry)">{{logEntry.getOccurredAt() | date: 'h:mm a'}}</td>
             <td class="label" ng-click="showBehaviorModel(logEntry)">{{logEntry.getLabel()}}</td>
-            <!-- TODO: Fix duration -->
             <td class="duration" ng-click="showBehaviorModel(logEntry)">{{logEntry.getDuration() | duration}}</td>
-            <!-- TODO: Truncate comments so they don't screw up the table -->
             <td class="comment">
                 <span ng-click="showBehaviorModel(logEntry)">{{logEntry.getComment()}}</span>
                 <span class="deleteBtn" ng-show="(confirmDeleteFor != undefined) && (confirmDeleteFor.id == logEntry.id)" ng-click="removeIncident(logEntry)">Delete</span>

@@ -5,7 +5,6 @@
  * - getOccurredAt() -> Date
  * - getLabel() -> String
  * - getComment() -> String
- * - getStudent() -> Student
  * - getDuration() -> Number (in seconds, null if not applicable)
  *
  *
@@ -26,10 +25,7 @@ angular.module('pace').factory('LoggableMixin', function($log, moment) {
 	return function() {
 		this.getOccurredAt = function() { return this.get('occurredAt'); };
 		this.getLabel = function() { return this.get('label'); };
-		this.getStudent = function() { return this.get('student'); };
 		this.getDuration = function() { return this.get('duration'); };
 		this.getComment = function() { return this.get('comment'); };
-        // TODO: replace log call with no-op or Error in the mixin; card #83
-        this.undo = function() { $log.log('Called undo for ' + this.getLabel() + ' @ ' + moment(this.getOccurredAt()).format('HH:mm')); };
 	};
 });

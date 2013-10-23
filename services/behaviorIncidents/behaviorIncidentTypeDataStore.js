@@ -87,7 +87,7 @@ angular.module('pace').service('behaviorIncidentTypeDataStore', function(Behavio
      * @return {BehaviorIncidentType}
      */
     this.createIncidentType = function(label, supportsDuration, code, student) {
-        // TODO: refactor this around being a StudentCollection
+        // refactor this around being a StudentCollection #refactor
         var attrs = {
             label: label,
             supportsDuration: supportsDuration,

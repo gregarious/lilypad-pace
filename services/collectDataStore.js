@@ -101,7 +101,7 @@ angular.module('pace').service('collectDataStore', function(Backbone, $q, $rootS
     };
 
     // set up a scope for the purposes of watching the timeTracker for period changes
-    // TODO: is this really the best way to do this?
+    // is this really the best way to do this? #refactor
     var scope = $rootScope.$new();
     scope.timeTracker = timeTracker;
     scope.$watch('timeTracker.currentPeriodNumber', updateRecordsOnPeriodChange);

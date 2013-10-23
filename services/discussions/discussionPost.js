@@ -24,7 +24,7 @@ angular.module('pace').factory('DiscussionPost', function(Backbone, moment, time
         parse: function(response, options) {
             // handle createdAt Date deserialization, and create lightweight
             // collection of ReplyPost models from replies
-            // TODO: handle author deserialization when User model in place; card #47
+            // TODO: handle author deserialization when User model in place
 
             response = Backbone.Model.prototype.parse.apply(this, arguments);
             response.createdAt = moment(response.createdAt).toDate();

@@ -4,11 +4,11 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
     // We are inheriting $scope.behaviorModalState and $scope.incidentFormData
     //   from MainStudentCollectIncidentLogCtrl so we can split the logic into
     //   two controllers.
-    // TODO-greg: reevaluate this design
+    // #refactor
 
     // NOTE!!!
     // We are inheriting $scope.collectData from parent controller.
-    // TODO: change this
+    // #refactor
 
     $scope.addingBehaviorType = false;
     $scope.behaviorTypes = ['Frequency', 'Duration'];

@@ -4,7 +4,7 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, periodi
 
     // NOTE!!!
     // We are inheriting $scope.collectData from parent controller.
-    // TODO: change this
+    // #refactor
 
     // Initialize $scope.data.selectedPeriodNumber to be the current period
     // according to the timeTracker

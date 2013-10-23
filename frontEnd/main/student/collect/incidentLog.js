@@ -2,7 +2,7 @@
 app.controller('MainStudentCollectIncidentLogCtrl', function ($scope) {
     // NOTE!!!
     // We are inheriting $scope.collectData from parent controller and passing it to child.
-    // TODO: change this
+    // #refactor
 
     // various view control state values
     $scope.editingIncidents = false;
@@ -80,7 +80,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope) {
     $scope.removeIncident = function(logEntry) {
         // if record has a periodicRecord, it's a PointLoss and needs to go
         // through its parent PeriodicRecord to be destoryed correctly
-        // TODO-greg: wouldn't hurt to hide these details in the collect store
+        // #refactor
         var record = logEntry.get('periodicRecord');
         if (record) {
             record.reversePointLoss(logEntry.get('pointType'));

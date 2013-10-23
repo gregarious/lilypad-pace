@@ -84,7 +84,7 @@ angular.module('pace').factory('Student', function(Backbone, timeTracker, Attend
 
             var now = timeTracker.getTimestampAsMoment();
 
-            // TODO: handle this in AttSpan services
+            // handle this in AttSpan service/store? #refactor
             var newSpan = new AttendanceSpan({
                 student: {id: this.id},
                 date: now.format('YYYY-MM-DD'),
