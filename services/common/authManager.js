@@ -1,4 +1,4 @@
-angular.module('pace').service('authManager', function() {
+angular.module('pace').service('authManager', function($http) {
     var token = null;
 
     this.getAuthToken = function() {
@@ -11,6 +11,20 @@ angular.module('pace').service('authManager', function() {
     };
 
     this.authenticate = function(username, password) {
+        // Example of requesting token from server:
+        // $http({
+        //     method: 'POST',
+        //     url: '/authtoken/',
+        //     data: {
+        //         username: username,
+        //         password: password
+        //     }
+        // }).success(function(resp) {
+        //     console.log("Authenticated! Token: %s", resp.token);
+        // }).error(function(reason, statusCode) {
+        //     console.log("Error logging in. Reason object: %o", reason);
+        // });
+
         if (username === 'feeny') {
             token = 'cce9b356c38ed8f3d0a59f2ca9d4cb108e92631f';
         }
