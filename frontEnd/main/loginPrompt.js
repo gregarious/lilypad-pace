@@ -34,13 +34,14 @@ app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, 
 
     function logOut() {
         $scope.authenticated = false;
+        mainViewState.selectedClassroom = null;
     }
 
     function initializeClassroomList() {
         // query the server for classrooms accessible by the current user and
         // handle async response with success/error callbacks
-        var classroomCollection = classroomDataStore.getAll({
-            success: function() {
+        classroomDataStore.getAll().then(
+            function(classroomCollection) {
                 if (classroomCollection.length === 0) {
                     // TODO
                     console.log('no classrooms found for user');
@@ -59,10 +60,10 @@ app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, 
                     mainViewState.selectedClassroom = randomClassroom;
                 }
             },
-            error: function() {
+            function(err) {
                 // TODO: handle a problem getting the user's classroom list
                 console.error('error fetching classroom list');
             }
-        });
+        );
     }
 });

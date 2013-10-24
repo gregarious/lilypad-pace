@@ -33,18 +33,20 @@ app.controller('MenuStudentListCtrl', function ($scope, mainViewState, studentDa
             $scope.dataError = '';
 
             // fetch the students for the classroom
-            studentDataStore.getForClassroom(classroom, function(collection) {
-                // on success, set the collection and clear error/loading states
-                $scope.studentCollection = collection;
-                $scope.dataError = '';
-                $scope.dataLoading = false;
-            }, function() {
-                // on failure, set an error and clear the collection & loading state
-                $scope.dataError = 'Error loading';
-                $scope.studentCollection = null;
-                $scope.dataLoading = false;
-                mainViewState.editingAttendance = false;
-            });
+            studentDataStore.getForClassroom(classroom).then(
+                function(collection) {
+                    // on success, set the collection and clear error/loading states
+                    $scope.studentCollection = collection;
+                    $scope.dataError = '';
+                    $scope.dataLoading = false;
+                }, function() {
+                    // on failure, set an error and clear the collection & loading state
+                    $scope.dataError = 'Error loading';
+                    $scope.studentCollection = null;
+                    $scope.dataLoading = false;
+                    mainViewState.editingAttendance = false;
+                }
+            );
         }
         else {
             $scope.studentCollection = null;

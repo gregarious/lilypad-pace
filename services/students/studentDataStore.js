@@ -1,4 +1,4 @@
-angular.module('pace').factory('studentDataStore', function(Backbone, Student, timeTracker) {
+angular.module('pace').factory('studentDataStore', function(Backbone, Student, timeTracker, $q) {
 
     function classroomStudentsFactory(classroom) {
         var ClassroomStudentCollection = Backbone.Collection.extend({
@@ -19,18 +19,31 @@ angular.module('pace').factory('studentDataStore', function(Backbone, Student, t
         return new ClassroomStudentCollection();
     }
 
-    // cached collections
-    var cache = {};
+    var cachedPromises = {};
 
     /** Public interface of service **/
     return {
-        getForClassroom: function(classroom, success, error) {
-            var students = cache[classroom.id];
-            if (!students) {
-                students = cache[classroom.id] = classroomStudentsFactory(classroom);
-                students.fetch({success: success, error: error});
+        getForClassroom: function(classroom) {
+            // if a promise was already made for this classroom, just return it. currently not supporting refresh.
+            var oldPromise = cachedPromises[classroom.id];
+            if (oldPromise) {
+                return oldPromise;
             }
-            return students;
+
+            var deferred = $q.defer();
+            var collection = classroomStudentsFactory(classroom);
+
+            collection.fetch({
+                success: function(collection) {
+                    deferred.resolve(collection);
+                },
+                error: function(err) {
+                    deferred.reject(err);
+                }
+            });
+
+            cachedPromises[classroom.id] = deferred.promise;
+            return deferred.promise;
         }
     };
 });
