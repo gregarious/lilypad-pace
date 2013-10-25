@@ -64,10 +64,9 @@ angular.module('pace').factory('Student', function(Backbone, timeTracker, Attend
             var span = this.get('activeAttendanceSpan');
             if (span) {
                 var now = timeTracker.getTimestampAsMoment();
-                span.set('timeOut', now.format('YYYY-MM-DD'));
+                span.set('timeOut', now.format('HH:mm:ss'));
                 span.save();
                 this.set('activeAttendanceSpan', null);
-                this.save();
             }
         },
 
@@ -77,10 +76,6 @@ angular.module('pace').factory('Student', function(Backbone, timeTracker, Attend
             if (this.has('activeAttendanceSpan')) {
                 throw Error('student already has an active attendance span');
             }
-
-            // need to get it from the $injector
-            // manually: it causes circular dep otherwise
-            var AttendanceSpan = $injector.get('AttendanceSpan');
 
             var now = timeTracker.getTimestampAsMoment();
 
@@ -94,7 +89,6 @@ angular.module('pace').factory('Student', function(Backbone, timeTracker, Attend
             newSpan.save();
 
             this.set('activeAttendanceSpan', newSpan);
-            this.save();
         }
     });
 });
