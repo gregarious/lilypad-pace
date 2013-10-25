@@ -17,10 +17,11 @@ angular.module('pace').factory('BehaviorIncidentType', function(Backbone, Studen
         toJSON: function() {
             // stub out the student
             var data = Backbone.Model.prototype.toJSON.apply(this);
-            if (data.student) {
-                data.student = {
-                    id: data.student.id
-                };
+
+            // need to turn `applicable_student` into a primary key
+            var student = data['applicable_student'];
+            if (student && !_.isUndefined(student.id)) {
+                data['applicable_student'] = student.id;
             }
             return data;
         }
