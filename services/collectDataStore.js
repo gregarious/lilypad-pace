@@ -134,6 +134,7 @@ angular.module('pace').service('collectDataStore', function(Backbone, $q, $rootS
         while(iterPd <= lastPd) {
             if (!todayRecordCollection.getByPeriod(iterPd)) {
                 todayRecordCollection.create({
+                    date: timeTracker.getTimestampAsMoment().format('YYYY-MM-DD'),
                     period: iterPd,
                     student: student,
                     isEligible: !!activeSpan
@@ -153,6 +154,7 @@ angular.module('pace').service('collectDataStore', function(Backbone, $q, $rootS
         _.each(loadedRecordsPackages, function(pkg) {
             if (!pkg.todayRecordCollection.getByPeriod(periodNumber)) {
                 pkg.todayRecordCollection.create({
+                    date: timeTracker.getTimestampAsMoment().format('YYYY-MM-DD'),
                     period: periodNumber,
                     student: pkg.student,
                     isEligible: pkg.student.isPresent()

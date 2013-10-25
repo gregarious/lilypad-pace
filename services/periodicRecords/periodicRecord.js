@@ -105,6 +105,12 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
             // remove nested point losses
             delete data.point_losses;
 
+            // need to turn `student` into a primary key
+            var student = data['student'];
+            if (student && !_.isUndefined(student.id)) {
+                data['student'] = student.id;
+            }
+
             return data;
         },
 
