@@ -31,9 +31,10 @@ angular.module('pace').factory('PointLoss', function(Backbone, moment, LoggableM
             // manually transform the dates
             data['started_at'] = moment(this.get('startedAt')).format();
 
-            // need to turn `periodic_record` into a stub if it's a model
-            if (data['periodic_record'].attributes) {
-                data['periodic_record'] = {id: data['periodic_record'].id};
+            // need to turn `periodic_record` into a primary key
+            var pdRecord = data['periodic_record'];
+            if (pdRecord && !_.isUndefined(pdRecord.id)) {
+                data['periodic_record'] = pdRecord.id;
             }
 
             return data;
