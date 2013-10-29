@@ -14,14 +14,33 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Lo
         urlRoot: '/pace/behaviorincidents/',
 
         initialize: function() {
-            // assert type subresource is a plain old js object
+            // ensure that `type` gets assigned via the `set` method -- it handles the
+            // registry logic #refactor
             var type = this.get('type');
+            this.set('type', type);
+        },
+
+        // Ensures the `type` attributes are synced with the registry #refactor
+        set: function(key, val, options) {
+
+
+            // pre-processing on the flexible arguments, copied from Backbone core
+            if (typeof key === 'object') {
+                attrs = key;
+                options = val;
+            } else {
+                (attrs = {})[key] = val;
+            }
+
+            var type = attrs['type'];
             if (type && type.id) {
                 // need to assign the `type` attribute a store registry-based model
                 var registeredType = behaviorIncidentTypeDataStore.findOrRegister(type,
                     {merge: true});
-                this.set('type', registeredType);
+                attrs['type'] = registeredType;
             }
+
+            Backbone.Model.prototype.set.apply(this, [attrs, options]);
         },
 
         parse: function(response, options) {
@@ -50,8 +69,17 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Lo
                 data['ended_at'] = moment(this.get('endedAt')).format();
             }
 
-            // type is just a plan old JS object, `parse` does nothing to the API subresource
-            data['type'] = _.clone(this.get('type'));
+            // need to turn `student` into a primary key
+            var student = data['student'];
+            if (student && !_.isUndefined(student.id)) {
+                data['student'] = student.id;
+            }
+
+            // need to turn `type` into a primary key
+            var type = data['type'];
+            if (type && !_.isUndefined(type.id)) {
+                data['type'] = type.id;
+            }
 
             return data;
         },
