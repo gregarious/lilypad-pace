@@ -39,6 +39,9 @@ app.controller('MenuStudentListCtrl', function ($scope, mainViewState, studentDa
                     $scope.studentCollection = collection;
                     $scope.dataError = '';
                     $scope.dataLoading = false;
+
+                    // Auto-select first student
+                    mainViewState.selectedStudent = $scope.studentCollection.models[0];
                 }, function() {
                     // on failure, set an error and clear the collection & loading state
                     $scope.dataError = 'Error loading';

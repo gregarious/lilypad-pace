@@ -126,7 +126,8 @@
 <body>
 <!-- TODO: We need to actually implement authentication; card #48 -->
 <div id="login" ng-controller="LoginPromptCtrl" ng-hide="authenticated">
-    <div>
+    <div class="wrapper">
+        <div id="lilypadLogo"></div>
         <form name="login" ng-submit="logIn()">
             <label>Username<input type="text" ng-model="login.username" required autocorrect="off" autocapitalize="off"/></label>
             <label>Password <input type="password" ng-model="login.password" required autocorrect="off" autocapitalize="off"/></label>
@@ -196,10 +197,6 @@
                     </main-pane>
                 </main-tabs>
             </div>
-        </div>
-
-        <div id="nostudent" ng-switch-default>
-            Select a Student
         </div>
     </ng-switch>
 

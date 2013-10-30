@@ -13,10 +13,20 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
     $scope.addingBehaviorType = false;
     $scope.behaviorTypes = ['Frequency', 'Duration'];
     $scope.behaviorTypeFormData = {};
+    $scope.missingBehavior = false;
+    $scope.missingBehaviorType = false;
 
     // TODO: Should be doing responsive form validation here
     // TODO: Should confirm new incidents for students marked absent; card #76
     $scope.submitIncident = function () {
+        // Validate presence of behavior type
+        if (typeof $scope.incidentFormData.typeModel === "undefined") {
+            $scope.missingBehavior = true;
+            return;
+        } else {
+            $scope.missingBehavior = false;
+        }
+
         var today = timeTracker.getTimestamp();
         var splitTime;
         splitTime = $scope.incidentFormData.startedAt.split(':');
@@ -49,7 +59,7 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
         } else {
             mixpanel.track("Incident added"); // mixpanel tracking
             var newIncident = behaviorIncidentDataStore.createIncident(
-                mainViewState.selectedStudent,       // TODO: don't like this being directly view-state dependant; card #72
+                mainViewState.selectedStudent,
                 $scope.incidentFormData.typeModel,
                 $scope.incidentFormData.startedAt,
                 $scope.incidentFormData.endedAt,
@@ -80,6 +90,15 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
     // submit a new behavior
     // TODO: Should be doing responsive form validation here; card #80
     $scope.submitNewBehaviorType = function () {
+        // Validate presence of behavior type
+        if (typeof $scope.behaviorTypeFormData.selectedBehaviorType === "undefined") {
+            $scope.missingBehaviorType = true;
+            console.log($scope.missingBehaviorType);
+            return;
+        } else {
+            $scope.missingBehaviorType = false;
+        }
+
         mixpanel.track("Custom behavior added"); // mixpanel tracking
         behaviorIncidentTypeDataStore.createIncidentType(
             $scope.behaviorTypeFormData.label,
