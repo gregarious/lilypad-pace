@@ -14,6 +14,7 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
     $scope.behaviorTypes = ['Frequency', 'Duration'];
     $scope.behaviorTypeFormData = {};
     $scope.missingBehavior = false;
+    $scope.missingBehaviorType = false;
 
     // TODO: Should be doing responsive form validation here
     // TODO: Should confirm new incidents for students marked absent; card #76
@@ -89,6 +90,15 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
     // submit a new behavior
     // TODO: Should be doing responsive form validation here; card #80
     $scope.submitNewBehaviorType = function () {
+        // Validate presence of behavior type
+        if (typeof $scope.behaviorTypeFormData.selectedBehaviorType === "undefined") {
+            $scope.missingBehaviorType = true;
+            console.log($scope.missingBehaviorType);
+            return;
+        } else {
+            $scope.missingBehaviorType = false;
+        }
+
         mixpanel.track("Custom behavior added"); // mixpanel tracking
         behaviorIncidentTypeDataStore.createIncidentType(
             $scope.behaviorTypeFormData.label,

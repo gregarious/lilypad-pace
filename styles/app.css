@@ -222,8 +222,8 @@ tr th {
 #login .wrapper {
     width: 500px;
     text-align: center;
-    margin-top: 150px;
-    margin-left: 430px;
+    margin-top: 130px;
+    margin-left: 130px;
 }
 
 #lilypadLogo {
@@ -583,6 +583,10 @@ form .buttonGroup button {
 #behaviorTypeInput li {
     font-size: 14px;
     width: 101px;
+}
+
+td.invalid #behaviorTypeInput li {
+    border: 1px solid red;
 }
 
 /*#behaviorTypeInput li {*/

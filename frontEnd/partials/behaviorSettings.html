@@ -19,7 +19,7 @@
                     <td><input type="text" name="behaviorName" placeholder="Behavior Name" ng-model="behaviorTypeFormData.label" required/></td>
                 </tr>
                 <tr>
-                    <td><buttonset id="behaviorTypeInput" options="behaviorTypes"
+                    <td ng-class="{invalid: missingBehaviorType}"><buttonset id="behaviorTypeInput" options="behaviorTypes"
                                value="behaviorTypeFormData.selectedBehaviorType" required></buttonset></td>
                 </tr>
                 </tbody>
