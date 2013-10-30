@@ -64,10 +64,6 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope) {
     $scope.confirmDelete = function(incident) {
         if ($scope.confirmDeleteFor) {
             if ($scope.confirmDeleteFor.id == incident.id) {
-                // remove incident from log and destroy resource
-                $scope.collectData.incidentLogCollection.remove(incident);
-                incident.destroy();
-
                 // reset confirm delete state
                 $scope.confirmDeleteFor = null;
                 return;
