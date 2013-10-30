@@ -215,17 +215,24 @@ tr th {
     left: 0;
     right: 0;   
     bottom: 0;
-    background-image: url(../images/background_login.png);
-    background-position: center left;
+    background: #47BDA5;
     z-index: 1;
 }
 
-#login div {
+#login .wrapper {
     width: 500px;
     text-align: center;
-    margin-top: 200px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-top: 150px;
+    margin-left: 430px;
+}
+
+#lilypadLogo {
+    width: 160px;
+    height: 160px;
+    margin-left: 272px;
+    background-image: url(../images/logo.png);
+    background-repeat: no-repeat;
+    background-size: 160px;
 }
 
 #login input {
@@ -411,6 +418,11 @@ form .buttonGroup button {
     background: #FCFDFF;
 }
 
+.modal table.behaviors.invalid {
+    border-color: red;
+}
+
+
 .modal .behaviorsTableWrapper {
     max-height: 280px;
     overflow-y: scroll;
@@ -425,6 +437,10 @@ form .buttonGroup button {
     color: #CACBCF;
     outline: 0px;
     border-top: 1px solid #DBDBDB;
+}
+
+.modal button.newCustomBehavior.invalid {
+    border-color: red;
 }
 
 .modal button{

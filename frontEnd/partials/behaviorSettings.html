@@ -16,18 +16,18 @@
             <table class="behaviors">
                 <tbody>
                 <tr>
-                    <td><input type="text" placeholder="Behavior Name" ng-model="behaviorTypeFormData.label"/></td>
+                    <td><input type="text" name="behaviorName" placeholder="Behavior Name" ng-model="behaviorTypeFormData.label" required/></td>
                 </tr>
                 <tr>
                     <td><buttonset id="behaviorTypeInput" options="behaviorTypes"
-                               value="behaviorTypeFormData.selectedBehaviorType"></buttonset></td>
+                               value="behaviorTypeFormData.selectedBehaviorType" required></buttonset></td>
                 </tr>
                 </tbody>
             </table>
         </form>
     </div>
     <div class="behaviorsTableWrapper">
-        <table class="behaviors">
+        <table class="behaviors" ng-class="{invalid: missingBehavior}">
             <tbody>
         <tr ng-repeat="studentType in collectData.behaviorTypeCollection.models"
             ng-click="setBehavior(studentType)"
@@ -37,7 +37,7 @@
             </tbody>
         </table>
     </div>
-    <button ng-click="openNewBehaviorType()" class="newCustomBehavior">Add New Behavior +</button>
+    <button ng-click="openNewBehaviorType()" class="newCustomBehavior" ng-class="{invalid: missingBehavior}">Add New Behavior +</button>
 </div>
 <div class="behaviorDetails">
     <form name="incident">
@@ -47,7 +47,7 @@
             </label>
             <label ng-show="incidentFormData.typeModel.get('supportsDuration')">
                 <input type="time" ng-model="incidentFormData.endedAt"
-                       ng-required="incidentFormData.typeModel.get('supportsDuration')"/>
+                       ng-required="incidentFormData.typeModel.get('supportsDuration')" required/>
             </label>
         </div>
         <div>
