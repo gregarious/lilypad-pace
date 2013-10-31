@@ -1,5 +1,5 @@
 // parent controller for menus in the left panel
-app.controller('MenuCtrl', function ($scope) {
+app.controller('MenuCtrl', function ($scope, $rootScope) {
     $scope.systemMenuAcitve = false;
 
     $scope.toggleSystemMenu = function() {
@@ -8,6 +8,6 @@ app.controller('MenuCtrl', function ($scope) {
 
     $scope.signOut = function() {
         $scope.systemMenuActive = false;
-        $scope.logOut();
+        $rootScope.$broadcast('logOut');
     };
 });

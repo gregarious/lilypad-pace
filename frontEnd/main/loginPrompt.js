@@ -34,8 +34,15 @@ app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, 
 
     function logOut() {
         $scope.authenticated = false;
+        $scope.login.username = null;
+        $scope.login.password = null;
+        mainViewState.selectedStudent = null;
         mainViewState.selectedClassroom = null;
     }
+
+    $scope.$on('logOut', function() {
+        logOut();
+    });
 
     function initializeClassroomList() {
         // query the server for classrooms accessible by the current user and
