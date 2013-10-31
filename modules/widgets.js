@@ -83,9 +83,9 @@ widgets.directive('counter', function () {
 
             // initial state of element
             element.ready(function () {
-                counterElement.setAttribute("style", "margin-top:" + (-counterElement.clientHeight).toString() + "px");
-                scope.currentValue = scope.value;
                 setTimeout(function () {
+                    counterElement.setAttribute("style", "margin-top:" + (-counterElement.clientHeight).toString() + "px");
+                    scope.currentValue = scope.value;
                     counterElement.classList.add('animated');
                     oldValue = scope.value;
                 }, 0);
