@@ -1,5 +1,5 @@
 // controller for the incident log
-app.controller('MainStudentCollectIncidentLogCtrl', function ($scope) {
+app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewState) {
     // NOTE!!!
     // We are inheriting $scope.collectData from parent controller and passing it to child.
     // #refactor
@@ -86,4 +86,13 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope) {
 
         $scope.confirmDeleteFor = null;
     };
+
+    // for purposes of watching the selected student
+    $scope.mainViewState = mainViewState;
+
+    // on student changes, close the edit mode
+    $scope.$watch('mainViewState.selectedStudent', function() {
+        $scope.confirmDeleteFor = null;
+        $scope.editingIncidents = false;
+    });
 });
