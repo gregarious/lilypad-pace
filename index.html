@@ -145,7 +145,7 @@
         <div ng-controller="MenuStudentListCtrl">
             <ul ng-show="studentCollection">
                 <li id="attendanceToggle" ng-click="toggleAttendance()" ng-class="{highlighted: mainViewState.editingAttendance}">
-                    <span ng-show="mainViewState.editingAttendance">Save Attendance</span>
+                    <span ng-show="mainViewState.editingAttendance">Done</span>
                     <span ng-show="!mainViewState.editingAttendance">Edit Attendance</span>
                 </li>
                 <li ng-class="{selected: mainViewState.selectedStudent == student && !mainViewState.editingAttendance}"
