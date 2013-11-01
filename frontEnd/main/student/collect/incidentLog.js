@@ -1,5 +1,5 @@
 // controller for the incident log
-app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewState) {
+app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewState, moment, timeTracker) {
     // NOTE!!!
     // We are inheriting $scope.collectData from parent controller and passing it to child.
     // #refactor
@@ -49,7 +49,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
             $scope.confirmDeleteFor = null;
             $scope.currentIncidentEditing = null;
 
-            $scope.incidentFormData.startedAt = moment(Date.now()).format("HH:mm");
+            $scope.incidentFormData.startedAt = timeTracker.getTimestampAsMoment().format("HH:mm");
             $scope.behaviorModalState.title = "Add New Incident";
         }
 
