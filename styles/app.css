@@ -228,11 +228,11 @@ tr th {
 
 #lilypadLogo {
     width: 160px;
-    height: 160px;
+    height: 150px;
     margin-left: 272px;
     background-image: url(../images/logo.png);
     background-repeat: no-repeat;
-    background-size: 160px;
+    background-size: 144px
 }
 
 #login input {
