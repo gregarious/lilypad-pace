@@ -93,7 +93,6 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
         // Validate presence of behavior type
         if (typeof $scope.behaviorTypeFormData.selectedBehaviorType === "undefined") {
             $scope.missingBehaviorType = true;
-            console.log($scope.missingBehaviorType);
             return;
         } else {
             $scope.missingBehaviorType = false;
@@ -106,5 +105,7 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
             null,
             mainViewState.selectedStudent);
         // this operation will automatically add the type to collectData.behaviorTypeCollection
+
+        $scope.closeNewBehaviorType();
     };
 });
