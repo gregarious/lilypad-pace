@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 
 def home(request):
-    return HttpResponse('Hello!')
+    return HttpResponseRedirect('/static/index.html')
