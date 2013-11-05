@@ -20,15 +20,13 @@ A single-page app for Lilypad at Pace.
     1. `DJANGO_SETTINGS_MODULE`: tells any Django process which settings file to use.
     2. `DATABASE_URL`: declares the local DB configuration. You'll need to set up the backend on your own. The simplest option is using SQLite.
     
-    The recommended way to do this (for development installations, at least) is to add this variable to your virtualenv. To do so, you'll add the variables to the end of your `~/.virtualenvs/lilypad-pace/bin/postactivate` file, which is run every time your virtualenv is activated (note that your virtualenv files are **NOT** in your repository, this is correct). If `postactivate` doesn't exist, create it. Now add these lines, adjusting the filepaths for your environment:
+    The recommended way to do this (for development installations, at least) is to declare these variables when your virtualenv activates. To do so, you'll add the variables to the end of your `~/.virtualenvs/lilypad-pace/bin/postactivate` file (note that your virtualenv files are **NOT** in your repository; this is on purpose). If `postactivate` doesn't exist, create it. Now add these lines, adjusting the filepaths for your environment:
 
         export DJANGO_SETTINGS_MODULE='lilypad_server.settings.development'
-
-        # (yes, that's 4 slashes if you're using sqlite)
         export DATABASE_URL='sqlite:////path/to/some/file'
 
-        # (this should be the `server` folder in the root of the repository)
-        add2virtualenv '/path/to/lilypad-pace/server'
+
+    Yes, that's **4** slashes in the URL if you're using SQLite.
 
     Similarly, to undo these changes when you deactivate your virtualenv, and this to the bottom of `.virtualenvs/lilypad-pace/deactivate`:
 
@@ -48,7 +46,7 @@ A single-page app for Lilypad at Pace.
 
         $ python manage.py runserver
 
-8. Test the server by visiting http://127.0.0.1:8000/. You should see the api login pace.
+8. Test the server by visiting [http://127.0.0.1:8000/api/students/](http://127.0.0.1:8000/api/students/). If you don't get an error, things should be set up correctly.
 
 From now on, for every new shell session, you'll need to activate the virtualenv with the following command:
 
@@ -57,6 +55,11 @@ From now on, for every new shell session, you'll need to activate the virtualenv
 And if you want to deactivate the virtualenv, simply run:
 
     $ deactivate
+
+## Accessing the app in a browser:
+
+1. Visit [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+2. Profit!
 
 ## Code introduction
 
