@@ -1,0 +1,2853 @@
+[
+{
+  "pk": 1, 
+  "model": "pace.classroom", 
+  "fields": {
+    "name": "Room 308"
+  }
+},
+{
+  "pk": 2, 
+  "model": "pace.classroom", 
+  "fields": {
+    "name": "Room 310"
+  }
+},
+{
+  "pk": 3, 
+  "model": "pace.classroom", 
+  "fields": {
+    "name": "Room 312"
+  }
+},
+{
+  "pk": 1, 
+  "model": "pace.student", 
+  "fields": {
+    "classroom": 1, 
+    "first_name": "Leslie", 
+    "last_name": "Knope"
+  }
+},
+{
+  "pk": 2, 
+  "model": "pace.student", 
+  "fields": {
+    "classroom": 1, 
+    "first_name": "Ron", 
+    "last_name": "Swanson"
+  }
+},
+{
+  "pk": 3, 
+  "model": "pace.student", 
+  "fields": {
+    "classroom": 1, 
+    "first_name": "Tom", 
+    "last_name": "Haverford"
+  }
+},
+{
+  "pk": 4, 
+  "model": "pace.student", 
+  "fields": {
+    "classroom": 1, 
+    "first_name": "Jean-Ralphio", 
+    "last_name": "Saperstein"
+  }
+},
+{
+  "pk": 97, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:21:58.708Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 1, 
+    "student": 1, 
+    "date": "2013-09-03", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 98, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 1, 
+    "last_changed_at": "2013-09-03T15:53:56.934Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 2, 
+    "student": 1, 
+    "date": "2013-09-03", 
+    "be_safe_points": 1
+  }
+},
+{
+  "pk": 99, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:21:58.715Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 3, 
+    "student": 1, 
+    "date": "2013-09-03", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 100, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:21:58.720Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 4, 
+    "student": 1, 
+    "date": "2013-09-03", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 101, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:56.939Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 5, 
+    "student": 1, 
+    "date": "2013-09-03", 
+    "be_safe_points": 1
+  }
+},
+{
+  "pk": 102, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:56.947Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 1, 
+    "is_eligible": true, 
+    "period": 6, 
+    "student": 1, 
+    "date": "2013-09-03", 
+    "be_safe_points": 1
+  }
+},
+{
+  "pk": 103, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:21:58.732Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 7, 
+    "student": 1, 
+    "date": "2013-09-03", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 104, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 1, 
+    "last_changed_at": "2013-09-03T15:53:56.952Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 8, 
+    "student": 1, 
+    "date": "2013-09-03", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 105, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.546Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 1, 
+    "student": 1, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 106, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.549Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 2, 
+    "student": 1, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 107, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.553Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 3, 
+    "student": 1, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 108, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:57.031Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 1, 
+    "is_eligible": true, 
+    "period": 4, 
+    "student": 1, 
+    "date": "2013-09-04", 
+    "be_safe_points": 1
+  }
+},
+{
+  "pk": 109, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.560Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 5, 
+    "student": 1, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 110, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.564Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 6, 
+    "student": 1, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 111, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:57.036Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 1, 
+    "is_eligible": true, 
+    "period": 7, 
+    "student": 1, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 112, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:57.046Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 1, 
+    "is_eligible": true, 
+    "period": 8, 
+    "student": 1, 
+    "date": "2013-09-04", 
+    "be_safe_points": 1
+  }
+},
+{
+  "pk": 113, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 1, 
+    "last_changed_at": "2013-09-03T15:53:57.078Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 1, 
+    "student": 1, 
+    "date": "2013-09-05", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 114, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.578Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 2, 
+    "student": 1, 
+    "date": "2013-09-05", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 115, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.582Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 3, 
+    "student": 1, 
+    "date": "2013-09-05", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 116, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:57.087Z", 
+    "complete_work_points": 1, 
+    "follow_directions_points": 1, 
+    "is_eligible": true, 
+    "period": 4, 
+    "student": 1, 
+    "date": "2013-09-05", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 117, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": null, 
+    "last_changed_at": "2013-09-03T04:21:32.042Z", 
+    "complete_work_points": null, 
+    "follow_directions_points": null, 
+    "is_eligible": false, 
+    "period": 1, 
+    "student": 2, 
+    "date": "2013-09-03", 
+    "be_safe_points": null
+  }
+},
+{
+  "pk": 118, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": null, 
+    "last_changed_at": "2013-09-03T04:21:32.043Z", 
+    "complete_work_points": null, 
+    "follow_directions_points": null, 
+    "is_eligible": false, 
+    "period": 2, 
+    "student": 2, 
+    "date": "2013-09-03", 
+    "be_safe_points": null
+  }
+},
+{
+  "pk": 119, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": null, 
+    "last_changed_at": "2013-09-03T04:21:32.044Z", 
+    "complete_work_points": null, 
+    "follow_directions_points": null, 
+    "is_eligible": false, 
+    "period": 3, 
+    "student": 2, 
+    "date": "2013-09-03", 
+    "be_safe_points": null
+  }
+},
+{
+  "pk": 120, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.593Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 4, 
+    "student": 2, 
+    "date": "2013-09-03", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 121, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 0, 
+    "last_changed_at": "2013-09-03T15:53:56.961Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 5, 
+    "student": 2, 
+    "date": "2013-09-03", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 122, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 1, 
+    "last_changed_at": "2013-09-03T15:53:56.965Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 6, 
+    "student": 2, 
+    "date": "2013-09-03", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 123, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.603Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 7, 
+    "student": 2, 
+    "date": "2013-09-03", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 124, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:56.970Z", 
+    "complete_work_points": 1, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 8, 
+    "student": 2, 
+    "date": "2013-09-03", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 125, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.610Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 1, 
+    "student": 2, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 126, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.613Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 2, 
+    "student": 2, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 127, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.617Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 3, 
+    "student": 2, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 128, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.621Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 4, 
+    "student": 2, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 129, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.624Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 5, 
+    "student": 2, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 130, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:57.050Z", 
+    "complete_work_points": 1, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 6, 
+    "student": 2, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 131, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:57.055Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 1, 
+    "is_eligible": true, 
+    "period": 7, 
+    "student": 2, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 132, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": null, 
+    "last_changed_at": "2013-09-03T04:21:32.054Z", 
+    "complete_work_points": null, 
+    "follow_directions_points": null, 
+    "is_eligible": false, 
+    "period": 8, 
+    "student": 2, 
+    "date": "2013-09-04", 
+    "be_safe_points": null
+  }
+},
+{
+  "pk": 133, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.636Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 1, 
+    "student": 2, 
+    "date": "2013-09-05", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 134, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.639Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 2, 
+    "student": 2, 
+    "date": "2013-09-05", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 135, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:57.097Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 0, 
+    "is_eligible": true, 
+    "period": 3, 
+    "student": 2, 
+    "date": "2013-09-05", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 136, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:57.106Z", 
+    "complete_work_points": 1, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 4, 
+    "student": 2, 
+    "date": "2013-09-05", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 137, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:56.998Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 1, 
+    "student": 3, 
+    "date": "2013-09-03", 
+    "be_safe_points": 1
+  }
+},
+{
+  "pk": 138, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 0, 
+    "last_changed_at": "2013-09-03T15:53:57.008Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 2, 
+    "student": 3, 
+    "date": "2013-09-03", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 139, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.656Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 3, 
+    "student": 3, 
+    "date": "2013-09-03", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 140, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 1, 
+    "last_changed_at": "2013-09-03T15:53:57.017Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 1, 
+    "is_eligible": true, 
+    "period": 4, 
+    "student": 3, 
+    "date": "2013-09-03", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 141, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.662Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 5, 
+    "student": 3, 
+    "date": "2013-09-03", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 142, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.666Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 6, 
+    "student": 3, 
+    "date": "2013-09-03", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 143, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.669Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 7, 
+    "student": 3, 
+    "date": "2013-09-03", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 144, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:57.022Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 1, 
+    "is_eligible": true, 
+    "period": 8, 
+    "student": 3, 
+    "date": "2013-09-03", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 145, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:56.905Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 1, 
+    "student": 3, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 146, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 1, 
+    "last_changed_at": "2013-09-03T15:53:57.059Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 2, 
+    "student": 3, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 147, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:57.064Z", 
+    "complete_work_points": 1, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 3, 
+    "student": 3, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 148, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:56.912Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 4, 
+    "student": 3, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 149, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:56.915Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 5, 
+    "student": 3, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 150, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:56.917Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 6, 
+    "student": 3, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 151, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:56.919Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 7, 
+    "student": 3, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 152, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:56.921Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 8, 
+    "student": 3, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 153, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": null, 
+    "last_changed_at": "2013-09-03T04:21:32.070Z", 
+    "complete_work_points": null, 
+    "follow_directions_points": null, 
+    "is_eligible": false, 
+    "period": 1, 
+    "student": 3, 
+    "date": "2013-09-05", 
+    "be_safe_points": null
+  }
+},
+{
+  "pk": 154, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:57.102Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 2, 
+    "student": 3, 
+    "date": "2013-09-05", 
+    "be_safe_points": 1
+  }
+},
+{
+  "pk": 155, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.692Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 3, 
+    "student": 3, 
+    "date": "2013-09-05", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 156, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.695Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 4, 
+    "student": 3, 
+    "date": "2013-09-05", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 157, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": null, 
+    "last_changed_at": "2013-09-03T04:21:32.072Z", 
+    "complete_work_points": null, 
+    "follow_directions_points": null, 
+    "is_eligible": false, 
+    "period": 1, 
+    "student": 4, 
+    "date": "2013-09-03", 
+    "be_safe_points": null
+  }
+},
+{
+  "pk": 158, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": null, 
+    "last_changed_at": "2013-09-03T04:21:32.074Z", 
+    "complete_work_points": null, 
+    "follow_directions_points": null, 
+    "is_eligible": false, 
+    "period": 2, 
+    "student": 4, 
+    "date": "2013-09-03", 
+    "be_safe_points": null
+  }
+},
+{
+  "pk": 159, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.703Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 3, 
+    "student": 4, 
+    "date": "2013-09-03", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 160, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.706Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 4, 
+    "student": 4, 
+    "date": "2013-09-03", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 161, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:56.983Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 5, 
+    "student": 4, 
+    "date": "2013-09-03", 
+    "be_safe_points": 0
+  }
+},
+{
+  "pk": 162, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:56.994Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 1, 
+    "is_eligible": true, 
+    "period": 6, 
+    "student": 4, 
+    "date": "2013-09-03", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 163, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 1, 
+    "last_changed_at": "2013-09-03T15:53:56.989Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 7, 
+    "student": 4, 
+    "date": "2013-09-03", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 164, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": null, 
+    "last_changed_at": "2013-09-03T04:21:32.079Z", 
+    "complete_work_points": null, 
+    "follow_directions_points": null, 
+    "is_eligible": false, 
+    "period": 8, 
+    "student": 4, 
+    "date": "2013-09-03", 
+    "be_safe_points": null
+  }
+},
+{
+  "pk": 165, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": null, 
+    "last_changed_at": "2013-09-03T04:21:32.079Z", 
+    "complete_work_points": null, 
+    "follow_directions_points": null, 
+    "is_eligible": false, 
+    "period": 1, 
+    "student": 4, 
+    "date": "2013-09-04", 
+    "be_safe_points": null
+  }
+},
+{
+  "pk": 166, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": null, 
+    "last_changed_at": "2013-09-03T04:21:32.080Z", 
+    "complete_work_points": null, 
+    "follow_directions_points": null, 
+    "is_eligible": false, 
+    "period": 2, 
+    "student": 4, 
+    "date": "2013-09-04", 
+    "be_safe_points": null
+  }
+},
+{
+  "pk": 167, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": null, 
+    "last_changed_at": "2013-09-03T04:21:32.082Z", 
+    "complete_work_points": null, 
+    "follow_directions_points": null, 
+    "is_eligible": false, 
+    "period": 3, 
+    "student": 4, 
+    "date": "2013-09-04", 
+    "be_safe_points": null
+  }
+},
+{
+  "pk": 168, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T04:29:36.725Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 4, 
+    "student": 4, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 169, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:57.069Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 2, 
+    "is_eligible": true, 
+    "period": 5, 
+    "student": 4, 
+    "date": "2013-09-04", 
+    "be_safe_points": 1
+  }
+},
+{
+  "pk": 170, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": 2, 
+    "last_changed_at": "2013-09-03T15:53:57.074Z", 
+    "complete_work_points": 2, 
+    "follow_directions_points": 1, 
+    "is_eligible": true, 
+    "period": 6, 
+    "student": 4, 
+    "date": "2013-09-04", 
+    "be_safe_points": 2
+  }
+},
+{
+  "pk": 171, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": null, 
+    "last_changed_at": "2013-09-03T04:21:32.085Z", 
+    "complete_work_points": null, 
+    "follow_directions_points": null, 
+    "is_eligible": false, 
+    "period": 7, 
+    "student": 4, 
+    "date": "2013-09-04", 
+    "be_safe_points": null
+  }
+},
+{
+  "pk": 172, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": null, 
+    "last_changed_at": "2013-09-03T04:21:32.086Z", 
+    "complete_work_points": null, 
+    "follow_directions_points": null, 
+    "is_eligible": false, 
+    "period": 8, 
+    "student": 4, 
+    "date": "2013-09-04", 
+    "be_safe_points": null
+  }
+},
+{
+  "pk": 173, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": null, 
+    "last_changed_at": "2013-09-03T04:21:32.087Z", 
+    "complete_work_points": null, 
+    "follow_directions_points": null, 
+    "is_eligible": false, 
+    "period": 1, 
+    "student": 4, 
+    "date": "2013-09-05", 
+    "be_safe_points": null
+  }
+},
+{
+  "pk": 174, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": null, 
+    "last_changed_at": "2013-09-03T04:21:32.089Z", 
+    "complete_work_points": null, 
+    "follow_directions_points": null, 
+    "is_eligible": false, 
+    "period": 2, 
+    "student": 4, 
+    "date": "2013-09-05", 
+    "be_safe_points": null
+  }
+},
+{
+  "pk": 175, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": null, 
+    "last_changed_at": "2013-09-03T04:21:32.090Z", 
+    "complete_work_points": null, 
+    "follow_directions_points": null, 
+    "is_eligible": false, 
+    "period": 3, 
+    "student": 4, 
+    "date": "2013-09-05", 
+    "be_safe_points": null
+  }
+},
+{
+  "pk": 176, 
+  "model": "pace.periodicrecord", 
+  "fields": {
+    "kind_words_points": null, 
+    "last_changed_at": "2013-09-03T04:21:32.091Z", 
+    "complete_work_points": null, 
+    "follow_directions_points": null, 
+    "is_eligible": false, 
+    "period": 4, 
+    "student": 4, 
+    "date": "2013-09-05", 
+    "be_safe_points": null
+  }
+},
+{
+  "pk": 115, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 98, 
+    "point_type": "kw", 
+    "occurred_at": "2013-09-03T12:15:00Z"
+  }
+},
+{
+  "pk": 116, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 98, 
+    "point_type": "bs", 
+    "occurred_at": "2013-09-03T12:20:00Z"
+  }
+},
+{
+  "pk": 117, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 101, 
+    "point_type": "bs", 
+    "occurred_at": "2013-09-03T15:50:00Z"
+  }
+},
+{
+  "pk": 118, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 102, 
+    "point_type": "fd", 
+    "occurred_at": "2013-09-03T16:03:00Z"
+  }
+},
+{
+  "pk": 119, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 102, 
+    "point_type": "bs", 
+    "occurred_at": "2013-09-03T16:32:00Z"
+  }
+},
+{
+  "pk": 120, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 104, 
+    "point_type": "kw", 
+    "occurred_at": "2013-09-03T18:04:00Z"
+  }
+},
+{
+  "pk": 121, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 121, 
+    "point_type": "kw", 
+    "occurred_at": "2013-09-03T15:13:00Z"
+  }
+},
+{
+  "pk": 122, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 121, 
+    "point_type": "kw", 
+    "occurred_at": "2013-09-03T15:17:00Z"
+  }
+},
+{
+  "pk": 123, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 122, 
+    "point_type": "kw", 
+    "occurred_at": "2013-09-03T16:09:00Z"
+  }
+},
+{
+  "pk": 124, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 124, 
+    "point_type": "cw", 
+    "occurred_at": "2013-09-03T18:09:00Z"
+  }
+},
+{
+  "pk": 125, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 161, 
+    "point_type": "bs", 
+    "occurred_at": "2013-09-03T15:40:00Z"
+  }
+},
+{
+  "pk": 126, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 161, 
+    "point_type": "bs", 
+    "occurred_at": "2013-09-03T15:51:00Z"
+  }
+},
+{
+  "pk": 127, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 163, 
+    "point_type": "kw", 
+    "occurred_at": "2013-09-03T17:12:00Z"
+  }
+},
+{
+  "pk": 128, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 162, 
+    "point_type": "fd", 
+    "occurred_at": "2013-09-03T16:49:00Z"
+  }
+},
+{
+  "pk": 129, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 137, 
+    "point_type": "bs", 
+    "occurred_at": "2013-09-03T11:50:00Z"
+  }
+},
+{
+  "pk": 130, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 138, 
+    "point_type": "kw", 
+    "occurred_at": "2013-09-03T12:11:00Z"
+  }
+},
+{
+  "pk": 131, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 138, 
+    "point_type": "kw", 
+    "occurred_at": "2013-09-03T12:34:00Z"
+  }
+},
+{
+  "pk": 132, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 140, 
+    "point_type": "kw", 
+    "occurred_at": "2013-09-03T14:41:00Z"
+  }
+},
+{
+  "pk": 133, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 140, 
+    "point_type": "fd", 
+    "occurred_at": "2013-09-03T14:56:00Z"
+  }
+},
+{
+  "pk": 134, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 144, 
+    "point_type": "fd", 
+    "occurred_at": "2013-09-03T18:12:00Z"
+  }
+},
+{
+  "pk": 135, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 108, 
+    "point_type": "bs", 
+    "occurred_at": "2013-09-04T14:34:00Z"
+  }
+},
+{
+  "pk": 136, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 108, 
+    "point_type": "fd", 
+    "occurred_at": "2013-09-04T14:54:00Z"
+  }
+},
+{
+  "pk": 137, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 111, 
+    "point_type": "fd", 
+    "occurred_at": "2013-09-04T17:12:00Z"
+  }
+},
+{
+  "pk": 138, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 112, 
+    "point_type": "bs", 
+    "occurred_at": "2013-09-04T18:56:00Z"
+  }
+},
+{
+  "pk": 139, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 112, 
+    "point_type": "fd", 
+    "occurred_at": "2013-09-04T18:57:00Z"
+  }
+},
+{
+  "pk": 140, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 130, 
+    "point_type": "cw", 
+    "occurred_at": "2013-09-04T16:57:00Z"
+  }
+},
+{
+  "pk": 141, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 131, 
+    "point_type": "fd", 
+    "occurred_at": "2013-09-04T17:20:00Z"
+  }
+},
+{
+  "pk": 142, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 146, 
+    "point_type": "kw", 
+    "occurred_at": "2013-09-04T12:41:00Z"
+  }
+},
+{
+  "pk": 143, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 147, 
+    "point_type": "cw", 
+    "occurred_at": "2013-09-04T13:12:00Z"
+  }
+},
+{
+  "pk": 144, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 169, 
+    "point_type": "bs", 
+    "occurred_at": "2013-09-04T15:12:00Z"
+  }
+},
+{
+  "pk": 145, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 170, 
+    "point_type": "fd", 
+    "occurred_at": "2013-09-04T16:10:00Z"
+  }
+},
+{
+  "pk": 146, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 113, 
+    "point_type": "kw", 
+    "occurred_at": "2013-09-05T11:12:00Z"
+  }
+},
+{
+  "pk": 147, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 116, 
+    "point_type": "cw", 
+    "occurred_at": "2013-09-05T14:02:00Z"
+  }
+},
+{
+  "pk": 148, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 116, 
+    "point_type": "fd", 
+    "occurred_at": "2013-09-05T14:02:00Z"
+  }
+},
+{
+  "pk": 149, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 135, 
+    "point_type": "fd", 
+    "occurred_at": "2013-09-05T13:14:00Z"
+  }
+},
+{
+  "pk": 150, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 135, 
+    "point_type": "fd", 
+    "occurred_at": "2013-09-05T13:31:00Z"
+  }
+},
+{
+  "pk": 151, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 154, 
+    "point_type": "bs", 
+    "occurred_at": "2013-09-05T12:22:00Z"
+  }
+},
+{
+  "pk": 152, 
+  "model": "pace.pointloss", 
+  "fields": {
+    "comment": "", 
+    "periodic_record": 136, 
+    "point_type": "cw", 
+    "occurred_at": "2013-09-05T14:01:00Z"
+  }
+},
+{
+  "pk": 1, 
+  "model": "pace.behaviorincidenttype", 
+  "fields": {
+    "supports_duration": false, 
+    "code": "PA", 
+    "applicable_student": null, 
+    "label": "Physical Aggression"
+  }
+},
+{
+  "pk": 2, 
+  "model": "pace.behaviorincidenttype", 
+  "fields": {
+    "supports_duration": false, 
+    "code": "PD", 
+    "applicable_student": null, 
+    "label": "Property Destruction"
+  }
+},
+{
+  "pk": 3, 
+  "model": "pace.behaviorincidenttype", 
+  "fields": {
+    "supports_duration": true, 
+    "code": "OOB", 
+    "applicable_student": null, 
+    "label": "Out of Building"
+  }
+},
+{
+  "pk": 4, 
+  "model": "pace.behaviorincidenttype", 
+  "fields": {
+    "supports_duration": false, 
+    "code": "SH", 
+    "applicable_student": null, 
+    "label": "Suicidal/Homicidal"
+  }
+},
+{
+  "pk": 5, 
+  "model": "pace.behaviorincidenttype", 
+  "fields": {
+    "supports_duration": false, 
+    "code": "", 
+    "applicable_student": 2, 
+    "label": "Libertarian Ideation"
+  }
+},
+{
+  "pk": 6, 
+  "model": "pace.behaviorincidenttype", 
+  "fields": {
+    "supports_duration": false, 
+    "code": "", 
+    "applicable_student": 2, 
+    "label": "Firearms Violation"
+  }
+},
+{
+  "pk": 7, 
+  "model": "pace.behaviorincidenttype", 
+  "fields": {
+    "supports_duration": false, 
+    "code": "", 
+    "applicable_student": 3, 
+    "label": "Treating Self"
+  }
+},
+{
+  "pk": 1, 
+  "model": "pace.behaviorincident", 
+  "fields": {
+    "comment": "Snuck out during transition", 
+    "ended_at": "2013-09-03T14:25:00Z", 
+    "last_modified_at": "2013-09-03T14:18:37.118Z", 
+    "student": 1, 
+    "started_at": "2013-09-03T14:15:00Z", 
+    "type": 3
+  }
+},
+{
+  "pk": 2, 
+  "model": "pace.behaviorincident", 
+  "fields": {
+    "comment": "Damaged sink faucet", 
+    "ended_at": null, 
+    "last_modified_at": "2013-09-03T14:19:36.384Z", 
+    "student": 1, 
+    "started_at": "2013-09-03T16:30:00Z", 
+    "type": 2
+  }
+},
+{
+  "pk": 3, 
+  "model": "pace.behaviorincident", 
+  "fields": {
+    "comment": "Scratched up desk", 
+    "ended_at": null, 
+    "last_modified_at": "2013-09-03T14:21:25.232Z", 
+    "student": 1, 
+    "started_at": "2013-09-05T13:20:00Z", 
+    "type": 2
+  }
+},
+{
+  "pk": 4, 
+  "model": "pace.behaviorincident", 
+  "fields": {
+    "comment": "Attacked Dr. Jamm", 
+    "ended_at": null, 
+    "last_modified_at": "2013-09-03T14:22:53.949Z", 
+    "student": 2, 
+    "started_at": "2013-09-05T12:30:00Z", 
+    "type": 1
+  }
+},
+{
+  "pk": 5, 
+  "model": "pace.behaviorincident", 
+  "fields": {
+    "comment": "Reading Atlas Shrugged", 
+    "ended_at": null, 
+    "last_modified_at": "2013-09-03T14:23:33.677Z", 
+    "student": 2, 
+    "started_at": "2013-09-04T15:25:00Z", 
+    "type": 5
+  }
+},
+{
+  "pk": 6, 
+  "model": "pace.behaviorincident", 
+  "fields": {
+    "comment": "", 
+    "ended_at": null, 
+    "last_modified_at": "2013-09-03T14:25:07.387Z", 
+    "student": 2, 
+    "started_at": "2013-09-04T18:10:00Z", 
+    "type": 2
+  }
+},
+{
+  "pk": 7, 
+  "model": "pace.behaviorincident", 
+  "fields": {
+    "comment": "", 
+    "ended_at": null, 
+    "last_modified_at": "2013-09-03T14:25:34.300Z", 
+    "student": 2, 
+    "started_at": "2013-09-05T11:25:00Z", 
+    "type": 6
+  }
+},
+{
+  "pk": 8, 
+  "model": "pace.behaviorincident", 
+  "fields": {
+    "comment": "Cashmere velvet candy cane", 
+    "ended_at": null, 
+    "last_modified_at": "2013-09-03T14:29:43.007Z", 
+    "student": 3, 
+    "started_at": "2013-09-04T18:25:00Z", 
+    "type": 7
+  }
+},
+{
+  "pk": 9, 
+  "model": "pace.behaviorincident", 
+  "fields": {
+    "comment": "", 
+    "ended_at": "2013-09-05T13:50:00Z", 
+    "last_modified_at": "2013-09-03T14:30:35.658Z", 
+    "student": 3, 
+    "started_at": "2013-09-05T12:35:00Z", 
+    "type": 3
+  }
+},
+{
+  "pk": 10, 
+  "model": "pace.behaviorincident", 
+  "fields": {
+    "comment": "", 
+    "ended_at": null, 
+    "last_modified_at": "2013-09-03T14:32:52.588Z", 
+    "student": 4, 
+    "started_at": "2013-09-03T05:15:00Z", 
+    "type": 2
+  }
+},
+{
+  "pk": 11, 
+  "model": "pace.behaviorincident", 
+  "fields": {
+    "comment": "", 
+    "ended_at": null, 
+    "last_modified_at": "2013-09-03T14:33:08.266Z", 
+    "student": 4, 
+    "started_at": "2013-09-03T15:30:00Z", 
+    "type": 2
+  }
+},
+{
+  "pk": 12, 
+  "model": "pace.behaviorincident", 
+  "fields": {
+    "comment": "", 
+    "ended_at": null, 
+    "last_modified_at": "2013-09-03T14:33:52.355Z", 
+    "student": 4, 
+    "started_at": "2013-09-04T16:00:00Z", 
+    "type": 4
+  }
+},
+{
+  "pk": 13, 
+  "model": "pace.behaviorincident", 
+  "fields": {
+    "comment": "During lunch", 
+    "ended_at": "2013-09-04T16:10:00Z", 
+    "last_modified_at": "2013-09-03T14:34:52.422Z", 
+    "student": 4, 
+    "started_at": "2013-09-04T16:00:00Z", 
+    "type": 3
+  }
+},
+{
+  "pk": 14, 
+  "model": "pace.behaviorincident", 
+  "fields": {
+    "comment": "This is a pretty long comment I sure hope it fits elegantly in the log display table", 
+    "ended_at": "2013-09-05T12:30:00Z", 
+    "last_modified_at": "2013-09-03T14:36:35.706Z", 
+    "student": 1, 
+    "started_at": "2013-09-05T12:25:00Z", 
+    "type": 3
+  }
+},
+{
+  "pk": 1, 
+  "model": "pace.attendancespan", 
+  "fields": {
+    "date": "2013-09-03", 
+    "time_in": "07:00:00", 
+    "time_out": "15:00:00", 
+    "student": 1
+  }
+},
+{
+  "pk": 2, 
+  "model": "pace.attendancespan", 
+  "fields": {
+    "date": "2013-09-04", 
+    "time_in": "07:30:00", 
+    "time_out": "15:00:00", 
+    "student": 1
+  }
+},
+{
+  "pk": 3, 
+  "model": "pace.attendancespan", 
+  "fields": {
+    "date": "2013-09-05", 
+    "time_in": "07:04:00", 
+    "time_out": null, 
+    "student": 1
+  }
+},
+{
+  "pk": 4, 
+  "model": "pace.attendancespan", 
+  "fields": {
+    "date": "2013-09-03", 
+    "time_in": "10:00:00", 
+    "time_out": "15:00:00", 
+    "student": 2
+  }
+},
+{
+  "pk": 5, 
+  "model": "pace.attendancespan", 
+  "fields": {
+    "date": "2013-09-04", 
+    "time_in": "07:00:00", 
+    "time_out": "13:15:00", 
+    "student": 2
+  }
+},
+{
+  "pk": 6, 
+  "model": "pace.attendancespan", 
+  "fields": {
+    "date": "2013-09-05", 
+    "time_in": "07:20:00", 
+    "time_out": null, 
+    "student": 2
+  }
+},
+{
+  "pk": 7, 
+  "model": "pace.attendancespan", 
+  "fields": {
+    "date": "2013-09-03", 
+    "time_in": "07:30:00", 
+    "time_out": "14:45:00", 
+    "student": 3
+  }
+},
+{
+  "pk": 8, 
+  "model": "pace.attendancespan", 
+  "fields": {
+    "date": "2013-09-04", 
+    "time_in": "07:00:00", 
+    "time_out": "03:00:00", 
+    "student": 3
+  }
+},
+{
+  "pk": 9, 
+  "model": "pace.attendancespan", 
+  "fields": {
+    "date": "2013-09-05", 
+    "time_in": "08:45:00", 
+    "time_out": null, 
+    "student": 3
+  }
+},
+{
+  "pk": 10, 
+  "model": "pace.attendancespan", 
+  "fields": {
+    "date": "2013-09-03", 
+    "time_in": "12:00:00", 
+    "time_out": "13:30:00", 
+    "student": 4
+  }
+},
+{
+  "pk": 11, 
+  "model": "pace.attendancespan", 
+  "fields": {
+    "date": "2013-09-03", 
+    "time_in": "09:30:00", 
+    "time_out": "11:45:00", 
+    "student": 4
+  }
+},
+{
+  "pk": 12, 
+  "model": "pace.attendancespan", 
+  "fields": {
+    "date": "2013-09-04", 
+    "time_in": "10:45:00", 
+    "time_out": "12:15:00", 
+    "student": 4
+  }
+},
+{
+  "pk": 1, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_permission", 
+    "name": "Can add permission", 
+    "content_type": 1
+  }
+},
+{
+  "pk": 2, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_permission", 
+    "name": "Can change permission", 
+    "content_type": 1
+  }
+},
+{
+  "pk": 3, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_permission", 
+    "name": "Can delete permission", 
+    "content_type": 1
+  }
+},
+{
+  "pk": 4, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_group", 
+    "name": "Can add group", 
+    "content_type": 2
+  }
+},
+{
+  "pk": 5, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_group", 
+    "name": "Can change group", 
+    "content_type": 2
+  }
+},
+{
+  "pk": 6, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_group", 
+    "name": "Can delete group", 
+    "content_type": 2
+  }
+},
+{
+  "pk": 7, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_user", 
+    "name": "Can add user", 
+    "content_type": 3
+  }
+},
+{
+  "pk": 8, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_user", 
+    "name": "Can change user", 
+    "content_type": 3
+  }
+},
+{
+  "pk": 9, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_user", 
+    "name": "Can delete user", 
+    "content_type": 3
+  }
+},
+{
+  "pk": 10, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_contenttype", 
+    "name": "Can add content type", 
+    "content_type": 4
+  }
+},
+{
+  "pk": 11, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_contenttype", 
+    "name": "Can change content type", 
+    "content_type": 4
+  }
+},
+{
+  "pk": 12, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_contenttype", 
+    "name": "Can delete content type", 
+    "content_type": 4
+  }
+},
+{
+  "pk": 13, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_session", 
+    "name": "Can add session", 
+    "content_type": 5
+  }
+},
+{
+  "pk": 14, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_session", 
+    "name": "Can change session", 
+    "content_type": 5
+  }
+},
+{
+  "pk": 15, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_session", 
+    "name": "Can delete session", 
+    "content_type": 5
+  }
+},
+{
+  "pk": 16, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_logentry", 
+    "name": "Can add log entry", 
+    "content_type": 6
+  }
+},
+{
+  "pk": 17, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_logentry", 
+    "name": "Can change log entry", 
+    "content_type": 6
+  }
+},
+{
+  "pk": 18, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_logentry", 
+    "name": "Can delete log entry", 
+    "content_type": 6
+  }
+},
+{
+  "pk": 19, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_migrationhistory", 
+    "name": "Can add migration history", 
+    "content_type": 7
+  }
+},
+{
+  "pk": 20, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_migrationhistory", 
+    "name": "Can change migration history", 
+    "content_type": 7
+  }
+},
+{
+  "pk": 21, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_migrationhistory", 
+    "name": "Can delete migration history", 
+    "content_type": 7
+  }
+},
+{
+  "pk": 22, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_classroom", 
+    "name": "Can add classroom", 
+    "content_type": 8
+  }
+},
+{
+  "pk": 23, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_classroom", 
+    "name": "Can change classroom", 
+    "content_type": 8
+  }
+},
+{
+  "pk": 24, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_classroom", 
+    "name": "Can delete classroom", 
+    "content_type": 8
+  }
+},
+{
+  "pk": 25, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_student", 
+    "name": "Can add student", 
+    "content_type": 9
+  }
+},
+{
+  "pk": 26, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_student", 
+    "name": "Can change student", 
+    "content_type": 9
+  }
+},
+{
+  "pk": 27, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_student", 
+    "name": "Can delete student", 
+    "content_type": 9
+  }
+},
+{
+  "pk": 28, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_periodicrecord", 
+    "name": "Can add periodic record", 
+    "content_type": 10
+  }
+},
+{
+  "pk": 29, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_periodicrecord", 
+    "name": "Can change periodic record", 
+    "content_type": 10
+  }
+},
+{
+  "pk": 30, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_periodicrecord", 
+    "name": "Can delete periodic record", 
+    "content_type": 10
+  }
+},
+{
+  "pk": 31, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_pointloss", 
+    "name": "Can add point loss", 
+    "content_type": 11
+  }
+},
+{
+  "pk": 32, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_pointloss", 
+    "name": "Can change point loss", 
+    "content_type": 11
+  }
+},
+{
+  "pk": 33, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_pointloss", 
+    "name": "Can delete point loss", 
+    "content_type": 11
+  }
+},
+{
+  "pk": 34, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_behaviorincidenttype", 
+    "name": "Can add behavior incident type", 
+    "content_type": 12
+  }
+},
+{
+  "pk": 35, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_behaviorincidenttype", 
+    "name": "Can change behavior incident type", 
+    "content_type": 12
+  }
+},
+{
+  "pk": 36, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_behaviorincidenttype", 
+    "name": "Can delete behavior incident type", 
+    "content_type": 12
+  }
+},
+{
+  "pk": 37, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_behaviorincident", 
+    "name": "Can add behavior incident", 
+    "content_type": 13
+  }
+},
+{
+  "pk": 38, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_behaviorincident", 
+    "name": "Can change behavior incident", 
+    "content_type": 13
+  }
+},
+{
+  "pk": 39, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_behaviorincident", 
+    "name": "Can delete behavior incident", 
+    "content_type": 13
+  }
+},
+{
+  "pk": 40, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_post", 
+    "name": "Can add post", 
+    "content_type": 14
+  }
+},
+{
+  "pk": 41, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_post", 
+    "name": "Can change post", 
+    "content_type": 14
+  }
+},
+{
+  "pk": 42, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_post", 
+    "name": "Can delete post", 
+    "content_type": 14
+  }
+},
+{
+  "pk": 43, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_replypost", 
+    "name": "Can add reply post", 
+    "content_type": 15
+  }
+},
+{
+  "pk": 44, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_replypost", 
+    "name": "Can change reply post", 
+    "content_type": 15
+  }
+},
+{
+  "pk": 45, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_replypost", 
+    "name": "Can delete reply post", 
+    "content_type": 15
+  }
+},
+{
+  "pk": 46, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_attendancespan", 
+    "name": "Can add attendance span", 
+    "content_type": 16
+  }
+},
+{
+  "pk": 47, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_attendancespan", 
+    "name": "Can change attendance span", 
+    "content_type": 16
+  }
+},
+{
+  "pk": 48, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_attendancespan", 
+    "name": "Can delete attendance span", 
+    "content_type": 16
+  }
+},
+{
+  "pk": 49, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_student", 
+    "name": "Can add student", 
+    "content_type": 17
+  }
+},
+{
+  "pk": 50, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_student", 
+    "name": "Can change student", 
+    "content_type": 17
+  }
+},
+{
+  "pk": 51, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_student", 
+    "name": "Can delete student", 
+    "content_type": 17
+  }
+},
+{
+  "pk": 52, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_behaviorincidenttype", 
+    "name": "Can add behavior incident type", 
+    "content_type": 18
+  }
+},
+{
+  "pk": 53, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_behaviorincidenttype", 
+    "name": "Can change behavior incident type", 
+    "content_type": 18
+  }
+},
+{
+  "pk": 54, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_behaviorincidenttype", 
+    "name": "Can delete behavior incident type", 
+    "content_type": 18
+  }
+},
+{
+  "pk": 55, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_behaviorincident", 
+    "name": "Can add behavior incident", 
+    "content_type": 19
+  }
+},
+{
+  "pk": 56, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_behaviorincident", 
+    "name": "Can change behavior incident", 
+    "content_type": 19
+  }
+},
+{
+  "pk": 57, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_behaviorincident", 
+    "name": "Can delete behavior incident", 
+    "content_type": 19
+  }
+},
+{
+  "pk": 58, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_topic", 
+    "name": "Can add topic", 
+    "content_type": 20
+  }
+},
+{
+  "pk": 59, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_topic", 
+    "name": "Can change topic", 
+    "content_type": 20
+  }
+},
+{
+  "pk": 60, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_topic", 
+    "name": "Can delete topic", 
+    "content_type": 20
+  }
+},
+{
+  "pk": 61, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_subtopic", 
+    "name": "Can add subtopic", 
+    "content_type": 21
+  }
+},
+{
+  "pk": 62, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_subtopic", 
+    "name": "Can change subtopic", 
+    "content_type": 21
+  }
+},
+{
+  "pk": 63, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_subtopic", 
+    "name": "Can delete subtopic", 
+    "content_type": 21
+  }
+},
+{
+  "pk": 64, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_inputchannel", 
+    "name": "Can add input channel", 
+    "content_type": 22
+  }
+},
+{
+  "pk": 65, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_inputchannel", 
+    "name": "Can change input channel", 
+    "content_type": 22
+  }
+},
+{
+  "pk": 66, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_inputchannel", 
+    "name": "Can delete input channel", 
+    "content_type": 22
+  }
+},
+{
+  "pk": 67, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_outputchannel", 
+    "name": "Can add output channel", 
+    "content_type": 23
+  }
+},
+{
+  "pk": 68, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_outputchannel", 
+    "name": "Can change output channel", 
+    "content_type": 23
+  }
+},
+{
+  "pk": 69, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_outputchannel", 
+    "name": "Can delete output channel", 
+    "content_type": 23
+  }
+},
+{
+  "pk": 70, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_chart", 
+    "name": "Can add chart", 
+    "content_type": 24
+  }
+},
+{
+  "pk": 71, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_chart", 
+    "name": "Can change chart", 
+    "content_type": 24
+  }
+},
+{
+  "pk": 72, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_chart", 
+    "name": "Can delete chart", 
+    "content_type": 24
+  }
+},
+{
+  "pk": 73, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_daymetric", 
+    "name": "Can add day metric", 
+    "content_type": 25
+  }
+},
+{
+  "pk": 74, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_daymetric", 
+    "name": "Can change day metric", 
+    "content_type": 25
+  }
+},
+{
+  "pk": 75, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_daymetric", 
+    "name": "Can delete day metric", 
+    "content_type": 25
+  }
+},
+{
+  "pk": 76, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_phaseline", 
+    "name": "Can add phase line", 
+    "content_type": 26
+  }
+},
+{
+  "pk": 77, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_phaseline", 
+    "name": "Can change phase line", 
+    "content_type": 26
+  }
+},
+{
+  "pk": 78, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_phaseline", 
+    "name": "Can delete phase line", 
+    "content_type": 26
+  }
+},
+{
+  "pk": 79, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_staffprofile", 
+    "name": "Can add staff profile", 
+    "content_type": 27
+  }
+},
+{
+  "pk": 80, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_staffprofile", 
+    "name": "Can change staff profile", 
+    "content_type": 27
+  }
+},
+{
+  "pk": 81, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_staffprofile", 
+    "name": "Can delete staff profile", 
+    "content_type": 27
+  }
+},
+{
+  "pk": 82, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "add_token", 
+    "name": "Can add token", 
+    "content_type": 28
+  }
+},
+{
+  "pk": 83, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "change_token", 
+    "name": "Can change token", 
+    "content_type": 28
+  }
+},
+{
+  "pk": 84, 
+  "model": "auth.permission", 
+  "fields": {
+    "codename": "delete_token", 
+    "name": "Can delete token", 
+    "content_type": 28
+  }
+},
+{
+  "pk": 1, 
+  "model": "auth.user", 
+  "fields": {
+    "username": "admin", 
+    "first_name": "", 
+    "last_name": "", 
+    "is_active": true, 
+    "is_superuser": true, 
+    "is_staff": true, 
+    "last_login": "2013-10-03T03:20:01.506Z", 
+    "groups": [], 
+    "user_permissions": [], 
+    "password": "pbkdf2_sha256$10000$TCX8dx44HDAG$J9Jg/AbwmgFH5xzCklQEseAhbtzkj2zC17B/Wfsp234=", 
+    "email": "admin@example.com", 
+    "date_joined": "2013-10-03T03:19:17.265Z"
+  }
+},
+{
+  "pk": 2, 
+  "model": "auth.user", 
+  "fields": {
+    "username": "feeny", 
+    "first_name": "George", 
+    "last_name": "Feeny", 
+    "is_active": true, 
+    "is_superuser": false, 
+    "is_staff": false, 
+    "last_login": "2013-10-08T14:42:12Z", 
+    "groups": [], 
+    "user_permissions": [], 
+    "password": "pbkdf2_sha256$10000$LLRcL1O7y76r$4n6YplrAYFIIb91Wq9XB8gdEU4NApywSH00V+WHiieI=", 
+    "email": "feeny@example.com", 
+    "date_joined": "2013-10-08T14:42:12Z"
+  }
+},
+{
+  "pk": 3, 
+  "model": "auth.user", 
+  "fields": {
+    "username": "turner", 
+    "first_name": "Jonathan", 
+    "last_name": "Turner", 
+    "is_active": true, 
+    "is_superuser": false, 
+    "is_staff": false, 
+    "last_login": "2013-10-08T14:43:42Z", 
+    "groups": [], 
+    "user_permissions": [], 
+    "password": "pbkdf2_sha256$10000$NLoGyCVUl3WK$JNaNGOTLfk3IHbTjGKiprJnIe8jyZRvqHVeoIDw7SfE=", 
+    "email": "turner@example.com", 
+    "date_joined": "2013-10-08T14:43:42Z"
+  }
+},
+{
+  "pk": "8aac2c28036b83fcf1e503fb97da3db9e6fa065f", 
+  "model": "authtoken.token", 
+  "fields": {
+    "user": 1, 
+    "created": "2013-10-08T15:20:57.911Z"
+  }
+},
+{
+  "pk": "cce9b356c38ed8f3d0a59f2ca9d4cb108e92631f", 
+  "model": "authtoken.token", 
+  "fields": {
+    "user": 2, 
+    "created": "2013-10-08T15:20:57.914Z"
+  }
+},
+{
+  "pk": "f66dd627a2c9d22c540025cea178ab32e23045af", 
+  "model": "authtoken.token", 
+  "fields": {
+    "user": 3, 
+    "created": "2013-10-08T15:20:57.915Z"
+  }
+},
+{
+  "pk": 1, 
+  "model": "pace.staffprofile", 
+  "fields": {
+    "classrooms": [
+      1, 
+      2, 
+      3
+    ], 
+    "user": 2
+  }
+},
+{
+  "pk": 2, 
+  "model": "pace.staffprofile", 
+  "fields": {
+    "classrooms": [
+      1
+    ], 
+    "user": 3
+  }
+}
+]
