@@ -1,0 +1,6 @@
+# import the base requirements
+-r ./base.txt
+
+# development-specific requirements
+Werkzeug==0.9.1
+ipython==0.13.2
