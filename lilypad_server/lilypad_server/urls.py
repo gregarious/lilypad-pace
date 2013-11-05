@@ -10,7 +10,8 @@ urlpatterns = patterns('',
     url(r'^$', 'lilypad_server.views.home'),
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^api/authtoken/', 'rest_framework.authtoken.views.obtain_auth_token'),
+    url(r'^api/authtoken/$', 'rest_framework.authtoken.views.obtain_auth_token'),
 
+    # whole API is in pace app
     url(r'^api/', include(pace_urls, namespace='pace')),
 )
