@@ -16,7 +16,7 @@ A single-page app for Lilypad at Pace.
 
         $ pip install -r requirements/development.txt
 
-4. Three environment variables need to be set:
+4. Two environment variables need to be set:
     1. `DJANGO_SETTINGS_MODULE`: tells any Django process which settings file to use.
     2. `DATABASE_URL`: declares the local DB configuration. You'll need to set up the backend on your own. The simplest option is using SQLite.
     
