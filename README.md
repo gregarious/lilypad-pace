@@ -61,11 +61,11 @@ And if you want to deactivate the virtualenv, simply run:
 
 1. Activate the virtualenv
 
-	$ workon lilypad-pace
+		$ workon lilypad-pace
 
 2. Start the server
 
-	$ python manage.py runserver
+		$ python manage.py runserver
 
 3. Visit [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
