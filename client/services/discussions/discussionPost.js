@@ -1,4 +1,4 @@
-angular.module('pace').factory('DiscussionPost', function(Backbone, moment, timeTracker, Student, DiscussionReply) {
+angular.module('pace').factory('DiscussionPost', function(Backbone, moment, timeTracker, Student, DiscussionReply, apiConfig) {
     var ReplyCollection = Backbone.Collection.extend({'model': DiscussionReply});
 
     return Backbone.Model.extend({
@@ -12,7 +12,7 @@ angular.module('pace').factory('DiscussionPost', function(Backbone, moment, time
                 content : String
                 replies : Collection of PostReply models
          */
-        urlRoot: '/pace/posts/',
+        urlRoot: apiConfig.toAPIUrl('posts/'),
 
         initialize: function() {
             // if no replies passed in, create a new Collection for them

@@ -1,9 +1,9 @@
-angular.module('pace').service('behaviorIncidentTypeDataStore', function(BehaviorIncidentType, $q) {
+angular.module('pace').service('behaviorIncidentTypeDataStore', function(BehaviorIncidentType, $q, apiConfig) {
 
     // Collection of app-wide canonical BehaviorIncidentType models
     var typeRegistry = new (Backbone.Collection.extend({
         model: BehaviorIncidentType,
-        url: '/pace/behaviortypes/'
+        url: apiConfig.toAPIUrl('behaviortypes/')
     }))();
 
     // cache indexed by student id

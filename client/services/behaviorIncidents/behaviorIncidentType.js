@@ -1,4 +1,4 @@
-angular.module('pace').factory('BehaviorIncidentType', function(Backbone, Student) {
+angular.module('pace').factory('BehaviorIncidentType', function(Backbone, Student, apiConfig) {
     return Backbone.Model.extend({
         /*
             Attibutes:
@@ -12,7 +12,7 @@ angular.module('pace').factory('BehaviorIncidentType', function(Backbone, Studen
             supportsDuration: false
         },
 
-        urlRoot: '/pace/behaviortypes/',
+        urlRoot: apiConfig.toAPIUrl('behaviortypes/'),
 
         toJSON: function() {
             // stub out the student

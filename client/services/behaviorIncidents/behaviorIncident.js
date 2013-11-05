@@ -1,4 +1,4 @@
-angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, LoggableMixin, BehaviorIncidentType, behaviorIncidentTypeDataStore, Student) {
+angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, LoggableMixin, BehaviorIncidentType, behaviorIncidentTypeDataStore, Student, apiConfig) {
     return Backbone.Model.extend(_.extend(new LoggableMixin(), {
         /*
             Attributes:
@@ -11,7 +11,7 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Lo
          */
 
         // needed to allow for creating and saving isolated incidents
-        urlRoot: '/pace/behaviorincidents/',
+        urlRoot: apiConfig.toAPIUrl('behaviorincidents/'),
 
         initialize: function() {
             // ensure that `type` gets assigned via the `set` method -- it handles the

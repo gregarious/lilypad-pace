@@ -1,8 +1,8 @@
-angular.module('pace').factory('classroomDataStore', function(Backbone, Classroom, $q) {
+angular.module('pace').factory('classroomDataStore', function(Backbone, Classroom, $q, apiConfig) {
 
     var AllClassroomCollection = Backbone.Collection.extend({
         model: Classroom,
-        url: '/pace/classrooms/',
+        url: apiConfig.toAPIUrl('classrooms/'),
         comparator: 'name',
     });
 

@@ -1,4 +1,4 @@
-angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTracker, Student, PointLoss, pointLossDataStore) {
+angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTracker, Student, PointLoss, pointLossDataStore, apiConfig) {
     // utilities in use below
     var validPointpointTypes = ['kw', 'cw', 'fd', 'bs'];
     var isValidPointType = function(code) {
@@ -37,7 +37,7 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
             };
         },
 
-        urlRoot: '/pace/periodicrecords/',
+        urlRoot: apiConfig.toAPIUrl('periodicrecords/'),
 
         initialize: function(attributes, options) {
             if(!this.get('points')) {

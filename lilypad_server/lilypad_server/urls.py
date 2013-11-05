@@ -5,7 +5,6 @@ from django.contrib import admin
 admin.autodiscover()
 
 from pace import urls as pace_urls
-from plea import urls as plea_urls
 
 urlpatterns = patterns('',
     url(r'^$', 'lilypad_server.views.home'),
@@ -13,6 +12,5 @@ urlpatterns = patterns('',
 
     url(r'^authtoken/', 'rest_framework.authtoken.views.obtain_auth_token'),
 
-    url(r'^pace/', include(pace_urls, namespace='pace')),
-    url(r'^plea/', include(plea_urls, namespace='plea'))
+    url(r'^api/', include(pace_urls, namespace='pace')),
 )

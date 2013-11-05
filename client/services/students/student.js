@@ -1,4 +1,4 @@
-angular.module('pace').factory('Student', function(Backbone, timeTracker, AttendanceSpan){
+angular.module('pace').factory('Student', function(Backbone, timeTracker, AttendanceSpan, apiConfig){
     return Backbone.Model.extend({
         /*
             Attributes:
@@ -18,7 +18,7 @@ angular.module('pace').factory('Student', function(Backbone, timeTracker, Attend
         defaults: {
             activeAttendanceSpan: null
         },
-        urlRoot: '/pace/students/',
+        urlRoot: apiConfig.toAPIUrl('students/'),
 
         initialize: function() {
             var span = this.get('activeAttendanceSpan');

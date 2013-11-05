@@ -1,4 +1,4 @@
-angular.module('pace').factory('AttendanceSpan', function(Backbone) {
+angular.module('pace').factory('AttendanceSpan', function(Backbone, apiConfig) {
     /*
         Attributes:
             id : Number
@@ -8,7 +8,7 @@ angular.module('pace').factory('AttendanceSpan', function(Backbone) {
             date: String (ISO-formatted date)
      */
     return Backbone.Model.extend({
-        urlRoot: '/pace/attendancespans/',
+        urlRoot: apiConfig.toAPIUrl('attendancespans/'),
         toJSON: function() {
             // camelize the data keys first
             var data = Backbone.Model.prototype.toJSON.apply(this, arguments);

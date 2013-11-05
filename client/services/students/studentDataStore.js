@@ -1,4 +1,4 @@
-angular.module('pace').factory('studentDataStore', function(Backbone, Student, timeTracker, $q) {
+angular.module('pace').factory('studentDataStore', function(Backbone, Student, timeTracker, $q, apiConfig) {
 
     function classroomStudentsFactory(classroom) {
         var ClassroomStudentCollection = Backbone.Collection.extend({
@@ -6,7 +6,8 @@ angular.module('pace').factory('studentDataStore', function(Backbone, Student, t
 
             url: function() {
                 // add the query arg to get back active_attendance_span subresources
-                return '/pace/classrooms/' + classroom.id + '/students/?attendance_anchor=' + timeTracker.getTimestampAsMoment().format();
+                var url = 'classrooms/' + classroom.id + '/students/?attendance_anchor=' + timeTracker.getTimestampAsMoment().format();
+                return apiConfig.toAPIUrl(url);
             },
 
             comparator: function(student) {

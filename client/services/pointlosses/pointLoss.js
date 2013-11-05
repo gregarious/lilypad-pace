@@ -1,4 +1,4 @@
-angular.module('pace').factory('PointLoss', function(Backbone, moment, LoggableMixin) {
+angular.module('pace').factory('PointLoss', function(Backbone, moment, LoggableMixin, apiConfig) {
     /*
 		Implements Loggable.
 
@@ -12,7 +12,7 @@ angular.module('pace').factory('PointLoss', function(Backbone, moment, LoggableM
     */
 
 	return Backbone.Model.extend(_.extend(new LoggableMixin(), {
-		urlRoot: '/pace/pointlosses/',
+		urlRoot: apiConfig.toAPIUrl('pointlosses/'),
 
         parse: function(response, options) {
             response = Backbone.Model.prototype.parse.apply(this, arguments);

@@ -1,5 +1,5 @@
-angular.module('pace').factory('Classroom', function(Backbone) {
+angular.module('pace').factory('Classroom', function(Backbone, apiConfig) {
     return Backbone.Model.extend({
-        urlRoot: '/pace/classrooms/',
+        urlRoot: apiConfig.toAPIUrl('classrooms/'),
     });
 });
