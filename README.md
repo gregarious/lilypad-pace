@@ -33,7 +33,7 @@ A single-page app for Lilypad at Pace.
         unset DJANGO_SETTINGS_MODULE
         unset DATABASE_URL
 
-5. Initialize the database
+5. Initialize the database (run `manage.py` commands from the server/ directory)
 
         $ python manage.py syncdb
         $ python manage.py migrate
@@ -56,10 +56,21 @@ And if you want to deactivate the virtualenv, simply run:
 
     $ deactivate
 
-## Accessing the app in a browser:
 
-1. Visit [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-2. Profit!
+## Accessing the app in a browser
+
+1. Activate the virtualenv
+
+	$ workon lilypad-pace
+
+2. Start the server
+
+	$ python manage.py runserver
+
+3. Visit [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+
+4. Profit!
+
 
 ## Code introduction
 
