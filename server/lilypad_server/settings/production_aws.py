@@ -12,13 +12,13 @@ os.environ['DATABASE_URL'] = "mysql://%s:%s@%s:%s/%s" % (
 )
 
 import sys
-print >> sys.stderr, 'SECRET KEY: ' + str(os.environ.get('SECRET_KEY'))
+print >> sys.stderr, 'SECRET KEY: ' + str(os.environ.get('PARAM1'))
 
 # get SECRET_KEY from application environment (should be set 
 # in .elasticbeanstalk/optionsettings.lilypad-pace-env)
-if os.environ.get('SECRET_KEY') is None:
+if os.environ.get('PARAM1') is None:
     raise ImproperlyConfigured('Must define environment variable named SECRET_KEY')
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = os.environ['PARAM1']
 
 from lilypad_server.settings.base import *
 
