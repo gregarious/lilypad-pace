@@ -8,27 +8,29 @@ app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, 
     $scope.logOut = logOut;
 
     // uncomment to auto-login. 'feeny' has 3 classrooms in the dev fixture, 'turner' has only 1
-    // $scope.login = {
-    //     '$valid': true,
-    //     'username': 'turner',
-    // };
-    // $scope.logIn();
+    $scope.login = {
+        '$valid': true,
+        'username': 'turner',
+        'password': 'turer',
+    };
+    $scope.logIn();
 
     /** Implementation details **/
 
     function logIn() {
         if ($scope.login.$valid) {
-            $scope.authenticated = authManager.authenticate($scope.login.username, $scope.login.password);
+            var attemptingLogin = authManager.authenticate($scope.login.username, $scope.login.password);
 
-            if ($scope.authenticated) {
+            attemptingLogin.then(function() {
+                $scope.authenticated = true;
                 initializeClassroomList();
-                // mixpanel tracking
-                mixpanel.track("Logged in");
-            }
-            else {
-                console.log('invalid credentials');
-                // TODO: display something about invalid credentials?
-            }
+            }, function(errorInfo) {
+                $scope.authenticated = false;
+
+                // TODO: do something user friendly with the failure response; card #111
+                console.error('Reason: %o', errorInfo[0]);
+                console.error('status code: %d', errorInfo[1]);
+            });
         }
     }
 
