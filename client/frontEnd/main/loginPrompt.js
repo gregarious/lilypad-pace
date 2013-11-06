@@ -8,12 +8,12 @@ app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, 
     $scope.logOut = logOut;
 
     // uncomment to auto-login. 'feeny' has 3 classrooms in the dev fixture, 'turner' has only 1
-    $scope.login = {
-        '$valid': true,
-        'username': 'turner',
-        'password': 'turer',
-    };
-    $scope.logIn();
+    // $scope.login = {
+    //     '$valid': true,
+    //     'username': 'turner',
+    //     'password': 'turer',
+    // };
+    // $scope.logIn();
 
     /** Implementation details **/
 
