@@ -1,5 +1,5 @@
 import os
-from django.core.exceptions import 
+from django.core.exceptions import ImproperlyConfigured
 
 # AWS only makes DB creds available as custom environment vbls. Need
 # to massage them into DATABASE_URL before importing base settings.
