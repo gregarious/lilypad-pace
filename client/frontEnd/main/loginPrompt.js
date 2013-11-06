@@ -33,6 +33,7 @@ app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, 
     }
 
     function logOut() {
+        authManager.reset();
         $scope.authenticated = false;
         $scope.login.username = null;
         $scope.login.password = null;

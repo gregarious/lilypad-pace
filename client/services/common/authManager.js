@@ -37,4 +37,8 @@ angular.module('pace').service('authManager', function($http) {
 
         return true;
     };
+
+    this.reset = function() {
+        token = null;
+    };
 });
