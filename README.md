@@ -133,6 +133,6 @@ This won't be as detailed as the local install instructions, but here's the basi
 
 ### A word about environment configuration
 
-If you're having trouble, first make sure the `SECRET_KEY`, `PYTHONPATH`, and `DJANGO_SETTINGS_MODULE` variables are all set correctly on the "Software Configuration" section of the "Configuration" tab. There's two places values can be defined (`.elasticbeanstalk/optionsettings.lilypad-pace-master` is the base, and `.ebextensions/lilypad-pace.config` overrides many of them), it's easy to confuse the server. There's a serious disconnect between the web interface and the CLI interface, so try to stick with the CLI interface for edits since that's how we configured everything.
+If you're having trouble, first make sure the `SECRET_KEY`, `PYTHONPATH`, and `DJANGO_SETTINGS_MODULE` variables are all set correctly on the "Software Configuration" section of the "Configuration" tab. There's two places values can be defined (`.elasticbeanstalk/optionsettings.lilypad-pace-master` is the base, and `.ebextensions/lilypad-pace.config` overrides many of them), so it's easy to confuse the server. There's a serious disconnect between the web interface and the CLI interface, so try to stick with the CLI interface for edits since that's how we configured everything.
 
-If everything looks alright but still isn't working, you can choose the "Rebuild Environment" option from the EB dashboard. It takes forever (35 min when I tried it), but did the trick for me.
+If everything looks alright but still isn't working, you can choose the "Rebuild Environment" option from the EB dashboard. It takes forever (35 min when I tried it), but did the trick for me when everything was configured correctly but I was still having problems.
