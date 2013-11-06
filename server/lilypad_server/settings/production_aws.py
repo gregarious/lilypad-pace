@@ -11,10 +11,7 @@ os.environ['DATABASE_URL'] = "mysql://%s:%s@%s:%s/%s" % (
 	os.environ['RDS_DB_NAME']
 )
 
-import sys
-print >> sys.stderr, 'SECRET KEY: ' + str(os.environ.get('SECRET_KEY'))
-
-# get SECRET_KEY from application environment (should be set 
+# get SECRET_KEY from application environment (should be set
 # in .elasticbeanstalk/optionsettings.lilypad-pace-env)
 if os.environ.get('SECRET_KEY') is None:
     raise ImproperlyConfigured('Must define environment variable named SECRET_KEY')
@@ -26,8 +23,8 @@ from lilypad_server.settings.base import *
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-# The next two settings should match the key/value pair set in 
-# `lilypad-server.config` for the namespace 
+# The next two settings should match the key/value pair set in
+# `lilypad-server.config` for the namespace
 # `aws:elasticbeanstalk:container:python:staticfiles`
 
 # Should be the path matching the `option_name`
@@ -39,5 +36,5 @@ STATIC_ROOT = os.path.join(
 					os.path.dirname(		# server/ (project root)
 						os.path.dirname(		# lilypad_server/ (configuration app root)
 							os.path.dirname(		# settings/
-								os.path.abspath(__file__))))), 
+								os.path.abspath(__file__))))),
 				'client/')
