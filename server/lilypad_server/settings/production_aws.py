@@ -11,9 +11,12 @@ os.environ['DATABASE_URL'] = "mysql://%s:%s@%s:%s/%s" % (
 	os.environ['RDS_DB_NAME']
 )
 
+import sys
+print >> sys.stderr, 'SECRET KEY: ' + str(os.environ.get('SECRET_KEY'))
+
 # get SECRET_KEY from application environment (should be set 
 # in .elasticbeanstalk/optionsettings.lilypad-pace-env)
-if os.environ.get('DATABASE_URL') is None:
+if os.environ.get('SECRET_KEY') is None:
     raise ImproperlyConfigured('Must define environment variable named SECRET_KEY')
 SECRET_KEY = os.environ['SECRET_KEY']
 
