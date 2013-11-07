@@ -24,18 +24,6 @@ app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, 
             attemptingLogin.then(function() {
                 $scope.authenticated = true;
                 initializeClassroomList();
-<<<<<<< HEAD
-                // mixpanel tracking
-                mixpanel.track("Logged in");
-            }
-            else {
-                console.log('invalid credentials');
-                // TODO: display something about invalid credentials?
-            }
-
-            // Hide keyboard
-            document.activeElement.blur();
-=======
             }, function(errorInfo) {
                 $scope.authenticated = false;
 
@@ -43,29 +31,20 @@ app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, 
                 console.error('Reason: %o', errorInfo[0]);
                 console.error('status code: %d', errorInfo[1]);
             });
->>>>>>> 88ee7c55b46dbfa4446fd00fc7f6e06203d28569
         }
     }
 
     function logOut() {
-<<<<<<< HEAD
         var confirmLogout = confirm("Are you sure you want to logout?");
         if (confirmLogout == true) {
-          $scope.authenticated = false;
+            authManager.reset();
+            $scope.authenticated = false;
             $scope.login.username = null;
             $scope.login.password = null;
             mainViewState.selectedStudent = null;
             mainViewState.selectedClassroom = null;
             mainViewState.editingAttendance = false;
         }
-=======
-        authManager.reset();
-        $scope.authenticated = false;
-        $scope.login.username = null;
-        $scope.login.password = null;
-        mainViewState.selectedStudent = null;
-        mainViewState.selectedClassroom = null;
->>>>>>> 88ee7c55b46dbfa4446fd00fc7f6e06203d28569
     }
 
     $scope.$on('logOut', function() {
