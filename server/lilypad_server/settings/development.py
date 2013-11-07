@@ -12,3 +12,5 @@ STATICFILES_DIRS = (
     	'client/'
 	),
 )
+
+SECRET_KEY = '#zj7j&amp;gk#mklul&amp;pv@%8nq*a2937_d@jfqrhz6nn18!=@w1k^&amp;'

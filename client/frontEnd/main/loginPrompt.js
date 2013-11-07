@@ -11,6 +11,7 @@ app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, 
     // $scope.login = {
     //     '$valid': true,
     //     'username': 'turner',
+    //     'password': 'turer',
     // };
     // $scope.logIn();
 
@@ -18,10 +19,12 @@ app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, 
 
     function logIn() {
         if ($scope.login.$valid) {
-            $scope.authenticated = authManager.authenticate($scope.login.username, $scope.login.password);
+            var attemptingLogin = authManager.authenticate($scope.login.username, $scope.login.password);
 
-            if ($scope.authenticated) {
+            attemptingLogin.then(function() {
+                $scope.authenticated = true;
                 initializeClassroomList();
+<<<<<<< HEAD
                 // mixpanel tracking
                 mixpanel.track("Logged in");
             }
@@ -32,10 +35,20 @@ app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, 
 
             // Hide keyboard
             document.activeElement.blur();
+=======
+            }, function(errorInfo) {
+                $scope.authenticated = false;
+
+                // TODO: do something user friendly with the failure response; card #111
+                console.error('Reason: %o', errorInfo[0]);
+                console.error('status code: %d', errorInfo[1]);
+            });
+>>>>>>> 88ee7c55b46dbfa4446fd00fc7f6e06203d28569
         }
     }
 
     function logOut() {
+<<<<<<< HEAD
         var confirmLogout = confirm("Are you sure you want to logout?");
         if (confirmLogout == true) {
           $scope.authenticated = false;
@@ -45,6 +58,14 @@ app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, 
             mainViewState.selectedClassroom = null;
             mainViewState.editingAttendance = false;
         }
+=======
+        authManager.reset();
+        $scope.authenticated = false;
+        $scope.login.username = null;
+        $scope.login.password = null;
+        mainViewState.selectedStudent = null;
+        mainViewState.selectedClassroom = null;
+>>>>>>> 88ee7c55b46dbfa4446fd00fc7f6e06203d28569
     }
 
     $scope.$on('logOut', function() {
