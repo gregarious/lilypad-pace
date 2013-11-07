@@ -27,7 +27,7 @@ app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, 
             }, function(errorInfo) {
                 $scope.authenticated = false;
 
-                // TODO: do something user friendly with the failure response; card #111
+                alert('Wrong username or password');
                 console.error('Reason: %o', errorInfo[0]);
                 console.error('status code: %d', errorInfo[1]);
             });
@@ -60,19 +60,16 @@ app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, 
                     // TODO
                     console.log('no classrooms found for user');
                 }
-                else if(classroomCollection.length === 1) {
-                    console.log('classroom auto-selected: only one option available for user');
+                else if (classroomCollection.length === 1) {
                     // skip the classroom list setup and set the selected one immediately
                     var onlyClassroom = classroomCollection.models[0];
                     mainViewState.selectedClassroom = onlyClassroom;
                 }
                 else {
-                    // TODO: need to prompt user to select classroom (this is just a stub
-                    //  that auto-selects the first classroom in the collection)
-                    console.log('select a classroom (' + classroomCollection.length + ' found)');
-                    var randomClassroom = classroomCollection.models[0];
-                    mainViewState.selectedClassroom = randomClassroom;
+                    mainViewState.selectedClassroom = null;
                 }
+
+                mainViewState.classroomCollection = classroomCollection;
             },
             function(err) {
                 // TODO: handle a problem getting the user's classroom list
@@ -80,4 +77,5 @@ app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, 
             }
         );
     }
+
 });

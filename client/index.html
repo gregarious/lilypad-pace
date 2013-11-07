@@ -97,6 +97,7 @@
 
     <!-- Menu controllers -->
     <script src="frontEnd/menu.js"></script>
+    <script src="frontEnd/menu/classroomList.js"></script>
     <script src="frontEnd/menu/studentList.js"></script>
 
     <!-- Main controllers -->
@@ -139,12 +140,22 @@
 <div id="sidebar" ng-controller="MenuCtrl">
     <!-- TODO: fix touching extreme left side of menu item; card #65 -->
     <div id="menu">
-        <!-- Different menu views go here class list, student list etc.-->
-        <!-- We will need to implement this later using ng-switch-->
-        <!-- Every menu view would get its own controller-->
+        <div id="classroomList" ng-controller="MenuClassroomListCtrl" ng-class="{visible: (mainViewState.classroomCollection.length > 1) && (mainViewState.selectedClassroom == null)}">
+            <ul>
+                <li ng-repeat="classroom in mainViewState.classroomCollection.models">
+                    <div ng-click="selectClassroom(classroom)">
+                        {{classroom.get('name')}}
+                    </div>
+                </li>
+                <li id="signout" ng-click="signOut()">
+                    <span>Sign Out</span>
+                </li>
+            </ul>
+        </div>
         <div ng-controller="MenuStudentListCtrl">
             <ul ng-show="studentCollection">
-                <li id="attendanceToggle" ng-click="toggleAttendance()" ng-class="{highlighted: mainViewState.editingAttendance}">
+                <li id="classroomToggle" ng-click="changeClassroom()" ng-show="mainViewState.classroomCollection.length > 1"></li>
+                <li id="attendanceToggle" ng-click="toggleAttendance()" ng-class="{highlighted: mainViewState.editingAttendance, narrow: mainViewState.classroomCollection.length > 1}">
                     <span ng-show="mainViewState.editingAttendance">Done</span>
                     <span ng-show="!mainViewState.editingAttendance">Edit Attendance</span>
                 </li>

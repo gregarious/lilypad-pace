@@ -222,7 +222,7 @@ tr th {
     width: 1024px;
     height: 748px;
     background: #47BDA5;
-    z-index: 1;
+    z-index: 200;
 }
 
 #login .wrapper {
@@ -330,26 +330,20 @@ tr th {
     font-size: 13pt;
 }
 
-/*#menu li:last-child {*/
-    /*border: none;*/
-/*}*/
+#classroomList {
+    position: absolute;
+    width: 279px;
+    height: 748px;
+    z-index: 100;
+    background: #F9F9F9;
+    border-right: 1px solid #DBDBDB;
+    -webkit-transition: all .5s;
+    -webkit-transform: translate(-279px);
+}
 
-/*#menu:before {*/
-    /*content:'';*/
-    /*display:block;*/
-    /*background: -moz-linear-gradient(top,   0%, rgba(249,249,249,1) 100%); *//* FF3.6+ */
-    /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(249,249,249,1))); *//* Chrome,Safari4+ */
-    /*background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(249,249,249,1) 100%); *//* Chrome10+,Safari5.1+ */
-    /*background: -o-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(249,249,249,1) 100%); *//* Opera 11.10+ */
-    /*background: -ms-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(249,249,249,1) 100%); *//* IE10+ */
-    /*background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(249,249,249,1) 100%); *//* W3C */
-    /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=0 ); *//* IE6-9 */
-    /*position:absolute;*/
-    /*bottom:0;*/
-    /*left:0;*/
-    /*width:100%;*/
-    /*height:22px;*/
-/*}*/
+#classroomList.visible {
+    -webkit-transform: translate(0px);
+} 
 
 #main {
     box-sizing: border-box;
@@ -580,6 +574,20 @@ form .buttonGroup button {
 #menu #attendanceToggle.highlighted {
     background-color: #3DBEA5;
     color: #FFF;
+}
+
+#attendanceToggle.narrow {
+    margin-left: 20%;
+}
+
+#classroomToggle {
+    background-image: url(../images/menu.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 20px;
+    width: 14%;
+    float: left;
+    border-right: 1px solid #DBDBDB;
 }
 
 /* Student Main Styles */
