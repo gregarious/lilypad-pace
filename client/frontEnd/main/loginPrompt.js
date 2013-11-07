@@ -29,15 +29,22 @@ app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, 
                 console.log('invalid credentials');
                 // TODO: display something about invalid credentials?
             }
+
+            // Hide keyboard
+            document.activeElement.blur();
         }
     }
 
     function logOut() {
-        $scope.authenticated = false;
-        $scope.login.username = null;
-        $scope.login.password = null;
-        mainViewState.selectedStudent = null;
-        mainViewState.selectedClassroom = null;
+        var confirmLogout = confirm("Are you sure you want to logout?");
+        if (confirmLogout == true) {
+          $scope.authenticated = false;
+            $scope.login.username = null;
+            $scope.login.password = null;
+            mainViewState.selectedStudent = null;
+            mainViewState.selectedClassroom = null;
+            mainViewState.editingAttendance = false;
+        }
     }
 
     $scope.$on('logOut', function() {

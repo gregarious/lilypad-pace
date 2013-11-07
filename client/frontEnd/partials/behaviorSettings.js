@@ -57,7 +57,10 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
             // manually re-sort the collection in case time changed
             $scope.collectData.incidentLogCollection.sort();
         } else {
-            mixpanel.track("Incident added"); // mixpanel tracking
+            var timeOpened = (Date.now() - $scope.behaviorModalState.timeOpen) / 1000; // in seconds
+            mixpanel.track("Incident added", { 'Time Open (s)': timeOpened }); // mixpanel tracking
+            $scope.behaviorModalState.timeOpen = 0;
+
             var newIncident = behaviorIncidentDataStore.createIncident(
                 mainViewState.selectedStudent,
                 $scope.incidentFormData.typeModel,

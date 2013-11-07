@@ -18,7 +18,7 @@ app.controller('MainStudentCollectCtrl', function ($scope, mainViewState, collec
     function resetCollectDataForStudent(student) {
         if (student) {
             // need to successfully fetch both records and behavior incidents for today
-            $scope.statusMessage = "Loading...";
+            $scope.statusMessage = "Loading student...";
             $scope.collectData = null;
             collectDataStore.loadTodayDataForStudent(student).then(
                 function (data) {

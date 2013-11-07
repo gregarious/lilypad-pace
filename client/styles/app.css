@@ -25,6 +25,10 @@ body {
     /*letter-spacing: 0.1em;*/
 }
 
+div {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
 a:link { 
     -webkit-tap-highlight-color: rgba(0,0,0,0); 
 }
@@ -215,6 +219,8 @@ tr th {
     left: 0;
     right: 0;   
     bottom: 0;
+    width: 1024px;
+    height: 748px;
     background: #47BDA5;
     z-index: 1;
 }
@@ -382,7 +388,7 @@ tr th {
     height: 669px;
     padding-top: 35px;
     overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
+    /*-webkit-overflow-scrolling: touch;*/
 }
 
 .divider {
@@ -459,6 +465,7 @@ form .buttonGroup button {
 
 .modal .behaviorDetails input[type=time] {
     margin-bottom: 15px;
+    font-size: 11pt;
 }
 
 .modal .behaviorDetails textarea {
@@ -474,6 +481,7 @@ form .buttonGroup button {
     background: #FCFDFF;
     width: 230px;
     height: 351px;
+    z-index: 1000;
 }
 
 .modal .newBehaviorForm input {
@@ -612,10 +620,16 @@ td.invalid #behaviorTypeInput li {
 
 #periodicBehaviors select {
     float: right;
+    font-size: 11pt;
+    margin-bottom: 20px;
 }
 
 #periodBehaviorCounters {
     font-size: 0;
+}
+
+#behaviorIncidentsTable {
+   margin-bottom:60px;
 }
 
 #behaviorIncidentsTable .time {
@@ -757,4 +771,16 @@ form[name=analyze] span span:last-child {
 
 .studentName {
     text-transform: uppercase;
+}
+
+.absentLabel {
+    background: none;
+    text-align: left;
+    margin: 0px;
+    padding: 0px;
+    text-transform: uppercase;
+    position: absolute;
+    font-size: 15pt;
+    margin-top: -10px;
+    font-family: allerbold;
 }

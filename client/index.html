@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="pace">
 <head>
-    <title>Lilypad - Pace</title>
+    <title>Lilypad</title>
 
     <!-- For that native webapp experience -->
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
@@ -130,8 +130,8 @@
     <div class="wrapper">
         <div id="lilypadLogo"></div>
         <form name="login" ng-submit="logIn()">
-            <label>Username<input type="text" ng-model="login.username" required autocorrect="off" autocapitalize="off"/></label>
-            <label>Password <input type="password" ng-model="login.password" required autocorrect="off" autocapitalize="off"/></label>
+            <label>Username<input type="text" ng-model="login.username" id="username" required autocorrect="off" autocapitalize="off"/></label>
+            <label>Password <input type="password" ng-model="login.password" id="password" required autocorrect="off" autocapitalize="off"/></label>
             <input type="submit" style="position: absolute; left: -9999px"/>
         </form>
         <button ng-disabled="!login.$valid" ng-click="logIn()">Log In</button>
@@ -180,6 +180,7 @@
             <div class="mainContent" ng-class="{disabled: (mainViewState.editingAttendance)}" ng-controller="MainStudentCtrl">
                 <main-tabs>
                     <h1 class="studentName"><strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}</h1>
+                    <h3 class="absentLabel" ng-show="!student.isPresent()">Absent</h3>
                     <div class="divider clear"></div>
                     <main-pane title="Collect">
                         <div ng-controller="MainStudentCollectCtrl">
@@ -200,7 +201,6 @@
             </div>
         </div>
     </ng-switch>
-
 </div>
 <!-- TODO: look into fixing the rubberband effect on app boundaries; card #68 -->
 <script>

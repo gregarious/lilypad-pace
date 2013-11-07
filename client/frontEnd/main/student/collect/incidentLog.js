@@ -9,7 +9,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     $scope.confirmDeleteFor = null;
 
     // state object needed by modal directive
-    $scope.behaviorModalState = {'active': false, 'title': "Add New Incident"};
+    $scope.behaviorModalState = {'active': false, 'title': "New Incident", 'timeOpen': 0};
 
     // form-related objects shared with MainStudentCollectBehaviorsModalCtrl (needed
     //  in this scope for initiation reasons)
@@ -51,6 +51,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
 
             $scope.incidentFormData.startedAt = timeTracker.getTimestampAsMoment().format("HH:mm");
             $scope.behaviorModalState.title = "Add New Incident";
+            $scope.behaviorModalState.timeOpen = Date.now();
         }
 
         $scope.behaviorModalState.active = true;
