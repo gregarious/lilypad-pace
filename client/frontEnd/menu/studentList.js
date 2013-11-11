@@ -13,20 +13,19 @@ app.controller('MenuStudentListCtrl', function ($scope, mainViewState, studentDa
     // UI event handling functions
     $scope.toggleAttendance = toggleAttendance;
     $scope.handleClick = handleClick;
+    $scope.changeClassroom = changeClassroom;
 
     /** Actions on controller initialization **/
 
-    // initialize the student list for the given classroom (will result in
-    // null if there is no selected classroom)
-    resetStudentListForClassroom(mainViewState.selectedClassroom);
-
     // also listen for future changes in selectedClassroom
-    $scope.$watch('mainViewState.selectedClassroom', resetStudentListForClassroom);
+    $scope.$watch('mainViewState.selectedClassroom', resetStudentList);
 
 
     /** Implementation details **/
 
-    function resetStudentListForClassroom(classroom) {
+    function resetStudentList() {
+        var classroom = mainViewState.selectedClassroom;
+
         if (classroom) {
             // show the loading indicator
             $scope.dataLoading = true;
@@ -51,10 +50,6 @@ app.controller('MenuStudentListCtrl', function ($scope, mainViewState, studentDa
                 }
             );
         }
-        else {
-            $scope.studentCollection = null;
-            $scope.dataError = '';
-        }
     }
 
     // toggles attendance controls
@@ -76,8 +71,12 @@ app.controller('MenuStudentListCtrl', function ($scope, mainViewState, studentDa
             }
         } else {
             mainViewState.selectedStudent = student;
-            // mixpanel tracking
-            mixpanel.track( 'Changed students');
+            mixpanel.track('Changed students');
         }
+    }
+
+    function changeClassroom() {
+        mainViewState.selectedStudent = null;
+        mainViewState.selectedClassroom = null;
     }
 });
