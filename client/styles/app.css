@@ -581,13 +581,13 @@ form .buttonGroup button {
 }
 
 #classroomToggle {
+    box-sizing: border-box;
     background-image: url(../images/menu.png);
     background-repeat: no-repeat;
-    background-position: center center;
+    background-position: 18px center;
     background-size: 20px;
-    width: 14%;
-    float: left;
     border-right: 1px solid #DBDBDB;
+    padding-left: 55px !important;
 }
 
 /* Student Main Styles */

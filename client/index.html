@@ -153,9 +153,11 @@
             </ul>
         </div>
         <div ng-controller="MenuStudentListCtrl">
-            <ul ng-show="studentCollection">
-                <li id="classroomToggle" ng-click="changeClassroom()" ng-show="mainViewState.classroomCollection.length > 1"></li>
-                <li id="attendanceToggle" ng-click="toggleAttendance()" ng-class="{highlighted: mainViewState.editingAttendance, narrow: mainViewState.classroomCollection.length > 1}">
+            <ul>
+                <li id="classroomToggle" ng-click="changeClassroom()" ng-show="mainViewState.classroomCollection.length > 1">
+                    <span>{{mainViewState.selectedClassroom.get('name')}}</span>
+                </li>
+                <li id="attendanceToggle" ng-click="toggleAttendance()" ng-show="studentCollection" ng-class="{highlighted: mainViewState.editingAttendance }">
                     <span ng-show="mainViewState.editingAttendance">Done</span>
                     <span ng-show="!mainViewState.editingAttendance">Edit Attendance</span>
                 </li>
