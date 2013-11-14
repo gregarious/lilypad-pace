@@ -2,24 +2,23 @@ angular.module('pace').factory('AttendanceSpan', function(Backbone, apiConfig) {
     /*
         Attributes:
             id : Number
-            student: Student
             timeIn: String (ISO-formatted time)
             timeOut: String (ISO-formatted time)
             date: String (ISO-formatted date)
+        Relations:
+            student : Student
      */
-    return Backbone.Model.extend({
+    Backbone.AppModels.AttendanceSpan = Backbone.RelationalModel.extend({
         urlRoot: apiConfig.toAPIUrl('attendancespans/'),
-        toJSON: function() {
-            // camelize the data keys first
-            var data = Backbone.Model.prototype.toJSON.apply(this, arguments);
-
-            // need to turn `student` into a primary key
-            var student = data['student'];
-            if (student && !_.isUndefined(student.id)) {
-                data['student'] = student.id;
+        relations: [
+            {
+                key: 'student',
+                relatedModel: 'Student',   // can't use actual object, would cause circular dependency,
+                type: Backbone.HasOne,
+                includeInJSON: Backbone.Model.prototype.idAttribute     // only send id back to server
             }
-
-            return data;
-        },
+        ]
 	});
+
+    return Backbone.AppModels.AttendanceSpan;
 });

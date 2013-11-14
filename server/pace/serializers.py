@@ -76,7 +76,7 @@ class StudentSerializer(NamespacedHyperlinkedModelSerializer):
         for (dataset, obj) in zip(data, student):
             active_span = self.get_active_attendance_span(obj)
             if active_span:
-                dataset['active_attendance_span'] = AttendanceSpanSerializer(active_span).data
+                dataset['active_attendance_span'] = active_span.id
             else:
                 dataset['active_attendance_span'] = None
 
