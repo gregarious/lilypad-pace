@@ -12,7 +12,7 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
         }
     });
 
-    return Backbone.Model.extend({
+    Backbone.AppModels.PeriodicRecord = Backbone.RelationalModel.extend({
         /*
             Attributes:
                 id : String
@@ -26,20 +26,44 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
                     'bs' : Integer
                 }
                 isEligible : Boolean
-                pointLosses : Collection
-                student : Object (Student stub)
+            Relations:
+                pointLosses : Collection <PointLoss>
+                student : Student
          */
+
+        relations: [
+            {
+                key: 'student',
+                relatedModel: 'Student',   // can't use actual object, would cause circular dependency,
+                type: Backbone.HasOne,
+                includeInJSON: Backbone.Model.prototype.idAttribute     // only send id back to server
+            },
+            {
+                key: 'pointLosses',
+                relatedModel: PointLoss,
+                type: Backbone.HasMany,
+                collectionType: InnerPointLossCollection,
+                includeInJSON: Backbone.Model.prototype.idAttribute,    // only send id back to server
+                reverseRelation: {
+                    key: 'periodicRecord',
+                    type: Backbone.HasOne,
+                    includeInJSON: Backbone.Model.prototype.idAttribute,    // only send id back to server
+                }
+            }
+        ],
+
         defaults: function () {
             return {
                 dateString: timeTracker.getTimestampAsMoment().format('YYYY-MM-DD'),
-                isEligible: true,
-                pointLosses: new InnerPointLossCollection()
+                isEligible: true
+                // pointLosses: new InnerPointLossCollection()
             };
         },
 
         urlRoot: apiConfig.toAPIUrl('periodicrecords/'),
 
         initialize: function(attributes, options) {
+            // define points
             if(!this.get('points')) {
                 var pts = {};
                 var isEligible = this.get('isEligible');
@@ -48,24 +72,11 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
                 });
                 this.set('points', pts);
             }
-
-            var pointLosses = this.get('pointLosses');
-            if (pointLosses) {
-                // if `pointLosses` is a bare array, make it a Collection
-                if(!pointLosses.models) {
-                    pointLosses = new InnerPointLossCollection(pointLosses);
-                    this.set('pointLosses', pointLosses);
-                }
-                // ensure each PointLoss has a reference to it's parent PdRecord (this)
-                pointLosses.each(function(pl) {
-                    pl.set('periodicRecord', this);
-                }, this);
-            }
         },
 
         parse: function(response, options) {
             // pack all point records into a `points` object
-            var camelResponse = Backbone.Model.prototype.parse.apply(this, arguments);
+            var camelResponse = Backbone.RelationalModel.prototype.parse.apply(this, arguments);
 
             var valueOrNull = function(val) {return !_.isUndefined(val) ? val : null; };
             camelResponse.points = {
@@ -92,7 +103,7 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
 
         toJSON: function() {
             // camelize the data keys first
-            var data = Backbone.Model.prototype.toJSON.apply(this, arguments);
+            var data = Backbone.RelationalModel.prototype.toJSON.apply(this, arguments);
 
             // unpack point records
             var points = data.points;
@@ -104,12 +115,6 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
 
             // remove nested point losses
             delete data.point_losses;
-
-            // need to turn `student` into a primary key
-            var student = data['student'];
-            if (student && !_.isUndefined(student.id)) {
-                data['student'] = student.id;
-            }
 
             return data;
         },
@@ -186,4 +191,6 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
             return points.kw + points.cw + points.fd + points.bs;
         }
     });
+
+    return Backbone.AppModels.PeriodicRecord;
 });

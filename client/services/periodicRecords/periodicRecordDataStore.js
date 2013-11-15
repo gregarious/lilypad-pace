@@ -70,6 +70,7 @@ angular.module('pace').service('periodicRecordDataStore', function(_, timeTracke
 
         collection.fetch({
             success: function(collection) {
+                _g = collection;
                 deferred.resolve(collection);
             },
             error: function(err) {
