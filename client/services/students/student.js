@@ -1,4 +1,4 @@
-angular.module('pace').factory('Student', function(Backbone, apiConfig, timeTracker){
+angular.module('pace').factory('Student', function(Backbone, AttendanceSpan, apiConfig, timeTracker){
     Backbone.AppModels.Student = Backbone.RelationalModel.extend({
         /*
             Attributes:
@@ -18,8 +18,13 @@ angular.module('pace').factory('Student', function(Backbone, apiConfig, timeTrac
         relations: [
             {
                 key: 'activeAttendanceSpan',
-                relatedModel: 'AttendanceSpan',     // can't use actual class definition, would cause circular dep.
-                type: Backbone.HasOne
+                relatedModel: AttendanceSpan,
+                type: Backbone.HasOne,
+                reverseRelation: {
+                    key: 'student',
+                    type: Backbone.HasOne,
+                    includeInJSON: Backbone.Model.prototype.idAttribute     // only send id back to server
+                }
             }
         ],
 
@@ -50,7 +55,7 @@ angular.module('pace').factory('Student', function(Backbone, apiConfig, timeTrac
             var now = timeTracker.getTimestampAsMoment();
 
             // handle this in AttSpan service/store? #refactor
-            var newSpan = new Backbone.AppModels.AttendanceSpan({
+            var newSpan = new AttendanceSpan({
                 student: {id: this.id},
                 date: now.format('YYYY-MM-DD'),
                 timeIn: now.format('HH:mm:ss'),

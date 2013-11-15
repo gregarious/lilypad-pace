@@ -1,23 +1,13 @@
-angular.module('pace').factory('AttendanceSpan', function(Backbone, Student, apiConfig) {
+angular.module('pace').factory('AttendanceSpan', function(Backbone, apiConfig) {
     /*
         Attributes:
             id : Number
             timeIn: String (ISO-formatted time)
             timeOut: String (ISO-formatted time)
             date: String (ISO-formatted date)
-        Relations:
-            student : Student
      */
     Backbone.AppModels.AttendanceSpan = Backbone.RelationalModel.extend({
-        urlRoot: apiConfig.toAPIUrl('attendancespans/'),
-        relations: [
-            {
-                key: 'student',
-                relatedModel: Student,
-                type: Backbone.HasOne,
-                includeInJSON: Backbone.Model.prototype.idAttribute     // only send id back to server
-            }
-        ]
+        urlRoot: apiConfig.toAPIUrl('attendancespans/')
 	});
 
     return Backbone.AppModels.AttendanceSpan;
