@@ -2,7 +2,7 @@ angular.module('pace').factory('studentDataStore', function(Backbone, Student, t
 
     var cachedPromises = {};
 
-    /** Public interface of service **/
+    /** Public interface **/
     return {
         getForClassroom: function(classroom) {
             // if a promise was already made for this classroom, just return it. currently not supporting refresh.
@@ -17,7 +17,14 @@ angular.module('pace').factory('studentDataStore', function(Backbone, Student, t
             collection.fetch({
                 success: function(collection) {
                     // fetch active attendance spans before resolving
-                    fetchAttendanceSpans(collection, deferred);
+                    fetchAttendanceSpans(collection).then(
+                        function() {
+                            deferred.resolve(collection);
+                        },
+                        function(errs) {
+                            deferred.reject('Problem fetching related attendance records');
+                        }
+                    );
                 },
                 error: function(err) {
                     deferred.reject(err);
@@ -28,6 +35,8 @@ angular.module('pace').factory('studentDataStore', function(Backbone, Student, t
             return deferred.promise;
         }
     };
+
+    /** Implementation details **/
 
     function classroomStudentsFactory(classroom) {
         var ClassroomStudentCollection = Backbone.Collection.extend({
@@ -66,20 +75,15 @@ angular.module('pace').factory('studentDataStore', function(Backbone, Student, t
             allAttendancePromises = allAttendancePromises.concat(httpPromises);
         });
 
-        // if there are related models to fetch, resolve the main deferred object immediately
         if (allAttendancePromises.length < 1) {
-            deferred.resolve(studentCollection);
+            // if there are no related models to fetch, return an already resolved promise
+            var tokenDeferment = $q.defer();
+            tokenDeferment.resolve();
+            return tokenDeferment.promise;
         }
         else {
-            // if some async fetches are being made, only resolve the main deferred object
-            // when they are resolved successfully
-            var fetchingAttendance = $q.all(allAttendancePromises);
-            fetchingAttendance.then(function() {
-                deferred.resolve(studentCollection);
-            },
-            function(errs) {
-                deferred.reject('Problem fetching related attendance records');
-            });
+            // if some async fetches are being made, make promise for all fetch calls
+            return $q.all(allAttendancePromises);
         }
     }
 });
