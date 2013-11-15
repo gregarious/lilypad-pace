@@ -60,12 +60,8 @@ angular.module('pace').factory('studentDataStore', function(Backbone, Student, t
 
     /**
      * Fetches any related attendance span records for each student
-     *
-     * @param  {[type]} studentCollection [description]
-     * @param  {[type]} deferred          [description]
-     * @return {[type]}                   [description]
      */
-    function fetchAttendanceSpans(studentCollection, deferred) {
+    function fetchAttendanceSpans(studentCollection) {
         allAttendancePromises = [];
 
         // cycle through each student and fetch their activeAttendanceSpan models
