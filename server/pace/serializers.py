@@ -128,17 +128,9 @@ class BehaviorIncidentTypeSerializer(NamespacedHyperlinkedModelSerializer):
         fields = ('id', 'url', 'label', 'code', 'supports_duration',
             'applicable_student')
 
-class NestedBehaviorIncidentTypeSerializer(NamespacedHyperlinkedModelSerializerWithPKWrite):
-    applicable_student = serializers.PrimaryKeyRelatedField(required=False)
-
-    class Meta:
-        model = BehaviorIncidentType
-        fields = ('id', 'url', 'label', 'code', 'supports_duration',
-            'applicable_student')
-
 class BehaviorIncidentSerializer(NamespacedHyperlinkedModelSerializer):
     student = serializers.PrimaryKeyRelatedField()
-    type = NestedBehaviorIncidentTypeSerializer()
+    type = serializers.PrimaryKeyRelatedField()
 
     class Meta:
         model = BehaviorIncident

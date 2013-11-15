@@ -62,6 +62,16 @@ angular.module('pace').service('behaviorIncidentDataStore', function(moment, tim
 
         collection.fetch({
             success: function(collection) {
+                // fetch active attendance spans before resolving
+                fetchIncidentTypes(collection).then(
+                    function() {
+                        deferred.resolve(collection);
+                    },
+                    function(errs) {
+                        deferred.reject('Problem fetching related incident types');
+                    }
+                );
+
                 deferred.resolve(collection);
             },
             error: function(err) {
@@ -113,4 +123,30 @@ angular.module('pace').service('behaviorIncidentDataStore', function(moment, tim
             return newIncident;
         }
     };
+
+    /**
+     * Fetch related incident types for all incidents and returns promise that will
+     * be resolved when all are fetched.
+     */
+    function fetchIncidentTypes(incidentCollection) {
+        allRelatedPromises = [];
+
+        // cycle through each student and fetch their activeAttendanceSpan models
+        incidentCollection.each(function(incident) {
+            // this will return 0 or 1 httpPromises, depending on whether student has active span
+            var httpPromises = incident.fetchRelated('type');
+            allRelatedPromises = allRelatedPromises.concat(httpPromises);
+        });
+
+        if (allRelatedPromises.length < 1) {
+            // if there are no related models to fetch, return an already resolved promise
+            var tokenDeferment = $q.defer();
+            tokenDeferment.resolve();
+            return tokenDeferment.promise;
+        }
+        else {
+            // if some async fetches are being made, make promise for all fetch calls
+            return $q.all(allRelatedPromises);
+        }
+    }
 });
