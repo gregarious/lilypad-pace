@@ -11,7 +11,7 @@ app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, 
     // $scope.login = {
     //     '$valid': true,
     //     'username': 'turner',
-    //     'password': 'turer',
+    //     'password': 'turner',
     // };
     // $scope.logIn();
 
