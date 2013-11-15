@@ -1,4 +1,4 @@
-angular.module('pace').factory('AttendanceSpan', function(Backbone, apiConfig) {
+angular.module('pace').factory('AttendanceSpan', function(Backbone, Student, apiConfig) {
     /*
         Attributes:
             id : Number
@@ -13,7 +13,7 @@ angular.module('pace').factory('AttendanceSpan', function(Backbone, apiConfig) {
         relations: [
             {
                 key: 'student',
-                relatedModel: 'Student',   // can't use actual object, would cause circular dependency,
+                relatedModel: Student,
                 type: Backbone.HasOne,
                 includeInJSON: Backbone.Model.prototype.idAttribute     // only send id back to server
             }

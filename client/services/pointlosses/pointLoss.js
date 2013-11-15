@@ -9,20 +9,11 @@ angular.module('pace').factory('PointLoss', function(Backbone, moment, LoggableM
             occurredAt : Date
             comment : String
         Relations:
-            periodicRecord : PeriodicRecord
+            periodicRecord : PeriodicRecord (declared as related model on PeriodicRecord)
     */
 
 	Backbone.AppModels.PointLoss = Backbone.RelationalModel.extend(_.extend(new LoggableMixin(), {
-        // relations: [
-        //     {
-        //         key: 'periodicRecord',
-        //         relatedModel: 'PeriodicRecord',
-        //         type: Backbone.HasOne,
-        //         includeInJSON: Backbone.Model.prototype.idAttribute,    // only send id back to server
-        //     }
-        // ],
-
-		urlRoot: apiConfig.toAPIUrl('pointlosses/'),
+        urlRoot: apiConfig.toAPIUrl('pointlosses/'),
 
         parse: function(response, options) {
             response = Backbone.RelationalModel.prototype.parse.apply(this, arguments);

@@ -34,7 +34,7 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
         relations: [
             {
                 key: 'student',
-                relatedModel: 'Student',   // can't use actual object, would cause circular dependency,
+                relatedModel: Student,
                 type: Backbone.HasOne,
                 includeInJSON: Backbone.Model.prototype.idAttribute     // only send id back to server
             },
@@ -56,7 +56,6 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
             return {
                 dateString: timeTracker.getTimestampAsMoment().format('YYYY-MM-DD'),
                 isEligible: true
-                // pointLosses: new InnerPointLossCollection()
             };
         },
 
