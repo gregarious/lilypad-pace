@@ -474,6 +474,15 @@ form .buttonGroup button {
     width: 528px;
 }
 
+.modal .behaviorDetails .instructions {
+    position: absolute;
+    z-index: 100000;
+    width: 305px;
+    text-align: center;
+    margin-top: 105px;
+    font-size: 17pt;
+}
+
 .modal .newBehaviorForm {
     position: absolute;
     background: #FCFDFF;
@@ -749,6 +758,10 @@ form[name=behavior] input[type=text], input[type=textarea] {
 
 form[name=incident] input[type=text] {
     width: 380px;
+}
+
+form[name=incident].dimmed {
+    opacity: .2;
 }
 
 form[name=analyze] {

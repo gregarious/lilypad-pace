@@ -37,10 +37,13 @@
             </tbody>
         </table>
     </div>
-    <button ng-click="openNewBehaviorType()" class="newCustomBehavior" ng-class="{invalid: missingBehavior}">Add New Behavior +</button>
+    <button ng-click="openNewBehaviorType()" class="newCustomBehavior" ng-class="{invalid: missingBehavior}">New Behavior Type +</button>
 </div>
 <div class="behaviorDetails">
-    <form name="incident">
+    <div class="instructions" ng-hide="incidentFormData.typeModel || currentIncidentEditing || currentIncidentEditing.has('periodicRecord')">
+        Select a behavior
+    </div>
+    <form name="incident" ng-class="{dimmed: !incidentFormData.typeModel && (!currentIncidentEditing || !currentIncidentEditing.has('periodicRecord'))}">
         <div class="clearfix">
             <label>
                 <input ng-model="incidentFormData.startedAt" type="time" required/>
