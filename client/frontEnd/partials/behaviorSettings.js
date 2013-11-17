@@ -21,8 +21,10 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
     $scope.submitIncident = function () {
         // Validate presence of behavior type
         if (typeof $scope.incidentFormData.typeModel === "undefined") {
-            $scope.missingBehavior = true;
-            return;
+            if ($scope.currentIncidentEditing && !$scope.currentIncidentEditing.has('periodicRecord')) {
+                $scope.missingBehavior = true;
+                return;
+            }
         } else {
             $scope.missingBehavior = false;
         }

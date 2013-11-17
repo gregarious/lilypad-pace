@@ -4,7 +4,7 @@
     <button class="close" ng-click="submitIncident()">Done</button>
 </div>
 
-<div class="behaviorSelection">
+<div class="behaviorSelection" ng-show="!currentIncidentEditing || !currentIncidentEditing.has('periodicRecord')">
     <div ng-show="addingBehaviorType">
         <form name="behavior" class="newBehaviorForm">
             <div class="clearfix">
@@ -51,7 +51,7 @@
             </label>
         </div>
         <div>
-            <textarea placeholder="Comment" ng-model="incidentFormData.comment"></textarea>
+            <textarea placeholder="Comment" ng-model="incidentFormData.comment" ng-class="{wide: currentIncidentEditing && currentIncidentEditing.has('periodicRecord')}"></textarea>
         </div>
     </form>
 </div>

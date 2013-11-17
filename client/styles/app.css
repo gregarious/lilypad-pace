@@ -470,6 +470,10 @@ form .buttonGroup button {
     border-color: #DBDBDB;
 }
 
+.modal .behaviorDetails textarea.wide {
+    width: 528px;
+}
+
 .modal .newBehaviorForm {
     position: absolute;
     background: #FCFDFF;
