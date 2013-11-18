@@ -12,8 +12,9 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, periodi
         selectedPeriodNumber: timeTracker.currentPeriodNumber
     };
 
-    // Initialize $scope.availablePeriods
+    // Initialize $scope.availablePeriods/maxPeriodValue
     $scope.availablePeriods = calculateAvailablePeriods(timeTracker.currentPeriodNumber);
+    $scope.maxPeriodValue = _.max(_.pluck($scope.availablePeriods, 'value'));
 
     /** actions on $scope **/
     // decrement points
@@ -36,6 +37,7 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, periodi
     // when the the length of the records change, update the dropdown of available periods
     $scope.$watch('collectData.periodicRecordCollection.length', function(recordCollection) {
         $scope.availablePeriods = calculateAvailablePeriods(timeTracker.currentPeriodNumber);
+        $scope.maxPeriodValue = _.max(_.pluck($scope.availablePeriods, 'value'));
     });
 
     // if the current period changes, and we're currently displaying the current period,
@@ -55,10 +57,9 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, periodi
 
     // Moves to previous period
     $scope.nextPeriod = function() {
-        // Greg, this is where we should implement the move to next period code
-        // Please first take a look at how the UI works
-        // Users can tap < or > to move through periods, or they can tap the period number to expose the dropdown
-        console.log('Move to next period');
+        if ($scope.data.selectedPeriodNumber + 1 <= $scope.maxPeriodValue) {
+            $scope.data.selectedPeriodNumber = $scope.data.selectedPeriodNumber + 1;
+        }
     };
 
     /** Implementation details **/
