@@ -9,19 +9,10 @@ from pace.serializers import ClassroomSerializer, StudentSerializer, PeriodicRec
                              BehaviorIncidentTypeSerializer, PostSerializer,  \
                              AttendanceSpanSerializer
 
-from django.http import Http404, HttpResponse
+from django.http import Http404
 from rest_framework import generics
 
-from django.contrib.staticfiles.views import serve
-
 from dateutil import parser
-
-def index(request):
-    try:
-        return serve(request, 'lilypad-pace/index.html')
-    except Http404:
-        return HttpResponse('Server is configured incorrectly: '
-            'no index.html file was found for the Pace app.', status=404)
 
 ### Classroom resource views ###
 
@@ -120,7 +111,7 @@ class StudentPeriodicRecordList(PeriodicRecordList):
 
 class PointLossList(generics.ListCreateAPIView):
     '''
-    Note that a side effect of a POST call here is the decrementing 
+    Note that a side effect of a POST call here is the decrementing
     of the related PeriodicRecord point for the corresponding type.
     '''
     serializer_class = PointLossSerializer
@@ -138,7 +129,7 @@ class PointLossList(generics.ListCreateAPIView):
 
 class PointLossDetail(generics.RetrieveDestroyAPIView):
     '''
-    Note that a side effect of a DELETE call here is the incrementing 
+    Note that a side effect of a DELETE call here is the incrementing
     of the related PeriodicRecord point for the corresponding type.
     '''
     queryset = PointLoss.objects.all()

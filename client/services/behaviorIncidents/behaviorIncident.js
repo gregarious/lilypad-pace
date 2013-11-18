@@ -49,7 +49,7 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Lo
 
             // parse ISO date string into Date
             camelResponse.startedAt = moment(camelResponse.startedAt).toDate();
-            camelResponse.endedAt = response.endedAt && moment(camelResponse.endedAt).toDate();
+            camelResponse.endedAt = camelResponse.endedAt && moment(camelResponse.endedAt).toDate();
 
             // transform case for embedded point loss attributes
             if (camelResponse.type) {
