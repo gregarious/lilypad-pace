@@ -1,6 +1,9 @@
 <div id="periodicBehaviors">
     <div class="clearfix">
+        <div class="periodRight" ng-click="nextPeriod()">></div>
         <select name="period" ng-model="data.selectedPeriodNumber" ng-options="pd.value as pd.label for pd in availablePeriods"></select>
+        <div class="periodLeft" ng-click="prevPeriod()" ng-class="{ disabled: data.selectedPeriodNumber == 1 }"><</div>
+
     </div>
     <div id="periodBehaviorCounters" ng-class="{disabled: (!selectedPeriod.get('isEligible') || !student.isPresent()) }">
         <counter class="bs" value="selectedPeriod.get('points').bs" dec="true" dec-fn="decrement('bs')" max="2"

@@ -40,12 +40,26 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, periodi
 
     // if the current period changes, and we're currently displaying the current period,
     // we should auto-increment to the next one
-    // TODO: consider way of notifying user?
     $scope.$watch('timeTracker.currentPeriodNumber', function(newPeriodNumber) {
         if ($scope.data.selectedPeriodNumber === newPeriodNumber-1) {
             $scope.data.selectedPeriodNumber = newPeriodNumber;
         }
     });
+
+    // Advances to next period
+    $scope.prevPeriod = function() {
+        if ($scope.data.selectedPeriodNumber > 1) {
+            $scope.data.selectedPeriodNumber = $scope.data.selectedPeriodNumber - 1;
+        }
+    };
+
+    // Moves to previous period
+    $scope.nextPeriod = function() {
+        // Greg, this is where we should implement the move to next period code
+        // Please first take a look at how the UI works
+        // Users can tap < or > to move through periods, or they can tap the period number to expose the dropdown
+        console.log('Move to next period');
+    };
 
     /** Implementation details **/
     function calculateAvailablePeriods(maxPeriod) {

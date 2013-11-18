@@ -630,6 +630,26 @@ td.invalid #behaviorTypeInput li {
     /*font-size: 14px;*/
 /*}*/
 
+.periodLeft, .periodRight {
+    float: right;
+    box-sizing: border-box;
+    height: 44px;
+    width: 44px;
+    background-color: #F4F4F4;
+    border: 1px solid #DBDBDB;
+    padding: 0.5em;
+    padding-top: 14px;
+    padding-left: 1em;
+    padding-right: 1em;
+    font-size: 11pt;
+    color: #58585b;
+    margin-bottom: 24px;
+}
+
+.periodLeft.disabled, .periodRight.disabled {
+    background: #FFF;
+}
+
 #periodBehaviorCounters .frequency-counter {
     width: 23.1%;
     margin-right: 2.5%;
@@ -642,7 +662,19 @@ td.invalid #behaviorTypeInput li {
 #periodicBehaviors select {
     float: right;
     font-size: 11pt;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
+    width: 100px;
+    height: 44px;
+    overflow: hidden;
+    background: #F4F4F4;
+    -webkit-appearance: none;
+    border-radius: 0px;
+    border-top: 1px solid #DBDBDB;
+    border-bottom: 1px solid #DBDBDB;
+    border-left: 0px;
+    border-right: 0px;
+    padding-left: 19px;
+    outline: none;
 }
 
 #periodBehaviorCounters {
