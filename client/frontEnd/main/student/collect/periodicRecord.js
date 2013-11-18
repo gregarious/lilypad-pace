@@ -12,8 +12,9 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, periodi
         selectedPeriodNumber: timeTracker.currentPeriodNumber
     };
 
-    // Initialize $scope.availablePeriods
+    // Initialize $scope.availablePeriods/maxPeriodValue
     $scope.availablePeriods = calculateAvailablePeriods(timeTracker.currentPeriodNumber);
+    $scope.maxPeriodValue = _.max(_.pluck($scope.availablePeriods, 'value'));
 
     /** actions on $scope **/
     // decrement points
@@ -36,16 +37,30 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, periodi
     // when the the length of the records change, update the dropdown of available periods
     $scope.$watch('collectData.periodicRecordCollection.length', function(recordCollection) {
         $scope.availablePeriods = calculateAvailablePeriods(timeTracker.currentPeriodNumber);
+        $scope.maxPeriodValue = _.max(_.pluck($scope.availablePeriods, 'value'));
     });
 
     // if the current period changes, and we're currently displaying the current period,
     // we should auto-increment to the next one
-    // TODO: consider way of notifying user?
     $scope.$watch('timeTracker.currentPeriodNumber', function(newPeriodNumber) {
         if ($scope.data.selectedPeriodNumber === newPeriodNumber-1) {
             $scope.data.selectedPeriodNumber = newPeriodNumber;
         }
     });
+
+    // Advances to next period
+    $scope.prevPeriod = function() {
+        if ($scope.data.selectedPeriodNumber > 1) {
+            $scope.data.selectedPeriodNumber = $scope.data.selectedPeriodNumber - 1;
+        }
+    };
+
+    // Moves to previous period
+    $scope.nextPeriod = function() {
+        if ($scope.data.selectedPeriodNumber + 1 <= $scope.maxPeriodValue) {
+            $scope.data.selectedPeriodNumber = $scope.data.selectedPeriodNumber + 1;
+        }
+    };
 
     /** Implementation details **/
     function calculateAvailablePeriods(maxPeriod) {

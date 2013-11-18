@@ -193,7 +193,6 @@
                 <main-tabs>
                     <h1 class="studentName"><strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}</h1>
                     <h3 class="absentLabel" ng-show="!student.isPresent()">Absent</h3>
-                    <div class="divider clear"></div>
                     <main-pane title="Collect">
                         <div ng-controller="MainStudentCollectCtrl">
                             <div ng-include="'frontEnd/main/student/collect.html'"></div>
