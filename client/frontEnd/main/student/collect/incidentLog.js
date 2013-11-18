@@ -27,7 +27,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     // shows the settings modal
     $scope.showBehaviorModel = function (incident) {
         if (incident) {
-            if (!$scope.editingIncidents || incident.has('periodicRecord')) {
+            if (!$scope.editingIncidents) {
                 return;
             }
 

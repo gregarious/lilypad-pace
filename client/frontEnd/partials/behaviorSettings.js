@@ -21,8 +21,10 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
     $scope.submitIncident = function () {
         // Validate presence of behavior type
         if (typeof $scope.incidentFormData.typeModel === "undefined") {
-            $scope.missingBehavior = true;
-            return;
+            if ($scope.currentIncidentEditing && !$scope.currentIncidentEditing.has('periodicRecord')) {
+                $scope.missingBehavior = true;
+                return;
+            }
         } else {
             $scope.missingBehavior = false;
         }
@@ -80,7 +82,10 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
 
     // open the "add custom behavior" control
     $scope.openNewBehaviorType = function () {
-        $scope.addingBehaviorType = true;
+        var confirmNewType = confirm("Are you sure you want to add a new behavior type?");
+        if (confirmNewType == true) {
+            $scope.addingBehaviorType = true;
+        }
     };
 
     // close and clear the "add custom behavior" control

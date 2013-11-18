@@ -22,6 +22,7 @@ app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, 
             var attemptingLogin = authManager.authenticate($scope.login.username, $scope.login.password);
 
             attemptingLogin.then(function() {
+                mixpanel.identify($scope.login.username);
                 $scope.authenticated = true;
                 initializeClassroomList();
             }, function(errorInfo) {
