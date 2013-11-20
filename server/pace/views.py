@@ -91,7 +91,7 @@ class PeriodicRecordList(generics.ListCreateAPIView):
             queryset = queryset.filter(date=date)
         return queryset
 
-class PeriodicRecordDetail(generics.RetrieveAPIView):
+class PeriodicRecordDetail(generics.RetrieveUpdateAPIView):
     queryset = PeriodicRecord.objects.all()
     serializer_class = PeriodicRecordSerializer
 
