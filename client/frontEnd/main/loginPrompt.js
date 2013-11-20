@@ -1,4 +1,4 @@
-app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, classroomDataStore, mixpanel) {
+app.controller('LoginPromptCtrl', function ($scope, sessionManager, mainViewState, classroomDataStore, mixpanel) {
     /** $scope interface **/
 
     $scope.login = {};
@@ -6,6 +6,11 @@ app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, 
 
     $scope.logIn = logIn;
     $scope.logOut = logOut;
+
+    var didResume = sessionManager.resumeSession();
+    if (didResume) {
+        startApp();
+    }
 
     // uncomment to auto-login. 'feeny' has 3 classrooms in the dev fixture, 'turner' has only 1
     // $scope.login = {
@@ -17,28 +22,37 @@ app.controller('LoginPromptCtrl', function ($scope, authManager, mainViewState, 
 
     /** Implementation details **/
 
+    function startApp() {
+        mixpanel.identify(sessionManager.getValue('username'));
+        $scope.authenticated = true;
+        initializeClassroomList();
+    }
+
     function logIn() {
         if ($scope.login.$valid) {
-            var attemptingLogin = authManager.authenticate($scope.login.username, $scope.login.password);
+            var attemptingLogin = sessionManager.authenticateFromServer($scope.login.username, $scope.login.password);
 
             attemptingLogin.then(function() {
-                mixpanel.identify($scope.login.username);
-                $scope.authenticated = true;
-                initializeClassroomList();
+                sessionManager.setValue('username', $scope.login.username);
+                startApp();
             }, function(errorInfo) {
                 $scope.authenticated = false;
-
-                alert('Wrong username or password');
-                console.error('Reason: %o', errorInfo[0]);
-                console.error('status code: %d', errorInfo[1]);
+                var reason = errorInfo[0];
+                var statusCode = errorInfo[1];
+                if (statusCode === 400) {
+                    alert('Wrong username or password');
+                }
+                else {
+                    alert('Problem contacting server. Try again later.');
+                }
             });
         }
     }
 
     function logOut() {
         var confirmLogout = confirm("Are you sure you want to logout?");
-        if (confirmLogout == true) {
-            authManager.reset();
+        if (confirmLogout === true) {
+            sessionManager.clearSession();
             $scope.authenticated = false;
             $scope.login.username = null;
             $scope.login.password = null;

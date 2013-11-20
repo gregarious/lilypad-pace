@@ -10,11 +10,11 @@ angular.module('backbone', ['underscore']).
          * 4. Backbone.Collection: supports dataStore property that enables mirroring
          *     all resource operations locally (fetch, save, & destroy)
          */
-        this.$get = function($http, authManager) {
+        this.$get = function($http, sessionManager) {
             // assumes Backbone is globally available
             var Backbone = window.Backbone;
             patchModelParsing(Backbone);
-            patchAjax(Backbone, $http, authManager);
+            patchAjax(Backbone, $http, sessionManager);
 
             Backbone.$ = {};    // Some BB extensions assume this is an Object
             return Backbone;
@@ -88,7 +88,7 @@ angular.module('backbone', ['underscore']).
          * These limitations aren't problems as long as they're used in the context
          * of Backbone.ajax calls (at least as of Backbone v1.0.0).
          */
-        function patchAjax(Backbone, $http, authManager) {
+        function patchAjax(Backbone, $http, sessionManager) {
             // The Backbone.ajax option hash keys the patch officially supports
             var expectedAjaxOptions = [
                 'contentType', 'data', 'dataType', 'error', 'processData',
@@ -124,7 +124,7 @@ angular.module('backbone', ['underscore']).
                     url: jqSettings.url,
                     method: jqSettings.type,
                     data: jqSettings.data,
-                    headers: {'Authorization': authManager.getAuthToken()}
+                    headers: {'Authorization': sessionManager.getAuthToken()}
                 };
 
                 if (jqSettings.contentType) {
