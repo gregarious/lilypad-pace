@@ -1,5 +1,5 @@
 <div id="periodicBehaviors">
-    <button ng-click="finishPointReview()" ng-disabled="!enableMoveToNewPeriod()">Point Review Complete</button>
+    <button id="pointReviewComplete" ng-click="finishPointReview()" ng-disabled="!enableMoveToNewPeriod()">Point Review Complete</button>
 
     <div class="clearfix">
         <div class="periodRight" ng-click="nextPeriod()" ng-class="{ disabled: periodSelector.selectedPeriodNumber == periodSelector.maxPeriodValue }">&gt;</div>

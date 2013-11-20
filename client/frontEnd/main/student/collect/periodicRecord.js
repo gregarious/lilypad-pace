@@ -59,7 +59,10 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, periodi
     };
 
     $scope.finishPointReview = function () {
-        timeTracker.progressToNextPeriod();
+        var confirmPointReview = confirm("Are you sure you want to advance to period " + ($scope.periodSelector.selectedPeriodNumber + 1) + "?");
+        if (confirmPointReview == true) {
+            timeTracker.progressToNextPeriod();
+        }
     };
 
     $scope.enableMoveToNewPeriod = function() {
