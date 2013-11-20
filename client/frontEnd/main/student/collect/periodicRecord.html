@@ -1,8 +1,10 @@
 <div id="periodicBehaviors">
+    <button ng-click="finishPointReview()" ng-disabled="!enableMoveToNewPeriod()">Point Review Complete</button>
+
     <div class="clearfix">
-        <div class="periodRight" ng-click="nextPeriod()" ng-class="{ disabled: data.selectedPeriodNumber == maxPeriodValue }">&gt;</div>
-        <select name="period" ng-model="data.selectedPeriodNumber" ng-options="pd.value as pd.label for pd in availablePeriods"></select>
-        <div class="periodLeft" ng-click="prevPeriod()" ng-class="{ disabled: data.selectedPeriodNumber == 1 }">&lt;</div>
+        <div class="periodRight" ng-click="nextPeriod()" ng-class="{ disabled: periodSelector.selectedPeriodNumber == periodSelector.maxPeriodValue }">&gt;</div>
+        <select name="period" ng-model="periodSelector.selectedPeriodNumber" ng-options="pd.value as pd.label for pd in periodSelector.availablePeriods"></select>
+        <div class="periodLeft" ng-click="prevPeriod()" ng-class="{ disabled: periodSelector.selectedPeriodNumber == 1 }">&lt;</div>
 
     </div>
     <div id="periodBehaviorCounters" ng-class="{disabled: (!selectedPeriod.get('isEligible') || !student.isPresent()) }">
