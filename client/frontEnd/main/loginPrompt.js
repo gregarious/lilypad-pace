@@ -12,14 +12,6 @@ app.controller('LoginPromptCtrl', function ($scope, sessionManager, mainViewStat
         startApp();
     }
 
-    // uncomment to auto-login. 'feeny' has 3 classrooms in the dev fixture, 'turner' has only 1
-    // $scope.login = {
-    //     '$valid': true,
-    //     'username': 'turner',
-    //     'password': 'turner',
-    // };
-    // $scope.logIn();
-
     /** Implementation details **/
 
     function startApp() {
