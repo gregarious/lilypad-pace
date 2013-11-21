@@ -365,7 +365,7 @@ tr th {
     margin-right: -65px;
     background-color: #48bea4;
     color: #ffffff;
-    padding-right: 15px;
+    /*padding-right: 15px;*/
 }
 
 .mainTabs li {
@@ -808,7 +808,8 @@ form[name=incident].dimmed {
 }
 
 form[name=analyze] {
-    position: relative
+    position: relative;
+    margin-top: 40px;
 }
 
 form[name=analyze] select {
