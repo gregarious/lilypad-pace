@@ -16,15 +16,20 @@ angular.module('pace').factory('studentDataStore', function(Backbone, Student, t
 
             collection.fetch({
                 success: function(collection) {
-                    // fetch active attendance spans before resolving
-                    fetchAttendanceSpans(collection).then(
-                        function() {
-                            deferred.resolve(collection);
-                        },
-                        function(errs) {
-                            deferred.reject('Problem fetching related attendance records');
-                        }
-                    );
+                    // disable do to fetchRelated problems (card #130)
+                    // // fetch active attendance spans before resolving
+                    // fetchAttendanceSpans(collection).then(
+                    //     function() {
+                    //         deferred.resolve(collection);
+                    //     },
+                    //     function(errs) {
+                    //         deferred.reject('Problem fetching related attendance records');
+                    //     }
+                    // );
+
+                    // delete this once above is resolved (card #130)
+                    deferred.resolve(collection);
+
                 },
                 error: function(err) {
                     deferred.reject(err);
