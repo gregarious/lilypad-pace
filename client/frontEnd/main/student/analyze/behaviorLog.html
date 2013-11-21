@@ -1,10 +1,4 @@
 <div ng-controller="MainStudentAnalyzeBehaviorLogCtrl">
-    <div class="clearfix">
-        <div class="buttonGroup">
-            <button class="settings" ng-click="showBehaviorModel()"></button>
-        </div>
-    </div>
-
     <table class="log">
         <tr>
             <th>Time</th>
@@ -21,7 +15,7 @@
     </table>
     <div class="noData" ng-hide="behaviorLogCollection.models.length > 0">No behaviors yet logged</div>
     <main-modal displayState="behaviorModalState" title="STUDENT BEHAVIORS">
-        <div ng-include="'frontend/partials/behaviorSettings.html'"></div>
+        <div ng-include="'frontEnd/partials/behaviorSettings.html'"></div>
     </main-modal>
 </div>
 

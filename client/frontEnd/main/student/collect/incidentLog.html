@@ -19,14 +19,14 @@
         </tr>
         <tr ng-repeat="logEntry in collectData.incidentLogCollection.models">
             <td class="delete" ng-show="editingIncidents" ng-click="confirmDelete(logEntry)">
-                <div class="deleteCircle" ng-class="{active:(confirmDeleteFor != null) && (confirmDeleteFor.id == logEntry.id)}">-</div>
+                <div class="deleteCircle" ng-class="{active:(confirmDeleteFor != null) && (confirmDeleteFor === logEntry)}">-</div>
             </td>
             <td class="time" ng-click="showBehaviorModel(logEntry)">{{logEntry.getOccurredAt() | date: 'h:mm a'}}</td>
             <td class="label" ng-click="showBehaviorModel(logEntry)">{{logEntry.getLabel()}}</td>
             <td class="duration" ng-click="showBehaviorModel(logEntry)">{{logEntry.getDuration() | duration}}</td>
             <td class="comment">
                 <span ng-click="showBehaviorModel(logEntry)">{{logEntry.getComment()}}</span>
-                <span class="deleteBtn" ng-show="(confirmDeleteFor != undefined) && (confirmDeleteFor.id == logEntry.id)" ng-click="removeIncident(logEntry)">Delete</span>
+                <span class="deleteBtn" ng-show="(confirmDeleteFor != undefined) && (confirmDeleteFor === logEntry)" ng-click="removeIncident(logEntry)">Delete</span>
             </td>
         </tr>
     </table>
@@ -35,6 +35,6 @@
 
 <main-modal display-state="behaviorModalState">
     <div ng-controller="MainStudentCollectBehaviorsModalCtrl">
-        <div ng-include="'frontend/partials/behaviorSettings.html'"></div>
+        <div ng-include="'frontEnd/partials/behaviorSettings.html'"></div>
     </div>
 </main-modal>

@@ -11,7 +11,7 @@
 // encapsulate mixpanel in its own Angular module
 angular.module('mixpanel', []).
     provider('mixpanel', function() {
-        var mockMixpanel = {track: function(){}};
+        var mockMixpanel = {track: function(){}, identify: function(){}};
         var wasActivated;
 
         // must be called in app.config to use Mixpanel
@@ -25,6 +25,9 @@ angular.module('mixpanel', []).
             mockMixpanel = {
                 track: function() {
                     console.log('Mock: mixpanel.track %o', arguments);
+                },
+                identify: function() {
+                    console.log('Mock: mixpanel.identify %o', arguments);
                 }
             };
         };

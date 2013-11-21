@@ -88,7 +88,7 @@
 
     <!-- Other services -->
     <script src="services/common/timeTracker.js"></script>
-    <script src="services/common/authManager.js"></script>
+    <script src="services/common/sessionManager.js"></script>
     <script src="services/common/apiConfig.js"></script>
     <script src="services/collectDataStore.js"></script>
 
@@ -194,7 +194,6 @@
                 <main-tabs>
                     <h1 class="studentName"><strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}</h1>
                     <h3 class="absentLabel" ng-show="!student.isPresent()">Absent</h3>
-                    <div class="divider clear"></div>
                     <main-pane title="Collect">
                         <div ng-controller="MainStudentCollectCtrl">
                             <div ng-include="'frontEnd/main/student/collect.html'"></div>
@@ -205,11 +204,13 @@
                             <div ng-include="'frontEnd/main/student/analyze.html'"></div>
                         </div>
                     </main-pane>
-                    <main-pane title="Discuss">
+                   <!-- 
+                   <main-pane title="Discuss">
                         <div ng-controller="MainStudentDiscussCtrl">
                             <div ng-include src="'frontEnd/main/student/discuss.html'"></div>
                         </div>
                     </main-pane>
+                    -->
                 </main-tabs>
             </div>
         </div>

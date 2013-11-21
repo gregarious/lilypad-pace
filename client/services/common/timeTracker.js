@@ -1,73 +1,37 @@
-angular.module('pace').provider('timeTracker', function() {
-    var periodStarts = [
-        '07:00',
-        '08:00',
-        '09:00',
-        '10:00',
-        '11:00',
-        '12:00',
-        '13:00',
-        '14:00',
-        '15:00',
-    ];
-
+angular.module('pace').provider('timeTracker', function(moment) {
     var anchorOffset = 0;
     this.setAnchorTime = function(date) {
         anchorOffset = new Date() - date;
     };
 
-    var timeTracker = {
-        /** Access to the current time stamp and period **/
-        getTimestamp: function() {
-            return new Date(new Date() - anchorOffset);
-        },
+    this.$get = function(moment) {
+        return {
+            /** Access to the current time stamp and period **/
+            getTimestamp: function() {
+                return new Date(new Date() - anchorOffset);
+            },
 
-        currentPeriod: null,
+            getTimestampAsMoment: function() {
+                return moment(this.getTimestamp());
+            },
 
-        /** Utility methods **/
-        getPeriodForTime: getPeriodForTime,
+            currentPeriodNumber: 1,
+            finalPeriodNumber: 10,
 
-        getTimestampAsMoment: function() {
-            return moment(timeTracker.getTimestamp());
-        }
-    };
-
-    this.$get = function(moment, $interval) {
-        var updateCurrentPeriod = function() {
-            var nowTime = timeTracker.getTimestampAsMoment().format('HH:mm');
-            timeTracker.currentPeriodNumber = getPeriodForTime(nowTime);
+            /**
+             * Increment the current period as long as it does not go
+             * over the finalPeriodNumber value.
+             *
+             * Returns true if period was incremented, false otherwise.
+             */
+            progressToNextPeriod: function() {
+                var nextPeriodNumber = this.currentPeriodNumber + 1;
+                if (nextPeriodNumber <= this.finalPeriodNumber) {
+                    this.currentPeriodNumber = nextPeriodNumber;
+                    return true;
+                }
+                return false;
+            }
         };
-
-        // initialize the current period based on the time and keep an eye on it
-        updateCurrentPeriod();
-        $interval(updateCurrentPeriod, 10000);
-
-
-        return timeTracker;
     };
-
-    /** Implementation details **/
-
-    /**
-     * Returns the given period number that the given time falls in.
-     *
-     * Note that this function has no concept of end-of-day. Anytime between
-     * the beginning of the last period and midnight will return the
-     * last period number.
-     *
-     * @param  {String} time
-     * @return {Number} period
-     */
-    function getPeriodForTime(time) {
-        var pd = null;
-        for (var i = 0; i < periodStarts.length; i++) {
-            if (time >= periodStarts[i]) {
-                pd = i+1;
-            }
-            else {
-                break;
-            }
-        }
-        return pd;
-    }
 });

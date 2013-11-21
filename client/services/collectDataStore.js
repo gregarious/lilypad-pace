@@ -26,9 +26,8 @@ angular.module('pace').service('collectDataStore', function(Backbone, $q, $rootS
         var deferredRecords = $q.defer();
         periodicRecordDataStore.getTodayRecordsForStudent(student).then(
             function(collection) {
-                // Before returning, ensure we have a PeriodicRecord set for
-                // the current period. If not, we need to create one client-side.
-                // `syncPeriodicRecords` handles all of this.
+                // Before returning, ensure our student and the timeTracker
+                // are in sync about the current period
                 syncPeriodicRecords(student, collection);
 
                 // Also, register this student/collection combo to be updated
@@ -107,13 +106,13 @@ angular.module('pace').service('collectDataStore', function(Backbone, $q, $rootS
     scope.$watch('timeTracker.currentPeriodNumber', updateRecordsOnPeriodChange);
 
     /**
-     * If student is present, function will cycle through all periods
-     * in the active attendance span ensuring that a PeriodicRecord
-     * exists for each.
+     * Ensures current period setting is in sync with the PeriodicRecords
+     * in the given collection.
      *
-     * If student is absent, will fill in any missing PeriodicRecords
-     * between the beginning of the day and now with records with
-     * isEligible = false.
+     * If the current period setting is ahead of the collection, create new
+     * PeriodicRecord instances to fill in the gaps. Alternatively, if the
+     * current setting is behind it, increment the periods until it matches
+     * the state of the collection.
      *
      * @param  {Student} student (must support `isPresent` method
      *                   and `activeAttendanceSpan` attribute)
@@ -121,26 +120,34 @@ angular.module('pace').service('collectDataStore', function(Backbone, $q, $rootS
      *                  `getByPeriod` method)
      */
     function syncPeriodicRecords(student, todayRecordCollection) {
-        var activeSpan = student.get('activeAttendanceSpan');
-        var iterPd;
-        if (activeSpan) {
-            iterPd = timeTracker.getPeriodForTime(activeSpan.get('timeIn'));
-        }
-        else {
-            iterPd = 1;
-        }
-        var lastPd = timeTracker.getPeriodForTime(timeTracker.getTimestampAsMoment().format('HH:mm'));
+        var latestPeriodForStudent = _.max(todayRecordCollection.getAvailablePeriods());
 
-        while(iterPd <= lastPd) {
-            if (!todayRecordCollection.getByPeriod(iterPd)) {
-                todayRecordCollection.create({
-                    date: timeTracker.getTimestampAsMoment().format('YYYY-MM-DD'),
-                    period: iterPd,
-                    student: student,
-                    isEligible: !!activeSpan
-                });
+        // if the student data is behind the current period for the system,
+        // catch it up
+        if (latestPeriodForStudent < timeTracker.currentPeriodNumber) {
+            var activeSpan = student.get('activeAttendanceSpan');
+            var iterPd;
+            for(iterPd = 1; iterPd <= timeTracker.currentPeriodNumber; iterPd++) {
+                if (!todayRecordCollection.getByPeriod(iterPd)) {
+                    todayRecordCollection.create({
+                        date: timeTracker.getTimestampAsMoment().format('YYYY-MM-DD'),
+                        period: iterPd,
+                        student: student,
+                        isEligible: !!activeSpan
+                    });
+                }
             }
-            ++iterPd;
+        }
+
+        // alternatively, if the student is ahead of the currently set period, increment
+        // the set period until its caught up
+        while(latestPeriodForStudent > timeTracker.currentPeriodNumber) {
+            // need to step through this to allow intermediate periodic records to be created #refactor
+            var didIncrement = timeTracker.progressToNextPeriod();
+            if (!didIncrement) {
+                // break out if we've reached the max period
+                break;
+            }
         }
     }
 

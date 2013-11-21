@@ -27,7 +27,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     // shows the settings modal
     $scope.showBehaviorModel = function (incident) {
         if (incident) {
-            if (!$scope.editingIncidents || incident.has('periodicRecord')) {
+            if (!$scope.editingIncidents) {
                 return;
             }
 
@@ -64,7 +64,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
 
     $scope.confirmDelete = function(incident) {
         if ($scope.confirmDeleteFor) {
-            if ($scope.confirmDeleteFor.id == incident.id) {
+            if ($scope.confirmDeleteFor === incident) {
                 // reset confirm delete state
                 $scope.confirmDeleteFor = null;
                 return;

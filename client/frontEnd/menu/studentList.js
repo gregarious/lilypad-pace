@@ -1,5 +1,5 @@
 // controller for the student list in the left panel
-app.controller('MenuStudentListCtrl', function ($scope, mainViewState, studentDataStore, mixpanel) {
+app.controller('MenuStudentListCtrl', function ($scope, mainViewState, studentDataStore, collectDataStore, mixpanel, timeTracker) {
     /** $scope interface **/
     $scope.mainViewState = mainViewState;
 
@@ -68,6 +68,21 @@ app.controller('MenuStudentListCtrl', function ($scope, mainViewState, studentDa
             }
             else {
                 student.markPresent();
+
+                // TODO: terrible #refactor this whole thing
+                collectDataStore.loadTodayDataForStudent(student).then(function(data) {
+                    var currPd = data.periodicRecordCollection.getByPeriod(timeTracker.currentPeriodNumber);
+                    currPd.set('isEligible', true);
+                    var points = currPd.get('points');
+                    for (var pointType in points) {
+                        if (points[pointType] === null) {
+                            points[pointType] = 2;
+                        }
+                    }
+                    currPd.save();
+                }, function(err) {
+                    console.error(err);
+                });
             }
         } else {
             mainViewState.selectedStudent = student;
