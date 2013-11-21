@@ -1,18 +1,13 @@
-angular.module('pace').factory('Student', function(Backbone, timeTracker, AttendanceSpan, apiConfig){
-    return Backbone.Model.extend({
+angular.module('pace').factory('Student', function(Backbone, AttendanceSpan, apiConfig, timeTracker){
+    Backbone.AppModels.Student = Backbone.RelationalModel.extend({
         /*
             Attributes:
                 id : Integer
                 url : String
                 firstName : String
                 lastName : String
-                activeAttendanceSpan : AttendanceSpan or null
-                periodicRecordsUrl : String
-                behaviorTypesUrl : String
-                behaviorIncidentsUrl : String
-                postsUrl : String
-                attendanceSpansUrl : String
-                pointLossesUrl : String
+            Relations:
+                activeAttendanceSpan : AttendanceSpan
         */
 
         defaults: {
@@ -20,38 +15,18 @@ angular.module('pace').factory('Student', function(Backbone, timeTracker, Attend
         },
         urlRoot: apiConfig.toAPIUrl('students/'),
 
-        initialize: function() {
-            var span = this.get('activeAttendanceSpan');
-            if (span) {
-                // if `activeAttendanceSpan` is a bare object, make it an AttendanceSpan
-                if(!span.attributes) {
-                    this.set('activeAttendanceSpan', new AttendanceSpan(span));
+        relations: [
+            {
+                key: 'activeAttendanceSpan',
+                relatedModel: AttendanceSpan,
+                type: Backbone.HasOne,
+                reverseRelation: {
+                    key: 'student',
+                    type: Backbone.HasOne,
+                    includeInJSON: Backbone.Model.prototype.idAttribute     // only send id back to server
                 }
             }
-        },
-
-        // need to deserialze into a new AttendanceSpan instance if applicable
-        parse: function(response) {
-            camelResponse = Backbone.Model.prototype.parse.apply(this, arguments);
-            var spanAttrs = camelResponse.activeAttendanceSpan;
-            if (spanAttrs) {
-                camelResponse.activeAttendanceSpan = AttendanceSpan.prototype.parse(spanAttrs);
-            }
-            return camelResponse;
-        },
-
-        // need to serialize the AttendanceSpan instance if applicable
-        toJSON: function() {
-            var data = Backbone.Model.prototype.toJSON.apply(this, arguments);
-
-            // manually replace whatever toJSON did with activeAttendanceSpan
-            if (this.get('activeAttendanceSpan')) {
-                var attendanceSpanJSON = this.get('activeAttendanceSpan').toJSON();
-                data['active_attendance_span'] = attendanceSpanJSON;
-            }
-
-            return data;
-        },
+        ],
 
         isPresent: function() {
             return this.has('activeAttendanceSpan');
@@ -91,4 +66,6 @@ angular.module('pace').factory('Student', function(Backbone, timeTracker, Attend
             this.set('activeAttendanceSpan', newSpan);
         }
     });
+
+    return Backbone.AppModels.Student;
 });

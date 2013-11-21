@@ -1,5 +1,43 @@
 angular.module('pace').factory('studentDataStore', function(Backbone, Student, timeTracker, $q, apiConfig) {
 
+    var cachedPromises = {};
+
+    /** Public interface **/
+    return {
+        getForClassroom: function(classroom) {
+            // if a promise was already made for this classroom, just return it. currently not supporting refresh.
+            var oldPromise = cachedPromises[classroom.id];
+            if (oldPromise) {
+                return oldPromise;
+            }
+
+            var deferred = $q.defer();
+            var collection = classroomStudentsFactory(classroom);
+
+            collection.fetch({
+                success: function(collection) {
+                    // fetch active attendance spans before resolving
+                    fetchAttendanceSpans(collection).then(
+                        function() {
+                            deferred.resolve(collection);
+                        },
+                        function(errs) {
+                            deferred.reject('Problem fetching related attendance records');
+                        }
+                    );
+                },
+                error: function(err) {
+                    deferred.reject(err);
+                }
+            });
+
+            cachedPromises[classroom.id] = deferred.promise;
+            return deferred.promise;
+        }
+    };
+
+    /** Implementation details **/
+
     function classroomStudentsFactory(classroom) {
         var ClassroomStudentCollection = Backbone.Collection.extend({
             model: Student,
@@ -20,32 +58,29 @@ angular.module('pace').factory('studentDataStore', function(Backbone, Student, t
         return new ClassroomStudentCollection();
     }
 
-    var cachedPromises = {};
+    /**
+     * Fetches any related attendance span records for each student
+     */
+    function fetchAttendanceSpans(studentCollection) {
+        allAttendancePromises = [];
 
-    /** Public interface of service **/
-    return {
-        getForClassroom: function(classroom) {
-            // if a promise was already made for this classroom, just return it. currently not supporting refresh.
-            var oldPromise = cachedPromises[classroom.id];
-            if (oldPromise) {
-                return oldPromise;
-            }
+        // cycle through each student and fetch their activeAttendanceSpan models
+        studentCollection.each(function(student) {
+            // this will return 0 or 1 httpPromises, depending on whether student has active span
+            var httpPromises = student.fetchRelated('activeAttendanceSpan');
+            allAttendancePromises = allAttendancePromises.concat(httpPromises);
+        });
 
-            var deferred = $q.defer();
-            var collection = classroomStudentsFactory(classroom);
-
-            collection.fetch({
-                success: function(collection) {
-                    deferred.resolve(collection);
-                },
-                error: function(err) {
-                    deferred.reject(err);
-                }
-            });
-
-            cachedPromises[classroom.id] = deferred.promise;
-            return deferred.promise;
+        if (allAttendancePromises.length < 1) {
+            // if there are no related models to fetch, return an already resolved promise
+            var tokenDeferment = $q.defer();
+            tokenDeferment.resolve();
+            return tokenDeferment.promise;
         }
-    };
+        else {
+            // if some async fetches are being made, make promise for all fetch calls
+            return $q.all(allAttendancePromises);
+        }
+    }
 });
 

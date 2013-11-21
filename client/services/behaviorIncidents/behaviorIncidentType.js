@@ -1,29 +1,29 @@
 angular.module('pace').factory('BehaviorIncidentType', function(Backbone, Student, apiConfig) {
-    return Backbone.Model.extend({
+    Backbone.AppModels.BehaviorIncidentType = Backbone.RelationalModel.extend({
         /*
             Attibutes:
                 id : String
                 code : String
                 label : String
                 supportsDuration : Boolean
-                applicableStudent : Object (student stub)
+            Relations:
+                applicableStudent : Student
          */
+        relations: [
+            {
+                key: 'applicableStudent',
+                relatedModel: Student,
+                type: Backbone.HasOne,
+                includeInJSON: Backbone.Model.prototype.idAttribute     // only send id back to server
+            }
+        ],
+
         defaults: {
             supportsDuration: false
         },
 
         urlRoot: apiConfig.toAPIUrl('behaviortypes/'),
-
-        toJSON: function() {
-            // stub out the student
-            var data = Backbone.Model.prototype.toJSON.apply(this);
-
-            // need to turn `applicable_student` into a primary key
-            var student = data['applicable_student'];
-            if (student && !_.isUndefined(student.id)) {
-                data['applicable_student'] = student.id;
-            }
-            return data;
-        }
     });
+
+    return Backbone.AppModels.BehaviorIncidentType;
 });

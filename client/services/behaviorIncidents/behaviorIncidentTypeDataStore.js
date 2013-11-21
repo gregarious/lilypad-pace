@@ -1,11 +1,5 @@
 angular.module('pace').service('behaviorIncidentTypeDataStore', function(BehaviorIncidentType, $q, apiConfig) {
 
-    // Collection of app-wide canonical BehaviorIncidentType models
-    var typeRegistry = new (Backbone.Collection.extend({
-        model: BehaviorIncidentType,
-        url: apiConfig.toAPIUrl('behaviortypes/')
-    }))();
-
     // cache indexed by student id
     var cache = {};
     var promiseCache = {};
@@ -44,17 +38,9 @@ angular.module('pace').service('behaviorIncidentTypeDataStore', function(Behavio
             return oldPromise;
         }
 
-        // don't want to directly return response models from server. instead, we
-        // go through them and add/merge them with the registry and return the
-        // registry models. that way all BehaviorIncidentType models are canonical
-        // app-wide
-        var serverCollection = studentTypesFactory(student);
         var deferred = $q.defer();
-        serverCollection.fetch({
-            success: function(serverCollection) {
-                var registryModels = typeRegistry.add(serverCollection.models, {merge: true});
-                var collection = studentTypesFactory(student);
-                collection.reset(registryModels);
+        studentTypesFactory(student).fetch({
+            success: function(collection) {
                 cache[student.id] = collection;
                 deferred.resolve(collection);
             },
@@ -65,17 +51,6 @@ angular.module('pace').service('behaviorIncidentTypeDataStore', function(Behavio
 
         promiseCache[student.id] = deferred.promise;
         return deferred.promise;
-    };
-
-    /**
-     * Either return an existing model from the registry matching
-     * the input model/attributeObj `id` or create a new one. If
-     * {merge: true} is passed as an option, the registry values
-     * will be merged with the given model (passes through to
-     * Collection.add).
-     */
-    this.findOrRegister = function(model, options) {
-        return typeRegistry.add(model, options);
     };
 
     /**
@@ -95,8 +70,7 @@ angular.module('pace').service('behaviorIncidentTypeDataStore', function(Behavio
             applicableStudent: student
         };
 
-        var newType = new BehaviorIncidentType(attrs);
-        newType = this.findOrRegister(newType);
+        var newType = BehaviorIncidentType.findOrCreate(attrs);
         newType.save();
 
         // if there's already a collection for the given student, manually add the new instance

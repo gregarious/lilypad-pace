@@ -76,7 +76,7 @@ class StudentSerializer(NamespacedHyperlinkedModelSerializer):
         for (dataset, obj) in zip(data, student):
             active_span = self.get_active_attendance_span(obj)
             if active_span:
-                dataset['active_attendance_span'] = AttendanceSpanSerializer(active_span).data
+                dataset['active_attendance_span'] = active_span.id
             else:
                 dataset['active_attendance_span'] = None
 
@@ -128,17 +128,9 @@ class BehaviorIncidentTypeSerializer(NamespacedHyperlinkedModelSerializer):
         fields = ('id', 'url', 'label', 'code', 'supports_duration',
             'applicable_student')
 
-class NestedBehaviorIncidentTypeSerializer(NamespacedHyperlinkedModelSerializerWithPKWrite):
-    applicable_student = serializers.PrimaryKeyRelatedField(required=False)
-
-    class Meta:
-        model = BehaviorIncidentType
-        fields = ('id', 'url', 'label', 'code', 'supports_duration',
-            'applicable_student')
-
 class BehaviorIncidentSerializer(NamespacedHyperlinkedModelSerializer):
     student = serializers.PrimaryKeyRelatedField()
-    type = NestedBehaviorIncidentTypeSerializer()
+    type = serializers.PrimaryKeyRelatedField()
 
     class Meta:
         model = BehaviorIncident

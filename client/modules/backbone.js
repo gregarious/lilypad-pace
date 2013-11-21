@@ -5,23 +5,45 @@ angular.module('backbone', ['underscore']).
         /**
          * Return the Backbone object with the following changes:
          * 1. Backbone.ajax: use $http
-         * 2. Backbone.Model.parse: convert server snake-case to camel-case
-         * 3. Backbone.Model.toJSON: convert camel-case to server-friendly snake-case
+         * 2. Backbone.RelationalModel.parse: convert server snake-case to camel-case
+         * 3. Backbone.RelationalModel.toJSON: convert camel-case to server-friendly snake-case
          * 4. Backbone.Collection: supports dataStore property that enables mirroring
          *     all resource operations locally (fetch, save, & destroy)
          */
         this.$get = function($http, sessionManager) {
             // assumes Backbone is globally available
             var Backbone = window.Backbone;
+            Backbone.$ = {};    // Some BB extensions assume this is an Object
+
+            configureBackboneRelational(Backbone);
             patchModelParsing(Backbone);
             patchAjax(Backbone, $http, sessionManager);
 
-            Backbone.$ = {};    // Some BB extensions assume this is an Object
             return Backbone;
         };
 
+        function configureBackboneRelational(Backbone) {
+            // declare a non-window global object for model scope (for BB-relational)
+            Backbone.AppModels = {};
+            Backbone.Relational.store.removeModelScope(window);
+            Backbone.Relational.store.addModelScope(Backbone.AppModels);
+
+            // add a warning when accessing a relation that has not yet been fetched
+            var originalGet = Backbone.RelationalModel.prototype.get;
+            Backbone.RelationalModel.prototype.get = function(attribute, options) {
+                var value = originalGet.call(this, attribute);
+                if (value === null) {
+                    var relation = this.getRelation(attribute);
+                    if (relation && (relation.keyId || relation.keyId === 0)) {
+                        console.warn("Calling `get` for unfetched relation `" + attribute + "`");
+                    }
+                }
+                return value;
+            };
+        }
+
         /**
-         * Monkey-patch Backbone.Model.parse and Backbone.Model.toJSON to
+         * Monkey-patch Backbone.RelationalModel.parse and Backbone.RelationalModel.toJSON to
          * handle case conversions between client and server case conventions
          * (snakecase on server, camelcase on client)
          */
@@ -41,8 +63,8 @@ angular.module('backbone', ['underscore']).
                 return str.replace(STRING_DECAMELIZE_REGEXP, '$1_$2').toLowerCase();
             };
 
-            var originalToJSON = Backbone.Model.prototype.toJSON;
-            Backbone.Model = Backbone.Model.extend({
+            var originalToJSON = Backbone.RelationalModel.prototype.toJSON;
+            Backbone.RelationalModel = Backbone.RelationalModel.extend({
                 parse: function(response, options) {
                     var camelResponse = {};
                     _.each(_.pairs(response), function(kv_pair) {
@@ -98,7 +120,7 @@ angular.module('backbone', ['underscore']).
             // The Backbone.sync option hash keys the patch officially supports
             var expectedSyncOptions = [
                 'emulateHTTP', 'emulateJSON', 'parse', 'validate', 'collection',
-                'add', 'merge', 'remove'
+                'add', 'merge', 'remove', 'update'
             ];
 
             Backbone.ajax = function(jqSettings) {

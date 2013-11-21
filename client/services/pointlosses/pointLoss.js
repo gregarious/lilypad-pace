@@ -5,17 +5,18 @@ angular.module('pace').factory('PointLoss', function(Backbone, moment, LoggableM
         Attributes:
             id : Integer
             url : String
-            periodicRecord : PeriodicRecord
             pointType : String
             occurredAt : Date
             comment : String
+        Relations:
+            periodicRecord : PeriodicRecord (declared as related model on PeriodicRecord)
     */
 
-	return Backbone.Model.extend(_.extend(new LoggableMixin(), {
-		urlRoot: apiConfig.toAPIUrl('pointlosses/'),
+	Backbone.AppModels.PointLoss = Backbone.RelationalModel.extend(_.extend(new LoggableMixin(), {
+        urlRoot: apiConfig.toAPIUrl('pointlosses/'),
 
         parse: function(response, options) {
-            response = Backbone.Model.prototype.parse.apply(this, arguments);
+            response = Backbone.RelationalModel.prototype.parse.apply(this, arguments);
             // transform ISO date string to Date
             if (response.occurredAt) {
                 response.occurredAt = moment(response.occurredAt).toDate();
@@ -26,16 +27,10 @@ angular.module('pace').factory('PointLoss', function(Backbone, moment, LoggableM
 
         toJSON: function() {
             // do basic case transformation
-            var data = Backbone.Model.prototype.toJSON.apply(this);
+            var data = Backbone.RelationalModel.prototype.toJSON.apply(this);
 
             // manually transform the dates
             data['started_at'] = moment(this.get('startedAt')).format();
-
-            // need to turn `periodic_record` into a primary key
-            var pdRecord = data['periodic_record'];
-            if (pdRecord && !_.isUndefined(pdRecord.id)) {
-                data['periodic_record'] = pdRecord.id;
-            }
 
             return data;
         },
@@ -72,4 +67,6 @@ angular.module('pace').factory('PointLoss', function(Backbone, moment, LoggableM
 			return "";
 		}
 	}));
+
+    return Backbone.AppModels.PointLoss;
 });
