@@ -72,14 +72,19 @@ app.controller('MenuStudentListCtrl', function ($scope, mainViewState, studentDa
                 // TODO: terrible #refactor this whole thing
                 collectDataStore.loadTodayDataForStudent(student).then(function(data) {
                     var currPd = data.periodicRecordCollection.getByPeriod(timeTracker.currentPeriodNumber);
-                    currPd.set('isEligible', true);
-                    var points = currPd.get('points');
-                    for (var pointType in points) {
-                        if (points[pointType] === null) {
-                            points[pointType] = 2;
+                    // if we're here and we have a new periodic record, we can assume the POST request
+                    // had the correct value for `isEligible` because the request was made after the student
+                    // was marked present. yeah. it sucks. #refactor Part of card #125
+                    if (!currPd.isNew()) {
+                        currPd.set('isEligible', true);
+                        var points = currPd.get('points');
+                        for (var pointType in points) {
+                            if (points[pointType] === null) {
+                                points[pointType] = 2;
+                            }
                         }
+                        currPd.save();
                     }
-                    currPd.save();
                 }, function(err) {
                     console.error(err);
                 });
