@@ -26,7 +26,7 @@ app.directive('mainTabs', function (mixpanel) {
             };
         },
         template: '<div>' +
-            '<div class="clearfix">' +
+            '<div class="clearfix tabWrapper">' +
             '<ul class="mainTabs">' +
             '<li ng-repeat="pane in panes" ng-click="select(pane)" ng-class="{selected:pane.selected}">' +
             '{{pane.title}}' +

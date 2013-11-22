@@ -53,15 +53,15 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, periodi
 
     // Moves to previous period
     $scope.nextPeriod = function() {
-        if ($scope.periodSelector.selectedPeriodNumber + 1 <= $scope.periodSelector.maxPeriodValue) {
-            $scope.periodSelector.selectedPeriodNumber = $scope.periodSelector.selectedPeriodNumber + 1;
-        }
-    };
-
-    $scope.finishPointReview = function () {
-        var confirmPointReview = confirm("Are you sure you want to advance to period " + ($scope.periodSelector.selectedPeriodNumber + 1) + "?");
-        if (confirmPointReview == true) {
-            timeTracker.progressToNextPeriod();
+        if ($scope.enableMoveToNewPeriod()) {
+            var confirmPointReview = confirm("Are you sure you want to end period " + $scope.periodSelector.selectedPeriodNumber + "?");
+            if (confirmPointReview == true) {
+                timeTracker.progressToNextPeriod();
+            }
+        } else {
+            if ($scope.periodSelector.selectedPeriodNumber + 1 <= $scope.periodSelector.maxPeriodValue) {
+                $scope.periodSelector.selectedPeriodNumber = $scope.periodSelector.selectedPeriodNumber + 1;
+            }
         }
     };
 
@@ -71,7 +71,6 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, periodi
         return $scope.periodSelector.selectedPeriodNumber === $scope.periodSelector.maxPeriodValue &&
                 $scope.periodSelector.selectedPeriodNumber < timeTracker.finalPeriodNumber;
     };
-
 
     /** Implementation details **/
 

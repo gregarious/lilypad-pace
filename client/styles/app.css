@@ -27,10 +27,12 @@ body {
 
 div {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
 }
 
 a:link { 
-    -webkit-tap-highlight-color: rgba(0,0,0,0); 
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
 h1 {
@@ -153,7 +155,7 @@ tr th {
     bottom: 0;
     left: 0;
     background-color: #fff;
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
 .disabled-striped::after {
@@ -328,6 +330,7 @@ tr th {
     border-bottom: 1px solid #DBDBDB;
     padding-left: 18px;
     font-size: 13pt;
+    border-right: 0px;
 }
 
 #classroomList {
@@ -357,15 +360,20 @@ tr th {
     padding: 0px 65px;
 }
 
+.tabWrapper {
+    position: absolute;
+    left: 0px;
+    width: 100%;
+    background: rgba(255,255,255,0.9);
+    border-bottom: 1px solid #DBDBDB;
+    height: 43px;
+}
+
 .mainTabs {
     box-sizing: border-box;
     display: inline-block;
     height: 44px;
     float: right;
-    margin-right: -65px;
-    background-color: #48bea4;
-    color: #ffffff;
-    /*padding-right: 15px;*/
 }
 
 .mainTabs li {
@@ -376,11 +384,12 @@ tr th {
     vertical-align: middle;
     line-height: 2.5;
     font-family: aller_lightregular;
+    border-left: 1px solid #DBDBDB;
 }
 
 .tab-content {
-    height: 669px;
-    padding-top: 35px;
+    height: 652px;
+    padding-top: 95px;
     overflow-y: scroll;
     /*-webkit-overflow-scrolling: touch;*/
 }
@@ -601,6 +610,9 @@ form .buttonGroup button {
     background-size: 20px;
     border-right: 1px solid #DBDBDB;
     padding-left: 55px !important;
+    height: 44px !important;
+    line-height: 3 !important;
+    font-size: 11pt !important;
 }
 
 /* Student Main Styles */
@@ -630,23 +642,22 @@ td.invalid #behaviorTypeInput li {
     /*font-size: 14px;*/
 /*}*/
 
+.periodSwitcher {
+    position: absolute;
+    top: 0px;
+}
+
 #periodicBehaviors {
     text-align: right;
     margin-top: -19px;
 }
 
-#pointReviewComplete {
-    width: 198px;
-    border-bottom: 0px;
-    outline: 0px;
-}
-
 .periodLeft, .periodRight {
-    float: right;
+    float: left;
     box-sizing: border-box;
     height: 44px;
-    width: 44px;
-    background-color: #F4F4F4;
+    width: 55px;
+    background-color: #FFF;
     border: 1px solid #DBDBDB;
     padding: 0.5em;
     padding-top: 14px;
@@ -655,6 +666,7 @@ td.invalid #behaviorTypeInput li {
     font-size: 11pt;
     color: #58585b;
     margin-bottom: 24px;
+    text-align: center;
 }
 
 .periodLeft.disabled, .periodRight.disabled {
@@ -671,21 +683,23 @@ td.invalid #behaviorTypeInput li {
 }
 
 #periodicBehaviors select {
-    float: right;
+    float: left;
     font-size: 11pt;
     margin-bottom: 24px;
-    width: 110px;
+    width: 191px;
     height: 44px;
     overflow: hidden;
-    background: #F4F4F4;
+    background: #FFF;
     -webkit-appearance: none;
     border-radius: 0px;
     border-top: 1px solid #DBDBDB;
     border-bottom: 1px solid #DBDBDB;
     border-left: 0px;
     border-right: 0px;
-    padding-left: 19px;
+    padding-left: 68px;
     outline: none;
+    color: #58585b;
+    font-family: aller_lightregular;
 }
 
 #periodBehaviorCounters {
@@ -712,6 +726,7 @@ td.invalid #behaviorTypeInput li {
 
 #behaviorIncidentsTable .comment {
     width: 34%;
+    position: relative;
 }
 
 #behaviorIncidentsTable .delete {
@@ -720,8 +735,8 @@ td.invalid #behaviorTypeInput li {
 }
 
 #behaviorIncidentsTable .deleteCircle {
-    width: 15px;
-    height: 15px;
+    width: 18px;
+    height: 18px;
     border-radius: 20px;
     background-color: #8C8C8C;
     margin: 0px 0px 0px 5px;
@@ -737,7 +752,7 @@ td.invalid #behaviorTypeInput li {
 
 #behaviorIncidentsTable .deleteBtn {
     position: absolute;
-    right: 77px;
+    right: 12px;
     width: 72px;
     height: 23px;
     margin-top: -6px;
@@ -809,7 +824,7 @@ form[name=incident].dimmed {
 
 form[name=analyze] {
     position: relative;
-    margin-top: 40px;
+    margin-top: -20px;
 }
 
 form[name=analyze] select {
@@ -840,6 +855,7 @@ form[name=analyze] span span:last-child {
 
 .studentName {
     text-transform: uppercase;
+    margin-bottom: 61px;
 }
 
 .absentLabel {
@@ -850,6 +866,6 @@ form[name=analyze] span span:last-child {
     text-transform: uppercase;
     position: absolute;
     font-size: 15pt;
-    margin-top: -10px;
+    margin-top: -65px;
     font-family: allerbold;
 }
