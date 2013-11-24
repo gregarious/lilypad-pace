@@ -15,9 +15,12 @@
 
 /* App universal */
 
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
 body {
-    width: 1024px;
-    height: 748px;
     overflow: hidden;
     color: #58585b;
     font-family: aller_lightregular;
@@ -213,6 +216,33 @@ tr th {
 .editIncident.highlighted {
     background-color: #8C8C8C;
     color: #FFF;
+}
+
+#orientationNotice {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: #47BDA5;
+    z-index: 300;
+    color: #FFF;
+    box-sizing: border-box;
+    padding-top: 25%;
+}
+
+#orientationNotice h2 {
+    float: none;
+    text-align: center;
+}
+
+@media only screen and (orientation : portrait) {
+    #orientationNotice {
+        display: block;
+    }
 }
 
 #login {
@@ -649,7 +679,6 @@ td.invalid #behaviorTypeInput li {
 
 #periodicBehaviors {
     text-align: right;
-    margin-top: -19px;
 }
 
 .periodLeft, .periodRight {
@@ -863,9 +892,7 @@ form[name=analyze] span span:last-child {
     text-align: left;
     margin: 0px;
     padding: 0px;
-    text-transform: uppercase;
     position: absolute;
     font-size: 15pt;
-    margin-top: -65px;
-    font-family: allerbold;
+    margin-top: -55px;
 }

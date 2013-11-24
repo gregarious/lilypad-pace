@@ -4,17 +4,17 @@
         <select name="period" ng-model="periodSelector.selectedPeriodNumber" ng-options="pd.value as pd.label for pd in periodSelector.availablePeriods"></select>
         <div class="periodRight" ng-click="nextPeriod()" ng-class="{ disabled: periodSelector.selectedPeriodNumber == timeTracker.finalPeriodNumber }">&gt;</div>
     </div>
-    <div id="periodBehaviorCounters" ng-class="{disabled: (!selectedPeriod.get('isEligible') || !student.isPresent()) }">
-        <counter class="bs" value="selectedPeriod.get('points').bs" dec="true" dec-fn="decrement('bs')" max="2"
+    <div id="periodBehaviorCounters">
+        <counter class="bs" value="selectedPeriod.get('points').bs || 2" dec="true" dec-fn="decrement('bs')" max="2"
                  min="0"
                  text="Be Safe" id="student.get('id')"></counter>
-        <counter class="kw" value="selectedPeriod.get('points').kw" dec="true" dec-fn="decrement('kw')" max="2"
+        <counter class="kw" value="selectedPeriod.get('points').kw || 2" dec="true" dec-fn="decrement('kw')" max="2"
                  min="0"
                  text="Kind Words" id="student.get('id')"></counter>
-        <counter class="cw" value="selectedPeriod.get('points').cw" dec="true" dec-fn="decrement('cw')" max="2"
+        <counter class="cw" value="selectedPeriod.get('points').cw || 2" dec="true" dec-fn="decrement('cw')" max="2"
                  min="0"
                  text="Complete Work" id="student.get('id')"></counter>
-        <counter class="fd" value="selectedPeriod.get('points').fd" dec="true" dec-fn="decrement('fd')" max="2"
+        <counter class="fd" value="selectedPeriod.get('points').fd || 2" dec="true" dec-fn="decrement('fd')" max="2"
                  min="0"
                  text="Follow Directions" id="student.get('id')"></counter>
     </div>

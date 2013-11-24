@@ -126,7 +126,9 @@
 
 </head>
 <body>
-<!-- TODO: We need to actually implement authentication; card #48 -->
+<div id="orientationNotice">
+    <h2>Please rotate your iPad to landscape to use Lilypad.</h2>
+</div>
 <div id="login" ng-controller="LoginPromptCtrl" ng-hide="authenticated">
     <div class="wrapper">
         <div id="lilypadLogo"></div>
@@ -139,7 +141,6 @@
     </div>
 </div>
 <div id="sidebar" ng-controller="MenuCtrl">
-    <!-- TODO: fix touching extreme left side of menu item; card #65 -->
     <div id="menu">
         <div id="classroomList" ng-controller="MenuClassroomListCtrl" ng-class="{visible: (mainViewState.classroomCollection.length > 1) && (mainViewState.selectedClassroom == null)}">
             <ul>
@@ -193,7 +194,7 @@
             <div class="mainContent" ng-class="{disabled: (mainViewState.editingAttendance)}" ng-controller="MainStudentCtrl">
                 <main-tabs>
                     <h1 class="studentName"><strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}</h1>
-                    <h3 class="absentLabel" ng-show="!student.isPresent()">Absent</h3>
+                    <h3 class="absentLabel" ng-show="!student.isPresent()">Absent this period</h3>
                     <main-pane title="Collect">
                         <div ng-controller="MainStudentCollectCtrl">
                             <div ng-include="'frontEnd/main/student/collect.html'"></div>
