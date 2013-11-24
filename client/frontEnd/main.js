@@ -1,6 +1,16 @@
 // maintains viewstate for main content area
 app.controller('MainCtrl', function ($scope, mainViewState) {
     $scope.mainViewState = mainViewState;
+    $scope.schoolDayEnded = function() {
+        var d = new Date();
+
+        // if after 3 pm
+        if (d.getHours() >= 15) {
+            return true;
+        } else {
+            return false;
+        }
+    };
 });
 
 // directive for the navigation tabs

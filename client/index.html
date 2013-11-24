@@ -194,7 +194,12 @@
             <div class="mainContent" ng-class="{disabled: (mainViewState.editingAttendance)}" ng-controller="MainStudentCtrl">
                 <main-tabs>
                     <h1 class="studentName"><strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}</h1>
-                    <h3 class="absentLabel" ng-show="!student.isPresent()">Absent this period</h3>
+                    <h3 class="absentLabel">
+                        <!-- if a previous period active -->
+                        <span ng-show="!student.isPresent() && !schoolDayEnded()">Currently Absent</span>
+                        <!-- if a the school day has ended -->
+                        <span ng-show="schoolDayEnded()">School day ended</span>
+                    </h3>
                     <main-pane title="Collect">
                         <div ng-controller="MainStudentCollectCtrl">
                             <div ng-include="'frontEnd/main/student/collect.html'"></div>
