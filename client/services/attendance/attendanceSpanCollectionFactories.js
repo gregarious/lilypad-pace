@@ -23,11 +23,11 @@ angular.module('pace').factory('attendanceSpanCollectionFactories', function(Bac
             }
 
             var baseUrl = 'students/' + student.id + "/attendancespans/";
-            var queryString = rangeArgs.length ? rangeArgs.join('&') : '';
+            var queryString = rangeArgs.length ? ("?" + rangeArgs.join('&')) : '';
 
             var AttendanceSpanCollection = Backbone.Collection.extend({
                 model: AttendanceSpan,
-                url: apiConfig.toAPIUrl(baseUrl + queryString),
+                url: apiConfig.toAPIUrl(baseUrl) + queryString,
                 comparator: function(span) {
                     if (span.has('timeIn')) {
                         return -(moment(span.get('date') + 'T' + span.get('timeIn')).toDate());

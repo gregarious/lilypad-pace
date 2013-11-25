@@ -29,7 +29,7 @@ angular.module('pace').service('periodicRecordDataStore', function(_, timeTracke
         var TodayPeriodicRecordCollection = Backbone.Collection.extend({
             model: PeriodicRecord,
 
-            url: apiConfig.toAPIUrl(baseUrl + '?date=' + today),
+            url: apiConfig.toAPIUrl(baseUrl) + '?date=' + today,
 
             comparator: 'period',
 
