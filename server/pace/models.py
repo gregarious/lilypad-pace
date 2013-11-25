@@ -15,7 +15,7 @@ class Classroom(models.Model):
 class Student(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100,
-        help_text="(or partial last name)")
+        help_text="(or partial last name)", blank=True)
 
     classroom = models.ForeignKey(Classroom, null=True, blank=True, related_name='students')
 
@@ -53,7 +53,7 @@ class PeriodicRecord(models.Model):
 
     def register_point_loss(self, point_loss):
         '''
-        Decrement the point value corresponding to the given point loss. 
+        Decrement the point value corresponding to the given point loss.
         `point_loss.point_type` should be a constant from the POINT_CATEGORIES_*
         choices.
         '''
@@ -66,7 +66,7 @@ class PeriodicRecord(models.Model):
 
     def deregister_point_loss(self, point_loss):
         '''
-        Increment the point value corresponding to the given point loss. 
+        Increment the point value corresponding to the given point loss.
         `point_loss.point_type` should be a constant from the POINT_CATEGORIES_*
         choices.
         '''
@@ -75,7 +75,7 @@ class PeriodicRecord(models.Model):
             self._increment(type_field_name)
             self.save()
         else:
-            raise ValueError('Unsupported point_type: %s' % (str(point_loss.point_type)))        
+            raise ValueError('Unsupported point_type: %s' % (str(point_loss.point_type)))
 
 # constant values for point loss type
 POINT_CATEGORIES_KW = 'kw'
