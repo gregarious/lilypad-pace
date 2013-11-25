@@ -7,7 +7,7 @@
  *     PeriodicRecords applicable to the current date
  */
 
-angular.module('pace').service('periodicRecordDataStore', function(_, timeTracker, PeriodicRecord, $q) {
+angular.module('pace').service('periodicRecordDataStore', function(_, timeTracker, PeriodicRecord, $q, apiConfig) {
 
     /**
      * Factory to return a new Collection of PeriodicRecords for a
@@ -24,11 +24,12 @@ angular.module('pace').service('periodicRecordDataStore', function(_, timeTracke
         }
 
         var today = timeTracker.getTimestampAsMoment().format('YYYY-MM-DD');
+        var baseUrl = 'students/' + student.id + '/periodicrecords';
 
         var TodayPeriodicRecordCollection = Backbone.Collection.extend({
             model: PeriodicRecord,
 
-            url: student.get('periodicRecordsUrl') + '?date=' + today,
+            url: apiConfig.toAPIUrl(baseUrl + '?date=' + today),
 
             comparator: 'period',
 

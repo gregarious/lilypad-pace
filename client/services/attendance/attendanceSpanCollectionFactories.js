@@ -1,7 +1,7 @@
 /**
  * Provides factories to create new Collections of AttendanceSpan objects
  */
-angular.module('pace').factory('attendanceSpanCollectionFactories', function(Backbone, AttendanceSpan, moment) {
+angular.module('pace').factory('attendanceSpanCollectionFactories', function(Backbone, AttendanceSpan, moment, apiConfig) {
     return {
         /**
          * Returns a new Collection of AttendanceSpans for a given student
@@ -22,9 +22,12 @@ angular.module('pace').factory('attendanceSpanCollectionFactories', function(Bac
                 rangeArgs.push('date__lt=' + moment(endDate).format());
             }
 
+            var baseUrl = 'students/' + student.id + "/attendancespans/";
+            var queryString = rangeArgs.length ? rangeArgs.join('&') : '';
+
             var AttendanceSpanCollection = Backbone.Collection.extend({
                 model: AttendanceSpan,
-                url: student.get('attendanceSpansUrl') + (rangeArgs.length ? rangeArgs.join('&') : ''),
+                url: apiConfig.toAPIUrl(baseUrl + queryString),
                 comparator: function(span) {
                     if (span.has('timeIn')) {
                         return -(moment(span.get('date') + 'T' + span.get('timeIn')).toDate());

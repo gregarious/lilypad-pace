@@ -16,9 +16,11 @@ angular.module('pace').service('behaviorIncidentTypeDataStore', function(Behavio
             throw Error("Valid student instance is required.");
         }
 
+        var baseUrl = 'students/' + student.id + "/behaviortypes/";
+
         var BehaviorTypeCollection = Backbone.Collection.extend({
             model: BehaviorIncidentType,
-            url: student.get('behaviorTypesUrl'),
+            url: apiConfig.toAPIUrl(baseUrl),
         });
 
         return new BehaviorTypeCollection();

@@ -7,7 +7,7 @@
  * - createIncident: Creates and POSTs a new incident
  */
 
-angular.module('pace').service('behaviorIncidentDataStore', function(moment, timeTracker, BehaviorIncident, _, $q) {
+angular.module('pace').service('behaviorIncidentDataStore', function(moment, timeTracker, BehaviorIncident, _, $q, apiConfig) {
 
     /**
      * Returns a new Collection of BehaviorIncidents for today's date.
@@ -24,16 +24,16 @@ angular.module('pace').service('behaviorIncidentDataStore', function(moment, tim
         var startDate = moment(date).startOf('day');
         var endDate = moment(date).add(1, 'day').startOf('day');
 
+        var baseUrl = 'students/' + student.id + "/behaviorincidents/";
         var queryString = '?started_at__gte=' + startDate.format() + '&started_at__lt=' + endDate.format();
 
-        var url = student.get('behaviorIncidentsUrl') + queryString;
         var storeKey = 'BehaviorIncidents-' + student.id;
 
         var today = moment(date).format('YYYY-MM-DD');
 
         var TodayIncidentCollection = Backbone.Collection.extend({
             model: BehaviorIncident,
-            url: url
+            url: apiConfig.toAPIUrl(baseUrl + querystring)
         });
 
         return new TodayIncidentCollection();

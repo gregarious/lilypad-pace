@@ -7,7 +7,7 @@
  * - createPointLoss: Creates and POSTs a new PointLoss
  */
 
-angular.module('pace').service('pointLossDataStore', function(moment, timeTracker, PointLoss, _, mixpanel) {
+angular.module('pace').service('pointLossDataStore', function(moment, timeTracker, PointLoss, _, mixpanel, apiConfig) {
 
     /**
      * Returns a new Collection of PointLosses for today's date.
@@ -25,16 +25,16 @@ angular.module('pace').service('pointLossDataStore', function(moment, timeTracke
         var endDate = moment(date).add(1, 'day').startOf('day');
 
         // TODO: move this logic up to the server
+        var baseUrl = 'students/' + student.id + '/pointlosses/';
         var queryString = '?periodic_record__date__gte=' + startDate.format() + '&periodic_record__date__lt=' + endDate.format();
 
-        var url = student.get('pointLossesUrl') + queryString;
         var storeKey = 'PointLosses-' + student.id;
 
         var today = moment(date).format('YYYY-MM-DD');
 
         var TodayPointLossCollection = Backbone.Collection.extend({
             model: PointLoss,
-            url: url,
+            url: apiConfig.toAPIUrl(baseUrl + queryString),
         });
 
         return new TodayPointLossCollection();
