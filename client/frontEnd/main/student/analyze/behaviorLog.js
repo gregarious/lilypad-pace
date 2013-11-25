@@ -2,8 +2,6 @@
 app.controller('MainStudentAnalyzeBehaviorLogCtrl', function ($scope, mainViewState, logEntryDataStore) {
     $scope.data = {};
 
-    // state object for behavior modal
-    $scope.behaviorModalState.active = true;
     $scope.showBehaviorModel = function() {
         $scope.behaviorModalState.active = true;
     };
@@ -21,11 +19,12 @@ app.controller('MainStudentAnalyzeBehaviorLogCtrl', function ($scope, mainViewSt
      * Hooks $scope.behaviorLogCollection up to the given student's data.
      */
     function setBehaviorLogForStudent(student) {
-        if (student) {
-            $scope.behaviorLogCollection = logEntryDataStore.getForStudent(student);
-        }
-        else {
+        //if (student) {
+        //    // Greg, why is getForStudent method commented out in logEntryDataStore?
+        //    $scope.behaviorLogCollection = logEntryDataStore.getForStudent(student);
+        //
+        //else {
             $scope.behaviorLogCollection = null;
-        }
+        //}
     }
 });
