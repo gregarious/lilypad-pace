@@ -24,7 +24,7 @@ angular.module('pace').service('periodicRecordDataStore', function(_, timeTracke
         }
 
         var today = timeTracker.getTimestampAsMoment().format('YYYY-MM-DD');
-        var baseUrl = 'students/' + student.id + '/periodicrecords';
+        var baseUrl = 'students/' + student.id + '/periodicrecords/';
 
         var TodayPeriodicRecordCollection = Backbone.Collection.extend({
             model: PeriodicRecord,
