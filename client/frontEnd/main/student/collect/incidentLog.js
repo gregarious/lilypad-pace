@@ -84,8 +84,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
         }
 
         logEntry.destroy();
-
-        $scope.confirmDeleteFor = null;
+        $scope.editIncidents();
     };
 
     // for purposes of watching the selected student
