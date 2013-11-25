@@ -19,8 +19,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 
 from lilypad_server.settings.base import *
 
-# TODO: change this to false after successful deploy
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 # The next two settings should match the key/value pair set in
