@@ -127,7 +127,7 @@ class PointLossList(generics.ListCreateAPIView):
                 queryset = queryset.filter(**{key: parser.parse(iso_string)})
         return queryset
 
-class PointLossDetail(generics.RetrieveDestroyAPIView):
+class PointLossDetail(generics.RetrieveUpdateDestroyAPIView):
     '''
     Note that a side effect of a DELETE call here is the incrementing
     of the related PeriodicRecord point for the corresponding type.
