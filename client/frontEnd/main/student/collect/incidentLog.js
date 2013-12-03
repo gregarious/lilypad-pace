@@ -36,7 +36,7 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
 
             $scope.incidentFormData.typeModel = incident.get('type');
 
-            $scope.incidentFormData.startedAt = moment(incident.get('startedAt')).format("HH:mm");
+            $scope.incidentFormData.startedAt = moment(incident.getOccurredAt()).format("HH:mm");
             $scope.incidentFormData.comment = incident.get('comment');
 
             if (incident.attributes.endedAt) {
