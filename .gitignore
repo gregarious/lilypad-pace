@@ -8,3 +8,6 @@
 
 # AWS
 .elasticbeanstalk/
+
+# virtualenv
+venv/

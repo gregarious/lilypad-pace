@@ -34,7 +34,7 @@ div {
     -webkit-user-select: none;
 }
 
-a:link { 
+a:link {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
@@ -203,12 +203,12 @@ tr th {
     outline: 0px;
 }
 
-.newIncident { 
+.newIncident {
     float: right;
     outline: 0px;
 }
 
-.editIncident { 
+.editIncident {
     float: left;
     outline: 0px;
 }
@@ -249,7 +249,7 @@ tr th {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;   
+    right: 0;
     bottom: 0;
     width: 1024px;
     height: 748px;
@@ -376,7 +376,7 @@ tr th {
 
 #classroomList.visible {
     -webkit-transform: translate(0px);
-} 
+}
 
 #main {
     box-sizing: border-box;
@@ -592,7 +592,7 @@ form .buttonGroup button {
     border-right: 1px solid #DBDBDB;
     background: #F1F2F2;
     width: 105px;
-} 
+}
 
 .modal .header button:last-child {
     float: right;
@@ -789,6 +789,42 @@ td.invalid #behaviorTypeInput li {
     background-color: #DC6564;
     color: #FFF;
     text-align: center;
+}
+
+
+#rules{
+    margin-top: 20px;
+    width: 100%;
+    display: block;
+    font-size: 0;
+}
+
+#rules .rule{
+    display: inline-block;
+    vertical-align: text-top;
+    box-sizing: border-box;
+    width: 20%;
+    height: 160px;
+    padding: 30px 15px;
+    border-right: 1px solid #DDD;
+    font-size: 14px;
+    text-align: center;
+}
+#rules .rule:first-child{
+    border-left: 1px solid #DDD;
+}
+#rules .rule .rulename{
+    font-size: 16px;
+}
+#rules .rule .percentage{
+    font-size: 24px;
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+
+#rules .rule.selected{
+    background-color: #EEE;
+    color: black;
 }
 
 .noData {
