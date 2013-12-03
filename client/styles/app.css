@@ -331,6 +331,7 @@ tr th {
     width: 280px;
     height: 748px;
     border-right: 1px solid #DBDBDB;
+    margin-left: -1px;
 }
 
 #logo {
@@ -382,7 +383,7 @@ tr th {
     box-sizing: border-box;
     position: relative;
     float: left;
-    width: 744px;
+    width: 745px;
     height: 100%;
 }
 
