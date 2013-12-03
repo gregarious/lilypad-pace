@@ -890,6 +890,7 @@ form[name=analyze] span span:last-child {
 .absentLabel {
     background: none;
     text-align: left;
+    width: 300px;
     margin: 0px;
     padding: 0px;
     position: absolute;

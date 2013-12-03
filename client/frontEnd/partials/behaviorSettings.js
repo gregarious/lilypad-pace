@@ -16,8 +16,6 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
     $scope.missingBehavior = false;
     $scope.missingBehaviorType = false;
 
-    // TODO: Should be doing responsive form validation here
-    // TODO: Should confirm new incidents for students marked absent; card #76
     $scope.submitIncident = function () {
         // Validate presence of behavior type
         if (typeof $scope.incidentFormData.typeModel === "undefined") {
@@ -49,12 +47,17 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
 
         // If editing existing incident
         if ($scope.currentIncidentEditing) {
-            $scope.currentIncidentEditing.set('startedAt', $scope.incidentFormData.startedAt);
             $scope.currentIncidentEditing.set('type', $scope.incidentFormData.typeModel);
             $scope.currentIncidentEditing.set('comment', $scope.incidentFormData.comment);
 
-            if ($scope.incidentFormData.endedAt) {
-                $scope.currentIncidentEditing.set('endedAt', $scope.incidentFormData.endedAt);
+            if ($scope.currentIncidentEditing.has('periodicRecord')) {
+                $scope.currentIncidentEditing.set('occurredAt', $scope.incidentFormData.startedAt);
+            } else {
+                $scope.currentIncidentEditing.set('startedAt', $scope.incidentFormData.startedAt);
+                
+                if ($scope.incidentFormData.endedAt) {
+                    $scope.currentIncidentEditing.set('endedAt', $scope.incidentFormData.endedAt);
+                }
             }
 
             $scope.currentIncidentEditing.save();
