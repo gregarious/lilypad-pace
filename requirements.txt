@@ -1,2 +1,0 @@
-# AWS needs this file to exist. We effectively redirect to production requirements here.
--r ./requirements/production_aws.txt
