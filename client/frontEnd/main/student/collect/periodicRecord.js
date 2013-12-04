@@ -1,5 +1,5 @@
 
-app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, periodicRecordDataStore, logEntryDataStore, timeTracker, _) {
+app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, periodicRecordDataStore, logEntryDataStore, timeTracker, _, $timeout) {
     /** $scope initializing  **/
 
     // NOTE!!!
@@ -44,20 +44,24 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, periodi
         configurePeriodSelector();
     });
 
-    // Advances to next period
+    // Moves to previous period
     $scope.prevPeriod = function() {
         if ($scope.periodSelector.selectedPeriodNumber > 1) {
             $scope.periodSelector.selectedPeriodNumber = $scope.periodSelector.selectedPeriodNumber - 1;
         }
     };
 
-    // Moves to previous period
+    // Moves to next period
     $scope.nextPeriod = function() {
         if ($scope.enableMoveToNewPeriod()) {
-            var confirmPointReview = confirm("Are you sure you want to end period " + $scope.periodSelector.selectedPeriodNumber + "?");
-            if (confirmPointReview == true) {
-                timeTracker.progressToNextPeriod();
-            }
+            // wrap in immediately timeout as a work-around to mobile Safari
+            // double-tap bug (see https://github.com/jquery/jquery-mobile/issues/4686)
+            $timeout(function() {
+                var confirmPointReview = confirm("Are you sure you want to end period " + $scope.periodSelector.selectedPeriodNumber + "?");
+                if (confirmPointReview == true) {
+                    $scope.timeTracker.progressToNextPeriod();
+                }
+            }, 0);
         } else {
             if ($scope.periodSelector.selectedPeriodNumber + 1 <= $scope.periodSelector.maxPeriodValue) {
                 $scope.periodSelector.selectedPeriodNumber = $scope.periodSelector.selectedPeriodNumber + 1;
