@@ -9,8 +9,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 
 from lilypad_server.settings.base import *
 
-# TODO: make False
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 # static root is directory above repository, collectstatic moves things there
