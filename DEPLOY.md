@@ -31,9 +31,9 @@
 
     ## SSL configuration (disabled currently) ##
     # SSLEngine on
-    # SSLCertificateKeyFile [[SITE-ROOT]]/ssl/ssl.key/server.key
-    # SSLCertificateFile [[SITE-ROOT]]/ssl/ssl.crt/pace.lilypadcmu.com_cert.cer
-    # SSLCertificateChainFile [[SITE-ROOT]]/ssl.crt/pace.lilypadcmu.com_interm.cer
+    # SSLCertificateKeyFile /usr0/wwwsrv/pace.lilypadcmu.com/ssl/ssl.key/pace.lilypadcmu.com.key
+    # SSLCertificateFile /usr0/wwwsrv/pace.lilypadcmu.com/ssl/ssl.crt/pace.lilypadcmu.com_cert.cer
+    # SSLCertificateChainFile /usr0/wwwsrv/pace.lilypadcmu.com/ssl/ssl.crt/pace.lilypadcmu.com_interm.cer
 
     ## App-specific configuration ##
 
