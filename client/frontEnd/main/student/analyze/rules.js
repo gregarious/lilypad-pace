@@ -1,5 +1,5 @@
 // controller for rules
-app.controller('MainStudentAnalyzeRulesCtrl', function ($scope, mainViewState) {
+app.controller('MainStudentAnalyzeRulesCtrl', function ($scope, mainViewState, rulesDataStore, timeTracker, _, moment) {
     $scope.data = {};
 
     /** Listeners to ensure view stays in sync with mainViewState **/
@@ -9,30 +9,59 @@ app.controller('MainStudentAnalyzeRulesCtrl', function ($scope, mainViewState) {
     setRulesForStudent($scope.mainViewState.selectedStudent);
 
     function setRulesForStudent(student) {
+      rulesDataStore.getDailyRulePointTotals(student).then(function(data) {
+          var chartData = {
+            categories: [
+              'Follow Directions',
+              'Complete Work',
+              'Kind Words',
+              'Be Safe'],
+            points: packageChartData(data)
+          };
+          drawVisualization(chartData);
+        }, function(err) {
+          console.error(err); // TODO: display error state to user
+        }
+      );
+    }
 
-      // Fake student data
-      var data = {
-        categories: [
-          'Follow Directions',
-          'Complete Work',
-          'Kind Words',
-          'Be Safe'],
-        points: [
-          ['10/5', null, 7, 9, 13, 17],
-          ['10/6', null, 7, 15, 10, 18],
-          ['10/7', null, 8, 18, 9, 18],
-          ['10/8', null, 4, 18, 10, 18],
-          ['10/9', 'Behavioral Intervention', 2, 16, 11, 20],
-          ['10/10', null, 3, 16, 11, 16],
-          ['10/11', null, null, null, null, null],
-          ['10/12', null, 3, 16, 12, 10],
-          ['10/13', 'Medication Change', 1, 17, 13, 20],
-          ['10/14', null, 1, 18, 15, 19],
-          ['10/15', null, 1, 18, 15, 19]
-        ]
-      };
+    /**
+     * Transforms a data array from a rulesDataStore.getDailyRulePointTotals
+     * call into a format friendly for the chart API.
+     *
+     * If startDate is omitted, all of the date range will be included. If
+     * endData is omitted, it defaults to today.
+     *
+     * @param  {Array} totalsData  (see description)
+     * @param  {[type]} startDate  start date to include in range (inclusive) (optional)
+     * @param  {[type]} endDate    end date to include in range (inclusive) (optional)
+     *
+     * @return {Array}
+     */
+    function packageChartData(totalsData, startDate, endDate) {
+      endDate = endDate || timeTracker.getTimestamp();
 
-      drawVisualization(data);
+      var dataInRange;
+      if (startDate) {
+        dataInRange = _.filter(totalsData, function(data) {
+          return data.dateString >= moment(startDate).format('YYYY-MM-DD') &&
+                 data.dateString <= moment(endDate).format('YYYY-MM-DD');
+        });
+      }
+      else {
+        dataInRange = totalsData;
+      }
+
+      return _.map(dataInRange, function(data) {
+        return [
+          moment(data.dateString).format('MM/DD'),
+          null,   // TODO: add phase lines comments here?
+          data.fd.actual,
+          data.cw.actual,
+          data.kw.actual,
+          data.bs.actual
+        ];
+      });
     }
 
     function drawVisualization(data) {
