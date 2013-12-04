@@ -30,6 +30,12 @@
     <script src="lib/backbone-relational.js"></script>
     <script src="lib/moment.js"></script>
 
+    <!-- google visualization library -->
+    <script src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+        google.load('visualization', '1.0', {'packages':['corechart']});
+    </script
+
     <!-- modules -->
     <script src="modules/underscore.js"></script>
     <script src="modules/backbone.js"></script>
@@ -92,6 +98,8 @@
     <script src="services/common/apiConfig.js"></script>
     <script src="services/collectDataStore.js"></script>
 
+    <script src="services/rules/rulesDataStore.js"></script>
+
     <!----------------------------->
     <!-- CONTROLLERS -->
     <!----------------------------->
@@ -115,6 +123,7 @@
     <!-- Main/analyze controllers -->
     <script src="frontEnd/main/student/analyze.js"></script>
     <script src="frontEnd/main/student/analyze/attendanceLog.js"></script>
+    <script src="frontEnd/main/student/analyze/rules.js"></script>
     <script src="frontEnd/main/student/analyze/behaviorLog.js"></script>
     <script src="frontEnd/main/student/analyze/treatmentPeriod.js"></script>
 
@@ -210,7 +219,7 @@
                             <div ng-include="'frontEnd/main/student/analyze.html'"></div>
                         </div>
                     </main-pane>
-                   <!-- 
+                   <!--
                    <main-pane title="Discuss">
                         <div ng-controller="MainStudentDiscussCtrl">
                             <div ng-include src="'frontEnd/main/student/discuss.html'"></div>
