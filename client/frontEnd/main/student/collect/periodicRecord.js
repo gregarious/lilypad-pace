@@ -54,6 +54,8 @@ app.controller('MainStudentCollectPeriodicRecordCtrl', function ($scope, periodi
     // Moves to next period
     $scope.nextPeriod = function() {
         if ($scope.enableMoveToNewPeriod()) {
+            // wrap in immediately timeout as a work-around to mobile Safari
+            // double-tap bug (see https://github.com/jquery/jquery-mobile/issues/4686)
             $timeout(function() {
                 var confirmPointReview = confirm("Are you sure you want to end period " + $scope.periodSelector.selectedPeriodNumber + "?");
                 if (confirmPointReview == true) {

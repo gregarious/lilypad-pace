@@ -42,6 +42,8 @@ app.controller('LoginPromptCtrl', function ($scope, sessionManager, mainViewStat
     }
 
     function logOut() {
+        // wrap in immediately timeout as a work-around to mobile Safari
+        // double-tap bug (see https://github.com/jquery/jquery-mobile/issues/4686)
         $timeout(function() {
             var confirmLogout = confirm("Are you sure you want to logout?");
             if (confirmLogout === true) {
