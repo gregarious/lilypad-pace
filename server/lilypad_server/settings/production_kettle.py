@@ -17,15 +17,4 @@ TEMPLATE_DEBUG = DEBUG
 STATIC_ROOT = os.path.join(
                 os.path.dirname(                    # Apache vhost site root (lilypadcmu.com/)
                     os.path.dirname(PROJECT_ROOT)),     # repo root
-                'static/')
-
-
-WSGIScriptAlias / /usr0/wwwsrv/lilypadcmu.com/lilypad-pace/server/lilypad_server/wsgi.py
-WSGIPythonPath /path/to/mysite.com
-
-<Directory /path/to/mysite.com/mysite>
-<Files wsgi.py>
-Order deny,allow
-Allow from all
-</Files>
-</Directory>
+                'assets/static/')
