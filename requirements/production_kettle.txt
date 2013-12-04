@@ -1,5 +1,5 @@
 # import the base requirements
 -r ./base.txt
 
-# AWS-specific requirements
+# Kettle-specific requirements
 MySQL-python==1.2.3
