@@ -61,7 +61,7 @@ Perform the following steps in the root site directory (currently `pace.lilypadc
         ServerName pace.lilypadcmu.com
         ErrorLog [[SITE-ROOT]]/var/log/apache.error.log
 
-        WSGIScriptAlias / [[SITE-ROOT]]/lilypad-pace/server/lilypad_server/wsgi.py
+        WSGIScriptAlias / [[SITE-ROOT]]/lilypad-pace/server/lilypad_server/wsgi_kettle.py
         WSGIPythonPath [[SITE-ROOT]]/lilypad-pace/server:[[SITE-ROOT]]/venv/lib/python2.7/site-packages
 
         # allow access to only root wsgi application file
