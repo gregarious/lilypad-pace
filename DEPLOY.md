@@ -52,7 +52,7 @@ Perform the following steps in the root site directory (currently `pace.lilypadc
 
     Then open up the new file in an editor and add the deployment-specific values described in the comments (`DJANGO_SETTINGS_MODULE`, `SECRET_KEY`, and `DATABASE_URL`).
 
-    This file is not part of the repository because it will contain secret values.
+    Finally, ensure the new file is not publically readable (e.g. `chmod 400 wsgi_kettle.py`). This file is not part of the repository because it will contain secret values.
 
 4. Create a virtual host entry for Apache with the following configuration settings. *Be sure to replace all of the [[SITE-ROOT]] tags with the root of the site directory.*
 
