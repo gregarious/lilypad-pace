@@ -9,8 +9,11 @@ SECRET_KEY = os.environ['SECRET_KEY']
 
 from lilypad_server.settings.base import *
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
+
+# required setting for production mode in Django 1.5+
+ALLOWED_HOSTS = ['pace.lilypadcmu.com',]
 
 # static root is directory above repository, collectstatic moves things there
 STATIC_ROOT = os.path.join(
