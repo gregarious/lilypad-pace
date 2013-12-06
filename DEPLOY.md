@@ -34,7 +34,7 @@ Perform the following steps in the root site directory (currently `pace.lilypadc
     certificate/key files necessary for SSL support to work (see the Apache host config template
     below for the file names).
 
-## Configure the application
+## Configure the application (all commands start in the site root dir)
 
 1. Check out the `deploy` branch:
 
@@ -43,10 +43,18 @@ Perform the following steps in the root site directory (currently `pace.lilypadc
 
 2. Install the required third party packages in the virtual env:
 
-        . ../venv/bin/activate
+        . venv/bin/activate
         pip install -r requirements/production_kettle.txt
 
-3. Create a virtual host entry for Apache with the following configuration settings. *Be sure to replace all of the tags in double square brackets (e.g. `[[SITE-ROOT]]`).*
+3. Create a new wsgi file and set the secret values. First copy the basic wsgi file:
+
+        cp lilypad-pace/server/lilypad_server/wsgi.py lilypad-pace/server/lilypad_server/wsgi_kettle.py
+
+    Then open up the new file in an editor and add the deployment-specific values described in the comments (`DJANGO_SETTINGS_MODULE`, `SECRET_KEY`, and `DATABASE_URL`).
+
+    This file is not part of the repository because it will contain secret values.
+
+4. Create a virtual host entry for Apache with the following configuration settings. *Be sure to replace all of the [[SITE-ROOT]] tags with the root of the site directory.*
 
         ## Basic vhost/wsgi config ##
 
@@ -87,7 +95,3 @@ Perform the following steps in the root site directory (currently `pace.lilypadc
         Order deny,allow
         Allow from all
         </Directory>
-
-        # environment variables
-        SetEnv DATABASE_URL [[DATABASE-CONNECTION-URL]]
-        SetEnv SECRET_KEY [[RANDOM-CHARACTER-STRING]]

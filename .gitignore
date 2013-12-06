@@ -8,3 +8,6 @@
 
 # AWS
 .elasticbeanstalk/
+
+# deployment-specific WSGI files
+wsgi_*.py

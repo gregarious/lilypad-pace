@@ -15,6 +15,15 @@ framework.
 """
 import os
 
+## Insert other deployment-specific env variables here ##
+#
+# (Note that all deployment-specific wsgi files are excluded from the
+# repository because they contain
+#
+# os.environ['DJANGO_SETTINGS_MODULE'] = "lilypad_server.settings.<deployment>"
+# os.environ['SECRET_KEY'] = "<RANDOM STRING>"
+# os.environ['DATABASE_URL'] = "<DB URL>""
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "lilypad_server.settings")
 
 # This application object is used by any WSGI server configured to use this
