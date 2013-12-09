@@ -65,18 +65,17 @@ app.controller('MainStudentAnalyzeRulesCtrl', function ($scope, mainViewState, r
     }
 
     function drawVisualization(data) {
-
         var chartOptions = {
           curveType: "function",
           width: 614,
           height: 250,
           chartArea: {left:50,top:15,width:564,height:200},
           vAxis: {
-            title: "Points Retained",
-            maxValue: 20 },
+          title: "Points Retained",
+          maxValue: 20 },
           hAxis: {
-            title: "Time",
-            maxAlternation: 1},
+          title: "Time",
+          maxAlternation: 1},
           lineWidth: 3,
           series: [
             {color: '#DA6666'},
@@ -97,5 +96,49 @@ app.controller('MainStudentAnalyzeRulesCtrl', function ($scope, mainViewState, r
         // Create and draw the visualization.
         var chartEl = document.getElementById('rules-visualization');
         new google.visualization.LineChart(chartEl).draw(table, chartOptions);
+
+        // Compute category totals
+        $scope.data.followDirections = { percentage: null, pointsAcquired: null, pointsTotal: null };
+        $scope.data.completeWork = { percentage: null, pointsAcquired: null, pointsTotal: null };
+        $scope.data.kindWords = { percentage: null, pointsAcquired: null, pointsTotal: null };
+        $scope.data.beSafe = { percentage: null, pointsAcquired: null, pointsTotal: null };
+        $scope.data.total = { percentage: null, pointsAcquired: null, pointsTotal: null };
+
+        for (var i=0; i<data.points.length; i++) {
+          for (var n=0; n<data.points[i].length; n++) {
+            if (n == 2) {
+              $scope.data.followDirections.pointsAcquired += data.points[i][n];
+              $scope.data.followDirections.pointsTotal += 20;
+              $scope.data.total.pointsAcquired += data.points[i][n];
+              $scope.data.total.pointsTotal += 20;
+            } 
+            else if (n == 3) {
+              $scope.data.completeWork.pointsAcquired += data.points[i][n];
+              $scope.data.completeWork.pointsTotal += 20;
+              $scope.data.total.pointsAcquired += data.points[i][n];
+              $scope.data.total.pointsTotal += 20;
+            }
+            else if (n == 4) {
+              $scope.data.kindWords.pointsAcquired += data.points[i][n];
+              $scope.data.kindWords.pointsTotal += 20;
+              $scope.data.total.pointsAcquired += data.points[i][n];
+              $scope.data.total.pointsTotal += 20;
+            }
+            else if (n == 5) {
+              $scope.data.beSafe.pointsAcquired += data.points[i][n];
+              $scope.data.beSafe.pointsTotal += 20;
+              $scope.data.total.pointsAcquired += data.points[i][n];
+              $scope.data.total.pointsTotal += 20;
+            }
+          }
+        }
+
+        $scope.data.followDirections.percentage = Math.round($scope.data.followDirections.pointsAcquired / $scope.data.followDirections.pointsTotal * 100);
+        $scope.data.completeWork.percentage = Math.round($scope.data.completeWork.pointsAcquired / $scope.data.completeWork.pointsTotal * 100);
+        $scope.data.kindWords.percentage = Math.round($scope.data.kindWords.pointsAcquired / $scope.data.kindWords.pointsTotal * 100);
+        $scope.data.beSafe.percentage = Math.round($scope.data.beSafe.pointsAcquired / $scope.data.beSafe.pointsTotal * 100);
+        $scope.data.total.percentage = Math.round($scope.data.total.pointsAcquired / $scope.data.total.pointsTotal * 100);
     }
+
+
 });
