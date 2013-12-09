@@ -62,7 +62,11 @@ Perform the following steps in the root site directory (currently `pace.lilypadc
         ErrorLog [[SITE-ROOT]]/var/log/apache.error.log
 
         WSGIScriptAlias / [[SITE-ROOT]]/lilypad-pace/server/lilypad_server/wsgi_kettle.py
-        WSGIPythonPath [[SITE-ROOT]]/lilypad-pace/server:[[SITE-ROOT]]/venv/lib/python2.7/site-packages
+        WSGIDaemonProcess pace.lilypadcmu.com python-path=[[SITE-ROOT]]/lilypad-pace/server:[[SITE-ROOT]]/venv/lib/python2.7/site-packages
+        WSGIProcessGroup pace.lilypadcmu.com
+
+        # necessary to use django-rest-framework header-based auth
+        WSGIPassAuthorization On
 
         # allow access to only root wsgi application file
         <Directory [[SITE-ROOT]]/lilypad-pace/server/lilypad_server>
@@ -74,9 +78,9 @@ Perform the following steps in the root site directory (currently `pace.lilypadc
 
         ## SSL configuration ##
         SSLEngine on
-        SSLCertificateKeyFile /usr0/wwwsrv/pace.lilypadcmu.com/ssl/ssl.key/pace.lilypadcmu.com.key
-        SSLCertificateFile /usr0/wwwsrv/pace.lilypadcmu.com/ssl/ssl.crt/pace.lilypadcmu.com_cert.cer
-        SSLCertificateChainFile /usr0/wwwsrv/pace.lilypadcmu.com/ssl/ssl.crt/pace.lilypadcmu.com_interm.cer
+        SSLCertificateKeyFile [[SITE-ROOT]]/ssl/ssl.key/pace.lilypadcmu.com.key
+        SSLCertificateFile [[SITE-ROOT]]/ssl/ssl.crt/pace.lilypadcmu.com_cert.cer
+        SSLCertificateChainFile [[SITE-ROOT]]/ssl/ssl.crt/pace.lilypadcmu.com_interm.cer
 
         ## App-specific configuration ##
 
