@@ -1,4 +1,4 @@
-app.controller('LoginPromptCtrl', function ($scope, sessionManager, mainViewState, classroomDataStore, mixpanel) {
+app.controller('LoginPromptCtrl', function ($scope, sessionManager, mainViewState, classroomDataStore, mixpanel, $timeout) {
     /** $scope interface **/
 
     $scope.login = {};
@@ -42,16 +42,20 @@ app.controller('LoginPromptCtrl', function ($scope, sessionManager, mainViewStat
     }
 
     function logOut() {
-        var confirmLogout = confirm("Are you sure you want to logout?");
-        if (confirmLogout === true) {
-            sessionManager.clearSession();
-            $scope.authenticated = false;
-            $scope.login.username = null;
-            $scope.login.password = null;
-            mainViewState.selectedStudent = null;
-            mainViewState.selectedClassroom = null;
-            mainViewState.editingAttendance = false;
-        }
+        // wrap in immediately timeout as a work-around to mobile Safari
+        // double-tap bug (see https://github.com/jquery/jquery-mobile/issues/4686)
+        $timeout(function() {
+            var confirmLogout = confirm("Are you sure you want to logout?");
+            if (confirmLogout === true) {
+                sessionManager.clearSession();
+                $scope.authenticated = false;
+                $scope.login.username = null;
+                $scope.login.password = null;
+                mainViewState.selectedStudent = null;
+                mainViewState.selectedClassroom = null;
+                mainViewState.editingAttendance = false;
+            }
+        }, 0);
     }
 
     $scope.$on('logOut', function() {
