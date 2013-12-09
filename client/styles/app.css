@@ -398,6 +398,7 @@ tr th {
     background: rgba(255,255,255,0.9);
     border-bottom: 1px solid #DBDBDB;
     height: 43px;
+    z-index: 1000;
 }
 
 .mainTabs {
@@ -422,6 +423,7 @@ tr th {
     height: 652px;
     padding-top: 95px;
     overflow-y: scroll;
+    position: relative;
     /*-webkit-overflow-scrolling: touch;*/
 }
 
@@ -676,6 +678,7 @@ td.invalid #behaviorTypeInput li {
 .periodSwitcher {
     position: absolute;
     top: 0px;
+    z-index: 20000;
 }
 
 #periodicBehaviors {
@@ -792,7 +795,6 @@ td.invalid #behaviorTypeInput li {
     text-align: center;
 }
 
-
 #rules{
     margin-top: 20px;
     width: 100%;
@@ -811,12 +813,15 @@ td.invalid #behaviorTypeInput li {
     font-size: 14px;
     text-align: center;
 }
+
 #rules .rule:first-child{
     border-left: 1px solid #DDD;
 }
+
 #rules .rule .rulename{
     font-size: 16px;
 }
+
 #rules .rule .percentage{
     font-size: 24px;
     margin-top: 20px;
@@ -833,6 +838,36 @@ td.invalid #behaviorTypeInput li {
     padding-top: 27px;
     height: 48px;
     color: #98989F;
+}
+
+.treatmentReport .divider {
+    border-bottom: 1px solid #DBDBDB;
+}
+
+.treatmentReport h4 {
+    font-family: allerbold;
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+.treatmentReport table {
+    border: 0px;
+}
+
+.treatmentReport th {
+    background: none;
+}
+
+.treatmentReport td, th {
+    border-right: 1px solid #DBDBDB;
+}
+
+.treatmentReport td:last-child, th:last-child {
+    border-right: 0px;
+}
+
+.treatmentReport .log, .treatmentReport .graph {
+    margin-bottom: 30px;
 }
 
 #discussions .post {
