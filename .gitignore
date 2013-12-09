@@ -11,3 +11,6 @@
 
 # deployment-specific WSGI files
 wsgi_*.py
+
+# General
+*~
