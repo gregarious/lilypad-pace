@@ -9,6 +9,9 @@ from pace.serializers import ClassroomSerializer, StudentSerializer, PeriodicRec
                              BehaviorIncidentTypeSerializer, PostSerializer,  \
                              AttendanceSpanSerializer
 
+from pace.permissions import ClassroomPermission, StudentPermission, StudentDataPermission,     \
+                                PointLossPermission, BehaviorIncidentTypePermission
+
 from django.http import Http404
 from rest_framework import generics
 
@@ -17,26 +20,22 @@ from dateutil import parser
 ### Classroom resource views ###
 
 class ClassroomViewBase():
+    queryset = Classroom.objects.all()
     serializer_class = ClassroomSerializer
-    def get_queryset(self):
-        '''
-        Ensure user only gets info for classrooms they have access to
-        '''
-        if self.request.user.is_authenticated():
-            # TODO: not filtering by authorized class viewing
-            return Classroom.objects.all()
 
 class ClassroomList(ClassroomViewBase, generics.ListAPIView):
     pass
 
 class ClassroomDetail(ClassroomViewBase, generics.RetrieveAPIView):
-    pass
+    permission_classes = (ClassroomPermission,)
+
 
 ### Student resource views ###
 
 class StudentViewBase():
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+
     def get_serializer(self, instance=None, data=None, files=None, many=False, partial=False):
         '''
         Custom serializer to dynamically set the time which the `active_attendance_span`
@@ -53,7 +52,7 @@ class StudentViewBase():
             except ValueError:
                 pass
 
-        return serializer_class(instance, attendance_anchor_dt=attendance_anchor_dt,
+        return serializer_class(instance,
                                 data=data, files=files, many=many,
                                 partial=partial, context=context)
 
@@ -62,7 +61,8 @@ class StudentList(StudentViewBase, generics.ListAPIView):
     pass
 
 class StudentDetail(StudentViewBase, generics.RetrieveAPIView):
-    pass
+    permission_classes = (StudentPermission,)
+
 
 class ClassroomStudentList(StudentList):
     '''
@@ -93,6 +93,7 @@ class PeriodicRecordList(generics.ListCreateAPIView):
 class PeriodicRecordDetail(generics.RetrieveUpdateAPIView):
     queryset = PeriodicRecord.objects.all()
     serializer_class = PeriodicRecordSerializer
+    permissions_classes = (PointLossPermission,)
 
 # TODO: could post a resource with a different student here. clarify the functionality for that.
 class StudentPeriodicRecordList(PeriodicRecordList):
@@ -133,6 +134,7 @@ class PointLossDetail(generics.RetrieveUpdateDestroyAPIView):
     '''
     queryset = PointLoss.objects.all()
     serializer_class = PointLossSerializer
+    permission_classes = (PointLossPermission,)
 
 # TODO: could post a resource with a different student here. clarify the functionality for that.
 class StudentPointLossList(PointLossList):
@@ -155,6 +157,7 @@ class BehaviorIncidentTypeList(generics.ListCreateAPIView):
 class BehaviorIncidentTypeDetail(generics.RetrieveAPIView):
     queryset = BehaviorIncidentType.objects.all()
     serializer_class = BehaviorIncidentTypeSerializer
+    permission_classes = (BehaviorIncidentTypePermission,)
 
 # TODO: could post a resource with a different student here. clarify the functionality for that.
 class StudentBehaviorIncidentTypeList(BehaviorIncidentTypeList):
@@ -185,6 +188,7 @@ class BehaviorIncidentList(generics.ListCreateAPIView):
 class BehaviorIncidentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = BehaviorIncident.objects.all()
     serializer_class = BehaviorIncidentSerializer
+    permission_classes = (StudentDataPermission,)
 
 class StudentBehaviorIncidentList(BehaviorIncidentList):
     '''
@@ -206,6 +210,7 @@ class PostList(generics.ListAPIView):
 class PostDetail(generics.RetrieveAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    permission_classes = (StudentDataPermission,)
 
 class StudentPostList(generics.ListAPIView):
     '''
@@ -237,6 +242,7 @@ class AttendanceSpanList(generics.ListCreateAPIView):
 class AttendanceSpanDetail(generics.RetrieveUpdateAPIView):
     queryset = AttendanceSpan.objects.all()
     serializer_class = AttendanceSpanSerializer
+    permission_classes = (StudentDataPermission,)
 
 # TODO: could post a resource with a different student here. clarify the functionality for that.
 class StudentAttendanceSpanList(AttendanceSpanList):

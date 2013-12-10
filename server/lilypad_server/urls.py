@@ -13,5 +13,5 @@ urlpatterns = patterns('',
     url(r'^api/authtoken/$', 'rest_framework.authtoken.views.obtain_auth_token'),
 
     # whole API is in pace app
-    url(r'^api/', include(pace_urls, namespace='pace')),
+    url(r'^api/', include(pace_urls)),
 )

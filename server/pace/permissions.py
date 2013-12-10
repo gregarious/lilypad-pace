@@ -43,8 +43,8 @@ class StudentPermission(permissions.BasePermission):
 
 class StudentDataPermission(permissions.BasePermission):
     """
-    Permission check that user has acces to any object with a student
-    attribute.
+    Permission check that user has access to any object with a student
+    attribute. Can be used for PeriodicRecord, BehaviorIncident, etc.
 
     This resolves to whether or not the user has access to the related
     student's classroom.
@@ -55,3 +55,33 @@ class StudentDataPermission(permissions.BasePermission):
             return False
 
         return StudentPermission().has_object_permission(request, view, obj.student)
+
+class PointLossPermission(permissions.BasePermission):
+    """
+    Permission check that user has acces to given PointLoss.
+
+    This resolves to whether or not the user has access to the related
+    student's classroom.
+    """
+    def has_object_permission(self, request, view, pointloss):
+        if pointloss.periodic_record is None or pointloss.periodic_record.student is None:
+            # guard against student-less data leaks
+            return False
+
+        return StudentPermission().has_object_permission(request, view, pointloss.periodic_record.student)
+
+class BehaviorIncidentTypePermission(permissions.BasePermission):
+    """
+    Permission check that user has acces to given BehaviorIncidentType. Note
+    that accessing BehaviorIncidentTypes with no applicable student is allowed
+    for all users.
+
+    If applicable student is availble, this resolves to whether or not the user
+    the student's classroom.
+    """
+    def has_object_permission(self, request, view, incidenttype):
+        if incidenttype.applicable_student is None:
+            # all authenticated users can see non-student specific types
+            return True
+
+        return StudentPermission().has_object_permission(request, view, incidenttype.applicable_student)
