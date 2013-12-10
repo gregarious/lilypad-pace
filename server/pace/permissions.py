@@ -5,8 +5,7 @@ django-rest-framework.
 
 from django.db.models import Q
 
-from rest_framework import permissions
-from rest_framework import filters
+from rest_framework import permissions, filters
 
 class ClassroomPermission(permissions.BasePermission):
     """
@@ -26,6 +25,7 @@ class ClassroomPermission(permissions.BasePermission):
         # Note: if required_group is None, this will always return False
         return required_group in request.user.groups.all()
 
+
 class ClassroomPermissionFilter(filters.BaseFilterBackend):
     '''
     Queryset filter version of ClassroomPermission
@@ -33,6 +33,7 @@ class ClassroomPermissionFilter(filters.BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
         return queryset.filter(
             permissions_group__in=request.user.groups.all())
+
 
 class StudentPermission(permissions.BasePermission):
     """
@@ -48,6 +49,7 @@ class StudentPermission(permissions.BasePermission):
         else:
             # don't leak any students that are without classrooms
             return False
+
 
 class StudentPermissionFilter(filters.BaseFilterBackend):
     '''
@@ -75,7 +77,6 @@ class StudentDataPermission(permissions.BasePermission):
             return False
 
 
-
 class StudentDataPermissionFilter(filters.BaseFilterBackend):
     '''
     Queryset filter version of StudentDataPermission
@@ -99,6 +100,7 @@ class PointLossPermission(permissions.BasePermission):
         else:
             # don't leak a misconfigured PointLoss
             return False
+
 
 class PointLossPermissionFilter(filters.BaseFilterBackend):
     '''
@@ -124,6 +126,7 @@ class BehaviorIncidentTypePermission(permissions.BasePermission):
             return True
 
         return StudentPermission().has_object_permission(request, view, incidenttype.applicable_student)
+
 
 class BehaviorIncidentTypePermissionFilter(filters.BaseFilterBackend):
     '''
