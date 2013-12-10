@@ -1,7 +1,6 @@
 from pace.models import Student, PeriodicRecord, PointLoss, \
                         BehaviorIncidentType, BehaviorIncident, \
-                        Post, ReplyPost, AttendanceSpan, \
-                        StaffProfile, Classroom
+                        Post, ReplyPost, AttendanceSpan, Classroom
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
@@ -24,14 +23,6 @@ class PostAdmin(admin.ModelAdmin):
     ]
 
 admin.site.register(Post, PostAdmin)
-
-class StaffProfileInline(admin.StackedInline):
-    model = StaffProfile
-    can_delete = False
-    verbose_name_plural = 'staff profile'
-
-class UserAdmin(UserAdmin):
-    inlines = (StaffProfileInline, )
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)

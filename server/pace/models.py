@@ -1,16 +1,20 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
-class StaffProfile(models.Model):
-    user = models.OneToOneField(User)
-    classrooms = models.ManyToManyField('Classroom')
-
 class Classroom(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
+    permissions_group = models.OneToOneField(Group, null=True, blank=True)
+
     def __unicode__(self):
         return self.name
+
+# signals to connect point loss creation/destruction to respective PdRecord
+@receiver(post_save, sender=Classroom)
+def register_permissions_group_for_classroom(sender, instance, created, raw, **kwargs):
+    if created and not raw and instance.periodic_record:
+        Group.objects.get_or_create(name=instance.name)
 
 class Student(models.Model):
     first_name = models.CharField(max_length=100)

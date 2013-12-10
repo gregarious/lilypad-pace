@@ -23,9 +23,8 @@ class ClassroomViewBase():
         Ensure user only gets info for classrooms they have access to
         '''
         if self.request.user.is_authenticated():
-            return Classroom.objects.filter(staffprofile__user=self.request.user)
-        else:
-            return Classroom.objects.none()
+            # TODO: not filtering by authorized class viewing
+            return Classroom.objects.all()
 
 class ClassroomList(ClassroomViewBase, generics.ListAPIView):
     pass
