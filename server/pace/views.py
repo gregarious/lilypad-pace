@@ -9,8 +9,9 @@ from pace.serializers import ClassroomSerializer, StudentSerializer, PeriodicRec
                              BehaviorIncidentTypeSerializer, PostSerializer,  \
                              AttendanceSpanSerializer
 
-from pace.permissions import ClassroomPermission, StudentPermission, StudentDataPermission,     \
-                                PointLossPermission, BehaviorIncidentTypePermission
+from pace.permissions import ClassroomPermissionFilter, StudentPermissionFilter,  \
+                                StudentDataPermissionFilter, PointLossPermissionFilter, \
+                                BehaviorIncidentTypePermissionFilter
 
 from django.http import Http404
 from rest_framework import generics
@@ -22,12 +23,13 @@ from dateutil import parser
 class ClassroomViewBase():
     queryset = Classroom.objects.all()
     serializer_class = ClassroomSerializer
+    filter_backends = (ClassroomPermissionFilter,)
 
 class ClassroomList(ClassroomViewBase, generics.ListAPIView):
     pass
 
 class ClassroomDetail(ClassroomViewBase, generics.RetrieveAPIView):
-    permission_classes = (ClassroomPermission,)
+    pass
 
 
 ### Student resource views ###
@@ -35,6 +37,7 @@ class ClassroomDetail(ClassroomViewBase, generics.RetrieveAPIView):
 class StudentViewBase():
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+    filter_backends = (StudentPermissionFilter,)
 
     def get_serializer(self, instance=None, data=None, files=None, many=False, partial=False):
         '''
@@ -61,13 +64,14 @@ class StudentList(StudentViewBase, generics.ListAPIView):
     pass
 
 class StudentDetail(StudentViewBase, generics.RetrieveAPIView):
-    permission_classes = (StudentPermission,)
+    pass
 
 
 class ClassroomStudentList(StudentList):
     '''
     Access all Students for a given Classroom.
     '''
+    filter_backends = (StudentPermissionFilter,)
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         if pk is None:
@@ -80,6 +84,7 @@ class ClassroomStudentList(StudentList):
 
 class PeriodicRecordList(generics.ListCreateAPIView):
     serializer_class = PeriodicRecordSerializer
+    filter_backends = (StudentDataPermissionFilter,)
     def get_queryset(self):
         '''
         Allow filtering by date (equality only).
@@ -100,6 +105,7 @@ class StudentPeriodicRecordList(PeriodicRecordList):
     '''
     Access all PeriodicRecord for a given student.
     '''
+    filter_backends = (StudentDataPermissionFilter,)
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         if pk is None:
@@ -115,6 +121,7 @@ class PointLossList(generics.ListCreateAPIView):
     of the related PeriodicRecord point for the corresponding type.
     '''
     serializer_class = PointLossSerializer
+    filter_backends = (PointLossPermissionFilter,)
 
     def get_queryset(self):
         '''
@@ -134,13 +141,14 @@ class PointLossDetail(generics.RetrieveUpdateDestroyAPIView):
     '''
     queryset = PointLoss.objects.all()
     serializer_class = PointLossSerializer
-    permission_classes = (PointLossPermission,)
+    filter_backends = (PointLossPermissionFilter,)
 
 # TODO: could post a resource with a different student here. clarify the functionality for that.
 class StudentPointLossList(PointLossList):
     '''
     Access all PointLoss resources for a given student.
     '''
+    filter_backends = (PointLossPermissionFilter,)
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         if pk is None:
@@ -153,11 +161,12 @@ class StudentPointLossList(PointLossList):
 class BehaviorIncidentTypeList(generics.ListCreateAPIView):
     queryset = BehaviorIncidentType.objects.all()
     serializer_class = BehaviorIncidentTypeSerializer
+    filter_backends = (BehaviorIncidentTypePermissionFilter,)
 
 class BehaviorIncidentTypeDetail(generics.RetrieveAPIView):
     queryset = BehaviorIncidentType.objects.all()
     serializer_class = BehaviorIncidentTypeSerializer
-    permission_classes = (BehaviorIncidentTypePermission,)
+    filter_backends = (BehaviorIncidentTypePermissionFilter,)
 
 # TODO: could post a resource with a different student here. clarify the functionality for that.
 class StudentBehaviorIncidentTypeList(BehaviorIncidentTypeList):
@@ -165,6 +174,7 @@ class StudentBehaviorIncidentTypeList(BehaviorIncidentTypeList):
     Access all BehaviorIncidentType resources for a given student. This
     includes BehaviorIncidentTypes with no particular `applicable_student`.
     '''
+    filter_backends = (BehaviorIncidentTypePermissionFilter,)
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         if pk is None:
@@ -177,6 +187,7 @@ class StudentBehaviorIncidentTypeList(BehaviorIncidentTypeList):
 
 class BehaviorIncidentList(generics.ListCreateAPIView):
     serializer_class = BehaviorIncidentSerializer
+    filter_backends = (StudentDataPermissionFilter,)
     def get_queryset(self):
         queryset = BehaviorIncident.objects.all()
         for key in ('started_at__gte', 'started_at__lt'):
@@ -188,12 +199,13 @@ class BehaviorIncidentList(generics.ListCreateAPIView):
 class BehaviorIncidentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = BehaviorIncident.objects.all()
     serializer_class = BehaviorIncidentSerializer
-    permission_classes = (StudentDataPermission,)
+    filter_backends = (StudentDataPermissionFilter,)
 
 class StudentBehaviorIncidentList(BehaviorIncidentList):
     '''
     Access all BehaviorIncident resources for a given student.
     '''
+    filter_backends = (StudentDataPermissionFilter,)
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         if pk is None:
@@ -206,11 +218,12 @@ class StudentBehaviorIncidentList(BehaviorIncidentList):
 class PostList(generics.ListAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    filter_backends = (StudentDataPermissionFilter,)
 
 class PostDetail(generics.RetrieveAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = (StudentDataPermission,)
+    filter_backends = (StudentDataPermissionFilter,)
 
 class StudentPostList(generics.ListAPIView):
     '''
@@ -229,6 +242,7 @@ class StudentPostList(generics.ListAPIView):
 
 class AttendanceSpanList(generics.ListCreateAPIView):
     serializer_class = AttendanceSpanSerializer
+    filter_backends = (StudentDataPermissionFilter,)
 
     def get_queryset(self):
         queryset = AttendanceSpan.objects.all()
@@ -242,13 +256,14 @@ class AttendanceSpanList(generics.ListCreateAPIView):
 class AttendanceSpanDetail(generics.RetrieveUpdateAPIView):
     queryset = AttendanceSpan.objects.all()
     serializer_class = AttendanceSpanSerializer
-    permission_classes = (StudentDataPermission,)
+    filter_backends = (StudentDataPermissionFilter,)
 
 # TODO: could post a resource with a different student here. clarify the functionality for that.
 class StudentAttendanceSpanList(AttendanceSpanList):
     '''
     Access all AttendanceSpan resources for a given student.
     '''
+    filter_backends = (StudentDataPermissionFilter,)
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         if pk is None:

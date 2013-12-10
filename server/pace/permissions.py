@@ -3,7 +3,10 @@ Contains various custom Permission objects to be used with the
 django-rest-framework.
 '''
 
+from django.db.models import Q
+
 from rest_framework import permissions
+from rest_framework import filters
 
 class ClassroomPermission(permissions.BasePermission):
     """
@@ -20,11 +23,16 @@ class ClassroomPermission(permissions.BasePermission):
     """
     def has_object_permission(self, request, view, classroom):
         required_group = classroom.permissions_group
-        if required_group is None:
-            # guard against incorrectly configured classroom data leak
-            return False
-
+        # Note: if required_group is None, this will always return False
         return required_group in request.user.groups.all()
+
+class ClassroomPermissionFilter(filters.BaseFilterBackend):
+    '''
+    Queryset filter version of ClassroomPermission
+    '''
+    def filter_queryset(self, request, queryset, view):
+        return queryset.filter(
+            permissions_group__in=request.user.groups.all())
 
 class StudentPermission(permissions.BasePermission):
     """
@@ -34,11 +42,20 @@ class StudentPermission(permissions.BasePermission):
     classroom.
     """
     def has_object_permission(self, request, view, student):
-        if student.classroom is None:
-            # guard against classroom-less student data leaks
+        # guard against sending in a null classroom
+        if student.classroom is not None:
+            return ClassroomPermission().has_object_permission(request, view, student.classroom)
+        else:
+            # don't leak any students that are without classrooms
             return False
 
-        return ClassroomPermission().has_object_permission(request, view, student.classroom)
+class StudentPermissionFilter(filters.BaseFilterBackend):
+    '''
+    Queryset filter version of StudentPermission
+    '''
+    def filter_queryset(self, request, queryset, view):
+        return queryset.filter(
+            classroom__permissions_group__in=request.user.groups.all())
 
 
 class StudentDataPermission(permissions.BasePermission):
@@ -50,11 +67,23 @@ class StudentDataPermission(permissions.BasePermission):
     student's classroom.
     """
     def has_object_permission(self, request, view, obj):
-        if obj.student is None:
-            # guard against student-less data leaks
+        # guard against sending in a null student
+        if obj.student is not None:
+            return StudentPermission().has_object_permission(request, view, obj.student)
+        else:
+            # don't leak any data that is student-orphaned
             return False
 
-        return StudentPermission().has_object_permission(request, view, obj.student)
+
+
+class StudentDataPermissionFilter(filters.BaseFilterBackend):
+    '''
+    Queryset filter version of StudentDataPermission
+    '''
+    def filter_queryset(self, request, queryset, view):
+        return queryset.filter(
+            student__classroom__permissions_group__in=request.user.groups.all())
+
 
 class PointLossPermission(permissions.BasePermission):
     """
@@ -64,11 +93,21 @@ class PointLossPermission(permissions.BasePermission):
     student's classroom.
     """
     def has_object_permission(self, request, view, pointloss):
-        if pointloss.periodic_record is None or pointloss.periodic_record.student is None:
-            # guard against student-less data leaks
+        # guard against sending in a null PeriodicRecord
+        if pointloss.periodic_record is not None:
+            return StudentDataPermission().has_object_permission(request, view, pointloss.periodic_record)
+        else:
+            # don't leak a misconfigured PointLoss
             return False
 
-        return StudentPermission().has_object_permission(request, view, pointloss.periodic_record.student)
+class PointLossPermissionFilter(filters.BaseFilterBackend):
+    '''
+    Queryset filter version of PointLossPermission
+    '''
+    def filter_queryset(self, request, queryset, view):
+        return queryset.filter(
+            periodic_record__student__classroom__permissions_group__in=request.user.groups.all())
+
 
 class BehaviorIncidentTypePermission(permissions.BasePermission):
     """
@@ -85,3 +124,13 @@ class BehaviorIncidentTypePermission(permissions.BasePermission):
             return True
 
         return StudentPermission().has_object_permission(request, view, incidenttype.applicable_student)
+
+class BehaviorIncidentTypePermissionFilter(filters.BaseFilterBackend):
+    '''
+    Queryset filter version of BehaviorIncidentTypePermission
+    '''
+    def filter_queryset(self, request, queryset, view):
+        return queryset.filter(
+            Q(applicable_student__isnull=True) |
+            Q(applicable_student__classroom__permissions_group__in=request.user.groups.all()))
+
