@@ -8,14 +8,14 @@ class Migration(DataMigration):
 
     def forwards(self, orm):
         for classroom in orm.Classroom.objects.all():
-            group = orm['auth.Group'].objects.get_or_create(name=classroom.name)
+            group = orm['auth.Group'].objects.get_or_create(name=classroom.default_permissions_group_name)
             classroom.permissions_group = group[0]
             classroom.save()
 
     def backwards(self, orm):
         for classroom in orm.Classroom.objects.all():
             try:
-                orm['auth.Group'].objects.get(name=classroom.name).delete()
+                orm['auth.Group'].objects.get(name=classroom.default_permissions_group_name).delete()
             except orm.Classroom.DoesNotExist:
                 pass
 

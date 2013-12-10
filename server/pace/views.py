@@ -98,7 +98,7 @@ class PeriodicRecordList(generics.ListCreateAPIView):
 class PeriodicRecordDetail(generics.RetrieveUpdateAPIView):
     queryset = PeriodicRecord.objects.all()
     serializer_class = PeriodicRecordSerializer
-    permissions_classes = (PointLossPermission,)
+    filter_backends = (StudentDataPermissionFilter,)
 
 # TODO: could post a resource with a different student here. clarify the functionality for that.
 class StudentPeriodicRecordList(PeriodicRecordList):

@@ -10,13 +10,23 @@ class Classroom(models.Model):
     def __unicode__(self):
         return self.name
 
+    @property
+    def default_permissions_group_name(self):
+        '''
+        Default name given to the related Group that grants access
+        permissions. This name will be used to automatically create a Group
+        when a new Classroom is created.
+        '''
+        return u"%s Accessors" % self.name
+
+
 # signals to connect point loss creation/destruction to respective PdRecord
 @receiver(post_save, sender=Classroom)
-def register_permissions_group_for_classroom(sender, instance, created, raw, **kwargs):
+def create_permissions_group_for_classroom(sender, instance, created, raw, **kwargs):
     if created and not raw and instance.periodic_record and not instance.permissions_group:
-        instance.permissions_group = Group.objects.get_or_create(name=instance.name)[0]
+        group_name = instance.default_permissions_group_name
+        instance.permissions_group = Group.objects.get_or_create(name=group_name)[0]
         instance.save()
-
 
 class Student(models.Model):
     first_name = models.CharField(max_length=100)
