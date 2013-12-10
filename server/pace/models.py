@@ -13,8 +13,10 @@ class Classroom(models.Model):
 # signals to connect point loss creation/destruction to respective PdRecord
 @receiver(post_save, sender=Classroom)
 def register_permissions_group_for_classroom(sender, instance, created, raw, **kwargs):
-    if created and not raw and instance.periodic_record:
-        Group.objects.get_or_create(name=instance.name)
+    if created and not raw and instance.periodic_record and not instance.permissions_group:
+        instance.permissions_group = Group.objects.get_or_create(name=instance.name)[0]
+        instance.save()
+
 
 class Student(models.Model):
     first_name = models.CharField(max_length=100)
