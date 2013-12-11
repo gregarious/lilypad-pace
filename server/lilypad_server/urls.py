@@ -16,8 +16,14 @@ router.register(r'students', pace_views.StudentViewSet)
 router.register(r'behaviortypes', pace_views.BehaviorTypeViewSet)
 
 apipatterns = router.urls
+
 # add non-router-based API paths
 apipatterns += patterns('',
+    url(r'^classrooms/(?P<classroom_pk>[0-9]+)/dailyrecords/$',
+        pace_views.DailyRecordCreateView.as_view()),
+    url(r'^classrooms/(?P<classroom_pk>[0-9]+)/dailyrecords/(?P<date>.+)/$',
+        pace_views.DailyRecordRetrieveView.as_view(),
+        name="dailyrecord-detail"),
     url(r'^authtoken/$', 'rest_framework.authtoken.views.obtain_auth_token'),
 )
 apipatterns = format_suffix_patterns(apipatterns)

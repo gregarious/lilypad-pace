@@ -1,20 +1,28 @@
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 
 from pace.models import Classroom, Student, PeriodicRecord, PointLoss,     \
                         BehaviorIncidentType, BehaviorIncident, \
-                        Post, ReplyPost, AttendanceSpan
+                        Post, ReplyPost, AttendanceSpan, DailyRecord
 
-from pace.serializers import ClassroomSerializer, StudentSerializer, PeriodicRecordSerializer,     \
+from pace.serializers import ClassroomSerializer, DailyRecordSerializer,      \
+                             StudentSerializer, PeriodicRecordSerializer,     \
                              PointLossSerializer, BehaviorIncidentSerializer, \
                              BehaviorIncidentTypeSerializer, PostSerializer,  \
                              AttendanceSpanSerializer
 
-from pace.permissions import ClassroomPermissionFilter, StudentPermissionFilter,  \
-                                StudentDataPermissionFilter, PointLossPermissionFilter, \
+from pace.permissions import ClassroomPermission, ClassroomPermissionFilter,  \
+                                ClassroomDataPermission,                      \
+                                ClassroomDataPermissionFilter,                \
+                                StudentDataPermissionFilter,                  \
+                                PointLossPermissionFilter,                    \
                                 BehaviorIncidentTypePermissionFilter
 
 from django.http import Http404
-from rest_framework import generics, viewsets, mixins
+from rest_framework import generics, viewsets, mixins, status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
 
 from dateutil import parser
 
@@ -23,10 +31,11 @@ class ClassroomViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ClassroomSerializer
     filter_backends = (ClassroomPermissionFilter,)
 
+
 class StudentViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
-    filter_backends = (StudentPermissionFilter,)
+    filter_backends = (ClassroomDataPermissionFilter,)
 
 class BehaviorTypeViewSet(mixins.CreateModelMixin,
                           mixins.RetrieveModelMixin,
@@ -35,6 +44,83 @@ class BehaviorTypeViewSet(mixins.CreateModelMixin,
     queryset = BehaviorIncidentType.objects.all()
     serializer_class = BehaviorIncidentTypeSerializer
     filter_backends = (BehaviorIncidentTypePermissionFilter,)
+
+
+class DailyRecordCreateView(APIView):
+    '''
+    View to create new DailyRecord entries. Will return 409 on attempting
+    to create a duplicate record for the given classroom+date combination.
+
+    Requires url to have `classroom_pk` key value.
+    '''
+    def post(self, request, *args, **kwargs):
+        try:
+            classroom = Classroom.objects.get(pk=kwargs['classroom_pk'])
+        except Classroom.DoesNotExist:
+            return Response({"detail": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # ensure user has access to the classroom
+        bouncer = ClassroomPermission()
+        if not bouncer.has_object_permission(request, None, classroom):
+            return Response({"detail": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # parse the date from the request data
+        try:
+            date = parser.parse(request.DATA.get('date')).date()
+        except (ValueError, AttributeError):
+            return Response({"detail": "Invalid date format"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # ensure we don't create a duplicate entry for the day
+        record, was_created = DailyRecord.objects.get_or_create(
+            classroom=classroom, date=date)
+
+        headers = {}
+
+        # if we created a new resource, return typical 201 response
+        if was_created:
+            http_status = status.HTTP_201_CREATED
+            headers["Location"] = record.get_fq_absolute_url(request)
+            data = DailyRecordSerializer(record).data
+        else:
+            # if resource existed, return custom 409 response
+            http_status = status.HTTP_409_CONFLICT
+            data = {
+                "detail": "Record exists",
+                "record_location": record.get_fq_absolute_url(request)
+            }
+
+        return Response(data, status=http_status, headers=headers)
+
+class DailyRecordRetrieveView(generics.RetrieveAPIView):
+    '''
+    View to display a DailyRecord entry. Will return 409 on attempting
+    to create a duplicate record for the given classroom+date combination.
+    '''
+    queryset = DailyRecord.objects.all()
+    serializer_class = DailyRecordSerializer
+    def get_object(self):
+        '''
+        Override default behavior to enable lookup by classroom pk and date.
+        This is the de-facto pk for a DailyRecord as far as the API is
+        concerned.
+        '''
+        try:
+            date = parser.parse(self.kwargs["date"]).date()
+        except (ValueError, AttributeError):
+            raise Http404
+
+        query_kwargs = {
+            "classroom__pk": self.kwargs["classroom_pk"],
+            "date": date
+        }
+        record = get_object_or_404(self.get_queryset(), **query_kwargs)
+
+        # before returning, ensure user has access to resource
+        bouncer = ClassroomPermission()
+        if not bouncer.has_object_permission(self.request, None, record.classroom):
+            raise Http404
+        return record
+
 
 # ### Student resource views ###
 

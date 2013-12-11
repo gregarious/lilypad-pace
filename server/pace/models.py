@@ -48,6 +48,21 @@ class DailyRecord(models.Model):
     def __unicode__(self):
         return u"%s: %s" % (unicode(self.date), unicode(self.classroom))
 
+    @models.permalink
+    def get_absolute_url(self):
+        '''
+        Resource URL is identified by classroom id and date
+        '''
+        return ('dailyrecord-detail', (), {
+                    "classroom_pk": self.classroom.pk,
+                    "date": self.date.strftime('%Y-%m-%d')})
+
+    def get_fq_absolute_url(self, request):
+        '''
+        Fully qualified version of absolute url (includes protocol/domain)
+        '''
+        return request.build_absolute_uri(self.get_absolute_url())
+
 
 class PeriodicRecord(models.Model):
     period = models.IntegerField()

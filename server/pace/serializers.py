@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from pace.models import Classroom, Student,                        \
+from pace.models import Classroom, Student, DailyRecord,        \
                         PeriodicRecord, PointLoss,              \
                         BehaviorIncidentType, BehaviorIncident, \
                         Post, ReplyPost, AttendanceSpan
@@ -16,6 +16,12 @@ class ClassroomSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Classroom
         fields = ('id', 'url', 'name', 'students',)
+
+class DailyRecordSerializer(serializers.ModelSerializer):
+    classroom = serializers.PrimaryKeyRelatedField()
+    class Meta:
+        model = DailyRecord
+        exclude = ('id',)       # API doesn't use DailyRecord ids as primary keys
 
 class AttendanceSpanSerializer(serializers.HyperlinkedModelSerializer):
     student = serializers.PrimaryKeyRelatedField()
@@ -75,6 +81,13 @@ class BehaviorIncidentSerializer(serializers.HyperlinkedModelSerializer):
         model = BehaviorIncident
         fields = ('id', 'url', 'type', 'started_at', 'ended_at', 'comment',
             'student', 'last_modified_at')
+
+class DeepBehaviorIncidentSerializer(BehaviorIncidentSerializer):
+    '''
+    More specialized BehaviorIncidentSerializer that includes the full
+    type subresource in it.
+    '''
+    type = BehaviorIncidentTypeSerializer()
 
 class ReplyPostSerializer(serializers.ModelSerializer):
     # TODO: make this a true User stub when user model worked out

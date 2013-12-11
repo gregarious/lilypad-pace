@@ -35,12 +35,10 @@ class ClassroomPermissionFilter(filters.BaseFilterBackend):
             permissions_group__in=request.user.groups.all())
 
 
-class StudentPermission(permissions.BasePermission):
+class ClassroomDataPermission(permissions.BasePermission):
     """
-    Permission check that user has access to given Student.
-
-    This resolves to whether or not the user has access to the given student's
-    classroom.
+    Permission check that user has access to data related to a classroom (e.g.
+    a Student object).
     """
     def has_object_permission(self, request, view, student):
         # guard against sending in a null classroom
@@ -51,9 +49,9 @@ class StudentPermission(permissions.BasePermission):
             return False
 
 
-class StudentPermissionFilter(filters.BaseFilterBackend):
+class ClassroomDataPermissionFilter(filters.BaseFilterBackend):
     '''
-    Queryset filter version of StudentPermission
+    Queryset filter version of ClassroomDataPermission
     '''
     def filter_queryset(self, request, queryset, view):
         return queryset.filter(
@@ -71,7 +69,7 @@ class StudentDataPermission(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         # guard against sending in a null student
         if obj.student is not None:
-            return StudentPermission().has_object_permission(request, view, obj.student)
+            return ClassroomDataPermission().has_object_permission(request, view, obj.student)
         else:
             # don't leak any data that is student-orphaned
             return False
@@ -125,7 +123,7 @@ class BehaviorIncidentTypePermission(permissions.BasePermission):
             # all authenticated users can see non-student specific types
             return True
 
-        return StudentPermission().has_object_permission(request, view, incidenttype.applicable_student)
+        return ClassroomDataPermission().has_object_permission(request, view, incidenttype.applicable_student)
 
 
 class BehaviorIncidentTypePermissionFilter(filters.BaseFilterBackend):
