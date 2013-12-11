@@ -19,8 +19,7 @@ class Classroom(models.Model):
         '''
         return u"%s Accessors" % self.name
 
-
-# signals to connect point loss creation/destruction to respective PdRecord
+# hook to create a new permission group after Classroom creation
 @receiver(post_save, sender=Classroom)
 def create_permissions_group_for_classroom(sender, instance, created, raw, **kwargs):
     if created and not raw and instance.periodic_record and not instance.permissions_group:
@@ -37,6 +36,18 @@ class Student(models.Model):
 
     def __unicode__(self):
         return u'%s %s' % (self.first_name, self.last_name)
+
+class DailyRecord(models.Model):
+    '''
+    Tracks the current status of a classroom on a given day.
+    '''
+    classroom = models.ForeignKey(Classroom)
+    date = models.DateField()
+    current_period = models.IntegerField(default=1)
+
+    def __unicode__(self):
+        return u"%s: %s" % (unicode(self.date), unicode(self.classroom))
+
 
 class PeriodicRecord(models.Model):
     period = models.IntegerField()
