@@ -38,6 +38,7 @@ class StudentViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = StudentSerializer
     filter_backends = (ClassroomDataPermissionFilter,)
 
+
 class BehaviorTypeViewSet(mixins.CreateModelMixin,
                           mixins.RetrieveModelMixin,
                           mixins.ListModelMixin,
@@ -45,6 +46,39 @@ class BehaviorTypeViewSet(mixins.CreateModelMixin,
     queryset = BehaviorIncidentType.objects.all()
     serializer_class = BehaviorIncidentTypeSerializer
     filter_backends = (BehaviorIncidentTypePermissionFilter,)
+
+
+class BehaviorIncidentViewSet(mixins.RetrieveModelMixin,
+                              mixins.UpdateModelMixin,
+                              mixins.DestroyModelMixin,
+                              viewsets.GenericViewSet):
+    queryset = BehaviorIncident.objects.all()
+    serializer_class = BehaviorIncidentSerializer
+    filter_backends = (StudentDataPermissionFilter,)
+
+
+class PeriodicRecordViewSet(mixins.RetrieveModelMixin,
+                            viewsets.GenericViewSet):
+    queryset = PeriodicRecord.objects.all()
+    serializer_class = PeriodicRecordSerializer
+    filter_backends = (StudentDataPermissionFilter,)
+
+
+class PointLossViewSet(mixins.RetrieveModelMixin,
+                       mixins.UpdateModelMixin,
+                       mixins.DestroyModelMixin,
+                       viewsets.GenericViewSet):
+    queryset = PointLoss.objects.all()
+    serializer_class = PointLossSerializer
+    filter_backends = (PointLossPermissionFilter,)
+
+
+class AttendanceSpanViewSet(mixins.RetrieveModelMixin,
+                                  mixins.UpdateModelMixin,
+                                  viewsets.GenericViewSet):
+    queryset = AttendanceSpan.objects.all()
+    serializer_class = AttendanceSpanSerializer
+    filter_backends = (StudentDataPermissionFilter,)
 
 
 class DailyRecordCreateView(APIView):
@@ -148,7 +182,6 @@ class DailyClassroomDigestView(generics.RetrieveAPIView):
         This is the de-facto pk for a DailyRecord as far as the API is
         concerned.
         '''
-        print 'hahahah'
         try:
             date = parser.parse(self.kwargs["date"]).date()
         except (ValueError, AttributeError):
@@ -166,8 +199,6 @@ class DailyClassroomDigestView(generics.RetrieveAPIView):
             raise Http404
         return record
 
-
-# ### Student resource views ###
 
 # class StudentViewBase():
 #     queryset = Student.objects.all()

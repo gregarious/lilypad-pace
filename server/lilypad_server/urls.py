@@ -14,6 +14,10 @@ router = routers.SimpleRouter()
 router.register(r'classrooms', pace_views.ClassroomViewSet)
 router.register(r'students', pace_views.StudentViewSet)
 router.register(r'behaviortypes', pace_views.BehaviorTypeViewSet)
+router.register(r'behaviorincidents', pace_views.BehaviorIncidentViewSet)
+router.register(r'periodicrecords', pace_views.PeriodicRecordViewSet)
+router.register(r'pointlosses', pace_views.PointLossViewSet)
+router.register(r'behaviorincidents', pace_views.AttendanceSpanViewSet)
 
 apipatterns = router.urls
 

@@ -99,6 +99,7 @@ class DailyClassroomDigestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DailyRecord
+        exclude = ('id',)       # API doesn't use DailyRecord ids as primary keys
 
 class ReplyPostSerializer(serializers.ModelSerializer):
     # TODO: make this a true User stub when user model worked out
