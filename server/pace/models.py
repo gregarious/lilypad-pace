@@ -2,8 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User, Group
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
+from django.conf import settings
 
 import itertools
+
+from pytz import timezone
+from datetime import datetime, time, timedelta
 
 class Classroom(models.Model):
     name = models.CharField(max_length=200, unique=True)
@@ -81,9 +85,14 @@ class DailyRecord(models.Model):
 
     @property
     def behavior_incidents(self):
-        # TODO
-        return []
-
+        ## need to only include incidents that started today
+        # hardcoding the expectation that "today" starts at the server's TIME_ZONE setting (EST)
+        default_tzinfo = timezone(settings.TIME_ZONE)
+        start_dt = datetime.combine(self.date, time.min).replace(tzinfo=default_tzinfo)
+        end_dt = start_dt + timedelta(days=1)
+        sfilter = lambda s: s.behavior_incidents.filter(started_at__gte=start_dt, ended_at__lt=end_dt)
+        incident_lists = [sfilter(s) for s in self.students]
+        return list(itertools.chain.from_iterable(incident_lists))
 
 
 class PeriodicRecord(models.Model):
