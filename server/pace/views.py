@@ -1,20 +1,20 @@
-from django.db.models import Q
 from django.shortcuts import get_object_or_404
 
 from pace.models import Classroom, Student, PeriodicRecord, PointLoss,     \
                         BehaviorIncidentType, BehaviorIncident, \
-                        Post, ReplyPost, AttendanceSpan, DailyRecord
+                        AttendanceSpan, DailyRecord
 
 from pace.serializers import ClassroomSerializer, DailyRecordSerializer,      \
                              DailyClassroomDigestSerializer,                  \
                              StudentSerializer, PeriodicRecordSerializer,     \
                              PointLossSerializer, BehaviorIncidentSerializer, \
-                             BehaviorIncidentTypeSerializer, PostSerializer,  \
+                             BehaviorIncidentTypeSerializer,                  \
                              AttendanceSpanSerializer
 
 from pace.permissions import ClassroomPermission, ClassroomPermissionFilter,  \
                                 ClassroomDataPermission,                      \
                                 ClassroomDataPermissionFilter,                \
+                                StudentDataPermission,                        \
                                 StudentDataPermissionFilter,                  \
                                 PointLossPermissionFilter,                    \
                                 BehaviorIncidentTypePermissionFilter
@@ -23,9 +23,39 @@ from django.http import Http404
 from rest_framework import generics, viewsets, mixins, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.reverse import reverse
 
 from dateutil import parser
+
+### Helper functions that ensure user has access to resources (used in POST methods) ###
+
+class InvalidRelation(Exception):
+    pass
+
+def request_has_student_write_permissions(request):
+    try:
+        student_pk = int(request.DATA.get('student'))
+        student = Student.objects.get(pk=student_pk)
+    except (ValueError, TypeError, Student.DoesNotExist):
+        # if pk is not a PrimaryKey or Student doesn't exist, escape
+        raise InvalidRelation()
+
+    # check that user has access to the given student before continuing
+    bouncer = ClassroomDataPermission()
+    return bouncer.has_object_permission(request, None, student)
+
+def request_has_periodicrecord_write_permissions(request):
+    try:
+        periodicrecord_pk = int(request.DATA.get('periodic_record'))
+        periodicrecord = PeriodicRecord.objects.get(pk=periodicrecord_pk)
+    except (ValueError, TypeError, PeriodicRecord.DoesNotExist):
+        # if pk is not a PrimaryKey or Student doesn't exist, escape
+        raise InvalidRelation()
+    bouncer = StudentDataPermission()
+    return bouncer.has_object_permission(request, None, periodicrecord)
+
+
+
+### Basic API endpoints ###
 
 class ClassroomViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Classroom.objects.all()
@@ -51,10 +81,25 @@ class BehaviorTypeViewSet(mixins.CreateModelMixin,
 class BehaviorIncidentViewSet(mixins.RetrieveModelMixin,
                               mixins.UpdateModelMixin,
                               mixins.DestroyModelMixin,
+                              mixins.CreateModelMixin,
                               viewsets.GenericViewSet):
     queryset = BehaviorIncident.objects.all()
     serializer_class = BehaviorIncidentSerializer
     filter_backends = (StudentDataPermissionFilter,)
+
+    def create(self, request, *args, **kwargs):
+        '''
+        Includes custom check for parent Student access before allowing POST
+        actions.
+        '''
+        try:
+            if not request_has_student_write_permissions(request):
+                return Response({"detail": 'You do not have permission to perform this action.'},
+                            status=status.HTTP_403_FORBIDDEN)
+        except InvalidRelation:
+            return Response("Invalid periodic record identifier", status=status.HTTP_400_BAD_REQUEST)
+
+        return super(BehaviorIncidentViewSet, self).create(request, *args, **kwargs)
 
 
 class PeriodicRecordViewSet(mixins.RetrieveModelMixin,
@@ -64,22 +109,53 @@ class PeriodicRecordViewSet(mixins.RetrieveModelMixin,
     filter_backends = (StudentDataPermissionFilter,)
 
 
+class AttendanceSpanViewSet(mixins.RetrieveModelMixin,
+                            mixins.UpdateModelMixin,
+                            mixins.CreateModelMixin,
+                            viewsets.GenericViewSet):
+    queryset = AttendanceSpan.objects.all()
+    serializer_class = AttendanceSpanSerializer
+    filter_backends = (StudentDataPermissionFilter,)
+
+    def create(self, request, *args, **kwargs):
+        '''
+        Includes custom check for parent Student access before allowing POST
+        actions.
+        '''
+        try:
+            if not request_has_student_write_permissions(request):
+                return Response({"detail": 'You do not have permission to perform this action.'},
+                            status=status.HTTP_403_FORBIDDEN)
+        except InvalidRelation:
+            return Response("Invalid periodic record identifier", status=status.HTTP_400_BAD_REQUEST)
+
+        return super(AttendanceSpanViewSet, self).create(request, *args, **kwargs)
+
+
 class PointLossViewSet(mixins.RetrieveModelMixin,
                        mixins.UpdateModelMixin,
                        mixins.DestroyModelMixin,
+                       mixins.CreateModelMixin,
                        viewsets.GenericViewSet):
     queryset = PointLoss.objects.all()
     serializer_class = PointLossSerializer
     filter_backends = (PointLossPermissionFilter,)
 
+    def create(self, request, *args, **kwargs):
+        '''
+        Includes custom check for parent PeriodicRecord access before allowing
+        POST actions.
+        '''
+        try:
+            if not request_has_periodicrecord_write_permissions(request):
+                return Response({"detail": 'You do not have permission to perform this action.'},
+                            status=status.HTTP_403_FORBIDDEN)
+        except InvalidRelation:
+            return Response("Invalid periodic record identifier", status=status.HTTP_400_BAD_REQUEST)
 
-class AttendanceSpanViewSet(mixins.RetrieveModelMixin,
-                                  mixins.UpdateModelMixin,
-                                  viewsets.GenericViewSet):
-    queryset = AttendanceSpan.objects.all()
-    serializer_class = AttendanceSpanSerializer
-    filter_backends = (StudentDataPermissionFilter,)
+        return super(PointLossViewSet, self).create(request, *args, **kwargs)
 
+### API endpoints for DailyRecord-related data views ###
 
 class DailyRecordCreateView(APIView):
     '''
@@ -199,7 +275,7 @@ class DailyClassroomDigestView(generics.RetrieveAPIView):
             raise Http404
         return record
 
-
+### Student subresource creation views ###
 # class StudentViewBase():
 #     queryset = Student.objects.all()
 #     serializer_class = StudentSerializer
