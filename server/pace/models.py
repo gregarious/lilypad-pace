@@ -3,6 +3,8 @@ from django.contrib.auth.models import User, Group
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
+import itertools
+
 class Classroom(models.Model):
     name = models.CharField(max_length=200, unique=True)
     permissions_group = models.OneToOneField(Group, null=True, blank=True)
@@ -62,6 +64,26 @@ class DailyRecord(models.Model):
         Fully qualified version of absolute url (includes protocol/domain)
         '''
         return request.build_absolute_uri(self.get_absolute_url())
+
+    @property
+    def students(self):
+        return self.classroom.students.all()
+
+    @property
+    def periodic_records(self):
+        record_lists = [s.periodic_records.filter(date=self.date) for s in self.students]
+        return list(itertools.chain.from_iterable(record_lists))
+
+    @property
+    def attendance_spans(self):
+        span_lists = [s.attendance_spans.filter(date=self.date) for s in self.students]
+        return list(itertools.chain.from_iterable(span_lists))
+
+    @property
+    def behavior_incidents(self):
+        # TODO
+        return []
+
 
 
 class PeriodicRecord(models.Model):
@@ -203,7 +225,7 @@ class ReplyPost(BasePost):
     parent_post = models.ForeignKey(Post, related_name='replies')
 
 class AttendanceSpan(models.Model):
-    student = models.ForeignKey(Student)
+    student = models.ForeignKey(Student, related_name='attendance_spans')
     date = models.DateField()
     time_in = models.TimeField(null=True, blank=True)
     time_out = models.TimeField(null=True, blank=True)

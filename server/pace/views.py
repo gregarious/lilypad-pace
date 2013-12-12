@@ -6,6 +6,7 @@ from pace.models import Classroom, Student, PeriodicRecord, PointLoss,     \
                         Post, ReplyPost, AttendanceSpan, DailyRecord
 
 from pace.serializers import ClassroomSerializer, DailyRecordSerializer,      \
+                             DailyClassroomDigestSerializer,                  \
                              StudentSerializer, PeriodicRecordSerializer,     \
                              PointLossSerializer, BehaviorIncidentSerializer, \
                              BehaviorIncidentTypeSerializer, PostSerializer,  \
@@ -122,12 +123,56 @@ class DailyRecordRetrieveView(generics.RetrieveAPIView):
         return record
 
 
+class DailyClassroomDigestView(generics.RetrieveAPIView):
+    """
+    View to display a digest of information containing all classroom data
+    on a given day. This includes:
+        - date
+        - current period number
+        - students
+        - periodic records (for all students in classroom)
+        - behavior incidents (for all students in classroom)
+        - attendance spans (for all students in classroom)
+
+    URL to access the view must include classroom id and date in ISO basic
+    format (YYYYMMDD).
+
+    Supports GET only.
+    """
+    queryset = DailyRecord.objects.all()
+    serializer_class = DailyClassroomDigestSerializer
+    permission_classes = (ClassroomDataPermission,)
+    def get_object(self):
+        '''
+        Override default behavior to enable lookup by classroom pk and date.
+        This is the de-facto pk for a DailyRecord as far as the API is
+        concerned.
+        '''
+        print 'hahahah'
+        try:
+            date = parser.parse(self.kwargs["date"]).date()
+        except (ValueError, AttributeError):
+            raise Http404
+
+        query_kwargs = {
+            "classroom__pk": self.kwargs["classroom_pk"],
+            "date": date
+        }
+        record = get_object_or_404(self.get_queryset(), **query_kwargs)
+
+        # before returning, ensure user has access to resource
+        bouncer = ClassroomPermission()
+        if not bouncer.has_object_permission(self.request, None, record.classroom):
+            raise Http404
+        return record
+
+
 # ### Student resource views ###
 
 # class StudentViewBase():
 #     queryset = Student.objects.all()
 #     serializer_class = StudentSerializer
-#     filter_backends = (StudentPermissionFilter,)
+#     filter_backends = (ClassroomDataPermissionFilter,)
 
 #     def get_serializer(self, instance=None, data=None, files=None, many=False, partial=False):
 #         '''
@@ -161,7 +206,7 @@ class DailyRecordRetrieveView(generics.RetrieveAPIView):
 #     '''
 #     Access all Students for a given Classroom.
 #     '''
-#     filter_backends = (StudentPermissionFilter,)
+#     filter_backends = (ClassroomDataPermissionFilter,)
 #     def get_queryset(self):
 #         pk = self.kwargs.get('pk')
 #         if pk is None:

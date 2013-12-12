@@ -89,6 +89,17 @@ class DeepBehaviorIncidentSerializer(BehaviorIncidentSerializer):
     '''
     type = BehaviorIncidentTypeSerializer()
 
+class DailyClassroomDigestSerializer(serializers.ModelSerializer):
+    date = serializers.DateField()
+    current_period = serializers.IntegerField()
+    students = StudentSerializer(many=True)
+    periodic_records = PeriodicRecordSerializer(many=True)
+    behavior_incidents = DeepBehaviorIncidentSerializer(many=True)
+    attendance_spans = AttendanceSpanSerializer(many=True)
+
+    class Meta:
+        model = DailyRecord
+
 class ReplyPostSerializer(serializers.ModelSerializer):
     # TODO: make this a true User stub when user model worked out
     author = serializers.RelatedField()
