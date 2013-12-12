@@ -90,8 +90,8 @@ class DailyRecord(models.Model):
         default_tzinfo = timezone(settings.TIME_ZONE)
         start_dt = datetime.combine(self.date, time.min).replace(tzinfo=default_tzinfo)
         end_dt = start_dt + timedelta(days=1)
-        sfilter = lambda s: s.behavior_incidents.filter(started_at__gte=start_dt, ended_at__lt=end_dt)
-        incident_lists = [sfilter(s) for s in self.students]
+        qsfilter = lambda qs: qs.filter(started_at__gte=start_dt, started_at__lt=end_dt)
+        incident_lists = [qsfilter(s.behavior_incidents) for s in self.students]
         return list(itertools.chain.from_iterable(incident_lists))
 
 

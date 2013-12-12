@@ -17,7 +17,7 @@ router.register(r'behaviortypes', pace_views.BehaviorTypeViewSet)
 router.register(r'behaviorincidents', pace_views.BehaviorIncidentViewSet)
 router.register(r'periodicrecords', pace_views.PeriodicRecordViewSet)
 router.register(r'pointlosses', pace_views.PointLossViewSet)
-router.register(r'behaviorincidents', pace_views.AttendanceSpanViewSet)
+router.register(r'attendancespans', pace_views.AttendanceSpanViewSet)
 
 apipatterns = router.urls
 
