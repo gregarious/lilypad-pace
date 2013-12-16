@@ -27,19 +27,19 @@ angular.module('pace').service('rulesDataStore', function($q, Backbone, apiConfi
      *     date: <String (ISO-formatted date)>,
      *     fd: {
      *         eligible: <Number>
-     *         actual: <Number>
+     *         acquired: <Number>
      *     },
      *     cw: {
      *         eligible: <Number>
-     *         actual: <Number>
+     *         acquired: <Number>
      *     },
      *     kw: {
      *         eligible: <Number>
-     *         actual: <Number>
+     *         acquired: <Number>
      *     },
      *     bs: {
      *         eligible: <Number>
-     *         actual: <Number>
+     *         acquired: <Number>
      *     }
      * }
      *
@@ -71,10 +71,10 @@ angular.module('pace').service('rulesDataStore', function($q, Backbone, apiConfi
 
             // cycle through points map and add it to our running total for the date
             var pdPoints = pdRecord.get('points');
-            _.each(['fd', 'cd', 'kw', 'bs'], function(pointType) {
+            _.each(['fd', 'cw', 'kw', 'bs'], function(pointType) {
                 if (_.isNumber(pdPoints[pointType])) {
                     totalsForDate[pointType].eligible += 2;
-                    totalsForDate[pointType].actual += pdPoints[pointType];
+                    totalsForDate[pointType].acquired += pdPoints[pointType];
                 }
             });
         });
@@ -110,10 +110,10 @@ angular.module('pace').service('rulesDataStore', function($q, Backbone, apiConfi
     function createTotalsEntry(dateString) {
         return {
             dateString: dateString,
-            fd: { eligible: 0, actual: 0 },
-            cw: { eligible: 0, actual: 0 },
-            kw: { eligible: 0, actual: 0 },
-            bs: { eligible: 0, actual: 0 },
+            fd: { eligible: 0, acquired: 0 },
+            cw: { eligible: 0, acquired: 0 },
+            kw: { eligible: 0, acquired: 0 },
+            bs: { eligible: 0, acquired: 0 }
         };
     }
 });

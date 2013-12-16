@@ -6,33 +6,32 @@
 
         <div class="rule">
             <p class="rulename" style="color: #DA6666">Follow Directions</p>
-            <p class="percentage">{{ data.followDirections.percentage + "%"}}</p>
-            <p>{{ data.followDirections.pointsAcquired + " / " + data.followDirections.pointsTotal }}</p>
+            <p class="percentage">{{ summaryData.fd.percentage + "%"}}</p>
+            <p>{{ summaryData.fd.acquired + " / " + summaryData.fd.eligible }}</p>
         </div>
 
         <div class="rule">
             <p class="rulename" style="color: #F39070">Complete Work</p>
-            <p class="percentage">{{ data.completeWork.percentage + "%"}}</p>
-            <p>{{ data.completeWork.pointsAcquired + " / " + data.completeWork.pointsTotal }}</p>
+            <p class="percentage">{{ summaryData.cw.percentage + "%"}}</p>
+            <p>{{ summaryData.cw.acquired + " / " + summaryData.cw.eligible }}</p>
         </div>
 
         <div class="rule">
             <p class="rulename" style="color: #678FC7">Kind <br/>Words</p>
-            <p class="percentage">{{ data.kindWords.percentage + "%"}}</p>
-            <p>{{ data.kindWords.pointsAcquired + " / " + data.kindWords.pointsTotal }}</p>
+            <p class="percentage">{{ summaryData.kw.percentage + "%"}}</p>
+            <p>{{ summaryData.kw.acquired + " / " + summaryData.kw.eligible }}</p>
         </div>
 
         <div class="rule">
             <p class="rulename" style="color: #8A6CAB">Be <br/>Safe</p>
-            <p class="percentage">{{ data.beSafe.percentage + "%"}}</p>
-            <p>{{ data.beSafe.pointsAcquired + " / " + data.beSafe.pointsTotal }}</p>
+            <p class="percentage">{{ summaryData.bs.percentage + "%"}}</p>
+            <p>{{ summaryData.bs.acquired + " / " + summaryData.bs.eligible }}</p>
         </div>
 
         <div class="rule selected">
             <p class="rulename">Total</p> <br/>
-            <p class="percentage">{{ data.total.percentage + "%"}}</p>
-            <p>{{ data.total.pointsAcquired + " / " + data.total.pointsTotal }}</p>
+            <p class="percentage">{{ summaryData.total.percentage + "%"}}</p>
+            <p>{{ summaryData.total.acquired + " / " + summaryData.total.eligible }}</p>
         </div>
-
     </div>
 </div>
