@@ -1,8 +1,8 @@
 // maintains viewstate for main content area
-app.controller('MainCtrl', function ($scope, mainViewState) {
+app.controller('MainCtrl', function ($scope, mainViewState, timeTracker) {
     $scope.mainViewState = mainViewState;
     $scope.schoolDayEnded = function() {
-        var d = new Date();
+        var d = timeTracker.getTimestamp();
 
         // if after 3 pm
         if (d.getHours() >= 15) {

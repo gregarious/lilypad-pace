@@ -54,7 +54,7 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
 
         defaults: function () {
             return {
-                dateString: timeTracker.getTimestampAsMoment().format('YYYY-MM-DD'),
+                dateString: function() {timeTracker.getTimestampAsMoment().format('YYYY-MM-DD')},
                 isEligible: true
             };
         },
@@ -76,6 +76,10 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
         parse: function(response, options) {
             // pack all point records into a `points` object
             var camelResponse = Backbone.RelationalModel.prototype.parse.apply(this, arguments);
+
+            // use the attribute name 'dateString' to make the type more explicit
+            camelResponse.dateString = camelResponse.date;
+            delete camelResponse.date;
 
             var valueOrNull = function(val) {return !_.isUndefined(val) ? val : null; };
             camelResponse.points = {
