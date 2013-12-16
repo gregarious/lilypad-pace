@@ -66,10 +66,13 @@ widgets.directive('counter', function () {
             var counterElement = countContainer.children[0];
 
             scope.$watch('value', function (newValue) {
-                if (scope.id !== undefined && newValue !== undefined) {
-                    if (scope.id === oldId) {
+                if (scope.id !== undefined) {
+                    if (scope.id === oldId && newValue !== undefined && newValue !== null && oldValue !== null) {
                         animate();
                     } else {
+                        if (typeof newValue == 'undefined') {
+                            newValue = null
+                        }
                         scope.animate = false;
                         scope.currentValue = newValue;
                         oldValue = newValue;
@@ -125,7 +128,7 @@ widgets.directive('counter', function () {
             '</div>' +
             '<div class="name">{{text}} {{inTransition}}</div>' +
             '<ng-switch on="dec">' +
-            '<div ng-switch-when="true" ng-class="{arrowDisabled: value == min, animated: animate }" class="arrow-container down"><div class="arrow-down"></div></div>' +
+            '<div ng-switch-when="true" ng-class="{arrowDisabled: value == min || value == null, animated: animate }" class="arrow-container down"><div class="arrow-down"></div></div>' +
             '</ng-switch>' +
             '</div>',
         replace: true
