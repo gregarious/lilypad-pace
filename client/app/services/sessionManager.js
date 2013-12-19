@@ -19,6 +19,9 @@ angular.module('pace').service('sessionManager', function($http, $q, mixpanel, a
      * @return {String}
      */
     function getAuthToken() {
+        // DEV: turner's token
+        return 'Token f66dd627a2c9d22c540025cea178ab32e23045af';
+
         if (session.token) {
             return 'Token ' + session.token;
         }

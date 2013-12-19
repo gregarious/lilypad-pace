@@ -15,14 +15,14 @@
     <link rel="apple-touch-icon" sizes="144x144" href="images/icon-72@2x.png" />
 
     <!-- stylesheets -->
-    <link rel="stylesheet" href="styles/reset.css">
+<!--    <link rel="stylesheet" href="styles/reset.css">
     <link rel="stylesheet" href="styles/aller/aller.css">
     <link rel="stylesheet" href="styles/app.css">
     <link rel="stylesheet" href="styles/widgets.css">
-
+ -->
     <!-- angular -->
-    <script src="lib/angular-1.2.0-rc.3.js"></script>
-    <script src="lib/angular-touch-1.2.0-rc.3.js"></script>
+    <script src="lib/angular.js"></script>
+    <script src="lib/angular-touch.js"></script>
 
     <!-- third-party packages -->
     <script src="lib/underscore.js"></script>
@@ -40,189 +40,30 @@
     <!-- app -->
     <script src="app.js"></script>
 
-    <!-- app filters -->
-    <script src="filters.js"></script>
+    <!-- models -->
+    <script src="app/models/classroom.js"></script>
+    <script src="app/models/student.js"></script>
 
-    <!----------------------------->
-    <!-- SERVICES -->
-    <!----------------------------->
-
-    <!-- Student-related services -->
-    <script src="services/students/student.js"></script>
-    <script src="services/students/studentDataStore.js"></script>
-
-    <!-- Classroom-related services -->
-    <script src="services/classrooms/classroom.js"></script>
-    <script src="services/classrooms/classroomDataStore.js"></script>
-
-
-    <!-- PeriodicRecord-related services -->
-    <script src="services/periodicRecords/periodicRecord.js"></script>
-    <script src="services/periodicRecords/periodicRecordDataStore.js"></script>
-
-    <script src="services/pointlosses/pointLoss.js"></script>
-    <script src="services/pointlosses/pointLossDataStore.js"></script>
-
-    <!-- BehaviorIncident/BehaviorIncidentType-related services -->
-    <script src="services/behaviorIncidents/behaviorIncident.js"></script>
-    <script src="services/behaviorIncidents/behaviorIncidentType.js"></script>
-    <script src="services/behaviorIncidents/behaviorIncidentDataStore.js"></script>
-    <script src="services/behaviorIncidents/behaviorIncidentTypeDataStore.js"></script>
-
-    <!-- DiscussionPost-related services -->
-    <script src="services/discussions/discussionPost.js"></script>
-    <script src="services/discussions/discussionReply.js"></script>
-    <script src="services/discussions/discussionDataStore.js"></script>
-
-    <!-- Loggable services -->
-    <script src="services/loggable/loggableMixin.js"></script>
-    <script src="services/loggable/logEntryDataStore.js"></script>
-
-    <!-- Attendance services -->
-    <script src="services/attendance/attendanceSpan.js"></script>
-    <script src="services/attendance/attendanceSpanCollectionFactories.js"></script>
-    <script src="services/attendance/attendanceDataStore.js"></script>
-
-    <!-- ViewState services -->
-    <script src="services/viewStates/mainViewState.js"></script>
-
-    <!-- Other services -->
-    <script src="services/common/timeTracker.js"></script>
-    <script src="services/common/sessionManager.js"></script>
-    <script src="services/common/apiConfig.js"></script>
-    <script src="services/collectDataStore.js"></script>
-
-    <!----------------------------->
-    <!-- CONTROLLERS -->
-    <!----------------------------->
-
-    <!-- Menu controllers -->
-    <script src="frontEnd/menu.js"></script>
-    <script src="frontEnd/menu/classroomList.js"></script>
-    <script src="frontEnd/menu/studentList.js"></script>
-
-    <!-- Main controllers -->
-    <script src="frontEnd/main.js"></script>
-    <script src="frontEnd/main/student.js"></script>
-    <script src="frontEnd/main/loginPrompt.js"></script>
-
-    <!-- Main/collect controllers -->
-    <script src="frontEnd/main/student/collect.js"></script>
-    <script src="frontEnd/main/student/collect/incidentLog.js"></script>
-    <script src="frontEnd/main/student/collect/periodicRecord.js"></script>
-    <script src="frontEnd/partials/behaviorSettings.js"></script>
-
-    <!-- Main/analyze controllers -->
-    <script src="frontEnd/main/student/analyze.js"></script>
-    <script src="frontEnd/main/student/analyze/attendanceLog.js"></script>
-    <script src="frontEnd/main/student/analyze/behaviorLog.js"></script>
-    <script src="frontEnd/main/student/analyze/treatmentPeriod.js"></script>
-
-    <!-- Main/discuss controllers -->
-    <script src="frontEnd/main/student/discuss.js"></script>
+    <!-- common services -->
+    <script src="app/services/sessionManager.js"></script>
+    <script src="app/services/apiConfig.js"></script>
 
     <!-- Run app config after all providers are registered -->
     <script src="config.js"></script>
 
+    <script src="devmain.js"></script>
+
 </head>
 <body>
-<div id="orientationNotice">
-    <h2>Please rotate your iPad to landscape to use Lilypad.</h2>
+<div ng-controller="devCtrl">
+<div>{{status}}</div>
+<h1>Classroom: {{classroom.get('name')}}</h1>
+<h2>Students ({{students.length}})</h2>
+<ul>
+    <li ng-repeat="student in students.models">{{student.get('firstName')}}</li>
+</ul>
 </div>
-<div id="login" ng-controller="LoginPromptCtrl" ng-hide="authenticated">
-    <div class="wrapper">
-        <div id="lilypadLogo"></div>
-        <form name="login" ng-submit="logIn()">
-            <label>Username<input type="text" ng-model="login.username" id="username" required autocorrect="off" autocapitalize="off"/></label>
-            <label>Password <input type="password" ng-model="login.password" id="password" required autocorrect="off" autocapitalize="off"/></label>
-            <input type="submit" style="position: absolute; left: -9999px"/>
-        </form>
-        <button ng-disabled="!login.$valid" ng-click="logIn()">Log In</button>
-    </div>
-</div>
-<div id="sidebar" ng-controller="MenuCtrl">
-    <div id="menu">
-        <div id="classroomList" ng-controller="MenuClassroomListCtrl" ng-class="{visible: (mainViewState.classroomCollection.length > 1) && (mainViewState.selectedClassroom == null)}">
-            <ul>
-                <li ng-repeat="classroom in mainViewState.classroomCollection.models">
-                    <div ng-click="selectClassroom(classroom)">
-                        {{classroom.get('name')}}
-                    </div>
-                </li>
-                <li id="signout" ng-click="signOut()">
-                    <span>Sign Out</span>
-                </li>
-            </ul>
-        </div>
-        <div ng-controller="MenuStudentListCtrl">
-            <ul>
-                <li id="classroomToggle" ng-click="changeClassroom()" ng-show="mainViewState.classroomCollection.length > 1">
-                    <span>{{mainViewState.selectedClassroom.get('name')}}</span>
-                </li>
-                <li id="attendanceToggle" ng-click="toggleAttendance()" ng-show="studentCollection" ng-class="{highlighted: mainViewState.editingAttendance }">
-                    <span ng-show="mainViewState.editingAttendance">Done</span>
-                    <span ng-show="!mainViewState.editingAttendance">Edit Attendance</span>
-                </li>
-                <li ng-class="{selected: mainViewState.selectedStudent == student && !mainViewState.editingAttendance}"
-                    ng-repeat="student in studentCollection.models">
-                    <div ng-click="handleClick(student)" ng-class="{absent: !student.isPresent()}">
-                        {{student.get('firstName')}} {{student.get('lastName')}}
-                    </div>
-                </li>
-                <li id="signout" ng-click="signOut()">
-                    <span>Sign Out</span>
-                </li>
-            </ul>
-            <ul ng-show="dataLoading"><li>Loading...</li></ul>
-            <ul ng-show="dataError"><li>{{dataError}}</li></ul>
-        </div>
-    </div>
-</div>
-<div id="main" ng-controller="MainCtrl">
-    <!--
-        Using ng-switch here is a hack: really it should be ng-show on isStudentSelected(),
-        but the counter widgets don't behave right when you use ng-show (I'm pretty sure it's
-        because the counters are expecting to be loaded after student selection. ng-switch
-        lazy-loads controllers, while ng-show does not. Ask Greg if you want to know more.)
 
-        Anyway, we're hacking ng-switch to basically act like an if/else isStudentSelected
-        To get rid of this the right way, we'll have to dig in and fix some of the counter
-        widget code.
-     -->
-    <ng-switch on="mainViewState.isStudentSelected()">
-        <div id="student" ng-switch-when="true">
-            <div class="mainContent" ng-class="{disabled: (mainViewState.editingAttendance)}" ng-controller="MainStudentCtrl">
-                <main-tabs>
-                    <h1 class="studentName"><strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}</h1>
-                    <h3 class="absentLabel">
-                        <!-- if a previous period active -->
-                        <span ng-show="!student.isPresent() && !schoolDayEnded()">Currently Absent</span>
-                        <!-- if a the school day has ended -->
-                        <span ng-show="schoolDayEnded()">School day ended</span>
-                    </h3>
-                    <main-pane title="Collect">
-                        <div ng-controller="MainStudentCollectCtrl">
-                            <div ng-include="'frontEnd/main/student/collect.html'"></div>
-                        </div>
-                    </main-pane>
-                    <main-pane title="Analyze">
-                        <div ng-controller="MainStudentAnalyzeCtrl">
-                            <div ng-include="'frontEnd/main/student/analyze.html'"></div>
-                        </div>
-                    </main-pane>
-                   <!-- 
-                   <main-pane title="Discuss">
-                        <div ng-controller="MainStudentDiscussCtrl">
-                            <div ng-include src="'frontEnd/main/student/discuss.html'"></div>
-                        </div>
-                    </main-pane>
-                    -->
-                </main-tabs>
-            </div>
-        </div>
-    </ng-switch>
-</div>
-<!-- TODO: look into fixing the rubberband effect on app boundaries; card #68 -->
 <script>
     // For development purposes. Simply call `_injector.get('serviceName')` to get a service instance.
     angular.module('pace').run(function ($injector) {
