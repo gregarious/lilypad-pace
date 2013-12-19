@@ -423,7 +423,6 @@ tr th {
     height: 652px;
     padding-top: 95px;
     overflow-y: scroll;
-    position: relative;
     /*-webkit-overflow-scrolling: touch;*/
 }
 
@@ -564,6 +563,7 @@ form .buttonGroup button {
     height: 100%;
     padding: 1em;
     background-color: rgba(0,0,0,.6);
+    z-index: 100000;
 }
 
 .modal {
@@ -692,6 +692,7 @@ td.invalid #behaviorTypeInput li {
     width: 55px;
     background-color: #FFF;
     border: 1px solid #DBDBDB;
+    border-top: 0px;
     padding: 0.5em;
     padding-top: 14px;
     padding-left: 1em;
@@ -725,7 +726,7 @@ td.invalid #behaviorTypeInput li {
     background: #FFF;
     -webkit-appearance: none;
     border-radius: 0px;
-    border-top: 1px solid #DBDBDB;
+    border-top: 0px;
     border-bottom: 1px solid #DBDBDB;
     border-left: 0px;
     border-right: 0px;
@@ -755,6 +756,11 @@ td.invalid #behaviorTypeInput li {
 
 #behaviorIncidentsTable .duration {
     width: 13%;
+}
+
+#behaviorIncidentsTable .duration .vibrant {
+    color: #DC6364;
+    font-family: allerbold;
 }
 
 #behaviorIncidentsTable .comment {
