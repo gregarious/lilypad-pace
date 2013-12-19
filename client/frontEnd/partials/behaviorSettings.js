@@ -45,6 +45,8 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
             $scope.incidentFormData.endedAt = today;
         }
 
+        console.log($scope.incidentFormData.endedAt);
+
         // If editing existing incident
         if ($scope.currentIncidentEditing) {
             $scope.currentIncidentEditing.set('type', $scope.incidentFormData.typeModel);
