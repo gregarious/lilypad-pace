@@ -8,7 +8,11 @@ class Migration(DataMigration):
 
     def forwards(self, orm):
         for classroom in orm.Classroom.objects.all():
-            group = orm['auth.Group'].objects.get_or_create(name=classroom.default_permissions_group_name)
+            if hasattr(classroom, 'default_permissions_group_name'):
+                name = classroom.default_permissions_group_name
+            else:
+                name = u"%s Accessors" % classroom.name
+            group = orm['auth.Group'].objects.get_or_create(name=name)
             classroom.permissions_group = group[0]
             classroom.save()
 
