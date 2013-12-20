@@ -145,8 +145,7 @@ angular.module('backbone', ['underscore']).
                 var angSettings = {
                     url: jqSettings.url,
                     method: jqSettings.type,
-                    data: jqSettings.data,
-                    headers: {'Authorization': sessionManager.getAuthToken()}
+                    data: jqSettings.data
                 };
 
                 if (jqSettings.contentType) {

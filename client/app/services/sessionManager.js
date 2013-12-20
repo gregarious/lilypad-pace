@@ -1,4 +1,4 @@
-angular.module('pace').service('sessionManager', function($http, $q, mixpanel, apiConfig) {
+angular.module('pace').service('sessionManager', function($q, $injector, mixpanel, apiConfig) {
     /** interface **/
     this.getAuthToken = getAuthToken;
     this.getValue = getValue;
@@ -55,6 +55,9 @@ angular.module('pace').service('sessionManager', function($http, $q, mixpanel, a
      */
     function authenticateFromServer(username, password) {
         var deferredLogin = $q.defer();
+
+        // need to manually get this ref: circular dependency otherwise
+        var $http = $injector.get('$http');
 
         // send the token request
         $http({
