@@ -47,6 +47,7 @@
     <!-- common services -->
     <script src="app/services/sessionManager.js"></script>
     <script src="app/services/apiConfig.js"></script>
+    <script src="app/services/timeTracker.js"></script>
 
     <!-- http interceptors -->
     <script src="app/services/authRequestInterceptor.js"></script>
@@ -59,12 +60,23 @@
 </head>
 <body>
 <div ng-controller="devCtrl">
-<div>{{status}}</div>
-<h1>Classroom: {{classroom.get('name')}}</h1>
-<h2>Students ({{students.length}})</h2>
-<ul>
-    <li ng-repeat="student in students.models">{{student.get('firstName')}}</li>
-</ul>
+    <div><em>{{status}}</em></div>
+    <div ng-show="classroom">
+        <h1>Classroom: {{classroom.get('name')}}</h1>
+        <div ng-show="todayRecord.isSynced()">
+            <ul>
+                <li>{{todayRecord.get('date')}}</li>
+                <li>{{todayRecord.get('currentPeriod')}}</li>
+                <button ng-show="todayRecord.isSynced() && todayRecord.get('currentPeriod') === null" ng-click="startDailyRecord()">Start this day</button>
+                <button ng-show="todayRecord.get('currentPeriod')" ng-click="loadStudentData()">Load student data</button>
+            </ul>
+        </div>
+        <button ng-show="!todayRecord || !todayRecord.isSynced()" ng-click="loadDailyRecord()">Load Today</button>
+        <h2>Students ({{students.length}})</h2>
+        <ul>
+            <li ng-repeat="student in students.models">{{student.get('firstName')}}: {{student.get('todayAttendanceSpans').length}} / {{student.get('todayBehaviorIncidents').length}} / {{student.get('todayPointRecords').length}}</li>
+        </ul>
+    </div>
 </div>
 
 <script>

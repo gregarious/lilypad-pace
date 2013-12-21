@@ -145,11 +145,13 @@ angular.module('backbone', ['underscore']).
                 var angSettings = {
                     url: jqSettings.url,
                     method: jqSettings.type,
-                    data: jqSettings.data
+                    data: jqSettings.data,
                 };
 
                 if (jqSettings.contentType) {
-                    angSettings.headers['Content-Type'] = jqSettings.contentType;
+                    angSettings.headers = {
+                        'Content-Type': jqSettings.contentType
+                    };
                 }
 
                 // return an HttpPromise object (note: this object is not the same as an XHR!)
