@@ -1,4 +1,4 @@
-angular.module('pace').factory('authRequestInterceptor', function(sessionManager) {
+angular.module('pace').factory('requestAuthInjector', function(sessionManager) {
     return {
         request: function(config) {
             config.headers = config.headers || {};
