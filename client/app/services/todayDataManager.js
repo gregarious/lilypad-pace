@@ -2,11 +2,7 @@
 //  - get current status of today
 //  - start new day
 //  - get student data for today
-angular.module('pace').factory('todayDataManager', function($http, $q, timeTracker, apiConfig) {
-    var DailyRecord = function(dateString, classroom) {
-        this.date = dateString;
-        this.currentPeriod = null;
-    };
+angular.module('pace').factory('todayDataManager', function($http, $q, _, timeTracker, apiConfig, AttendanceSpan, BehaviorIncident) {
 
     return {
         /**
@@ -18,14 +14,15 @@ angular.module('pace').factory('todayDataManager', function($http, $q, timeTrack
          *
          * @return {Promise}
          */
-        todayRecordForClassroom: function(classroom) {
+        fetchTodayRecordForClassroom: function(classroom) {
             var today = timeTracker.getTimestampAsMoment().format('YYYY-MM-DD');
             var url = apiConfig.toAPIUrl('classrooms/' + classroom.id + '/dailyrecords/' + today + '/');
 
             var fetchingRecord = $q.defer();
-            var defaultRecord = new DailyRecord(today, classroom);
+            var defaultRecord = new DailyRecord(classroom, today);
 
             $http.get(url).then(function(response) {
+                response.data.classroom = classroom;
                 fetchingRecord.resolve(_.extend(defaultRecord, response.data));
             }, function(response) {
                 if (response.status === 404) {
@@ -61,6 +58,7 @@ angular.module('pace').factory('todayDataManager', function($http, $q, timeTrack
                 function(response) {
                     // on success, return our new record (extending just in case, but
                     // response.data should equal request.data on success)
+                    response.data.classroom = classroom;
                     initializingRecord.resolve(_.extend(newRecord, response.data));
                 },
                 function(response) {
@@ -70,6 +68,7 @@ angular.module('pace').factory('todayDataManager', function($http, $q, timeTrack
                     if (response.status === 409) {
                         var recordUrl = response.data['record_location'];
                         $http.get(recordUrl).then(function(response) {
+                            response.data.classroom = classroom;
                             initializingRecord.resolve(_.extend(newRecord, response.data));
                         }, function(response) {
                             // don't gracefully handle 404s this time. something is wrong server-side
@@ -87,5 +86,85 @@ angular.module('pace').factory('todayDataManager', function($http, $q, timeTrack
         },
 
 
+        /**
+         * Returns promise for updating student data for the given classroom
+         * on the current day. Will update the collection of students in a
+         * given classroom with `todayPointRecords`, `todayAttendanceSpans`,
+         * and `todayBehaviorIncident` collections.
+         *
+         * Promise resolves with the classroom, rejects with an http response.
+         *
+         * @param  {DailyRecord} classroom
+         * @return {Promise}
+         */
+        fetchTodayDigestForClassroom: function(classroom) {
+            var today = timeTracker.getTimestampAsMoment().format('YYYY-MM-DD');
+            var url = apiConfig.toAPIUrl('classrooms/' + classroom.id +
+                '/dailyrecords/' + today + '/digest/');
+
+            var fetchingData = $q.defer();
+
+            $http.get(url).then(function(response) {
+                if (processDigestData(response.data, classroom)) {
+                    fetchingData.resolve(classroom);
+                }
+                else {
+                    fetchingData.reject('error processing');
+                }
+            }, function(response) {
+                fetchingData.reject(response);
+            });
+
+            return fetchingData.promise;
+        },
     };
+
+    function DailyRecord(classroom, dateString, currentPeriod) {
+        this.date = dateString;
+        this.classroom = classroom;
+        this.currentPeriod = _.isUndefined(currentPeriod) ? null : currentPeriod;
+    }
+
+    function DailyData() {
+        this.attendanceSpans = new (Backbone.Collection.extend({
+            model: AttendanceSpan,
+            comparator: function(span) {
+                if (span.has('timeIn')) {
+                    return -(moment(span.get('date') + 'T' + span.get('timeIn')).toDate());
+                }
+                else {
+                    return -(moment(span.get('date')).toDate());
+                }
+            }
+        }))();
+
+        this.behaviorIncidents = new (Backbone.Collection.extend({
+            model: BehaviorIncident,
+            comparator: 'startedAt'
+        }))();
+    }
+
+    function processDigestData(apiData, classroom) {
+        // update/add any students not currently in the collection
+        classroom.set('students', apiData.students, {remove: false, parse: true});
+
+        // cycle through students, reseting todayData
+        classroom.get('students').each(function(student) {
+            student.set('todayData', new DailyData());
+        });
+
+        _.each(apiData.attendanceSpans, function(span) {
+            var studentId = span.student;
+            var spans = classroom.get('students').get(studentId).get('todayData').attendanceSpans;
+            spans.add(span, {parse: true});
+        });
+
+        _.each(apiData.behaviorIncidents, function(incident) {
+            var studentId = incident.student;
+            var incidents = classroom.get('students').get(studentId).get('todayData').behaviorIncidents;
+            incidents.add(incident, {parse: true});
+        });
+
+        return true;
+    }
 });

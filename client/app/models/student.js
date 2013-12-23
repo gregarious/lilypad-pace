@@ -1,6 +1,6 @@
 angular.module('pace')
 
-.factory('Student', function(Backbone, apiConfig){
+.factory('Student', function(Backbone, apiConfig, AttendanceSpan, BehaviorIncident){
     Backbone.AppModels.Student = Backbone.RelationalModel.extend({
         /*
             Attributes:

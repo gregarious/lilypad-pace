@@ -12,7 +12,7 @@ angular.module('pace').controller('devCtrl', function($scope, classroomDataStore
 
     $scope.loadDailyRecord = function() {
         $scope.status = "loading record";
-        var fetchingRecord = todayDataManager.todayRecordForClassroom($scope.classroom);
+        var fetchingRecord = todayDataManager.fetchTodayRecordForClassroom($scope.classroom);
         fetchingRecord.then(function(record) {
             _tr = $scope.todayRecord = record;
             if (record.currentPeriod === null) {
@@ -40,11 +40,12 @@ angular.module('pace').controller('devCtrl', function($scope, classroomDataStore
     };
 
     $scope.loadStudentData = function() {
-        $scope.classroom.loadDailyDigest().then(function(studentCollection) {
+        todayDataManager.fetchTodayDigestForClassroom($scope.classroom).
+            then(function(collection) {
 
-        }, function(err) {
-            console.error("Faiure: %o", err);
-            $scope.status = "error loading student data";
-        });
+            }, function(err) {
+                console.error("Faiure: %o", err);
+                $scope.status = "error loading student data";
+            });
     };
 });

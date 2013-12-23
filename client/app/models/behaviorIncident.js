@@ -1,4 +1,4 @@
-angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, LoggableMixin, BehaviorIncidentType, behaviorIncidentTypeDataStore, Student, apiConfig) {
+angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, LoggableMixin, BehaviorIncidentType, apiConfig) {
     Backbone.AppModels.BehaviorIncident = Backbone.RelationalModel.extend(_.extend(new LoggableMixin(), {
         /*
             Attributes:
@@ -21,7 +21,7 @@ angular.module('pace').factory('BehaviorIncident', function(Backbone, moment, Lo
             },
             {
                 key: 'student',
-                relatedModel: Student,
+                relatedModel: 'Student',
                 type: Backbone.HasOne,
                 includeInJSON: Backbone.Model.prototype.idAttribute     // only send id back to server
             }

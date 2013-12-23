@@ -43,6 +43,10 @@
     <!-- models -->
     <script src="app/models/classroom.js"></script>
     <script src="app/models/student.js"></script>
+    <script src="app/models/attendanceSpan.js"></script>
+    <script src="app/models/behaviorIncident.js"></script>
+    <script src="app/models/behaviorIncidentType.js"></script>
+    <script src="app/models/loggableMixin.js"></script>
 
     <!-- model services -->
     <script src="app/services/todayDataManager.js"></script>
@@ -79,7 +83,7 @@
         <button ng-show="!todayRecord" ng-click="loadDailyRecord()">Load Today</button>
         <h2>Students ({{students.length}})</h2>
         <ul>
-            <li ng-repeat="student in students.models">{{student.get('firstName')}}: {{student.get('todayAttendanceSpans').length}} / {{student.get('todayBehaviorIncidents').length}} / {{student.get('todayPointRecords').length}}</li>
+            <li ng-repeat="student in students.models">{{student.get('firstName')}}: {{student.get('todayData').attendanceSpans.length}} / {{student.get('todayData').behaviorIncidents.length}} / {{student.get('todayData').periodicRecords.length}}</li>
         </ul>
     </div>
 </div>

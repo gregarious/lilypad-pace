@@ -1,4 +1,4 @@
-angular.module('pace').factory('BehaviorIncidentType', function(Backbone, Student, apiConfig) {
+angular.module('pace').factory('BehaviorIncidentType', function(Backbone, apiConfig) {
     Backbone.AppModels.BehaviorIncidentType = Backbone.RelationalModel.extend({
         /*
             Attibutes:
@@ -12,7 +12,7 @@ angular.module('pace').factory('BehaviorIncidentType', function(Backbone, Studen
         relations: [
             {
                 key: 'applicableStudent',
-                relatedModel: Student,
+                relatedModel: 'Student',
                 type: Backbone.HasOne,
                 includeInJSON: Backbone.Model.prototype.idAttribute     // only send id back to server
             }

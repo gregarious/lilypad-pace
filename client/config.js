@@ -1,5 +1,5 @@
 angular.module('pace').config(function(timeTrackerProvider) {
-    timeTrackerProvider.setAnchorTime(new Date(2013, 8, 6));
+    timeTrackerProvider.setAnchorTime(new Date(2013, 8, 5));
 });
 
 angular.module('mixpanel').config(function(mixpanelProvider) {
