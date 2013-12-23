@@ -1,9 +1,8 @@
-angular.module('pace').controller('devCtrl', function($scope, classroomDataStore) {
+angular.module('pace').controller('devCtrl', function($scope, classroomDataStore, todayDataManager) {
     var promise = classroomDataStore.load();
     $scope.status = "Loading";
     promise.then(function(classrooms) {
         _classroom = $scope.classroom = classrooms.models[0];
-        _tr = $scope.todayRecord = $scope.classroom.get('todayRecord');
         _students = $scope.students = $scope.classroom.get('students');
         $scope.status = "";
     }, function(reason) {
@@ -13,12 +12,14 @@ angular.module('pace').controller('devCtrl', function($scope, classroomDataStore
 
     $scope.loadDailyRecord = function() {
         $scope.status = "loading record";
-        $scope.classroom.syncTodayRecord().then(function(hasDayBegun) {
-            if (hasDayBegun) {
-                $scope.status = "";
+        var fetchingRecord = todayDataManager.todayRecordForClassroom($scope.classroom);
+        fetchingRecord.then(function(record) {
+            _tr = $scope.todayRecord = record;
+            if (record.currentPeriod === null) {
+                $scope.status = "day has not yet begun";
             }
             else {
-                $scope.status = "day has not yet begun";
+                $scope.status = "";
             }
         }, function(err) {
             console.error("Faiure: %o", err);
@@ -27,11 +28,14 @@ angular.module('pace').controller('devCtrl', function($scope, classroomDataStore
     };
 
     $scope.startDailyRecord = function() {
-        $scope.classroom.initializeTodayRecord().then(function() {
-            // student data should be displaying
+        $scope.status = "initializing day";
+        var initializingRecord = todayDataManager.initializeDayForClassroom($scope.classroom);
+        initializingRecord.then(function(record) {
+            _tr = $scope.todayRecord = record;
+            $scope.status = "";
         }, function(err) {
             console.error("Faiure: %o", err);
-            $scope.status = "error starting day";
+            $scope.status = "error initializing daily record";
         });
     };
 

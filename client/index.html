@@ -44,10 +44,14 @@
     <script src="app/models/classroom.js"></script>
     <script src="app/models/student.js"></script>
 
+    <!-- model services -->
+    <script src="app/services/todayDataManager.js"></script>
+
     <!-- common services -->
     <script src="app/services/sessionManager.js"></script>
     <script src="app/services/apiConfig.js"></script>
     <script src="app/services/timeTracker.js"></script>
+
 
     <!-- http interceptors -->
     <script src="app/services/jsonCaseTransformer.js"></script>
@@ -64,15 +68,15 @@
     <div><em>{{status}}</em></div>
     <div ng-show="classroom">
         <h1>Classroom: {{classroom.get('name')}}</h1>
-        <div ng-show="todayRecord.isSynced()">
+        <div ng-show="todayRecord">
             <ul>
-                <li>{{todayRecord.get('date')}}</li>
-                <li>{{todayRecord.get('currentPeriod')}}</li>
-                <button ng-show="todayRecord.isSynced() && todayRecord.get('currentPeriod') === null" ng-click="startDailyRecord()">Start this day</button>
-                <button ng-show="todayRecord.get('currentPeriod')" ng-click="loadStudentData()">Load student data</button>
+                <li>{{todayRecord.date}}</li>
+                <li>{{todayRecord.currentPeriod}}</li>
+                <button ng-show="todayRecord && todayRecord.currentPeriod === null" ng-click="startDailyRecord()">Start this day</button>
+                <button ng-show="todayRecord.currentPeriod" ng-click="loadStudentData()">Load student data</button>
             </ul>
         </div>
-        <button ng-show="!todayRecord || !todayRecord.isSynced()" ng-click="loadDailyRecord()">Load Today</button>
+        <button ng-show="!todayRecord" ng-click="loadDailyRecord()">Load Today</button>
         <h2>Students ({{students.length}})</h2>
         <ul>
             <li ng-repeat="student in students.models">{{student.get('firstName')}}: {{student.get('todayAttendanceSpans').length}} / {{student.get('todayBehaviorIncidents').length}} / {{student.get('todayPointRecords').length}}</li>
