@@ -11,9 +11,13 @@ angular.module('mixpanel').config(function(mixpanelProvider) {
     mixpanelProvider.logStubCalls();
 });
 
-// add authorization header to all requests
+// add http incerceptors
 angular.module('pace').config(function($httpProvider) {
+    // injects auth header into all requests
     $httpProvider.interceptors.push('requestAuthInjector');
+
+    // transforms camel-to-snake case for request JSON
+    // and vice-versa for response JSON
     $httpProvider.interceptors.push('jsonCaseTransformer');
 });
 
