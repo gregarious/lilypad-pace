@@ -72,6 +72,11 @@
 <body>
 <div ng-controller="devCtrl">
     <div><em>{{status}}</em></div>
+    <ul>
+        <li ng-repeat="classroom in classrooms">
+            <a href="" ng-click="loadClassroom(classroom)">{{classroom.get('name')}}</a>
+        </li>
+    </ul>
     <div ng-show="classroom">
         <h1>Classroom: {{classroom.get('name')}}</h1>
         <div ng-show="todayRecord">
@@ -82,7 +87,6 @@
                 <button ng-show="todayRecord.currentPeriod" ng-click="loadStudentData()">Load student data</button>
             </ul>
         </div>
-        <button ng-show="!todayRecord" ng-click="loadDailyRecord()">Load Today</button>
         <h2>Students ({{students.length}})</h2>
         <ul>
             <li ng-repeat="student in students.models">{{student.get('firstName')}}: {{student.get('todayData').attendanceSpans.length}} / {{student.get('todayData').behaviorIncidents.length}} / {{student.get('todayData').periodicRecords.length}}</li>

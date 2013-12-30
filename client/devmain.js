@@ -1,17 +1,18 @@
 angular.module('pace').controller('devCtrl', function($scope, classroomDataStore, todayDataManager) {
     var promise = classroomDataStore.load();
-    $scope.status = "Loading";
+    $scope.status = "Loading classrooms...";
     promise.then(function(classrooms) {
-        _classroom = $scope.classroom = classrooms.models[0];
-        _students = $scope.students = $scope.classroom.get('students');
+        $scope.classrooms = classrooms.models;
         $scope.status = "";
     }, function(reason) {
         console.error("Failure: %o", reason);
         $scope.status = "error";
     });
 
-    $scope.loadDailyRecord = function() {
-        $scope.status = "loading record";
+    $scope.loadClassroom = function(classroom) {
+        $scope.classroom = classroom;
+        $scope.students = $scope.classroom.get('students');
+        $scope.status = "Loading classroom data for today...";
         var fetchingRecord = todayDataManager.fetchTodayRecordForClassroom($scope.classroom);
         fetchingRecord.then(function(record) {
             _tr = $scope.todayRecord = record;
