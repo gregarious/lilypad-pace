@@ -2,7 +2,7 @@
 //  - get current status of today
 //  - start new day
 //  - get student data for today
-angular.module('pace').factory('todayDataManager', function($http, $q, _, timeTracker, apiConfig, AttendanceSpan, BehaviorIncident) {
+angular.module('pace').factory('todayDataManager', function($http, $q, _, timeTracker, apiConfig, AttendanceSpan, BehaviorIncident, PeriodicRecord) {
 
     return {
         /**
@@ -142,6 +142,11 @@ angular.module('pace').factory('todayDataManager', function($http, $q, _, timeTr
             model: BehaviorIncident,
             comparator: 'startedAt'
         }))();
+
+        this.periodicRecords = new (Backbone.Collection.extend({
+            model: PeriodicRecord,
+            comparator: 'period'
+        }))();
     }
 
     function processDigestData(apiData, classroom) {
@@ -153,16 +158,31 @@ angular.module('pace').factory('todayDataManager', function($http, $q, _, timeTr
             student.set('todayData', new DailyData());
         });
 
+        var students = classroom.get('students');
+
+        // cycle through attendance spans and add to appropriate student's `todayData`
         _.each(apiData.attendanceSpans, function(span) {
             var studentId = span.student;
-            var spans = classroom.get('students').get(studentId).get('todayData').attendanceSpans;
+            var spans = students.get(studentId).get('todayData').attendanceSpans;
             spans.add(span, {parse: true});
         });
 
+        // cycle through incidents and add to appropriate student's `todayData`
         _.each(apiData.behaviorIncidents, function(incident) {
             var studentId = incident.student;
-            var incidents = classroom.get('students').get(studentId).get('todayData').behaviorIncidents;
+            var incidents = students.get(studentId).get('todayData').behaviorIncidents;
             incidents.add(incident, {parse: true});
+        });
+
+        // cycle through periodic records and add to appropriate student's `todayData`
+        _.each(apiData.periodicRecords, function(pdRecord) {
+            // TODO: remove once `isEligible` is removed from server data model. we only should be
+            // handling elgibile records from now on.
+            if (pdRecord.isEligible === true) {
+                var studentId = pdRecord.student;
+                var periodicRecords = students.get(studentId).get('todayData').periodicRecords;
+                periodicRecords.add(pdRecord, {parse: true});
+            }
         });
 
         return true;

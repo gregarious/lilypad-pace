@@ -1,4 +1,4 @@
-angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTracker, Student, PointLoss, pointLossDataStore, apiConfig) {
+angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTracker, Student, PointLoss, apiConfig, mixpanel) {
     // utilities in use below
     var validPointpointTypes = ['kw', 'cw', 'fd', 'bs'];
     var isValidPointType = function(code) {
@@ -11,6 +11,28 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
             return model.get('occurredAt');
         }
     });
+
+    function createPointLoss(periodicRecord, pointType, occurredAt, comment) {
+        // set arugment defaults
+        comment = _.isUndefined(comment) ? "" : comment;
+
+        // mandate that dates are actual Date objects
+        occurredAt = moment(occurredAt).toDate();
+
+        var attrs = {
+            periodicRecord: periodicRecord,
+            pointType: pointType,
+            occurredAt: occurredAt,
+            comment: comment
+        };
+
+        // mixpanel tracking
+        mixpanel.track("Point loss");
+
+        var newLoss = new PointLoss(attrs);
+        newLoss.save();
+        return newLoss;
+    }
 
     Backbone.AppModels.PeriodicRecord = Backbone.RelationalModel.extend({
         /*
@@ -43,7 +65,8 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
                 relatedModel: PointLoss,
                 type: Backbone.HasMany,
                 collectionType: InnerPointLossCollection,
-                includeInJSON: Backbone.Model.prototype.idAttribute,    // only send id back to server
+                parse: true,
+                includeInJSON: false,                                   // don't send point losses to server
                 reverseRelation: {
                     key: 'periodicRecord',
                     type: Backbone.HasOne,
@@ -75,33 +98,25 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
 
         parse: function(response, options) {
             // pack all point records into a `points` object
-            var camelResponse = Backbone.RelationalModel.prototype.parse.apply(this, arguments);
+            response = Backbone.RelationalModel.prototype.parse.apply(this, arguments);
 
             var valueOrNull = function(val) {return !_.isUndefined(val) ? val : null; };
-            camelResponse.points = {
-                kw: valueOrNull(camelResponse.kindWordsPoints),
-                cw: valueOrNull(camelResponse.completeWorkPoints),
-                fd: valueOrNull(camelResponse.followDirectionsPoints),
-                bs: valueOrNull(camelResponse.beSafePoints)
+            response.points = {
+                kw: valueOrNull(response.kindWordsPoints),
+                cw: valueOrNull(response.completeWorkPoints),
+                fd: valueOrNull(response.followDirectionsPoints),
+                bs: valueOrNull(response.beSafePoints)
             };
 
-            delete camelResponse.kindWordsPoints;
-            delete camelResponse.completeWorkPoints;
-            delete camelResponse.followDirectionsPoints;
-            delete camelResponse.beSafePoints;
+            delete response.kindWordsPoints;
+            delete response.completeWorkPoints;
+            delete response.followDirectionsPoints;
+            delete response.beSafePoints;
 
-            // transform case for embedded point loss attributes
-            if (camelResponse.pointLosses) {
-                camelResponse.pointLosses = _.map(camelResponse.pointLosses, function(attrs) {
-                    return PointLoss.prototype.parse(attrs);
-                });
-            }
-
-            return camelResponse;
+            return response;
         },
 
         toJSON: function() {
-            // camelize the data keys first
             var data = Backbone.RelationalModel.prototype.toJSON.apply(this, arguments);
 
             // unpack point records
@@ -111,9 +126,6 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
             data['complete_work_points'] = points && points.cw;
             data['follow_directions_points'] = points && points.fd;
             data['be_safe_points'] = points && points.bs;
-
-            // remove nested point losses
-            delete data.point_losses;
 
             return data;
         },
@@ -152,11 +164,7 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
             if (this.get('isEligible') && isValidPointType(pointType)) {
                 if (this.get('points')[pointType] >= 1) {
                     this.get('points')[pointType]--;
-                    var lossRecord = pointLossDataStore.createPointLoss(
-                        this,
-                        pointType,
-                        timeTracker.getTimestamp()
-                    );
+                    var lossRecord = createPointLoss(this, pointType, timeTracker.getTimestamp());
 
                     // disabled: relying on server to handle this on its own
                     // TODO: consider
