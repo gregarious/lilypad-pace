@@ -100,10 +100,6 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
             // pack all point records into a `points` object
             response = Backbone.RelationalModel.prototype.parse.apply(this, arguments);
 
-            // use the attribute name 'dateString' to make the type more explicit
-            camelResponse.dateString = camelResponse.date;
-            delete camelResponse.date;
-
             var valueOrNull = function(val) {return !_.isUndefined(val) ? val : null; };
             response.points = {
                 kw: valueOrNull(response.kindWordsPoints),
