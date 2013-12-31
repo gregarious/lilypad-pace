@@ -47,27 +47,28 @@
     <script src="app.js"></script>
 
     <!-- models -->
-    <script src="app/models/classroom.js"></script>
-    <script src="app/models/student.js"></script>
-    <script src="app/models/attendanceSpan.js"></script>
-    <script src="app/models/periodicRecord.js"></script>
-    <script src="app/models/pointLoss.js"></script>
-    <script src="app/models/behaviorIncident.js"></script>
-    <script src="app/models/behaviorIncidentType.js"></script>
-    <script src="app/models/loggableMixin.js"></script>
-
-    <!-- model services -->
-    <script src="app/services/todayDataManager.js"></script>
-    <script src="services/rules/rulesDataStore.js"></script>
+    <script src="app/common/models/classroom.js"></script>
+    <script src="app/common/models/student.js"></script>
+    <script src="app/common/models/attendanceSpan.js"></script>
+    <script src="app/common/models/periodicRecord.js"></script>
+    <script src="app/common/models/pointLoss.js"></script>
+    <script src="app/common/models/behaviorIncident.js"></script>
+    <script src="app/common/models/behaviorIncidentType.js"></script>
+    <script src="app/common/models/loggableMixin.js"></script>
 
     <!-- common services -->
-    <script src="app/services/sessionManager.js"></script>
-    <script src="app/services/apiConfig.js"></script>
-    <script src="app/services/timeTracker.js"></script>
+    <script src="app/common/services/todayDataManager.js"></script>
+    <script src="services/rules/rulesDataStore.js"></script>
 
-    <!-- http interceptors -->
-    <script src="app/services/jsonCaseTransformer.js"></script>
-    <script src="app/services/requestAuthInjector.js"></script>
+    <script src="app/common/services/apiConfig.js"></script>
+    <script src="app/common/services/timeTracker.js"></script>
+
+    <!-- common http interceptors -->
+    <script src="app/common/services/jsonCaseTransformer.js"></script>
+
+    <!-- auth-related services/interceptors -->
+    <script src="app/auth/services/sessionManager.js"></script>
+    <script src="app/auth/services/requestAuthInjector.js"></script>
 
     <!----------------------------->
     <!-- CONTROLLERS -->
