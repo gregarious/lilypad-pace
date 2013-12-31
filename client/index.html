@@ -30,6 +30,12 @@
     <script src="lib/backbone-relational.js"></script>
     <script src="lib/moment.js"></script>
 
+    <!-- google visualization library -->
+    <script src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+        google.load('visualization', '1.0', {'packages':['corechart']});
+    </script
+
     <!-- modules -->
     <script src="modules/underscore.js"></script>
     <script src="modules/backbone.js"></script>
@@ -52,16 +58,37 @@
 
     <!-- model services -->
     <script src="app/services/todayDataManager.js"></script>
+    <script src="services/rules/rulesDataStore.js"></script>
 
     <!-- common services -->
     <script src="app/services/sessionManager.js"></script>
     <script src="app/services/apiConfig.js"></script>
     <script src="app/services/timeTracker.js"></script>
 
-
     <!-- http interceptors -->
     <script src="app/services/jsonCaseTransformer.js"></script>
     <script src="app/services/requestAuthInjector.js"></script>
+
+    <!----------------------------->
+    <!-- CONTROLLERS -->
+    <!----------------------------->
+
+    <!-- Main/collect controllers -->
+    <script src="frontEnd/main/student/collect.js"></script>
+    <script src="frontEnd/main/student/collect/incidentLog.js"></script>
+    <script src="frontEnd/main/student/collect/periodicRecord.js"></script>
+    <script src="frontEnd/partials/behaviorSettings.js"></script>
+
+    <!-- Main/analyze controllers -->
+    <script src="frontEnd/main/student/analyze.js"></script>
+    <script src="frontEnd/main/student/analyze/attendanceLog.js"></script>
+    <script src="frontEnd/main/student/analyze/rules.js"></script>
+    <script src="frontEnd/main/student/analyze/treatmentReport.js"></script>
+    <script src="frontEnd/main/student/analyze/behaviorLog.js"></script>
+    <script src="frontEnd/main/student/analyze/treatmentPeriod.js"></script>
+
+    <!-- Main/discuss controllers -->
+    <script src="frontEnd/main/student/discuss.js"></script>
 
     <!-- Run app config after all providers are registered -->
     <script src="config.js"></script>
