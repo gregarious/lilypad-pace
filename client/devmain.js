@@ -41,9 +41,10 @@ angular.module('pace').controller('devCtrl', function($scope, classroomDataStore
     };
 
     $scope.loadStudentData = function() {
+        $scope.status = "loading student data for today";
         todayDataManager.fetchTodayDigestForClassroom($scope.classroom).
             then(function(collection) {
-
+                $scope.status = "";
             }, function(err) {
                 console.error("Faiure: %o", err);
                 $scope.status = "error loading student data";
