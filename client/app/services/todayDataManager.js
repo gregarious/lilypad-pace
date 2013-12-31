@@ -49,7 +49,7 @@ angular.module('pace').factory('todayDataManager', function($http, $q, _, timeTr
             var url = apiConfig.toAPIUrl('classrooms/' + classroom.id + '/dailyrecords/');
 
             var initializingRecord = $q.defer();
-            var newRecord = new DailyRecord(today, classroom);
+            var newRecord = new DailyRecord(classroom, today);
             newRecord.currentPeriod = 1;
 
             var postData = _.omit(newRecord, 'classroom');
