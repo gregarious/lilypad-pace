@@ -1,0 +1,9 @@
+<div class="wrapper">
+    <div id="lilypadLogo"></div>
+    <form name="loginForm" ng-submit="logIn()">
+        <label>Username<input type="text" ng-model="loginData.username" id="username" required autocorrect="off" autocapitalize="off"/></label>
+        <label>Password <input type="password" ng-model="loginData.password" id="password" required autocorrect="off" autocapitalize="off"/></label>
+        <input type="submit" style="position: absolute; left: -9999px"/>
+    </form>
+    <button ng-disabled="!loginForm.$valid" ng-click="logIn()">Log In</button>
+</div>

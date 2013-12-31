@@ -22,4 +22,3 @@ angular.module('pace').config(function($httpProvider) {
     // and vice-versa for response JSON
     $httpProvider.interceptors.push('jsonCaseTransformer');
 });
-

@@ -15,11 +15,11 @@
     <link rel="apple-touch-icon" sizes="144x144" href="images/icon-72@2x.png" />
 
     <!-- stylesheets -->
-<!--    <link rel="stylesheet" href="styles/reset.css">
+    <link rel="stylesheet" href="styles/reset.css">
     <link rel="stylesheet" href="styles/aller/aller.css">
     <link rel="stylesheet" href="styles/app.css">
     <link rel="stylesheet" href="styles/widgets.css">
- -->
+
     <!-- angular -->
     <script src="lib/angular.js"></script>
     <script src="lib/angular-touch.js"></script>
@@ -46,7 +46,7 @@
     <!-- app -->
     <script src="app.js"></script>
 
-    <!-- models -->
+    <!-- Common models -->
     <script src="app/common/models/classroom.js"></script>
     <script src="app/common/models/student.js"></script>
     <script src="app/common/models/attendanceSpan.js"></script>
@@ -56,49 +56,39 @@
     <script src="app/common/models/behaviorIncidentType.js"></script>
     <script src="app/common/models/loggableMixin.js"></script>
 
-    <!-- common services -->
+    <!-- Common services -->
     <script src="app/common/services/todayDataManager.js"></script>
-    <script src="services/rules/rulesDataStore.js"></script>
-
     <script src="app/common/services/apiConfig.js"></script>
     <script src="app/common/services/timeTracker.js"></script>
-
-    <!-- common http interceptors -->
     <script src="app/common/services/jsonCaseTransformer.js"></script>
 
-    <!-- auth-related services/interceptors -->
+    <script src="services/rules/rulesDataStore.js"></script>
+
+    <!-- AUTH COMPONENTS -->
+    <!-- general auth services -->
     <script src="app/auth/services/sessionManager.js"></script>
     <script src="app/auth/services/requestAuthInjector.js"></script>
 
-    <!----------------------------->
-    <!-- CONTROLLERS -->
-    <!----------------------------->
-
-    <!-- Main/collect controllers -->
-    <script src="frontEnd/main/student/collect.js"></script>
-    <script src="frontEnd/main/student/collect/incidentLog.js"></script>
-    <script src="frontEnd/main/student/collect/periodicRecord.js"></script>
-    <script src="frontEnd/partials/behaviorSettings.js"></script>
-
-    <!-- Main/analyze controllers -->
-    <script src="frontEnd/main/student/analyze.js"></script>
-    <script src="frontEnd/main/student/analyze/attendanceLog.js"></script>
-    <script src="frontEnd/main/student/analyze/rules.js"></script>
-    <script src="frontEnd/main/student/analyze/treatmentReport.js"></script>
-    <script src="frontEnd/main/student/analyze/behaviorLog.js"></script>
-    <script src="frontEnd/main/student/analyze/treatmentPeriod.js"></script>
-
-    <!-- Main/discuss controllers -->
-    <script src="frontEnd/main/student/discuss.js"></script>
+    <!-- login prompt -->
+    <script src="app/auth/controllers/loginPrompt.js"></script>
 
     <!-- Run app config after all providers are registered -->
     <script src="config.js"></script>
+    <script src="app/common/config/viewStateConfig.js"></script>
 
     <script src="devmain.js"></script>
 
 </head>
 <body>
-<div ng-controller="devCtrl">
+<div id="orientationNotice">
+    <h2>Please rotate your iPad to landscape to use Lilypad.</h2>
+</div>
+
+<div id="login" ng-show="!viewState.isUserAuthenticated"
+                ng-controller="LoginPromptCtrl"
+                ng-include="'app/auth/views/loginPrompt.html'"></div>
+
+<div ng-controller="devCtrl" ng-if="viewState.isUserAuthenticated">
     <div><em>{{status}}</em></div>
     <ul>
         <li ng-repeat="classroom in classrooms">

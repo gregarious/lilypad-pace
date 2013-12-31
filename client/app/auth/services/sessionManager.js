@@ -19,11 +19,6 @@ angular.module('pace').service('sessionManager', function($q, $injector, mixpane
      * @return {String}
      */
     function getAuthToken() {
-        // DEV: turner's token
-        return 'Token f66dd627a2c9d22c540025cea178ab32e23045af';
-        // DEV: feeny's token
-        // return 'Token cce9b356c38ed8f3d0a59f2ca9d4cb108e92631f';
-
         if (session.token) {
             return 'Token ' + session.token;
         }
