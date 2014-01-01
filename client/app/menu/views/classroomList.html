@@ -1,0 +1,8 @@
+<ul>
+    <li class="status" ng-show="statusMessage">{{statusMessage}}</li>
+    <li ng-repeat="classroom in classroomCollection.models">
+        <div ng-click="selectClassroom(classroom)">
+            {{classroom.get('name')}}
+        </div>
+    </li>
+</ul>

@@ -74,6 +74,7 @@
 
     <!-- MENU COMPONENTS -->
     <script src="app/menu/controllers/menu.js"></script>
+    <script src="app/menu/controllers/classroomList.js"></script>
 
     <!-- Run final app config & run routines after all providers are registered -->
     <script src="app/config.js"></script>
@@ -93,15 +94,22 @@
 
     <div id="sidebar">
         <div id="menu" ng-controller="MenuCtrl">
+            <!-- Log out button -->
             <ul>
                 <li id="signout" ng-click="signOut()">
                     <span>Sign Out</span>
                 </li>
             </ul>
+            <div id="classroomList"
+                 ng-class="{visible: viewState.selectedClassroom == null}"
+                 ng-controller="MenuClassroomListCtrl"
+                 ng-include="'app/menu/views/classroomList.html'">
+                 <!-- use `visible` class here to enable CSS slide animation -->
+            </div>
         </div>
     </div>
 
-    <div id="main" ng-controller="devCtrl" ng-if="viewState.isUserAuthenticated">
+    <div id="main" ng-controller="devCtrl" ng-if="0">
         <!-- in development testing code -->
         <div><em>{{status}}</em></div>
         <ul>
