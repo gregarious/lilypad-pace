@@ -1,4 +1,4 @@
-app.controller('LoginPromptCtrl', function ($scope, sessionManager, classroomDataStore, mixpanel, $timeout) {
+app.controller('LoginPromptCtrl', function ($scope, $rootScope, sessionManager, classroomDataStore, mixpanel, $timeout) {
     /** $scope interface **/
 
     $scope.loginData = {};
@@ -10,22 +10,6 @@ app.controller('LoginPromptCtrl', function ($scope, sessionManager, classroomDat
         logOut();
     });
 
-
-    var didResume = sessionManager.resumeSession();
-    if (didResume) {
-        startApp();
-    }
-
-    /** Implementation details **/
-
-    function startApp() {
-        mixpanel.identify(sessionManager.getValue('username'));
-        $scope.viewState.isUserAuthenticated = true;
-
-        // DEV: disabled temporarily
-        // initializeClassroomList();
-    }
-
     function logIn() {
         var data = $scope.loginData;
         if (data.username && data.password) {
@@ -33,7 +17,7 @@ app.controller('LoginPromptCtrl', function ($scope, sessionManager, classroomDat
 
             attemptingLogin.then(function() {
                 sessionManager.setValue('username', data.username);
-                startApp();
+                $rootScope.grantAccess();
             }, function(errorInfo) {
                 $scope.viewState.isUserAuthenticated = false;
                 var reason = errorInfo[0];
@@ -55,15 +39,9 @@ app.controller('LoginPromptCtrl', function ($scope, sessionManager, classroomDat
             var confirmLogout = confirm("Are you sure you want to logout?");
             if (confirmLogout === true) {
                 sessionManager.clearSession();
-
+                $rootScope.revokeAccess();
                 // reset login form
                 $scope.loginData = {};
-
-                // reset main view state values
-                $scope.viewState.isUserAuthenticated = false;
-                $scope.viewState.selectedStudent = null;
-                $scope.viewState.selectedClassroom = null;
-                $scope.viewState.editingAttendance = false;
             }
         }, 0);
     }
