@@ -72,8 +72,8 @@
     <!-- login prompt -->
     <script src="app/auth/controllers/loginPrompt.js"></script>
 
-    <!-- SIDEBAR COMPONENTS -->
-    <script src=""></script>
+    <!-- MENU COMPONENTS -->
+    <script src="app/menu/controllers/menu.js"></script>
 
     <!-- Run app config after all providers are registered -->
     <script src="config.js"></script>
@@ -91,7 +91,18 @@
                     ng-controller="LoginPromptCtrl"
                     ng-include="'app/auth/views/loginPrompt.html'"></div>
 
-    <div ng-controller="devCtrl" ng-if="viewState.isUserAuthenticated">
+    <div id="sidebar">
+        <div id="menu" ng-controller="MenuCtrl">
+            <ul>
+                <li id="signout" ng-click="signOut()">
+                    <span>Sign Out</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="main" ng-controller="devCtrl" ng-if="viewState.isUserAuthenticated">
+        <!-- in development testing code -->
         <div><em>{{status}}</em></div>
         <ul>
             <li ng-repeat="classroom in classrooms">
@@ -121,5 +132,6 @@
             window._injector = $injector;
         });
     </script>
+
 </body>
 </html>
