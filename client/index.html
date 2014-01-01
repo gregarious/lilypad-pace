@@ -34,7 +34,7 @@
     <script src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
         google.load('visualization', '1.0', {'packages':['corechart']});
-    </script
+    </script>
 
     <!-- modules -->
     <script src="modules/underscore.js"></script>
@@ -72,52 +72,54 @@
     <!-- login prompt -->
     <script src="app/auth/controllers/loginPrompt.js"></script>
 
+    <!-- SIDEBAR COMPONENTS -->
+    <script src=""></script>
+
     <!-- Run app config after all providers are registered -->
     <script src="config.js"></script>
     <script src="app/common/config/viewStateConfig.js"></script>
 
     <script src="devmain.js"></script>
-
 </head>
+
 <body>
-<div id="orientationNotice">
-    <h2>Please rotate your iPad to landscape to use Lilypad.</h2>
-</div>
+    <div id="orientationNotice">
+        <h2>Please rotate your iPad to landscape to use Lilypad.</h2>
+    </div>
 
-<div id="login" ng-show="!viewState.isUserAuthenticated"
-                ng-controller="LoginPromptCtrl"
-                ng-include="'app/auth/views/loginPrompt.html'"></div>
+    <div id="login" ng-show="!viewState.isUserAuthenticated"
+                    ng-controller="LoginPromptCtrl"
+                    ng-include="'app/auth/views/loginPrompt.html'"></div>
 
-<div ng-controller="devCtrl" ng-if="viewState.isUserAuthenticated">
-    <div><em>{{status}}</em></div>
-    <ul>
-        <li ng-repeat="classroom in classrooms">
-            <a href="" ng-click="loadClassroom(classroom)">{{classroom.get('name')}}</a>
-        </li>
-    </ul>
-    <div ng-show="classroom">
-        <h1>Classroom: {{classroom.get('name')}}</h1>
-        <div ng-show="todayRecord">
+    <div ng-controller="devCtrl" ng-if="viewState.isUserAuthenticated">
+        <div><em>{{status}}</em></div>
+        <ul>
+            <li ng-repeat="classroom in classrooms">
+                <a href="" ng-click="loadClassroom(classroom)">{{classroom.get('name')}}</a>
+            </li>
+        </ul>
+        <div ng-show="classroom">
+            <h1>Classroom: {{classroom.get('name')}}</h1>
+            <div ng-show="todayRecord">
+                <ul>
+                    <li>{{todayRecord.date}}</li>
+                    <li>{{todayRecord.currentPeriod}}</li>
+                    <button ng-show="todayRecord && todayRecord.currentPeriod === null" ng-click="startDailyRecord()">Start this day</button>
+                    <button ng-show="todayRecord.currentPeriod" ng-click="loadStudentData()">Load student data</button>
+                </ul>
+            </div>
+            <h2>Students ({{students.length}})</h2>
             <ul>
-                <li>{{todayRecord.date}}</li>
-                <li>{{todayRecord.currentPeriod}}</li>
-                <button ng-show="todayRecord && todayRecord.currentPeriod === null" ng-click="startDailyRecord()">Start this day</button>
-                <button ng-show="todayRecord.currentPeriod" ng-click="loadStudentData()">Load student data</button>
+                <li ng-repeat="student in students.models">{{student.get('firstName')}}: {{student.get('todayData').attendanceSpans.length}} / {{student.get('todayData').behaviorIncidents.length}} / {{student.get('todayData').periodicRecords.length}}</li>
             </ul>
         </div>
-        <h2>Students ({{students.length}})</h2>
-        <ul>
-            <li ng-repeat="student in students.models">{{student.get('firstName')}}: {{student.get('todayData').attendanceSpans.length}} / {{student.get('todayData').behaviorIncidents.length}} / {{student.get('todayData').periodicRecords.length}}</li>
-        </ul>
     </div>
-</div>
 
-<script>
-    // For development purposes. Simply call `_injector.get('serviceName')` to get a service instance.
-    angular.module('pace').run(function ($injector) {
-        window._injector = $injector;
-    });
-</script>
-
+    <script>
+        // For development purposes. Simply call `_injector.get('serviceName')` to get a service instance.
+        angular.module('pace').run(function ($injector) {
+            window._injector = $injector;
+        });
+    </script>
 </body>
 </html>
