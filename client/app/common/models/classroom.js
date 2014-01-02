@@ -48,6 +48,10 @@ angular.module('pace')
             return deferredFetch.promise;
         },
 
+        clear: function() {
+            this.classrooms.reset();
+        }
+
 
     };
 });

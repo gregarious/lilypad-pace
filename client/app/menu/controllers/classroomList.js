@@ -18,6 +18,7 @@ app.controller('MenuClassroomListCtrl', function ($scope, mixpanel,  classroomDa
             $scope.statusMessage = "Loading classrooms...";
 
             classroomDataStore.load().then(function(classroomCollection) {
+                // note that argument is the same as classRoomDataStore.classrooms
                 $scope.classroomCollection = classroomCollection;
                 $scope.viewState.selectedClassroom = null;
 
@@ -38,6 +39,7 @@ app.controller('MenuClassroomListCtrl', function ($scope, mixpanel,  classroomDa
                 $scope.classroomCollection = null;
             });
         } else {
+            classroomDataStore.clear();
             // clear all classrooms if user is not authenicated
             $scope.statusMessage = "";
             $scope.classroomCollection = null;

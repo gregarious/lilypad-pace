@@ -20,8 +20,6 @@ angular.module('pace').run(function(sessionManager, $rootScope, mixpanel) {
         isClassroomSelected: function() {
             return Boolean(this.selectedClassroom);
         },
-
-        editingAttendance: false
     };
 
     // global function for granting access to a user. needed both here
@@ -37,7 +35,6 @@ angular.module('pace').run(function(sessionManager, $rootScope, mixpanel) {
         $rootScope.viewState.isUserAuthenticated = false;
         $rootScope.viewState.selectedStudent = null;
         $rootScope.viewState.selectedClassroom = null;
-        $rootScope.viewState.editingAttendance = false;
     };
 
     // Now app is configured and running. Kick it off by trying

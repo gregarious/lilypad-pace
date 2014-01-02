@@ -1,0 +1,8 @@
+<ul>
+    <li ng-class="{selected: viewState.selectedStudent == student && !editingAttendance}"
+        ng-repeat="student in studentCollection.models">
+        <div ng-click="handleClick(student)" ng-class="{absent: false}">
+            {{student.get('firstName')}} {{student.get('lastName')}}
+        </div>
+    </li>
+</ul>

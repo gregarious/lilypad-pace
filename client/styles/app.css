@@ -635,17 +635,21 @@ form .buttonGroup button {
     margin-left: 20%;
 }
 
-#classroomToggle {
+#classroomHeading {
+    border-right: 1px solid #DBDBDB;
+    height: 44px !important;
+    line-height: 3 !important;
+    font-size: 11pt !important;
+}
+
+/* hamburger menu */
+.toggleActive {
     box-sizing: border-box;
     background-image: url(../images/menu.png);
     background-repeat: no-repeat;
     background-position: 18px center;
     background-size: 20px;
-    border-right: 1px solid #DBDBDB;
     padding-left: 55px !important;
-    height: 44px !important;
-    line-height: 3 !important;
-    font-size: 11pt !important;
 }
 
 /* Student Main Styles */
