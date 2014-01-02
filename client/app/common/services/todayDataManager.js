@@ -39,7 +39,7 @@ angular.module('pace').factory('todayDataManager', function($http, $q, _, timeTr
         /**
          * Initializes a new DailyRecord object for the classroom and
          * pushes it to the server. Returns a promise for the new
-         * object.
+         * DailyRecord object.
          *
          * @param  {Classroom} classroom
          * @return {Promise}

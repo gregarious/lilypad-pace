@@ -99,12 +99,12 @@
                     ng-controller="LoginPromptCtrl"
                     ng-include="'app/auth/views/loginPrompt.html'"></div>
 
-    <div id="sidebar">
+    <div id="sidebar" ng-show="viewState.isUserAuthenticated">
         <div id="menu" ng-controller="MenuCtrl"
                        ng-include="'app/core/views/sidebar.html'"></div>
     </div>
 
-    <div id="main">
+    <div id="main" ng-show="viewState.isUserAuthenticated">
         <!-- TODO: renable disabling main content on attendance editing. set up broadcast message? -->
         <div class="mainContent"
           ng-class="{disabled: false}"

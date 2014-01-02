@@ -10,13 +10,19 @@ angular.module('pace').factory('periodSwitcher', function($timeout) {
 
         // resets all values based on the given day record
         reset: function(dayRecord) {
-            this.availablePeriods = _.map(_.range(1, dayRecord.currentPeriod+1), function(pdNum) {
-                return {
-                    label: 'Period ' + pdNum,
-                    value: pdNum
-                };
-            });
-            this.selectedPeriodNumber = dayRecord.currentPeriod;
+            if (dayRecord) {
+                this.availablePeriods = _.map(_.range(1, dayRecord.currentPeriod+1), function(pdNum) {
+                    return {
+                        label: 'Period ' + pdNum,
+                        value: pdNum
+                    };
+                });
+                this.selectedPeriodNumber = dayRecord.currentPeriod;
+            }
+            else {
+                this.availablePeriods = [];
+                this.selectedPeriodNumber = null;
+            }
         },
 
         // Moves to previous period

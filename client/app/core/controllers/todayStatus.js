@@ -31,14 +31,16 @@ app.controller('TodayStatusBarCtrl', function ($scope, timeTracker, todayDataMan
             }, function(err) {
                 alert("We're sorry, but there was a problem loading today's data. Please try again. If problem persists, please contact us.");
                 $scope.startDayButton.text = "Retry loading";
-                _g = $scope.startDayButton.action = function() {resetStatusBar(classroom);};
+                $scope.startDayButton.action = function() {resetStatusBar(classroom);};
             });
         }
         else {
-            $scope.dayStatus = '';
-            $scope.buttonText = '';
-
+            $scope.startDayButton = {
+                text: '',
+                action: null,
+            };
             $scope.todayRecord = null;
+            $scope.switcher.reset();
         }
     }
 
@@ -50,6 +52,7 @@ app.controller('TodayStatusBarCtrl', function ($scope, timeTracker, todayDataMan
         initializingRecord.then(function(record) {
             $scope.startDayButton.text = "";
             $scope.startDayButton.action = null;
+            $scope.switcher.reset(record);
         }, function(err) {
             alert("We're sorry, but there was a problem starting a new day. Please try again. If problem persists, please contact us.");
             $scope.startDayButton.text = "Start Day";
