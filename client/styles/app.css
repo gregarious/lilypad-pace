@@ -719,7 +719,7 @@ td.invalid #behaviorTypeInput li {
     margin-right: 0;
 }
 
-#periodicBehaviors select {
+.periodSelect {
     float: left;
     font-size: 11pt;
     margin-bottom: 24px;

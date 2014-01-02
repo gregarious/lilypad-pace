@@ -1,0 +1,3 @@
+<div class="periodLeft" ng-click="prevPeriod()" ng-class="{ disabled: periodSelector.selectedPeriodNumber == 1 }">&lt;</div>
+<select class="periodSelect" name="period" ng-model="selectedPeriodNumber" ng-options="pd.value as pd.label for pd in availablePeriods"></select>
+<div class="periodRight" ng-click="nextPeriod()" ng-class="{ disabled: periodSelector.selectedPeriodNumber == timeTracker.finalPeriodNumber }">&gt;</div>

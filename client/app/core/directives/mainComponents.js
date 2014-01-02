@@ -1,18 +1,3 @@
-// maintains viewstate for main content area
-app.controller('MainCtrl', function ($scope, mainViewState, timeTracker) {
-    $scope.mainViewState = mainViewState;
-    $scope.schoolDayEnded = function() {
-        var d = timeTracker.getTimestamp();
-
-        // if after 3 pm
-        if (d.getHours() >= 15) {
-            return true;
-        } else {
-            return false;
-        }
-    };
-});
-
 // directive for the navigation tabs
 app.directive('mainTabs', function (mixpanel) {
     return {

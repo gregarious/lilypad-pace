@@ -46,7 +46,7 @@
     <!-- app -->
     <script src="app.js"></script>
 
-    <!-- Common models -->
+    <!-- common models -->
     <script src="app/common/models/classroom.js"></script>
     <script src="app/common/models/student.js"></script>
     <script src="app/common/models/attendanceSpan.js"></script>
@@ -56,13 +56,22 @@
     <script src="app/common/models/behaviorIncidentType.js"></script>
     <script src="app/common/models/loggableMixin.js"></script>
 
-    <!-- Common services -->
+    <!-- common services -->
     <script src="app/common/services/todayDataManager.js"></script>
     <script src="app/common/services/apiConfig.js"></script>
     <script src="app/common/services/timeTracker.js"></script>
     <script src="app/common/services/jsonCaseTransformer.js"></script>
 
     <script src="services/rules/rulesDataStore.js"></script>
+
+    <!-- Core UI components: main skeleton, menu, tabs, etc. -->
+    <script src="app/core/controllers/menu.js"></script>
+    <script src="app/core/controllers/periodSwitch.js"></script>
+    <script src="app/core/controllers/classroomList.js"></script>
+    <script src="app/core/controllers/studentList.js"></script>
+    <script src="app/core/controllers/student.js"></script>
+
+    <script src="app/core/directives/mainComponents.js"></script>
 
     <!-- AUTH COMPONENTS -->
     <!-- general auth services -->
@@ -71,11 +80,6 @@
 
     <!-- login prompt -->
     <script src="app/auth/controllers/loginPrompt.js"></script>
-
-    <!-- MENU COMPONENTS -->
-    <script src="app/menu/controllers/menu.js"></script>
-    <script src="app/menu/controllers/classroomList.js"></script>
-    <script src="app/menu/controllers/studentList.js"></script>
 
     <!-- Run final app config & run routines after all providers are registered -->
     <script src="app/config.js"></script>
@@ -94,8 +98,33 @@
                     ng-include="'app/auth/views/loginPrompt.html'"></div>
 
     <div id="sidebar">
-        <div id="menu" ng-controller="MenuCtrl" ng-include="'app/menu/views/sidebar.html'">
+        <div id="menu" ng-controller="MenuCtrl"
+                       ng-include="'app/core/views/sidebar.html'"></div>
+    </div>
 
+    <div id="main">
+        <!-- TODO: renable disabling main content on attendance editing -->
+        <div class="mainContent" ng-class="{disabled: false}">
+            <div ng-controller="MainStudentCtrl">
+                <main-tabs>
+                    <h1 class="studentName"><strong>{{student.get('firstName')}}</strong> {{student.get('lastName')}}</h1>
+                    <main-pane title="Collect">
+                        <div class="clearfix periodSwitcher"
+                             ng-controller="PeriodSwitchCtrl"
+                             ng-include="'app/core/views/periodSwitcher.html'">
+                        </div>
+                        Collect content
+                    </main-pane>
+                    <main-pane title="Analyze">
+                        Analyze content
+                    </main-pane>
+                   <!--
+                    <main-pane title="Discuss">
+                        Discuss tab
+                    </main-pane>
+                    -->
+                </main-tabs>
+            </div>
         </div>
     </div>
 

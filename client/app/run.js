@@ -20,6 +20,17 @@ angular.module('pace').run(function(sessionManager, $rootScope, mixpanel) {
         isClassroomSelected: function() {
             return Boolean(this.selectedClassroom);
         },
+
+        schoolDayEnded: function() {
+            var d = timeTracker.getTimestamp();
+
+            // if after 3 pm
+            if (d.getHours() >= 15) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     };
 
     // global function for granting access to a user. needed both here
