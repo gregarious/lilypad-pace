@@ -1,0 +1,43 @@
+<div id="classroomList" ng-class="{visible: viewState.selectedClassroom == null}"
+     ng-controller="MenuClassroomListCtrl">
+     <!-- use `visible` class here instead of ng-show/hide to enable CSS slide animation -->
+    <ul>
+        <li class="status" ng-show="statusMessage">{{statusMessage}}</li>
+        <li ng-repeat="classroom in classroomCollection.models">
+            <div ng-click="selectClassroom(classroom)">
+                {{classroom.get('name')}}
+            </div>
+        </li>
+    </ul>
+</div>
+
+<!-- classroom heading and edit button -->
+<ul>
+    <li id="classroomHeading" ng-click="changeClassroom()" ng-class="{toggleActive: viewState.selectedClassroom && availableClassrooms.length > 1}">
+        <span>{{viewState.selectedClassroom.get('name')}}</span>
+    </li>
+    <li id="attendanceToggle" ng-click="toggleAttendance()" ng-show="viewState.selectedClassroom" ng-class="{highlighted: editingAttendance }">
+        <span ng-show="editingAttendance">Done</span>
+        <span ng-show="!editingAttendance">Edit Attendance</span>
+    </li>
+
+</ul>
+
+<div id="studentList" ng-show="viewState.selectedClassroom"
+     ng-controller="MenuStudentListCtrl">
+    <ul>
+        <li ng-class="{selected: viewState.selectedStudent == student && !editingAttendance}"
+            ng-repeat="student in studentCollection.models">
+            <div ng-click="handleClick(student)" ng-class="{absent: false}">
+                {{student.get('firstName')}} {{student.get('lastName')}}
+            </div>
+        </li>
+    </ul>
+</div>
+
+<!-- Log out button -->
+<ul>
+    <li id="signout" ng-click="signOut()">
+        <span>Sign Out</span>
+    </li>
+</ul>
