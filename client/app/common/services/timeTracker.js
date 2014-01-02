@@ -1,3 +1,7 @@
+/**
+ * Manages internal clock of app. Allows overriding the system time
+ * at app config to ease development.
+ */
 angular.module('pace').provider('timeTracker', function(moment) {
     var anchorOffset = 0;
     this.setAnchorTime = function(date) {
@@ -13,24 +17,6 @@ angular.module('pace').provider('timeTracker', function(moment) {
 
             getTimestampAsMoment: function() {
                 return moment(this.getTimestamp());
-            },
-
-            currentPeriodNumber: 1,
-            finalPeriodNumber: 10,
-
-            /**
-             * Increment the current period as long as it does not go
-             * over the finalPeriodNumber value.
-             *
-             * Returns true if period was incremented, false otherwise.
-             */
-            progressToNextPeriod: function() {
-                var nextPeriodNumber = this.currentPeriodNumber + 1;
-                if (nextPeriodNumber <= this.finalPeriodNumber) {
-                    this.currentPeriodNumber = nextPeriodNumber;
-                    return true;
-                }
-                return false;
             }
         };
     };

@@ -61,6 +61,7 @@
     <script src="app/common/services/apiConfig.js"></script>
     <script src="app/common/services/timeTracker.js"></script>
     <script src="app/common/services/jsonCaseTransformer.js"></script>
+    <script src="app/common/services/todayDataManager.js"></script>
 
     <script src="services/rules/rulesDataStore.js"></script>
 
@@ -69,7 +70,8 @@
     <script src="app/core/controllers/classroomList.js"></script>
     <script src="app/core/controllers/studentList.js"></script>
     <script src="app/core/controllers/mainContent.js"></script>
-    <script src="app/core/controllers/periodSwitch.js"></script>
+    <script src="app/core/controllers/todayStatus.js"></script>
+    <script src="app/core/services/periodSwitcher.js"></script>
 
     <script src="app/core/directives/mainComponents.js"></script>
 
@@ -110,9 +112,9 @@
                 <main-tabs>
                     <h1 class="studentName"><strong>{{studentLabel}}</strong></h1>
                     <main-pane title="Collect">
-                        <div class="clearfix periodSwitcher"
-                             ng-controller="PeriodSwitchCtrl"
-                             ng-include="'app/core/views/periodSwitcher.html'">
+                        <div id="todayStatusBar" class="clearfix"
+                             ng-controller="TodayStatusBarCtrl"
+                             ng-include="'app/core/views/todayStatus.html'">
                         </div>
                         Collect content
                     </main-pane>

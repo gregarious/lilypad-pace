@@ -679,7 +679,7 @@ td.invalid #behaviorTypeInput li {
     /*font-size: 14px;*/
 /*}*/
 
-.periodSwitcher {
+#todayStatusBar {
     position: absolute;
     top: 0px;
     z-index: 20000;

@@ -1,0 +1,19 @@
+<div class="dayStatus">
+    <span>{{dayLabel}}</span>
+    <button ng-show="startDayButton.text"
+            ng-disabled="!startDayButton.action"
+            ng-click="startDayButton.action()">{{startDayButton.text}}</button>
+</div>
+<div class="periodSwitcher" ng-show="switcher.availablePeriods">
+    <div class="periodLeft"
+         ng-click="switcher.decrementPeriod()"
+         ng-class="{ disabled: switcher.selectedPeriodNumber == 1 }">&lt;</div>
+
+    <select class="periodSelect" name="period"
+            ng-model="switcher.selectedPeriodNumber"
+            ng-options="pd.value as pd.label for pd in switcher.availablePeriods"></select>
+
+    <div class="periodRight"
+         ng-click="switcher.incrementPeriod()"
+         ng-class="{ disabled: switcher.selectedPeriodNumber == switcher.MAX_PERIOD }">&gt;</div>
+</div>
