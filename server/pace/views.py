@@ -4,7 +4,7 @@ from pace.models import Classroom, Student, PeriodicRecord, PointLoss,     \
                         BehaviorIncidentType, BehaviorIncident, \
                         AttendanceSpan, DailyRecord
 
-from pace.serializers import ClassroomSerializer, DailyRecordSerializer,      \
+from pace.serializers import ClassroomSerializer,                             \
                              DailyClassroomDigestSerializer,                  \
                              StudentSerializer, PeriodicRecordSerializer,     \
                              PointLossSerializer, BehaviorIncidentSerializer, \
@@ -162,6 +162,10 @@ class DailyRecordCreateView(APIView):
     View to create new DailyRecord entries. Will return 409 on attempting
     to create a duplicate record for the given classroom+date combination.
 
+    On successful creation, serialized data from a
+    DailyClassroomDigestSerializer is returned in the response, not just
+    a simple serialized DailyRecord.
+
     Requires url to have `classroom_pk` key value.
     '''
     def post(self, request, *args, **kwargs):
@@ -191,7 +195,7 @@ class DailyRecordCreateView(APIView):
         if was_created:
             http_status = status.HTTP_201_CREATED
             headers["Location"] = record.get_fq_absolute_url(request)
-            data = DailyRecordSerializer(record).data
+            data = DailyClassroomDigestSerializer(record).data
         else:
             # if resource existed, return custom 409 response
             http_status = status.HTTP_409_CONFLICT
@@ -201,36 +205,6 @@ class DailyRecordCreateView(APIView):
             }
 
         return Response(data, status=http_status, headers=headers)
-
-class DailyRecordRetrieveView(generics.RetrieveAPIView):
-    '''
-    View to display a DailyRecord entry. Will return 409 on attempting
-    to create a duplicate record for the given classroom+date combination.
-    '''
-    queryset = DailyRecord.objects.all()
-    serializer_class = DailyRecordSerializer
-    def get_object(self):
-        '''
-        Override default behavior to enable lookup by classroom pk and date.
-        This is the de-facto pk for a DailyRecord as far as the API is
-        concerned.
-        '''
-        try:
-            date = parser.parse(self.kwargs["date"]).date()
-        except (ValueError, AttributeError):
-            raise Http404
-
-        query_kwargs = {
-            "classroom__pk": self.kwargs["classroom_pk"],
-            "date": date
-        }
-        record = get_object_or_404(self.get_queryset(), **query_kwargs)
-
-        # before returning, ensure user has access to resource
-        bouncer = ClassroomPermission()
-        if not bouncer.has_object_permission(self.request, None, record.classroom):
-            raise Http404
-        return record
 
 
 class DailyClassroomDigestView(generics.RetrieveAPIView):

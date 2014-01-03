@@ -17,12 +17,6 @@ class ClassroomSerializer(serializers.HyperlinkedModelSerializer):
         model = Classroom
         fields = ('id', 'url', 'name', 'students',)
 
-class DailyRecordSerializer(serializers.ModelSerializer):
-    classroom = serializers.PrimaryKeyRelatedField()
-    class Meta:
-        model = DailyRecord
-        exclude = ('id',)       # API doesn't use DailyRecord ids as primary keys
-
 class AttendanceSpanSerializer(serializers.HyperlinkedModelSerializer):
     student = serializers.PrimaryKeyRelatedField()
 

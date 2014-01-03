@@ -25,12 +25,9 @@ apipatterns = router.urls
 apipatterns += patterns('',
     url(r'^classrooms/(?P<classroom_pk>[0-9]+)/dailyrecords/$',
         pace_views.DailyRecordCreateView.as_view()),
-    url(r'^classrooms/(?P<classroom_pk>[0-9]+)/dailyrecords/(?P<date>[0-9-]+)/$',
-        pace_views.DailyRecordRetrieveView.as_view(),
-        name="dailyrecord-detail"),
-    url(r'^classrooms/(?P<classroom_pk>[0-9]+)/dailyrecords/(?P<date>[0-9-].+)/digest/$',
+    url(r'^classrooms/(?P<classroom_pk>[0-9]+)/dailyrecords/(?P<date>[0-9-].+)/$',
         pace_views.DailyClassroomDigestView.as_view(),
-        name="dailyclassroomdigest"),
+        name="dailyrecord-detail"),
     url(r'^authtoken/$', 'rest_framework.authtoken.views.obtain_auth_token'),
 )
 apipatterns = format_suffix_patterns(apipatterns)
