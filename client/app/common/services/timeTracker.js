@@ -17,7 +17,12 @@ angular.module('pace').provider('timeTracker', function(moment) {
 
             getTimestampAsMoment: function() {
                 return moment(this.getTimestamp());
+            },
+
+            getDateString: function() {
+                return this.getTimestampAsMoment().format('YYYY-MM-DD');
             }
+
         };
     };
 });

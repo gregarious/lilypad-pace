@@ -17,7 +17,7 @@ app.controller('MenuClassroomListCtrl', function ($scope, mixpanel,  classroomDa
         if (isUserAuthenticated) {
             $scope.statusMessage = "Loading classrooms...";
 
-            classroomDataStore.load().then(function(classroomCollection) {
+            classroomDataStore.loadAccessibleClassrooms().then(function(classroomCollection) {
                 // note that argument is the same as classRoomDataStore.classrooms
                 $scope.classroomCollection = classroomCollection;
                 $scope.viewState.selectedClassroom = null;

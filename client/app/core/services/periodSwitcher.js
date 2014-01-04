@@ -9,15 +9,15 @@ angular.module('pace').factory('periodSwitcher', function($timeout) {
         selectedPeriodNumber: null,
 
         // resets all values based on the given day record
-        reset: function(dayRecord) {
-            if (dayRecord) {
-                this.availablePeriods = _.map(_.range(1, dayRecord.currentPeriod+1), function(pdNum) {
+        reset: function(currentPeriod) {
+            if (currentPeriod) {
+                this.availablePeriods = _.map(_.range(1, currentPeriod+1), function(pdNum) {
                     return {
                         label: 'Period ' + pdNum,
                         value: pdNum
                     };
                 });
-                this.selectedPeriodNumber = dayRecord.currentPeriod;
+                this.selectedPeriodNumber = currentPeriod;
             }
             else {
                 this.availablePeriods = [];
