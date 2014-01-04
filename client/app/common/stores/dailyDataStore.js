@@ -13,6 +13,8 @@ angular.module('pace').service('dailyDataStore', function($http, $q, _, timeTrac
 
     this.isSynced = false;
     this.currentPeriod = null;
+    this.studentData = {};
+    this.hasDayBegun = false;
 
     this.configure = function(date, classroom) {
         this.clear();   // clear out data, sync status
@@ -26,6 +28,8 @@ angular.module('pace').service('dailyDataStore', function($http, $q, _, timeTrac
         this._data = null;  // clear out data
         this.currentPeriod = null;
         this.isSynced = false;
+        this.studentData = {};
+        this.hasDayBegun = false;
     };
 
     /**
@@ -48,12 +52,15 @@ angular.module('pace').service('dailyDataStore', function($http, $q, _, timeTrac
 
         var dataStore = this;
         $http.get(url).then(function(response) {
+            dataStore.isSynced = true;
+            dataStore.hasDayBegun = true;
             dataStore._processResponseData(response.data);
             fetchingData.resolve(dataStore);
         }, function(response, status) {
             if (response.status === 404) {
                 dataStore.isSynced = true;
                 dataStore.currentPeriod = null;
+                dataStore.hasDayBegun = false;
                 fetchingData.resolve(dataStore);
             }
             else {
@@ -100,6 +107,7 @@ angular.module('pace').service('dailyDataStore', function($http, $q, _, timeTrac
                 // always include just a currentPeriod set to 1 and no date, since the
                 // 409-status handler below will take control if data already existed on
                 // the server.
+                dataStore.hasDayBegun = true;
                 dataStore._processResponseData(response.data);
                 initializingRecord.resolve(dataStore);
             },
@@ -110,6 +118,7 @@ angular.module('pace').service('dailyDataStore', function($http, $q, _, timeTrac
                 if (response.status === 409) {
                     var recordUrl = response.data['record_location'];
                     $http.get(recordUrl).then(function(response) {
+                        dataStore.hasDayBegun = true;
                         dataStore._processResponseData(response.data);
                         initializingRecord.resolve(dataStore);
                     }, function(response) {
@@ -128,71 +137,68 @@ angular.module('pace').service('dailyDataStore', function($http, $q, _, timeTrac
     };
 
     this._processResponseData = function(data) {
-        // debugger;
+        var classroom = this._settings.classroom;
+        var studentData = this.studentData;
+
         this.currentPeriod = data.currentPeriod;
-        // TODO: complete data processing
+
+        // update/add any students not currently in the collection
+        classroom.set('students', data.students, {remove: false, parse: true});
+
+        // cycle through students, creating a DailyData object for each one
+        classroom.get('students').each(function(student) {
+            studentData[student.id] = new DailyData();
+        });
+
+        // cycle through attendance spans and add to appropriate student's `todayData`
+        _.each(data.attendanceSpans, function(span) {
+            var studentId = span.student;
+            var spans = studentData[studentId].attendanceSpans;
+            spans.add(span, {parse: true});
+        });
+
+        // cycle through incidents and add to appropriate student's `todayData`
+        _.each(data.behaviorIncidents, function(incident) {
+            var studentId = incident.student;
+            var incidents = studentData[studentId].behaviorIncidents;
+            incidents.add(incident, {parse: true});
+        });
+
+        // cycle through periodic records and add to appropriate student's `todayData`
+        _.each(data.periodicRecords, function(pdRecord) {
+            // TODO: remove once `isEligible` is removed from server data model. we only should be
+            // handling elgibile records from now on.
+            if (pdRecord.isEligible === true) {
+                var studentId = pdRecord.student;
+                var periodicRecords = studentData[studentId].periodicRecords;
+                periodicRecords.add(pdRecord, {parse: true});
+            }
+        });
+
+        return true;
     };
 
-    // function DailyData() {
-    //     this.attendanceSpans = new (Backbone.Collection.extend({
-    //         model: AttendanceSpan,
-    //         comparator: function(span) {
-    //             if (span.has('timeIn')) {
-    //                 return -(moment(span.get('date') + 'T' + span.get('timeIn')).toDate());
-    //             }
-    //             else {
-    //                 return -(moment(span.get('date')).toDate());
-    //             }
-    //         }
-    //     }))();
+    function DailyData() {
+        this.attendanceSpans = new (Backbone.Collection.extend({
+            model: AttendanceSpan,
+            comparator: function(span) {
+                if (span.has('timeIn')) {
+                    return -(moment(span.get('date') + 'T' + span.get('timeIn')).toDate());
+                }
+                else {
+                    return -(moment(span.get('date')).toDate());
+                }
+            }
+        }))();
 
-    //     this.behaviorIncidents = new (Backbone.Collection.extend({
-    //         model: BehaviorIncident,
-    //         comparator: 'startedAt'
-    //     }))();
+        this.behaviorIncidents = new (Backbone.Collection.extend({
+            model: BehaviorIncident,
+            comparator: 'startedAt'
+        }))();
 
-    //     this.periodicRecords = new (Backbone.Collection.extend({
-    //         model: PeriodicRecord,
-    //         comparator: 'period'
-    //     }))();
-    // }
-
-    // function processDigestData(apiData, classroom) {
-    //     // update/add any students not currently in the collection
-    //     classroom.set('students', apiData.students, {remove: false, parse: true});
-
-    //     // cycle through students, reseting todayData
-    //     classroom.get('students').each(function(student) {
-    //         student.set('todayData', new DailyData());
-    //     });
-
-    //     var students = classroom.get('students');
-
-    //     // cycle through attendance spans and add to appropriate student's `todayData`
-    //     _.each(apiData.attendanceSpans, function(span) {
-    //         var studentId = span.student;
-    //         var spans = students.get(studentId).get('todayData').attendanceSpans;
-    //         spans.add(span, {parse: true});
-    //     });
-
-    //     // cycle through incidents and add to appropriate student's `todayData`
-    //     _.each(apiData.behaviorIncidents, function(incident) {
-    //         var studentId = incident.student;
-    //         var incidents = students.get(studentId).get('todayData').behaviorIncidents;
-    //         incidents.add(incident, {parse: true});
-    //     });
-
-    //     // cycle through periodic records and add to appropriate student's `todayData`
-    //     _.each(apiData.periodicRecords, function(pdRecord) {
-    //         // TODO: remove once `isEligible` is removed from server data model. we only should be
-    //         // handling elgibile records from now on.
-    //         if (pdRecord.isEligible === true) {
-    //             var studentId = pdRecord.student;
-    //             var periodicRecords = students.get(studentId).get('todayData').periodicRecords;
-    //             periodicRecords.add(pdRecord, {parse: true});
-    //         }
-    //     });
-
-    //     return true;
-    // }
+        this.periodicRecords = new (Backbone.Collection.extend({
+            model: PeriodicRecord,
+            comparator: 'period'
+        }))();
+    }
 });

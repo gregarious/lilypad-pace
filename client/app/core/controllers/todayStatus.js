@@ -6,8 +6,10 @@ app.controller('TodayStatusBarCtrl', function ($scope, timeTracker, dailyDataSto
         action: null,
     };
 
-    $scope.hasDayBegun = false;
     $scope.switcher = periodSwitcher;
+
+    // hook into data store to give view access to dailyDataStore.hasDayBegun
+    $scope.dailyDataStore = dailyDataStore;
 
     // win the selected classroom changes, update the today status bar
     $scope.$watch('viewState.selectedClassroom', resetStatusBar);
@@ -24,13 +26,11 @@ app.controller('TodayStatusBarCtrl', function ($scope, timeTracker, dailyDataSto
                 if (dailyDataStore.currentPeriod === null) {
                     $scope.startDayButton.text = "Start Day";
                     $scope.startDayButton.action = function() {startNewDay(classroom);};
-                    $scope.hasDayBegun = false;
                 }
                 else {
                     $scope.startDayButton.text = "";
                     $scope.startDayButton.action = null;
                     $scope.switcher.reset(dailyDataStore.currentPeriod);
-                    $scope.hasDayBegun = true;
                 }
             }, function(err) {
                 alert("We're sorry, but there was a problem loading today's data. Please try again. If problem persists, please contact us.");
@@ -38,7 +38,6 @@ app.controller('TodayStatusBarCtrl', function ($scope, timeTracker, dailyDataSto
                 $scope.startDayButton.action = function() {resetStatusBar(classroom);};
                 $scope.viewState.todayRecord = null;
                 $scope.switcher.reset();
-                $scope.hasDayBegun = false;
             });
         }
         else {
@@ -50,7 +49,6 @@ app.controller('TodayStatusBarCtrl', function ($scope, timeTracker, dailyDataSto
                 action: null,
             };
             $scope.switcher.reset();
-            $scope.hasDayBegun = false;
         }
     }
 
@@ -64,12 +62,10 @@ app.controller('TodayStatusBarCtrl', function ($scope, timeTracker, dailyDataSto
             $scope.startDayButton.text = "";
             $scope.startDayButton.action = null;
             $scope.switcher.reset(dailyDataStore.currentPeriod);
-            $scope.hasDayBegun = true;
         }, function(err) {
             alert("We're sorry, but there was a problem starting a new day. Please try again. If problem persists, please contact us.");
             $scope.startDayButton.text = "Start Day";
             $scope.startDayButton.action = function(){startNewDay(classroom);};
-            $scope.hasDayBegun = false;
         });
     }
 });
