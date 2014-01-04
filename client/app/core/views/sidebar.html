@@ -13,12 +13,17 @@
 
 <!-- classroom heading and edit button -->
 <ul>
-    <li id="classroomHeading" ng-click="changeClassroom()" ng-class="{toggleActive: viewState.selectedClassroom && availableClassrooms.length > 1}">
+    <li id="classroomHeading" ng-class="{toggleActive: viewState.selectedClassroom && availableClassrooms.length > 1}"
+                              ng-click="changeClassroom()">
         <span>{{viewState.selectedClassroom.get('name')}}</span>
     </li>
-    <li id="attendanceToggle" ng-click="toggleAttendance()" ng-show="viewState.selectedClassroom" ng-class="{highlighted: editingAttendance }">
-        <span ng-show="editingAttendance">Done</span>
-        <span ng-show="!editingAttendance">Edit Attendance</span>
+    <li id="attendanceToggle" ng-class="{highlighted: editingAttendance}"
+        ng-show="viewState.selectedClassroom"
+        ng-click="toggleAttendance()">
+        <span ng-show="dailyDataStore.hasDayBegun">
+            <span ng-show="editingAttendance">Done</span>
+            <span ng-show="!editingAttendance">Edit Attendance</span>
+        </span>
     </li>
 
 </ul>
@@ -28,7 +33,7 @@
     <ul>
         <li ng-class="{selected: viewState.selectedStudent == student && !editingAttendance}"
             ng-repeat="student in studentCollection.models">
-            <div ng-click="handleClick(student)" ng-class="{absent: false}">
+            <div ng-click="handleClick(student)" ng-class="{absent: isStudentAbsent(student)}">
                 {{student.get('firstName')}} {{student.get('lastName')}}
             </div>
         </li>

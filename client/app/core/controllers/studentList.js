@@ -1,7 +1,9 @@
 // controller for the student list in the left panel
-app.controller('MenuStudentListCtrl', function ($scope, mixpanel, timeTracker) {
+app.controller('MenuStudentListCtrl', function ($scope, mixpanel, timeTracker, dailyDataStore) {
     // main student data
     $scope.studentCollection = null;
+
+    $scope.isStudentAbsent = isStudentAbsent;
 
     // UI event handling functions
     $scope.handleClick = handleClick;
@@ -56,5 +58,25 @@ app.controller('MenuStudentListCtrl', function ($scope, mixpanel, timeTracker) {
             $scope.viewState.selectedStudent = student;
             mixpanel.track('Changed students');
         }
+    }
+
+    /**
+     * Returns true when the given student is known to be absent, false
+     * otherwise. This means it will return false if the day has not
+     * begun.
+     *
+     * @param  {Student}  student
+     * @return {Boolean}
+     */
+    function isStudentAbsent(student) {
+        // if attendance status is unknown or not applicable for today
+        if (!dailyDataStore.hasDayBegun) {
+            return false;
+        }
+
+        var activeSpans = dailyDataStore.studentData[student.id].attendanceSpans.filter(function(span) {
+            return true;
+        });
+        return activeSpans.length === 0;
     }
 });
