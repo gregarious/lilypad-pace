@@ -138,67 +138,82 @@ angular.module('pace').service('dailyDataStore', function($http, $q, _, timeTrac
 
     this._processResponseData = function(data) {
         var classroom = this._settings.classroom;
-        var studentData = this.studentData;
 
+        // first, set the current period
         this.currentPeriod = data.currentPeriod;
 
         // update/add any students not currently in the collection
         classroom.set('students', data.students, {remove: false, parse: true});
 
-        // cycle through students, creating a DailyData object for each one
-        classroom.get('students').each(function(student) {
-            studentData[student.id] = new DailyData();
+        // now process all the student data
+        var studentData = {};
+
+        // set up student-specific data buckets
+        var students = classroom.get('students');
+        var studentRawDataMap = {};
+        students.each(function(student) {
+            studentRawDataMap[student.id] = {
+                attendanceSpans: [],
+                behaviorIncidents: [],
+                periodicRecords: []
+            };
         });
 
-        // cycle through attendance spans and add to appropriate student's `todayData`
-        _.each(data.attendanceSpans, function(span) {
-            var studentId = span.student;
-            var spans = studentData[studentId].attendanceSpans;
-            spans.add(span, {parse: true});
+        // filter data into buckets
+        _.each(['attendanceSpans', 'behaviorIncidents', 'periodicRecords'], function(dataType) {
+            _.each(data[dataType], function(item) {
+                var studentId = item.student;
+                studentRawDataMap[studentId][dataType].push(item);
+            });
         });
 
-        // cycle through incidents and add to appropriate student's `todayData`
-        _.each(data.behaviorIncidents, function(incident) {
-            var studentId = incident.student;
-            var incidents = studentData[studentId].behaviorIncidents;
-            incidents.add(incident, {parse: true});
+        // finally build a DailyData object for each student
+        students.each(function(student) {
+            studentData[student.id] = new DailyData(studentRawDataMap[student.id]);
         });
 
-        // cycle through periodic records and add to appropriate student's `todayData`
-        _.each(data.periodicRecords, function(pdRecord) {
-            // TODO: remove once `isEligible` is removed from server data model. we only should be
-            // handling elgibile records from now on.
-            if (pdRecord.isEligible === true) {
-                var studentId = pdRecord.student;
-                var periodicRecords = studentData[studentId].periodicRecords;
-                periodicRecords.add(pdRecord, {parse: true});
-            }
-        });
-
+        this.studentData = studentData;
         return true;
     };
 
-    function DailyData() {
-        this.attendanceSpans = new (Backbone.Collection.extend({
-            model: AttendanceSpan,
-            comparator: function(span) {
-                if (span.has('timeIn')) {
-                    return -(moment(span.get('date') + 'T' + span.get('timeIn')).toDate());
-                }
-                else {
-                    return -(moment(span.get('date')).toDate());
-                }
+    // Collections used by DailyData
+    var BehaviorIncidentCollection = Backbone.Collection.extend({
+        model: BehaviorIncident,
+        comparator: 'startedAt'
+    });
+    var PeriodicRecordCollection = Backbone.Collection.extend({
+        model: PeriodicRecord,
+        comparator: 'period'
+    });
+
+    function DailyData(data) {
+        var allSpans = _.sortBy(data.attendanceSpans, function(span) {
+            if (span.timeIn) {
+                return -(moment(span.date + 'T' + span.timeIn));
             }
-        }))();
+            else {
+                throw Exception("Cannot sort an AttendanceSpan with no `timeIn`");
+            }
+        });
 
-        this.behaviorIncidents = new (Backbone.Collection.extend({
-            model: BehaviorIncident,
-            comparator: 'startedAt'
-        }))();
+        if (allSpans.length > 0) {
+            this.activeAttendanceSpan = allSpans[0];
+        }
+        else {
+            this.activeAttendanceSpan = null;
+        }
 
-        this.periodicRecords = new (Backbone.Collection.extend({
-            model: PeriodicRecord,
-            comparator: 'period'
-        }))();
+        this.behaviorIncidents = new BehaviorIncidentCollection(data.behaviorIncidents,
+            {parse: true});
+
+        // filter out records with falsy `isEligible`
+        // TODO: this attribute should be removed from server data model. since refactor,
+        // records should only be created if student is eligible in the given period
+        data.periodicRecords = _.filter(data.periodicRecords, function(pdRecord) {
+            return pdRecord.isEligible === true;
+        });
+
+        this.periodicRecords = new BehaviorIncidentCollection(data.periodicRecords,
+            {parse: true});
     }
 });

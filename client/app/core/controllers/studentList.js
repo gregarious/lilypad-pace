@@ -69,14 +69,11 @@ app.controller('MenuStudentListCtrl', function ($scope, mixpanel, timeTracker, d
      * @return {Boolean}
      */
     function isStudentAbsent(student) {
-        // if attendance status is unknown or not applicable for today
-        if (!dailyDataStore.hasDayBegun) {
+        // if attendance status is unknown or not applicable for today, return false immediately
+        if (!dailyDataStore.hasDayBegun || !dailyDataStore.studentData[student.id]) {
             return false;
         }
 
-        var activeSpans = dailyDataStore.studentData[student.id].attendanceSpans.filter(function(span) {
-            return true;
-        });
-        return activeSpans.length === 0;
+        return !dailyDataStore.studentData[student.id].activeAttendanceSpan;
     }
 });
