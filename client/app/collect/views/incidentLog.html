@@ -17,7 +17,7 @@
             <th class="duration">Duration</th>
             <th class="comment">Comment</th>
         </tr>
-        <tr ng-repeat="logEntry in collectData.incidentLogCollection.models">
+        <tr ng-repeat="logEntry in incidentLogCollection.models">
             <td class="delete" ng-show="editingIncidents" ng-click="confirmDelete(logEntry)">
                 <div class="deleteCircle" ng-class="{active:(confirmDeleteFor != null) && (confirmDeleteFor === logEntry)}">-</div>
             </td>
@@ -30,11 +30,11 @@
             </td>
         </tr>
     </table>
-    <div class="noData" ng-hide="collectData.incidentLogCollection.models.length > 0">No incidents yet logged</div>
+    <div class="noData" ng-hide="incidentLogCollection.models.length > 0">No incidents yet logged</div>
 </div>
 
 <main-modal display-state="behaviorModalState">
-    <div ng-controller="MainStudentCollectBehaviorsModalCtrl">
-        <div ng-include="'frontEnd/partials/behaviorSettings.html'"></div>
+    <div ng-controller="CollectBehaviorsModalCtrl">
+        <div ng-include="'app/collect/views/behaviorSettings.html'"></div>
     </div>
 </main-modal>

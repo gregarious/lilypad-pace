@@ -1,5 +1,5 @@
 // controller for behavior options modal
-app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainViewState, timeTracker, behaviorIncidentDataStore, behaviorIncidentTypeDataStore, mixpanel) {
+app.controller('CollectBehaviorsModalCtrl', function ($scope, timeTracker, mixpanel) {
     // NOTE!!!
     // We are inheriting $scope.behaviorModalState and $scope.incidentFormData
     //   from MainStudentCollectIncidentLogCtrl so we can split the logic into
@@ -54,7 +54,7 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
                 $scope.currentIncidentEditing.set('occurredAt', $scope.incidentFormData.startedAt);
             } else {
                 $scope.currentIncidentEditing.set('startedAt', $scope.incidentFormData.startedAt);
-                
+
                 if ($scope.incidentFormData.endedAt) {
                     $scope.currentIncidentEditing.set('endedAt', $scope.incidentFormData.endedAt);
                 }
@@ -69,13 +69,16 @@ app.controller('MainStudentCollectBehaviorsModalCtrl', function ($scope, mainVie
             mixpanel.track("Incident added", { 'Time Open (s)': timeOpened }); // mixpanel tracking
             $scope.behaviorModalState.timeOpen = 0;
 
-            var newIncident = behaviorIncidentDataStore.createIncident(
-                mainViewState.selectedStudent,
-                $scope.incidentFormData.typeModel,
-                $scope.incidentFormData.startedAt,
-                $scope.incidentFormData.endedAt,
-                $scope.incidentFormData.comment);
-            $scope.collectData.incidentLogCollection.add(newIncident);
+            // TODO: support
+            console.error('Behavior incident creation not yet supported');
+
+            // var newIncident = behaviorIncidentDataStore.createIncident(
+            //     mainViewState.selectedStudent,
+            //     $scope.incidentFormData.typeModel,
+            //     $scope.incidentFormData.startedAt,
+            //     $scope.incidentFormData.endedAt,
+            //     $scope.incidentFormData.comment);
+            // $scope.collectData.incidentLogCollection.add(newIncident);
         }
 
         $scope.closeBehaviorModel();

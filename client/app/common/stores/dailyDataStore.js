@@ -213,7 +213,7 @@ angular.module('pace').service('dailyDataStore', function($http, $q, _, timeTrac
             return pdRecord.isEligible === true;
         });
 
-        this.periodicRecords = new BehaviorIncidentCollection(data.periodicRecords,
+        this.periodicRecords = new PeriodicRecordCollection(data.periodicRecords,
             {parse: true});
     }
 });

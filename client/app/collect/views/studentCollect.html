@@ -1,18 +1,12 @@
-Status: {{statusMessage}}
-<br>
-BehaviorIncidents: {{collectData.periodicRecords.length}}
-<br>
-PeriodicRecords: {{collectData.behaviorIncidents.length}}
-
-<!-- <div ng-show="collectData">
-    <div ng-controller="MainStudentCollectPeriodicRecordCtrl">
-        <div ng-include="'frontEnd/main/student/collect/periodicRecord.html'"></div>
+<div ng-show="collectData">
+<!--
+    <div ng-controller="CollectPeriodicRecordCtrl">
+        <div ng-include="'app/collect/views/periodicRecord.html'"></div>
     </div>
     <div class="divider clear"></div>
-    <div ng-controller="MainStudentCollectIncidentLogCtrl">
-        <div ng-include="'frontEnd/main/student/collect/incidentLog.html'"></div>
+-->
+    <div ng-controller="CollectIncidentLogCtrl">
+        <div ng-include="'app/collect/views/incidentLog.html'"></div>
     </div>
 </div>
 <div ng-show="statusMessage">{{statusMessage}}</div>
-
- -->

@@ -1,9 +1,5 @@
 // controller for the incident log
-app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewState, moment, timeTracker) {
-    // NOTE!!!
-    // We are inheriting $scope.collectData from parent controller and passing it to child.
-    // #refactor
-
+app.controller('CollectIncidentLogCtrl', function ($scope, moment, timeTracker, dailyDataStore) {
     // various view control state values
     $scope.editingIncidents = false;
     $scope.confirmDeleteFor = null;
@@ -11,10 +7,26 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
     // state object needed by modal directive
     $scope.behaviorModalState = {'active': false, 'title': "New Incident", 'timeOpen': 0};
 
-    // form-related objects shared with MainStudentCollectBehaviorsModalCtrl (needed
+    // form-related objects shared with CollectBehaviorsModalCtrl (needed
     //  in this scope for initiation reasons)
     $scope.incidentFormData = {};
     $scope.currentIncidentEditing = null;
+
+    var LoggableCollection = Backbone.Collection.extend({
+        comparator: function(loggableModel) {
+            return -loggableModel.getOccurredAt();
+        }
+    });
+
+    $scope.incidentLogCollection = null;
+
+    // on student changes, close the edit mode and reset the loggable collection
+    $scope.$watch('viewState.selectedStudent', function(student) {
+        $scope.confirmDeleteFor = null;
+        $scope.editingIncidents = false;
+        resetIncidentLogForStudent(student);
+    });
+
 
     /** View functions **/
 
@@ -87,12 +99,19 @@ app.controller('MainStudentCollectIncidentLogCtrl', function ($scope, mainViewSt
         $scope.editIncidents();
     };
 
-    // for purposes of watching the selected student
-    $scope.mainViewState = mainViewState;
+    function resetIncidentLogForStudent(student) {
+        $scope.incidentLogCollection = null;
 
-    // on student changes, close the edit mode
-    $scope.$watch('mainViewState.selectedStudent', function() {
-        $scope.confirmDeleteFor = null;
-        $scope.editingIncidents = false;
-    });
+        if (student) {
+            var studentData = dailyDataStore.studentData[student.id];
+            if (studentData) {
+                var incidentModels = [];
+                studentData.periodicRecords.each(function(record) {
+                    incidentModels = incidentModels.concat(record.get('pointLosses').models);
+                });
+                incidentModels = incidentModels.concat(studentData.behaviorIncidents.models);
+                $scope.incidentLogCollection = new LoggableCollection(incidentModels);
+            }
+        }
+    }
 });
