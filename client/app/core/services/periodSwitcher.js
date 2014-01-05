@@ -8,6 +8,9 @@ angular.module('pace').factory('periodSwitcher', function($timeout) {
         availablePeriods: [],
         selectedPeriodNumber: null,
 
+        // delegate to notify TodayStatusBarCtrl of period changes
+        delegate: null,
+
         // resets all values based on the given day record
         reset: function(currentPeriod) {
             if (currentPeriod) {
@@ -23,12 +26,21 @@ angular.module('pace').factory('periodSwitcher', function($timeout) {
                 this.availablePeriods = [];
                 this.selectedPeriodNumber = null;
             }
+
+            // notify controller about period change
+            if (this.delegate) {
+                this.delegate.notifyPeriodChange(this.selectedPeriodNumber);
+            }
         },
 
         // Moves to previous period
         decrementPeriod: function() {
             if (this.selectedPeriodNumber > 1) {
                 this.selectedPeriodNumber = this.selectedPeriodNumber - 1;
+                // notify controller about period change
+                if (this.delegate) {
+                    this.delegate.notifyPeriodChange(this.selectedPeriodNumber);
+                }
             }
         },
 
@@ -51,6 +63,10 @@ angular.module('pace').factory('periodSwitcher', function($timeout) {
                 }
                 else {
                     this.selectedPeriodNumber = this.selectedPeriodNumber + 1;
+                    // notify controller about period change
+                    if (this.delegate) {
+                        this.delegate.notifyPeriodChange(this.selectedPeriodNumber);
+                    }
                 }
             }
         },
@@ -64,6 +80,11 @@ angular.module('pace').factory('periodSwitcher', function($timeout) {
                     value: nextPeriodNumber
                 });
                 console.error('not yet supporting new period creation server-side');
+                // notify controller about period change
+                if (this.delegate) {
+                    this.delegate.notifyPeriodChange(this.selectedPeriodNumber);
+                }
+
                 return true;
             }
             return false;

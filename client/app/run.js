@@ -13,6 +13,7 @@ angular.module('pace').run(function(sessionManager, $rootScope, mixpanel) {
 
         selectedStudent: null,
         selectedClassroom: null,
+        selectedPeriod: null,
 
         isStudentSelected: function() {
             return Boolean(this.selectedStudent);

@@ -6,13 +6,25 @@ app.controller('TodayStatusBarCtrl', function ($scope, timeTracker, dailyDataSto
         action: null,
     };
 
-    $scope.switcher = periodSwitcher;
-
     // hook into data store to give view access to dailyDataStore.hasDayBegun
     $scope.dailyDataStore = dailyDataStore;
 
     // win the selected classroom changes, update the today status bar
     $scope.$watch('viewState.selectedClassroom', resetStatusBar);
+
+    /**
+     * `notifyPeriodChange` is necessary for period switcher to notify us
+     * about a period number change (Safari bug $timeout workaround makes
+     * this necessary: the switcher could make this change asyncronously).
+     *
+     * Function simply passes this message along to the root viewState.
+     */
+    this.notifyPeriodChange = function(periodNumber) {
+        console.log('delegate notified');
+        $scope.viewState.selectedPeriod = periodNumber;
+    };
+    $scope.switcher = periodSwitcher;
+    $scope.switcher.delegate = this;
 
     function resetStatusBar(classroom) {
         if (classroom) {
