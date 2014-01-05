@@ -1,4 +1,4 @@
-app.controller('CollectPeriodicRecordCtrl', function ($scope, dailyDataStore) {
+app.controller('CollectPeriodPointsCtrl', function ($scope, dailyDataStore) {
     /** $scope initializing  **/
 
     $scope.pointValues = null;
@@ -12,11 +12,12 @@ app.controller('CollectPeriodicRecordCtrl', function ($scope, dailyDataStore) {
 
     /** actions on $scope **/
     // decrement points
-    $scope.decrement = decrementCategory;
+    $scope.decrementCategory = decrementCategory;
 
     function decrementCategory(category) {
-        var pointLossRecord = $scope.selectedPeriod.registerPointLoss(category);
-        $scope.collectData.incidentLogCollection.add(pointLossRecord);
+        console.error('decrement not yet functional');
+        // var pointLossRecord = $scope.selectedPeriod.registerPointLoss(category);
+        // $scope.collectData.incidentLogCollection.add(pointLossRecord);
     }
 
     function resetPointCounters(student, periodNumber) {

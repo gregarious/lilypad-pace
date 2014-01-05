@@ -20,7 +20,6 @@ app.controller('TodayStatusBarCtrl', function ($scope, timeTracker, dailyDataSto
      * Function simply passes this message along to the root viewState.
      */
     this.notifyPeriodChange = function(periodNumber) {
-        console.log('delegate notified');
         $scope.viewState.selectedPeriod = periodNumber;
     };
     $scope.switcher = periodSwitcher;

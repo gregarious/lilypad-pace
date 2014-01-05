@@ -1,5 +1,8 @@
 <div id="periodicBehaviors">
-    <div>{{pointValues.bs}} / {{pointValues.kw}} / {{pointValues.cw}} / {{pointValues.fd}}</div>
+    {{pointValues.bs}} <button ng-click="decrementCategory('bs')">&darr;</button>
+    {{pointValues.kw}} <button ng-click="decrementCategory('kw')">&darr;</button>
+    {{pointValues.cw}} <button ng-click="decrementCategory('cw')">&darr;</button>
+    {{pointValues.fd}} <button ng-click="decrementCategory('fd')">&darr;</button>
     <!-- Disabling counter directives during development
     <div id="periodBehaviorCounters">
         <counter class="bs" value="pointValues.bs" dec="true" dec-fn="decrement('bs')" max="2"
