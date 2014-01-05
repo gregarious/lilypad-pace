@@ -85,6 +85,10 @@
     <!-- login prompt -->
     <script src="app/auth/controllers/loginPrompt.js"></script>
 
+
+    <!-- COLLECT COMPONENTS -->
+    <script src="app/collect/controllers/studentCollect.js"></script>
+
     <!-- Run final app config & run routines after all providers are registered -->
     <script src="app/config.js"></script>
     <script src="app/run.js"></script>
@@ -118,7 +122,9 @@
                              ng-controller="TodayStatusBarCtrl"
                              ng-include="'app/core/views/todayStatus.html'">
                         </div>
-                        Collect content
+                        <div ng-controller="StudentCollectCtrl">
+                            <div ng-include="'app/collect/views/studentCollect.html'"></div>
+                        </div>
                     </main-pane>
                     <main-pane title="Analyze">
                         Analyze content
