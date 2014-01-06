@@ -2,7 +2,7 @@
 //  - get current status of today
 //  - start new day
 //  - get student data for today
-angular.module('pace').service('dailyDataStore', function($http, $q, _, timeTracker, moment, apiConfig, AttendanceSpan, BehaviorIncident, PeriodicRecord) {
+angular.module('pace').service('dailyDataStore', function($http, $q, $rootScope, _, timeTracker, moment, apiConfig, AttendanceSpan, BehaviorIncident, PeriodicRecord) {
 
     /* Current settings of store. Don't set directly. Use configure() */
     this._settings = {
@@ -217,6 +217,9 @@ angular.module('pace').service('dailyDataStore', function($http, $q, _, timeTrac
                 });
             }
         }
+
+        // broadcast the attendance change
+        $rootScope.$broadcast('studentAttendanceChange', student, !!studentData.activeAttendanceSpan);
     };
 
     // Collections used by DailyData

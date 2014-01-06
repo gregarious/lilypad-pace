@@ -3,11 +3,22 @@ app.controller('CollectPeriodPointsCtrl', function ($scope, dailyDataStore) {
 
     $scope.pointValues = null;
 
+    // watch for student or period change
     $scope.$watch('viewState.selectedStudent', function(student) {
         resetPointCounters(student, $scope.viewState.selectedPeriod);
     });
     $scope.$watch('viewState.selectedPeriod', function(pdNum) {
         resetPointCounters($scope.viewState.selectedStudent, pdNum);
+    });
+
+    // also watch for attendance status to change: when this happens to
+    // the selected student, a new periodic record may exist
+    $scope.$on('studentAttendanceChange', function(event, student, isNowPresent) {
+        if (student === $scope.viewState.selectedStudent && isNowPresent) {
+            resetPointCounters(
+                $scope.viewState.selectedStudent,
+                $scope.viewState.selectedPeriod);
+        }
     });
 
     /** actions on $scope **/
