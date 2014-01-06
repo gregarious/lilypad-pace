@@ -209,10 +209,11 @@ angular.module('pace').service('dailyDataStore', function($http, $q, _, timeTrac
 
             // if no records exist for the current period yet, create one
             if (existingRecords.length === 0) {
-                // PeriodicRecord model handles default date and point values
+                // PeriodicRecord model handles default point values
                 studentData.periodicRecords.create({
                     student: student,
-                    date: timeTracker.getDateString()
+                    date: timeTracker.getDateString(),
+                    period: this.currentPeriod
                 });
             }
         }

@@ -103,6 +103,7 @@ class BehaviorIncidentViewSet(mixins.RetrieveModelMixin,
 
 
 class PeriodicRecordViewSet(mixins.RetrieveModelMixin,
+                            mixins.CreateModelMixin,
                             viewsets.GenericViewSet):
     queryset = PeriodicRecord.objects.all()
     serializer_class = PeriodicRecordSerializer

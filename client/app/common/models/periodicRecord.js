@@ -75,15 +75,13 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
         ],
 
         defaults: function () {
-            return {
-                points: function() {
-                    var initPoints = {};
-                    _.each(validPointpointTypes, function(code) {
-                        initPoints[code] = 2;
-                    });
-                    return initPoints;
-                }
+            var initAttrs = {
+                points: {}
             };
+            _.each(validPointpointTypes, function(code) {
+                initAttrs.points[code] = 2;
+            });
+            return initAttrs;
         },
 
         urlRoot: apiConfig.toAPIUrl('periodicrecords/'),
