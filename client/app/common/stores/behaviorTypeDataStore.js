@@ -38,12 +38,20 @@ angular.module('pace').service('behaviorTypeDataStore', function(Backbone, $q, B
                 return null;
             }
             else {
+                // extend the behavior type collection to have create inject the student
+                var StudentSpecificCollection = BehaviorTypeCollection.extend({
+                    create: function(attributes, options) {
+                        attributes.applicableStudent = student;
+                        return Backbone.Collection.prototype.create.call(this, attributes, options);
+                    }
+                });
+
                 var models = allTypes.filter(function(behaviorType) {
                     var appStudent = behaviorType.get('applicableStudent');
                     // also return types that are not student-specific
                     return !appStudent || appStudent === student;
                 });
-                return new BehaviorTypeCollection(models);
+                return new StudentSpecificCollection(models);
             }
         }
     };

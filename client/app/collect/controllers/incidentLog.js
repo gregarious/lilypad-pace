@@ -1,5 +1,5 @@
 // controller for the incident log
-app.controller('CollectIncidentLogCtrl', function ($scope, moment, timeTracker, dailyDataStore, behaviorTypeDataStore) {
+app.controller('CollectIncidentLogCtrl', function ($scope, moment, timeTracker, dailyDataStore) {
     // various view control state values
     $scope.editingIncidents = false;
     $scope.confirmDeleteFor = null;
@@ -25,7 +25,6 @@ app.controller('CollectIncidentLogCtrl', function ($scope, moment, timeTracker, 
         $scope.confirmDeleteFor = null;
         $scope.editingIncidents = false;
         resetIncidentLogForStudent(student);
-        resetBehaviorTypeListForStudent(student);
     });
 
     // listen for new point losses (from our sister controller)
@@ -148,13 +147,6 @@ app.controller('CollectIncidentLogCtrl', function ($scope, moment, timeTracker, 
 
                 $scope.incidentLogCollection = collection;
             }
-        }
-    }
-
-    function resetBehaviorTypeListForStudent(student) {
-        $scope.behaviorTypeCollection = null;
-        if (student) {
-            $scope.behaviorTypeCollection = behaviorTypeDataStore.getForStudent(student);
         }
     }
 });

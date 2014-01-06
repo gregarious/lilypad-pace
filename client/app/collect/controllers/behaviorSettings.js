@@ -1,5 +1,5 @@
 // controller for behavior options modal
-app.controller('CollectBehaviorsModalCtrl', function ($scope, $rootScope, dailyDataStore, timeTracker, mixpanel) {
+app.controller('CollectBehaviorsModalCtrl', function ($scope, $rootScope, dailyDataStore, timeTracker, mixpanel, behaviorTypeDataStore) {
     // NOTE!!!
     // We are inheriting scope vbls `behaviorModalState`, `incidentFormData`,
     //   and `behaviorTypeCollection` from CollectIncidentLogCtrl so we can split
@@ -11,6 +11,11 @@ app.controller('CollectBehaviorsModalCtrl', function ($scope, $rootScope, dailyD
     $scope.behaviorTypeFormData = {};
     $scope.missingBehavior = false;
     $scope.missingBehaviorType = false;
+
+    // on student changes, close the edit mode and reset the loggable collection
+    $scope.$watch('viewState.selectedStudent', function(student) {
+        resetBehaviorTypeListForStudent(student);
+    });
 
     $scope.submitIncident = function () {
         // Validate presence of behavior type
@@ -113,13 +118,21 @@ app.controller('CollectBehaviorsModalCtrl', function ($scope, $rootScope, dailyD
         }
 
         mixpanel.track("Custom behavior added"); // mixpanel tracking
-        behaviorIncidentTypeDataStore.createIncidentType(
-            $scope.behaviorTypeFormData.label,
-            $scope.behaviorTypeFormData.selectedBehaviorType === 'Duration',
-            null,
-            mainViewState.selectedStudent);
-        // this operation will automatically add the type to collectData.behaviorTypeCollection
+
+        // use the existing student-specific collection to create the new type
+        $scope.behaviorTypeCollection.create({
+            label: $scope.behaviorTypeFormData.label,
+            supportsDuration: $scope.behaviorTypeFormData.selectedBehaviorType === 'Duration'
+        });
 
         $scope.closeNewBehaviorType();
     };
+
+    function resetBehaviorTypeListForStudent(student) {
+        $scope.behaviorTypeCollection = null;
+        if (student) {
+            $scope.behaviorTypeCollection = behaviorTypeDataStore.getForStudent(student);
+        }
+    }
+
 });
