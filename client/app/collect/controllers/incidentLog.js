@@ -1,5 +1,5 @@
 // controller for the incident log
-app.controller('CollectIncidentLogCtrl', function ($scope, moment, timeTracker, dailyDataStore) {
+app.controller('CollectIncidentLogCtrl', function ($scope, moment, timeTracker, dailyDataStore, behaviorTypeDataStore) {
     // various view control state values
     $scope.editingIncidents = false;
     $scope.confirmDeleteFor = null;
@@ -25,6 +25,7 @@ app.controller('CollectIncidentLogCtrl', function ($scope, moment, timeTracker, 
         $scope.confirmDeleteFor = null;
         $scope.editingIncidents = false;
         resetIncidentLogForStudent(student);
+        resetBehaviorTypeListForStudent(student);
     });
 
 
@@ -112,6 +113,13 @@ app.controller('CollectIncidentLogCtrl', function ($scope, moment, timeTracker, 
                 incidentModels = incidentModels.concat(studentData.behaviorIncidents.models);
                 $scope.incidentLogCollection = new LoggableCollection(incidentModels);
             }
+        }
+    }
+
+    function resetBehaviorTypeListForStudent(student) {
+        $scope.behaviorTypeCollection = null;
+        if (student) {
+            $scope.behaviorTypeCollection = behaviorTypeDataStore.getForStudent(student);
         }
     }
 });

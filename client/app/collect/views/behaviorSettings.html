@@ -29,7 +29,7 @@
     <div class="behaviorsTableWrapper" ng-show="!addingBehaviorType">
         <table class="behaviors" ng-class="{invalid: missingBehavior}">
             <tbody>
-        <tr ng-repeat="studentType in collectData.behaviorTypeCollection.models"
+        <tr ng-repeat="studentType in behaviorTypeCollection.models"
             ng-click="setBehavior(studentType)"
             ng-class="{selected: incidentFormData.typeModel.get('label') == studentType.get('label')}">
                 <td>{{studentType.get('label')}}</td>

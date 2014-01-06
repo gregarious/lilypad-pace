@@ -2,7 +2,7 @@
  * App startup code. Sets up initial view state, global functions, and
  * and attempts to resume user session.
  */
-angular.module('pace').run(function(sessionManager, $rootScope, mixpanel) {
+angular.module('pace').run(function(sessionManager, $rootScope, mixpanel, behaviorTypeDataStore) {
      // create and initializes the global `viewState` object to
      // manage app-wide variables necessary to maintain view state.
     $rootScope.viewState = $rootScope.viewState || {};
@@ -56,4 +56,8 @@ angular.module('pace').run(function(sessionManager, $rootScope, mixpanel) {
     if (didResume) {
         $rootScope.grantAccess();
     }
+
+    // TODO: move this into post-authenication start up routine to give
+    //       user feedback if case this call fails
+    behaviorTypeDataStore.loadAllTypes();
 });

@@ -1,13 +1,9 @@
 // controller for behavior options modal
 app.controller('CollectBehaviorsModalCtrl', function ($scope, timeTracker, mixpanel) {
     // NOTE!!!
-    // We are inheriting $scope.behaviorModalState and $scope.incidentFormData
-    //   from MainStudentCollectIncidentLogCtrl so we can split the logic into
-    //   two controllers.
-    // #refactor
-
-    // NOTE!!!
-    // We are inheriting $scope.collectData from parent controller.
+    // We are inheriting scope vbls `behaviorModalState`, `incidentFormData`,
+    //   and `behaviorTypeCollection` from CollectIncidentLogCtrl so we can split
+    //   the logic into two controllers.
     // #refactor
 
     $scope.addingBehaviorType = false;
@@ -63,7 +59,7 @@ app.controller('CollectBehaviorsModalCtrl', function ($scope, timeTracker, mixpa
             $scope.currentIncidentEditing.save();
 
             // manually re-sort the collection in case time changed
-            $scope.collectData.incidentLogCollection.sort();
+            console.error('collection not resorting after incident edited');
         } else {
             var timeOpened = (Date.now() - $scope.behaviorModalState.timeOpen) / 1000; // in seconds
             mixpanel.track("Incident added", { 'Time Open (s)': timeOpened }); // mixpanel tracking
@@ -92,7 +88,7 @@ app.controller('CollectBehaviorsModalCtrl', function ($scope, timeTracker, mixpa
     // open the "add custom behavior" control
     $scope.openNewBehaviorType = function () {
         var confirmNewType = confirm("Are you sure you want to add a new behavior type?");
-        if (confirmNewType == true) {
+        if (confirmNewType === true) {
             $scope.addingBehaviorType = true;
         }
     };
