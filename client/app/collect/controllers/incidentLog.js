@@ -28,6 +28,15 @@ app.controller('CollectIncidentLogCtrl', function ($scope, moment, timeTracker, 
         resetBehaviorTypeListForStudent(student);
     });
 
+    // listen for point losses from our sister controller
+    $scope.$on('pointLossRegistered', function(event, lossRecord) {
+        if (lossRecord.get('periodicRecord') && lossRecord.get('periodicRecord').get('student')) {
+            var student = lossRecord.get('periodicRecord').get('student');
+            if (student === $scope.viewState.selectedStudent && $scope.incidentLogCollection) {
+                $scope.incidentLogCollection.add(lossRecord);
+            }
+        }
+    });
 
     /** View functions **/
 

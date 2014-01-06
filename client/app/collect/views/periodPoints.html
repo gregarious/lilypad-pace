@@ -1,20 +1,20 @@
 <div id="periodicBehaviors">
-    {{pointValues.bs}} <button ng-click="decrementCategory('bs')">&darr;</button>
-    {{pointValues.kw}} <button ng-click="decrementCategory('kw')">&darr;</button>
-    {{pointValues.cw}} <button ng-click="decrementCategory('cw')">&darr;</button>
-    {{pointValues.fd}} <button ng-click="decrementCategory('fd')">&darr;</button>
+    {{selectedPeriodRecord.get('points').bs}} <button ng-click="decrementCategory('bs')">&darr;</button>
+    {{selectedPeriodRecord.get('points').kw}} <button ng-click="decrementCategory('kw')">&darr;</button>
+    {{selectedPeriodRecord.get('points').cw}} <button ng-click="decrementCategory('cw')">&darr;</button>
+    {{selectedPeriodRecord.get('points').fd}} <button ng-click="decrementCategory('fd')">&darr;</button>
     <!-- Disabling counter directives during development
     <div id="periodBehaviorCounters">
-        <counter class="bs" value="pointValues.bs" dec="true" dec-fn="decrement('bs')" max="2"
+        <counter class="bs" value="selectedPeriodRecord.get('points').bs" dec="true" dec-fn="decrement('bs')" max="2"
                  min="0"
                  text="Be Safe" id="student.get('id')"></counter>
-        <counter class="kw" value="pointValues.kw" dec="true" dec-fn="decrement('kw')" max="2"
+        <counter class="kw" value="selectedPeriodRecord.get('points').kw" dec="true" dec-fn="decrement('kw')" max="2"
                  min="0"
                  text="Kind Words" id="student.get('id')"></counter>
-        <counter class="cw" value="pointValues.cw" dec="true" dec-fn="decrement('cw')" max="2"
+        <counter class="cw" value="selectedPeriodRecord.get('points').cw" dec="true" dec-fn="decrement('cw')" max="2"
                  min="0"
                  text="Complete Work" id="student.get('id')"></counter>
-        <counter class="fd" value="pointValues.fd" dec="true" dec-fn="decrement('fd')" max="2"
+        <counter class="fd" value="selectedPeriodRecord.get('points').fd" dec="true" dec-fn="decrement('fd')" max="2"
                  min="0"
                  text="Follow Directions" id="student.get('id')"></counter>
     </div> -->

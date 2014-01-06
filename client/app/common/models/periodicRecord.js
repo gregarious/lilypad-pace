@@ -147,12 +147,8 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
             if (isValidPointType(pointType)) {
                 if (this.get('points')[pointType] >= 1) {
                     this.get('points')[pointType]--;
+                    // Note: we rely on server to handle the point change on its own: don't save it
                     var lossRecord = createPointLoss(this, pointType, timeTracker.getTimestamp());
-
-                    // disabled: relying on server to handle this on its own
-                    // TODO: consider
-                    // this.save();
-
                     return lossRecord;
                 }
             }

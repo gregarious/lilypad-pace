@@ -1,7 +1,7 @@
-app.controller('CollectPeriodPointsCtrl', function ($scope, dailyDataStore) {
+app.controller('CollectPeriodPointsCtrl', function ($scope, $rootScope, dailyDataStore) {
     /** $scope initializing  **/
 
-    $scope.pointValues = null;
+    $scope.selectedPeriodRecord = null;
 
     // watch for student or period change
     $scope.$watch('viewState.selectedStudent', function(student) {
@@ -26,13 +26,14 @@ app.controller('CollectPeriodPointsCtrl', function ($scope, dailyDataStore) {
     $scope.decrementCategory = decrementCategory;
 
     function decrementCategory(category) {
-        console.error('decrement not yet functional');
-        // var pointLossRecord = $scope.selectedPeriod.registerPointLoss(category);
-        // $scope.collectData.incidentLogCollection.add(pointLossRecord);
+        if ($scope.selectedPeriodRecord) {
+            var lossRecord = $scope.selectedPeriodRecord.registerPointLoss(category);
+            $rootScope.$broadcast('pointLossRegistered', lossRecord);
+        }
     }
 
     function resetPointCounters(student, periodNumber) {
-        var foundRecord;
+        $scope.selectedPeriodRecord = null;
         if (student && periodNumber) {
             var studentData = dailyDataStore.studentData[student.id];
             if (studentData.periodicRecords) {
@@ -40,16 +41,9 @@ app.controller('CollectPeriodPointsCtrl', function ($scope, dailyDataStore) {
                     return pd.get('period') === periodNumber;
                 });
                 if (selectedPeriods.length > 0) {
-                    foundRecord = selectedPeriods[0];
+                    $scope.selectedPeriodRecord = selectedPeriods[0];
                 }
             }
-        }
-
-        if (foundRecord) {
-            $scope.pointValues = foundRecord.get('points');
-        }
-        else {
-            $scope.pointValues = null;
         }
     }
 });
