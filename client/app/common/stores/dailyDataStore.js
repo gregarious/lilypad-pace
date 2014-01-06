@@ -230,17 +230,17 @@ angular.module('pace').service('dailyDataStore', function($http, $q, _, timeTrac
     });
 
     function DailyData(data) {
-        var allSpans = _.sortBy(data.attendanceSpans, function(span) {
-            if (span.timeIn) {
-                return -(moment(span.date + 'T' + span.timeIn));
-            }
-            else {
-                throw Exception("Cannot sort an AttendanceSpan with no `timeIn`");
-            }
+        // only consider spans without a timeOut yet
+        // NOTE: this isn't terribly bullet-proof: clients with differing
+        // clocks could cause havok with this simple logic. Going to need
+        // to avoid concerns with multiple devices editing the same
+        // classrooms
+        var activeSpans = _.filter(data.attendanceSpans, function(span) {
+            return !span.timeOut;
         });
 
-        if (allSpans.length > 0) {
-            this.activeAttendanceSpan = new AttendanceSpan(allSpans[0]);
+        if (activeSpans.length > 0) {
+            this.activeAttendanceSpan = new AttendanceSpan(activeSpans[0]);
         }
         else {
             this.activeAttendanceSpan = null;
