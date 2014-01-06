@@ -40,14 +40,13 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
                 id : String
                 url : String
                 period : Integer
-                dateString : String (ISO format)
+                date : String (ISO format)
                 points : {
                     'kw' : Integer,
                     'cw' : Integer,
                     'fd' : Integer,
                     'bs' : Integer
                 }
-                isEligible : Boolean
             Relations:
                 pointLosses : Collection <PointLoss>
                 student : Student
@@ -77,24 +76,17 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
 
         defaults: function () {
             return {
-                dateString: function() {timeTracker.getTimestampAsMoment().format('YYYY-MM-DD')},
-                isEligible: true
+                points: function() {
+                    var initPoints = {};
+                    _.each(validPointpointTypes, function(code) {
+                        initPoints[code] = 2;
+                    });
+                    return initPoints;
+                }
             };
         },
 
         urlRoot: apiConfig.toAPIUrl('periodicrecords/'),
-
-        initialize: function(attributes, options) {
-            // define points
-            if(!this.get('points')) {
-                var pts = {};
-                var isEligible = this.get('isEligible');
-                _.each(validPointpointTypes, function(code) {
-                    pts[code] = isEligible ? 2 : null;
-                });
-                this.set('points', pts);
-            }
-        },
 
         parse: function(response, options) {
             // pack all point records into a `points` object
@@ -133,21 +125,14 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
         /**
          * get/set point values for particular point types.
          *
-         * If student is not eligible, getPointValue will return null and
-         * the setPointValue will be no-ops.
-         *
          * Point types codes are among: 'kw', 'cw', 'fd', 'bs'
          */
         getPointValue: function(pointType) {
-            if (this.get('isEligible') && isValidPointType(pointType)) {
-                return this.get('points')[pointType];
-            }
-            else {
-                return null;
-            }
+            return this.get('points')[pointType];
         },
+
         setPointValue: function(pointType, value) {
-            if (this.get('isEligible') && isValidPointType(pointType)) {
+            if (isValidPointType(pointType)) {
                 this.get('points')[pointType] = value;
                 this.save();
             }
@@ -161,7 +146,7 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
          * @return {PointLoss}
          */
         registerPointLoss: function(pointType) {
-            if (this.get('isEligible') && isValidPointType(pointType)) {
+            if (isValidPointType(pointType)) {
                 if (this.get('points')[pointType] >= 1) {
                     this.get('points')[pointType]--;
                     var lossRecord = createPointLoss(this, pointType, timeTracker.getTimestamp());
@@ -186,14 +171,10 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
         },
 
         /**
-         * Returns the total points earned for this record. Returns null
-         * if student was not eligible for points.
-         * @return {Integer or null}
+         * Returns the total points earned for this record.
+         * @return {Integer}
          */
         getTotalPointValue: function() {
-            if (!this.get('isEligible')) {
-                return null;
-            }
             var points = this.get('points');
             return points.kw + points.cw + points.fd + points.bs;
         }

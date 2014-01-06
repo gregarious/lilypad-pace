@@ -176,6 +176,48 @@ angular.module('pace').service('dailyDataStore', function($http, $q, _, timeTrac
         return true;
     };
 
+    this.toggleAttendanceForStudent = function(student) {
+        var studentData = this.studentData[student.id];
+        if (!this.hasDayBegun || !studentData) {
+            // do nothing if the day has not yet begun
+            return;
+        }
+
+        var activeSpan = studentData.activeAttendanceSpan;
+        var now = timeTracker.getTimestampAsMoment();
+        if (activeSpan) {
+            // set timeOut timestamp and remove the active span
+            activeSpan.set('timeOut', now.format('HH:mm:ss'));
+            activeSpan.save();
+            studentData.activeAttendanceSpan = null;
+        }
+        else {
+            // create new span and save it to server
+            activeSpan = new AttendanceSpan({
+                student: student,
+                date: now.format('YYYY-MM-DD'),
+                timeIn: now.format('HH:mm:ss'),
+                timeOut: null
+            });
+            activeSpan.save();
+            studentData.activeAttendanceSpan = activeSpan;
+
+            // create a periodic record client-side
+            var existingRecords = studentData.periodicRecords.filter(function(record) {
+                return record.period === this.currentPeriod;
+            });
+
+            // if no records exist for the current period yet, create one
+            if (existingRecords.length === 0) {
+                // PeriodicRecord model handles default date and point values
+                studentData.periodicRecords.create({
+                    student: student,
+                    date: timeTracker.getDateString()
+                });
+            }
+        }
+    };
+
     // Collections used by DailyData
     var BehaviorIncidentCollection = Backbone.Collection.extend({
         model: BehaviorIncident,
@@ -197,7 +239,7 @@ angular.module('pace').service('dailyDataStore', function($http, $q, _, timeTrac
         });
 
         if (allSpans.length > 0) {
-            this.activeAttendanceSpan = allSpans[0];
+            this.activeAttendanceSpan = new AttendanceSpan(allSpans[0]);
         }
         else {
             this.activeAttendanceSpan = null;
