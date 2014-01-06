@@ -1,5 +1,5 @@
 // controller for behavior options modal
-app.controller('CollectBehaviorsModalCtrl', function ($scope, timeTracker, mixpanel) {
+app.controller('CollectBehaviorsModalCtrl', function ($scope, $rootScope, dailyDataStore, timeTracker, mixpanel) {
     // NOTE!!!
     // We are inheriting scope vbls `behaviorModalState`, `incidentFormData`,
     //   and `behaviorTypeCollection` from CollectIncidentLogCtrl so we can split
@@ -57,24 +57,25 @@ app.controller('CollectBehaviorsModalCtrl', function ($scope, timeTracker, mixpa
             }
 
             $scope.currentIncidentEditing.save();
-
-            // manually re-sort the collection in case time changed
-            console.error('collection not resorting after incident edited');
         } else {
             var timeOpened = (Date.now() - $scope.behaviorModalState.timeOpen) / 1000; // in seconds
             mixpanel.track("Incident added", { 'Time Open (s)': timeOpened }); // mixpanel tracking
             $scope.behaviorModalState.timeOpen = 0;
 
-            // TODO: support
-            console.error('Behavior incident creation not yet supported');
-
-            // var newIncident = behaviorIncidentDataStore.createIncident(
-            //     mainViewState.selectedStudent,
-            //     $scope.incidentFormData.typeModel,
-            //     $scope.incidentFormData.startedAt,
-            //     $scope.incidentFormData.endedAt,
-            //     $scope.incidentFormData.comment);
-            // $scope.collectData.incidentLogCollection.add(newIncident);
+            var studentData = dailyDataStore.studentData[$scope.viewState.selectedStudent.id];
+            if (studentData) {
+                var newIncident = studentData.behaviorIncidents.create({
+                    student: $scope.viewState.selectedStudent,
+                    type: $scope.incidentFormData.typeModel,
+                    startedAt: $scope.incidentFormData.startedAt,
+                    endedAt: $scope.incidentFormData.endedAt,
+                    comment: $scope.incidentFormData.comment
+                });
+                $rootScope.$broadcast('behaviorIncidentRegistered', newIncident);
+            }
+            else {
+                console.error('Problem creating new behavior incident: daily data source is inconsistent');
+            }
         }
 
         $scope.closeBehaviorModel();

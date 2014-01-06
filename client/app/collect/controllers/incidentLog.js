@@ -28,7 +28,7 @@ app.controller('CollectIncidentLogCtrl', function ($scope, moment, timeTracker, 
         resetBehaviorTypeListForStudent(student);
     });
 
-    // listen for point losses from our sister controller
+    // listen for new point losses (from our sister controller)
     $scope.$on('pointLossRegistered', function(event, lossRecord) {
         if (lossRecord.get('periodicRecord') && lossRecord.get('periodicRecord').get('student')) {
             var student = lossRecord.get('periodicRecord').get('student');
@@ -37,6 +37,16 @@ app.controller('CollectIncidentLogCtrl', function ($scope, moment, timeTracker, 
             }
         }
     });
+
+    // listen for new incidents (from the modal controller)
+    // TODO: would be better to listen to dailyDataStore behaviorIncident collection changes
+    $scope.$on('behaviorIncidentRegistered', function(event, incident) {
+        var student = incident.get('student');
+        if (student === $scope.viewState.selectedStudent && $scope.incidentLogCollection) {
+            $scope.incidentLogCollection.add(incident);
+        }
+    });
+
 
     /** View functions **/
 
@@ -110,17 +120,33 @@ app.controller('CollectIncidentLogCtrl', function ($scope, moment, timeTracker, 
     };
 
     function resetIncidentLogForStudent(student) {
+        if($scope.incidentLogCollection) {
+            // stop listening for the 'change' events set up below
+            $scope.incidentLogCollection.stopListening();
+        }
         $scope.incidentLogCollection = null;
 
         if (student) {
             var studentData = dailyDataStore.studentData[student.id];
             if (studentData) {
                 var incidentModels = [];
-                studentData.periodicRecords.each(function(record) {
-                    incidentModels = incidentModels.concat(record.get('pointLosses').models);
-                });
                 incidentModels = incidentModels.concat(studentData.behaviorIncidents.models);
-                $scope.incidentLogCollection = new LoggableCollection(incidentModels);
+
+                var collection = new LoggableCollection();
+
+                // when something is added to log, watch for changes on it: a time change
+                // might necessitate a re-sort
+                collection.on('add', function(model) {
+                    collection.listenTo(model, 'change', function() {collection.sort();});
+                });
+
+                // finally ready to all the models: point losses & behavior incidents
+                studentData.periodicRecords.each(function(record) {
+                    collection.add(record.get('pointLosses').models);
+                });
+                collection.add(studentData.behaviorIncidents.models);
+
+                $scope.incidentLogCollection = collection;
             }
         }
     }
