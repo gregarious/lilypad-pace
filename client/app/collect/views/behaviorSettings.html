@@ -1,7 +1,7 @@
 <div class="clearfix header">
-    <button class="close" ng-click="closeBehaviorModel()">Cancel</button>
+    <button class="close" ng-click="closeForm()">Cancel</button>
     <h4>{{behaviorModalState.title}}</h4>
-    <button class="close" ng-click="submitIncident()">Done</button>
+    <button class="close" ng-click="submitForm()">Done</button>
 </div>
 
 <div class="behaviorSelection" ng-show="!currentIncidentEditing || !currentIncidentEditing.has('periodicRecord')">

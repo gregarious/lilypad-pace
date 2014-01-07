@@ -49,26 +49,3 @@ app.directive('mainPane', function () {
         replace: true
     };
 });
-
-// directive for modals that cover main content area
-app.directive('mainModal', function () {
-    return {
-        restrict: 'E',
-        transclude: true,
-        scope: {displayState: '='},
-        controller: function ($scope) {
-            $scope.closeModal = function () {
-                // Note: this is not currently bound to in any HTML: parent
-                // controllers are manipulating the `displayState` directly
-                // instead
-                $scope.displayState.active = false;
-            };
-        },
-        template: '<div class="modalWrapper hidden" ng-class="{active: displayState.active}">' +
-            '<div class="mainModal modal">' +
-            '<div ng-transclude></div>' +
-            '</div>' +
-            '</div>',
-        replace: true
-    };
-});

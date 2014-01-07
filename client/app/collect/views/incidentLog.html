@@ -5,7 +5,7 @@
             <span ng-show="!editingIncidents">Edit Incidents</span>
             <span ng-show="editingIncidents">Save Incidents</span>
         </button>
-        <button class="newIncident" ng-click="showBehaviorModel()">New Incident</button>
+        <button class="newIncident" ng-click="showBehaviorModal()">New Incident</button>
     </div>
 </div>
 <div id="behaviorIncidentsTable">
@@ -21,20 +21,14 @@
             <td class="delete" ng-show="editingIncidents" ng-click="confirmDelete(logEntry)">
                 <div class="deleteCircle" ng-class="{active:(confirmDeleteFor != null) && (confirmDeleteFor === logEntry)}">-</div>
             </td>
-            <td class="time" ng-click="showBehaviorModel(logEntry)">{{logEntry.getOccurredAt() | date: 'h:mm a'}}</td>
-            <td class="label" ng-click="showBehaviorModel(logEntry)">{{logEntry.getLabel()}}</td>
-            <td class="duration" ng-click="showBehaviorModel(logEntry)">{{logEntry.getDuration() | duration}}</td>
+            <td class="time" ng-click="showBehaviorModal(logEntry)">{{logEntry.getOccurredAt() | date: 'h:mm a'}}</td>
+            <td class="label" ng-click="showBehaviorModal(logEntry)">{{logEntry.getLabel()}}</td>
+            <td class="duration" ng-click="showBehaviorModal(logEntry)">{{logEntry.getDuration() | duration}}</td>
             <td class="comment">
-                <span ng-click="showBehaviorModel(logEntry)">{{logEntry.getComment()}}</span>
+                <span ng-click="showBehaviorModal(logEntry)">{{logEntry.getComment()}}</span>
                 <span class="deleteBtn" ng-show="(confirmDeleteFor != undefined) && (confirmDeleteFor === logEntry)" ng-click="removeIncident(logEntry)">Delete</span>
             </td>
         </tr>
     </table>
     <div class="noData" ng-hide="incidentLogCollection.models.length > 0">No incidents yet logged</div>
 </div>
-
-<main-modal display-state="behaviorModalState">
-    <div ng-controller="CollectBehaviorsModalCtrl">
-        <div ng-include="'app/collect/views/behaviorSettings.html'"></div>
-    </div>
-</main-modal>

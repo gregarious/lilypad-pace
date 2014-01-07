@@ -2,10 +2,10 @@
 app.controller('MainStudentAnalyzeBehaviorLogCtrl', function ($scope, mainViewState, logEntryDataStore) {
     $scope.data = {};
 
-    $scope.showBehaviorModel = function() {
+    $scope.showBehaviorModal = function() {
         $scope.behaviorModalState.active = true;
     };
-    $scope.showBehaviorModel = function() {
+    $scope.showBehaviorModal = function() {
         $scope.behaviorModalState.active = false;
     };
 

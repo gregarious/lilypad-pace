@@ -1,5 +1,5 @@
 // controller for the incident log
-app.controller('CollectIncidentLogCtrl', function ($scope, moment, timeTracker, dailyDataStore) {
+app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, moment, mixpanel, timeTracker, dailyDataStore, behaviorTypeDataStore) {
     // various view control state values
     $scope.editingIncidents = false;
     $scope.confirmDeleteFor = null;
@@ -10,7 +10,6 @@ app.controller('CollectIncidentLogCtrl', function ($scope, moment, timeTracker, 
     // form-related objects shared with CollectBehaviorsModalCtrl (needed
     //  in this scope for initiation reasons)
     $scope.incidentFormData = {};
-    $scope.currentIncidentEditing = null;
 
     var LoggableCollection = Backbone.Collection.extend({
         comparator: function(loggableModel) {
@@ -49,43 +48,97 @@ app.controller('CollectIncidentLogCtrl', function ($scope, moment, timeTracker, 
 
     /** View functions **/
 
-    // closes and clears the "new incident" control
-    $scope.closeBehaviorModel = function () {
-        $scope.behaviorModalState.active = false;
-        $scope.incidentFormData = {};
-    };
-
     // shows the settings modal
-    $scope.showBehaviorModel = function (incident) {
-        if (incident) {
-            if (!$scope.editingIncidents) {
-                return;
-            }
+    $scope.showBehaviorModal = function (editIncident) {
+        var initialFormData = {};
 
-            $scope.currentIncidentEditing = incident;
-            $scope.behaviorModalState.title = "Edit Incident";
+        var timeModalOpened = null;
 
-            $scope.incidentFormData.typeModel = incident.get('type');
+        if (editIncident) {
+            console.error('Edit incident title not in place');
+            // $scope.behaviorModalState.title = "Edit Incident";
 
-            $scope.incidentFormData.startedAt = moment(incident.getOccurredAt()).format("HH:mm");
-            $scope.incidentFormData.comment = incident.get('comment');
-
-            if (incident.attributes.endedAt) {
-                $scope.incidentFormData.endedAt = moment(incident.get('endedAt')).format("HH:mm");
-            }
-
+            initialFormData = {
+                typeModel: editIncident.get('type'),
+                startedAt: moment(editIncident.getOccurredAt()).format("HH:mm"),
+                comment: editIncident.get('comment'),
+                endedAt: editIncident.has('endedAt') ? moment(editIncident.get('endedAt')).format("HH:mm") : '',
+            };
         } else {
             // Close editing mode if open
             $scope.editingIncidents = false;
             $scope.confirmDeleteFor = null;
-            $scope.currentIncidentEditing = null;
 
-            $scope.incidentFormData.startedAt = timeTracker.getTimestampAsMoment().format("HH:mm");
-            $scope.behaviorModalState.title = "Add New Incident";
-            $scope.behaviorModalState.timeOpen = Date.now();
+            initialFormData.startedAt = timeTracker.getTimestampAsMoment().format("HH:mm");
+            console.error('Add new incident title not in place');
+            // $scope.behaviorModalState.title = "Add New Incident";
+
+            timeModalOpened = Date.now();
         }
 
-        $scope.behaviorModalState.active = true;
+        var modalInstance = $modal.open({
+            templateUrl: 'app/collect/views/behaviorSettings.html',
+            controller: BehaviorModalInstanceCtrl,
+            resolve: {
+                typeCollection: function() {
+                    return behaviorTypeDataStore.getForStudent($scope.viewState.selectedStudent);
+                },
+                initialFormData: function() {
+                    return initialFormData;
+                }
+            }
+        });
+
+        // modal instance returns promise that is fulfilled when modal closes
+        modalInstance.result.then(function (incidentFormData) {
+            // combine time strings with current date
+            var today = timeTracker.getTimestamp();
+            incidentFormData.startedAt = replaceTime(today, incidentFormData.startedAt);
+            if (incidentFormData.endedAt) {
+                incidentFormData.endedAt = replaceTime(today, incidentFormData.endedAt);
+            }
+
+            if (editIncident) {
+                // we edit both BehaviorIncidents and PointLosses with same form
+                if (editIncident.has('periodicRecord')) {
+                    editIncident.set('startedAt', incidentFormData.startedAt);
+                }
+                else {
+                    editIncident.set('type', incidentFormData.typeModel);
+                    editIncident.set('startedAt', incidentFormData.startedAt);
+                    editIncident.set('endedAt', incidentFormData.endedAt);
+                }
+                // both model types have comments
+                editIncident.set('comment', incidentFormData.comment);
+
+                editIncident.save();
+            }
+            else {
+                // track amount of time modal is open on new incident creation
+                var duration = (Date.now() - timeModalOpened) / 1000;   // in seconds
+                mixpanel.track("Incident added", { 'Time Open (s)': duration }); // mixpanel tracking
+
+                // create a new BehaviorIncident
+                var studentData = dailyDataStore.studentData[$scope.viewState.selectedStudent.id];
+                if (studentData) {
+                    var newIncident = studentData.behaviorIncidents.create({
+                        student: $scope.viewState.selectedStudent,
+                        type: incidentFormData.typeModel,
+                        startedAt: incidentFormData.startedAt,
+                        endedAt: incidentFormData.endedAt,
+                        comment: incidentFormData.comment
+                    });
+                    $rootScope.$broadcast('behaviorIncidentRegistered', newIncident);
+                }
+                else {
+                    console.error('Problem creating new behavior incident: daily data source is inconsistent');
+                }
+            }
+
+        }, function () {
+            // nothing to do when modal is cancelled
+        });
+
     };
 
     $scope.editIncidents = function() {
@@ -148,5 +201,90 @@ app.controller('CollectIncidentLogCtrl', function ($scope, moment, timeTracker, 
                 $scope.incidentLogCollection = collection;
             }
         }
+    }
+
+    function submitIncidentForm(formData) {
+        var today = timeTracker.getTimestamp();
+        $scope.incidentFormData.startedAt = replaceTime(today, $scope.incidentFormData.startedAt);
+        if ($scope.incidentFormData.endedAt) {
+            $scope.incidentFormData.endedAt = replaceTime(today, $scope.incidentFormData.endedAt);
+        }
+
+    }
+
+    function replaceTime(date, timeString) {
+        date = new Date(date.getTime());
+        var splitTime = timeString.split(':');
+        date.setHours(splitTime[0]);
+        date.setMinutes(splitTime[1]);
+        return date;
+    }
+
+    function BehaviorModalInstanceCtrl($scope, $modalInstance, typeCollection, initialFormData) {
+        $scope.incidentFormData = initialFormData;
+        $scope.behaviorTypeCollection = typeCollection;
+
+        $scope.behaviorTypeFormData = {};
+        $scope.addingBehaviorType = false;
+        $scope.behaviorTypes = ['Frequency', 'Duration'];
+
+        $scope.submitForm = function() {
+            // only close modal if validator OKs the data
+            if (validateForm($scope.incidentFormData)) {
+                $modalInstance.close($scope.incidentFormData);
+            }
+        };
+
+        $scope.closeForm = function() {
+            $modalInstance.dismiss();
+        };
+
+        // set the desired behavior type
+        $scope.setBehavior = function(selectedType) {
+            $scope.incidentFormData.typeModel = selectedType;
+        };
+
+        // open the "add custom behavior" control
+        $scope.openNewBehaviorType = function () {
+            var confirmNewType = confirm("Are you sure you want to add a new behavior type?");
+            if (confirmNewType === true) {
+                $scope.addingBehaviorType = true;
+            }
+        };
+
+        // close and clear the "add custom behavior" control
+        $scope.closeNewBehaviorType = function () {
+            $scope.addingBehaviorType = false;
+            $scope.behaviorTypeFormData.label = null;
+            $scope.behaviorTypeFormData.selectedBehaviorType = null;
+        };
+
+        // submit a new behavior
+        $scope.submitNewBehaviorType = function () {
+            console.error('not validating new behavior type form data');
+            // Validate presence of behavior type
+            if (typeof $scope.behaviorTypeFormData.selectedBehaviorType === "undefined") {
+                $scope.missingBehaviorType = true;
+                return;
+            } else {
+                $scope.missingBehaviorType = false;
+            }
+
+            mixpanel.track("Custom behavior added"); // mixpanel tracking
+
+            // use the existing student-specific collection to create the new type
+            $scope.behaviorTypeCollection.create({
+                label: $scope.behaviorTypeFormData.label,
+                supportsDuration: $scope.behaviorTypeFormData.selectedBehaviorType === 'Duration'
+            });
+
+            $scope.closeNewBehaviorType();
+        };
+    }
+
+    function validateForm(data) {
+        // TODO: validate form data
+        console.error('not validating new/edit incident form data');
+        return true;
     }
 });
