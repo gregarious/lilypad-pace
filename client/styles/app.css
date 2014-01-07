@@ -555,7 +555,7 @@ form .buttonGroup button {
     border: 0px;
 }
 
-.modalWrapper {
+.modal-backdrop {
     box-sizing: border-box;
     position: absolute;
     top: 0px;
@@ -682,7 +682,7 @@ td.invalid #behaviorTypeInput li {
 #todayStatusBar {
     position: absolute;
     top: 0px;
-    z-index: 20000;
+    z-index: 1000;
 }
 
 #periodicBehaviors {
