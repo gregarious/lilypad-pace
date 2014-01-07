@@ -15,7 +15,11 @@ app.controller('MenuStudentListCtrl', function ($scope, mixpanel, timeTracker, d
 
     function resetStudentList(classroom) {
         if (classroom) {
-            $scope.studentCollection = classroom.get('students');
+            var studentCollection = classroom.get('students');
+            $scope.studentCollection = studentCollection;
+            if (studentCollection.length > 0) {
+                $scope.viewState.selectedStudent = studentCollection.models[0];
+            }
         }
         else {
             $scope.studentCollection = null;
