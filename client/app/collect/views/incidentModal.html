@@ -1,16 +1,16 @@
 <div class="clearfix header">
     <button class="close" ng-click="closeForm()">Cancel</button>
-    <h4>{{behaviorModalState.title}}</h4>
+    <h4>{{title}}</h4>
     <button class="close" ng-click="submitForm()">Done</button>
 </div>
 
-<div class="behaviorSelection" ng-show="!currentIncidentEditing || !currentIncidentEditing.has('periodicRecord')">
+<div class="behaviorSelection" ng-show="formMode !== 'pointLoss'">
     <div ng-show="addingBehaviorType">
-        <form name="behavior" class="newBehaviorForm">
+        <form name="newBehaviorTypeForm" class="newBehaviorForm">
             <div class="clearfix">
                 <span class="buttonGroup">
                     <button ng-click="closeNewBehaviorType()" class="cancel">Cancel</button>
-                    <button class="main submit" ng-disabled="!behavior.$valid" ng-click="submitNewBehaviorType()">Done</button>
+                    <button class="main submit" ng-disabled="!newBehaviorTypeForm.$valid" ng-click="submitNewBehaviorType()">Done</button>
                 </span>
             </div>
             <table class="behaviors">
@@ -19,15 +19,15 @@
                     <td><input type="text" name="behaviorName" placeholder="Behavior Name" ng-model="behaviorTypeFormData.label" required/></td>
                 </tr>
                 <tr>
-                    <td ng-class="{invalid: missingBehaviorType}"><buttonset id="behaviorTypeInput" options="behaviorTypes"
-                               value="behaviorTypeFormData.selectedBehaviorType" required></buttonset></td>
+                    <td ng-class="{invalid: missingBehaviorType}"><buttonset id="behaviorTypeInput" options="behaviorTypeCategories"
+                               value="behaviorTypeFormData.selectedBehaviorTypeCategory" required></buttonset></td>
                 </tr>
                 </tbody>
             </table>
         </form>
     </div>
     <div class="behaviorsTableWrapper" ng-show="!addingBehaviorType">
-        <table class="behaviors" ng-class="{invalid: missingBehavior}">
+        <table class="behaviors" ng-class="{invalid: incidentFormData._typeMissing}">
             <tbody>
         <tr ng-repeat="studentType in behaviorTypeCollection.models"
             ng-click="setBehavior(studentType)"
@@ -37,24 +37,25 @@
             </tbody>
         </table>
     </div>
-    <button ng-click="openNewBehaviorType()" class="newCustomBehavior" ng-class="{invalid: missingBehavior}">New Behavior Type +</button>
+    <button ng-click="openNewBehaviorType()" class="newCustomBehavior" ng-class="{invalid: incidentFormData._typeMissing}">New Behavior Type +</button>
 </div>
+
 <div class="behaviorDetails">
-    <div class="instructions" ng-hide="incidentFormData.typeModel || currentIncidentEditing || currentIncidentEditing.has('periodicRecord')">
+    <div class="instructions" ng-show="!incidentFormData.typeModel && formMode !== 'pointLoss'">
         Select a behavior
     </div>
-    <form name="incident" ng-class="{dimmed: !incidentFormData.typeModel && (!currentIncidentEditing || !currentIncidentEditing.has('periodicRecord'))}">
+    <form name="incidentForm" ng-class="{dimmed: !incidentFormData.typeModel && formMode !== 'pointLoss'}">
         <div class="clearfix">
             <label>
                 <input ng-model="incidentFormData.startedAt" type="time" required/>
             </label>
             <label ng-show="incidentFormData.typeModel.get('supportsDuration')">
                 <input type="time" ng-model="incidentFormData.endedAt"
-                       ng-required="incidentFormData.typeModel.get('supportsDuration')" required/>
+                       ng-required="incidentFormData.typeModel.get('supportsDuration')" />
             </label>
         </div>
         <div>
-            <textarea placeholder="Comment" ng-model="incidentFormData.comment" ng-class="{wide: currentIncidentEditing && currentIncidentEditing.has('periodicRecord')}"></textarea>
+            <textarea placeholder="Comment" ng-model="incidentFormData.comment" ng-class="{wide: formMode === 'pointLoss'}"></textarea>
         </div>
     </form>
 </div>

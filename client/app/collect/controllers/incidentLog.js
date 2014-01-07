@@ -1,7 +1,7 @@
 // controller for the incident log
 app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, moment, mixpanel, timeTracker, dailyDataStore, behaviorTypeDataStore) {
     // various view control state values
-    $scope.editingIncidents = false;
+    $scope.isEditLogModeActive = false;
     $scope.confirmDeleteFor = null;
 
     // state object needed by modal directive
@@ -22,7 +22,7 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
     // on student changes, close the edit mode and reset the loggable collection
     $scope.$watch('viewState.selectedStudent', function(student) {
         $scope.confirmDeleteFor = null;
-        $scope.editingIncidents = false;
+        $scope.isEditLogModeActive = false;
         resetIncidentLogForStudent(student);
     });
 
@@ -50,14 +50,17 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
 
     // shows the settings modal
     $scope.showBehaviorModal = function (editIncident) {
-        var initialFormData = {};
+        // go no further if edit handler was clicked, but edit mode is inactive
+        if (editIncident && !$scope.isEditLogModeActive) {
+            return;
+        }
 
+        var initialFormData = {};
         var timeModalOpened = null;
+        var isInEditPointLossMode = editIncident && editIncident.has('periodicRecord');
 
         if (editIncident) {
             console.error('Edit incident title not in place');
-            // $scope.behaviorModalState.title = "Edit Incident";
-
             initialFormData = {
                 typeModel: editIncident.get('type'),
                 startedAt: moment(editIncident.getOccurredAt()).format("HH:mm"),
@@ -66,13 +69,11 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
             };
         } else {
             // Close editing mode if open
-            $scope.editingIncidents = false;
+            $scope.isEditLogModeActive = false;
             $scope.confirmDeleteFor = null;
 
             initialFormData.startedAt = timeTracker.getTimestampAsMoment().format("HH:mm");
             console.error('Add new incident title not in place');
-            // $scope.behaviorModalState.title = "Add New Incident";
-
             timeModalOpened = Date.now();
         }
 
@@ -85,6 +86,12 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
                 },
                 initialFormData: function() {
                     return initialFormData;
+                },
+                isPointLoss: function() {
+                    return isInEditPointLossMode;
+                },
+                title: function() {
+                    return editIncident ? "Edit Incident" : "Add New Incident";
                 }
             }
         });
@@ -100,7 +107,7 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
 
             if (editIncident) {
                 // we edit both BehaviorIncidents and PointLosses with same form
-                if (editIncident.has('periodicRecord')) {
+                if (isInEditPointLossMode) {
                     editIncident.set('startedAt', incidentFormData.startedAt);
                 }
                 else {
@@ -142,7 +149,7 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
     };
 
     $scope.editIncidents = function() {
-        $scope.editingIncidents = !$scope.editingIncidents;
+        $scope.isEditLogModeActive = !$scope.isEditLogModeActive;
         $scope.confirmDeleteFor = null;
     };
 

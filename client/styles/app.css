@@ -915,15 +915,15 @@ form {
     margin-right: 0;
 }
 
-form[name=behavior] input[type=text], input[type=textarea] {
+form[name=newBehaviorForm] input[type=text], input[type=textarea] {
     width: 207px;
 }
 
-form[name=incident] input[type=text] {
+form[name=incidentForm] input[type=text] {
     width: 380px;
 }
 
-form[name=incident].dimmed {
+form[name=incidentForm].dimmed {
     opacity: .2;
 }
 
