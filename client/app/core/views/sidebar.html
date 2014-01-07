@@ -17,12 +17,12 @@
                               ng-click="changeClassroom()">
         <span>{{viewState.selectedClassroom.get('name')}}</span>
     </li>
-    <li id="attendanceToggle" ng-class="{highlighted: editingAttendance}"
+    <li id="attendanceToggle" ng-class="{highlighted: viewState.editingAttendance}"
         ng-show="viewState.selectedClassroom"
         ng-click="toggleAttendance()">
         <span ng-show="dailyDataStore.hasDayBegun">
-            <span ng-show="editingAttendance">Done</span>
-            <span ng-show="!editingAttendance">Edit Attendance</span>
+            <span ng-show="viewState.editingAttendance">Done</span>
+            <span ng-show="!viewState.editingAttendance">Edit Attendance</span>
         </span>
     </li>
 
@@ -31,7 +31,7 @@
 <div id="studentList" ng-show="viewState.selectedClassroom"
      ng-controller="MenuStudentListCtrl">
     <ul>
-        <li ng-class="{selected: viewState.selectedStudent == student && !editingAttendance}"
+        <li ng-class="{selected: viewState.selectedStudent == student && !viewState.editingAttendance}"
             ng-repeat="student in studentCollection.models">
             <div ng-click="handleClick(student)" ng-class="{absent: isStudentAbsent(student)}">
                 {{student.get('firstName')}} {{student.get('lastName')}}

@@ -124,7 +124,7 @@
     <div id="main" ng-show="viewState.isUserAuthenticated">
         <!-- TODO: renable disabling main content on attendance editing. set up broadcast message? -->
         <div class="mainContent"
-          ng-class="{disabled: false}"
+          ng-class="{disabled: viewState.editingAttendance}"
           ng-controller="MainContentCtrl">
                 <main-tabs>
                     <h1 class="studentName"><strong>{{studentLabel}}</strong></h1>

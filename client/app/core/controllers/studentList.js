@@ -28,7 +28,7 @@ app.controller('MenuStudentListCtrl', function ($scope, mixpanel, timeTracker, d
 
     // handles click events on student list: either change student or toggle attendance
     function handleClick(student) {
-        if ($scope.editingAttendance) {
+        if ($scope.viewState.editingAttendance) {
             dailyDataStore.toggleAttendanceForStudent(student);
         } else {
             $scope.viewState.selectedStudent = student;

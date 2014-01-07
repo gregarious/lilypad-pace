@@ -2,7 +2,6 @@
 app.controller('MenuCtrl', function ($scope, $rootScope, classroomDataStore, dailyDataStore) {
     // necessary to know when to show hamburger menu
     $scope.availableClassrooms = classroomDataStore.classrooms;
-    $scope.editingAttendance = false;
 
     // hook into data store to give view access to dailyDataStore.hasDayBegun
     $scope.dailyDataStore = dailyDataStore;
@@ -25,7 +24,7 @@ app.controller('MenuCtrl', function ($scope, $rootScope, classroomDataStore, dai
         // no-op if day hasn't begun (edit attendance shouldn't be visible)
         if (dailyDataStore.hasDayBegun) {
             if ($scope.viewState.selectedClassroom) {
-                $scope.editingAttendance = !$scope.editingAttendance;
+                $scope.viewState.editingAttendance = !$scope.viewState.editingAttendance;
             }
         }
     };
