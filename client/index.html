@@ -97,8 +97,6 @@
     <!-- Run final app config & run routines after all providers are registered -->
     <script src="app/config.js"></script>
     <script src="app/run.js"></script>
-
-    <script src="devmain.js"></script>
 </head>
 
 <body>
@@ -144,30 +142,6 @@
         </div>
     </div>
 
-    <div id="main" ng-controller="devCtrl" ng-if="0">
-        <!-- in development testing code -->
-        <div><em>{{status}}</em></div>
-        <ul>
-            <li ng-repeat="classroom in classrooms">
-                <a href="" ng-click="loadClassroom(classroom)">{{classroom.get('name')}}</a>
-            </li>
-        </ul>
-        <div ng-show="classroom">
-            <h1>Classroom: {{classroom.get('name')}}</h1>
-            <div ng-show="todayRecord">
-                <ul>
-                    <li>{{todayRecord.date}}</li>
-                    <li>{{todayRecord.currentPeriod}}</li>
-                    <button ng-show="todayRecord && todayRecord.currentPeriod === null" ng-click="startDailyRecord()">Start this day</button>
-                    <button ng-show="todayRecord.currentPeriod" ng-click="loadStudentData()">Load student data</button>
-                </ul>
-            </div>
-            <h2>Students ({{students.length}})</h2>
-            <ul>
-                <li ng-repeat="student in students.models">{{student.get('firstName')}}: {{student.get('todayData').attendanceSpans.length}} / {{student.get('todayData').behaviorIncidents.length}} / {{student.get('todayData').periodicRecords.length}}</li>
-            </ul>
-        </div>
-    </div>
 
     <script>
         // For development purposes. Simply call `_injector.get('serviceName')` to get a service instance.
