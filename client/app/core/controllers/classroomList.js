@@ -1,5 +1,5 @@
 // controller for the classroom list in the left panel
-app.controller('MenuClassroomListCtrl', function ($scope, mixpanel,  classroomDataStore) {
+app.controller('MenuClassroomListCtrl', function ($scope, mixpanel, classroomDataStore) {
     $scope.statusMessage = '';
     $scope.classroomCollection = '';
 

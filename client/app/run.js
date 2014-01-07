@@ -10,6 +10,7 @@ angular.module('pace').run(function(sessionManager, $rootScope, mixpanel, behavi
     // initialize view state at app load
     $rootScope.viewState = {
         isUserAuthenticated: false,
+        editingAttendance: false,
 
         selectedStudent: null,
         selectedClassroom: null,
@@ -40,6 +41,10 @@ angular.module('pace').run(function(sessionManager, $rootScope, mixpanel, behavi
     $rootScope.grantAccess = function() {
         mixpanel.identify(sessionManager.getValue('username'));
         $rootScope.viewState.isUserAuthenticated = true;
+
+        // TODO: move this into post-authenication start up routine to give
+        //       user feedback if case this call fails
+        behaviorTypeDataStore.loadAllTypes();
     };
 
     $rootScope.revokeAccess = function() {
@@ -56,8 +61,4 @@ angular.module('pace').run(function(sessionManager, $rootScope, mixpanel, behavi
     if (didResume) {
         $rootScope.grantAccess();
     }
-
-    // TODO: move this into post-authenication start up routine to give
-    //       user feedback if case this call fails
-    behaviorTypeDataStore.loadAllTypes();
 });
