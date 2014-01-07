@@ -1,5 +1,5 @@
 // controller for the behavior log
-app.controller('MainStudentAnalyzeBehaviorLogCtrl', function ($scope, mainViewState, logEntryDataStore) {
+app.controller('AnalyzeBehaviorLogCtrl', function ($scope, logEntryDataStore) {
     $scope.data = {};
 
     $scope.showBehaviorModal = function() {
@@ -9,11 +9,7 @@ app.controller('MainStudentAnalyzeBehaviorLogCtrl', function ($scope, mainViewSt
         $scope.behaviorModalState.active = false;
     };
 
-    /** Listeners to ensure view stays in sync with mainViewState **/
-    $scope.mainViewState = mainViewState;
-    $scope.$watch('mainViewState.selectedStudent', setBehaviorLogForStudent);
-
-    setBehaviorLogForStudent($scope.mainViewState.selectedStudent);
+    $scope.$watch('viewState.selectedStudent', setBehaviorLogForStudent);
 
     /**
      * Hooks $scope.behaviorLogCollection up to the given student's data.

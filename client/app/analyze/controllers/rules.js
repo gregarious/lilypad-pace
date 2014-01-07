@@ -1,34 +1,32 @@
 // controller for rules
-app.controller('MainStudentAnalyzeRulesCtrl', function ($scope, mainViewState, rulesDataStore, timeTracker, _, moment) {
+app.controller('AnalyzeRulesCtrl', function ($scope, rulesDataStore, timeTracker, _, moment) {
     $scope.data = {};
 
-    /** Listeners to ensure view stays in sync with mainViewState **/
-    $scope.mainViewState = mainViewState;
-    $scope.$watch('mainViewState.selectedStudent', setRulesForStudent);
-
-    setRulesForStudent($scope.mainViewState.selectedStudent);
+    $scope.$watch('viewState.selectedStudent', setRulesForStudent);
 
     function setRulesForStudent(student) {
-      rulesDataStore.getDailyRulePointTotals(student).then(function(data) {
-          // filter and transform raw data (nothing being done here yet)
-          data = processRulesData(data);
+      if (student) {
+        rulesDataStore.getDailyRulePointTotals(student).then(function(data) {
+            // filter and transform raw data (nothing being done here yet)
+            data = processRulesData(data);
 
-          // configure and draw the chart
-          var chartData = {
-            categories: [
-              'Follow Directions',
-              'Complete Work',
-              'Kind Words',
-              'Be Safe'],
-            points: packageChartData(data)
-          };
-          drawVisualization(chartData);
+            // configure and draw the chart
+            var chartData = {
+              categories: [
+                'Follow Directions',
+                'Complete Work',
+                'Kind Words',
+                'Be Safe'],
+              points: packageChartData(data)
+            };
+            drawVisualization(chartData);
 
-          $scope.summaryData = createSpanSummary(data);
-        }, function(err) {
-          console.error(err); // TODO: display error state to user
-        }
-      );
+            $scope.summaryData = createSpanSummary(data);
+          }, function(err) {
+            console.error(err); // TODO: display error state to user
+          }
+        );
+      }
     }
 
     /**

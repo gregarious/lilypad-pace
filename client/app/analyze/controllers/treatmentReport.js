@@ -1,28 +1,26 @@
 // controller for rules
-app.controller('MainStudentAnalyzeTreatmentReportCtrl', function ($scope, mainViewState, rulesDataStore, timeTracker, _, moment) {
+app.controller('AnalyzeTreatmentReportCtrl', function ($scope, rulesDataStore, timeTracker, _, moment) {
     $scope.data = {};
 
-    /** Listeners to ensure view stays in sync with mainViewState **/
-    $scope.mainViewState = mainViewState;
-    $scope.$watch('mainViewState.selectedStudent', setRulesForStudent);
-
-    setRulesForStudent($scope.mainViewState.selectedStudent);
+    $scope.$watch('viewState.selectedStudent', setRulesForStudent);
 
     function setRulesForStudent(student) {
-      rulesDataStore.getDailyRulePointTotals(student).then(function(data) {
-          var chartData = {
-            categories: [
-              'Follow Directions',
-              'Complete Work',
-              'Kind Words',
-              'Be Safe'],
-            points: packageChartData(data)
-          };
-          drawVisualization(chartData);
-        }, function(err) {
-          console.error(err); // TODO: display error state to user
-        }
-      );
+      if (student) {
+        rulesDataStore.getDailyRulePointTotals(student).then(function(data) {
+            var chartData = {
+              categories: [
+                'Follow Directions',
+                'Complete Work',
+                'Kind Words',
+                'Be Safe'],
+              points: packageChartData(data)
+            };
+            drawVisualization(chartData);
+          }, function(err) {
+            console.error(err); // TODO: display error state to user
+          }
+        );
+      }
     }
 
     /**
