@@ -23,11 +23,28 @@ apipatterns = router.urls
 
 # add non-router-based API paths
 apipatterns += patterns('',
+    # classroom day record-related endpoints
     url(r'^classrooms/(?P<classroom_pk>[0-9]+)/dailyrecords/$',
         pace_views.DailyRecordCreateView.as_view()),
     url(r'^classrooms/(?P<classroom_pk>[0-9]+)/dailyrecords/(?P<date>[0-9-].+)/$',
         pace_views.DailyClassroomDigestView.as_view(),
         name="dailyrecord-detail"),
+
+    # student-specific data type lists (for use in analyze)
+    url(r'^students/(?P<student_pk>[0-9]+)/attendancespans/$',
+        pace_views.StudentAttendanceSpanListView.as_view(),
+        name="student_attendancespan-list"),
+    url(r'^students/(?P<student_pk>[0-9]+)/periodicrecords/$',
+        pace_views.StudentPeriodicRecordListView.as_view(),
+        name="student_periodicrecord-list"),
+    url(r'^students/(?P<student_pk>[0-9]+)/behaviorincidents/$',
+        pace_views.StudentBehaviorIncidentListView.as_view(),
+        name="student_behaviorincident-list"),
+    url(r'^students/(?P<student_pk>[0-9]+)/pointlosses/$',
+        pace_views.StudentPointLossListView.as_view(),
+        name="student_pointloss-list"),
+
+    # authentication url
     url(r'^authtoken/$', 'rest_framework.authtoken.views.obtain_auth_token'),
 )
 apipatterns = format_suffix_patterns(apipatterns)

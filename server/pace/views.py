@@ -249,3 +249,44 @@ class DailyClassroomDigestView(generics.RetrieveAPIView):
         if not bouncer.has_object_permission(self.request, None, record.classroom):
             raise Http404
         return record
+
+### API endpoints for data lists filtered by a student ###
+
+class StudentDataListView(generics.ListAPIView):
+    '''
+    Base ListAPIView to return all data from a given queryset where the model
+    class has a student property.
+    '''
+    def get_queryset(self):
+        student = get_object_or_404(Student.objects.all(),
+            pk=self.kwargs["student_pk"])
+        bouncer = ClassroomDataPermission()
+        if not bouncer.has_object_permission(self.request, None, student):
+            raise Http404
+
+        return self.queryset.filter(student=student)
+
+class StudentAttendanceSpanListView(StudentDataListView):
+    serializer_class = AttendanceSpanSerializer
+    queryset = AttendanceSpan.objects.all()
+
+class StudentPeriodicRecordListView(StudentDataListView):
+    serializer_class = PeriodicRecordSerializer
+    queryset = PeriodicRecord.objects.all()
+
+class StudentBehaviorIncidentListView(StudentDataListView):
+    serializer_class = BehaviorIncidentSerializer
+    queryset = BehaviorIncident.objects.all()
+
+# StudentDataListView can't be used here because `student` property
+# is below `periodic_record`
+class StudentPointLossListView(generics.ListAPIView):
+    serializer_class = PointLossSerializer
+    def get_queryset(self):
+        student = get_object_or_404(Student.objects.all(),
+            pk=self.kwargs["student_pk"])
+        bouncer = ClassroomDataPermission()
+        if not bouncer.has_object_permission(self.request, None, student):
+            raise Http404
+
+        return PointLoss.objects.filter(periodic_record__student=student)
