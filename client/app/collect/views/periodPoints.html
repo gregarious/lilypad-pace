@@ -1,21 +1,45 @@
 <div id="periodicBehaviors">
-    {{selectedPeriodRecord.get('points').bs}} <button ng-click="decrementCategory('bs')">&darr;</button>
-    {{selectedPeriodRecord.get('points').kw}} <button ng-click="decrementCategory('kw')">&darr;</button>
-    {{selectedPeriodRecord.get('points').cw}} <button ng-click="decrementCategory('cw')">&darr;</button>
-    {{selectedPeriodRecord.get('points').fd}} <button ng-click="decrementCategory('fd')">&darr;</button>
-    <!-- Disabling counter directives during development
     <div id="periodBehaviorCounters">
-        <counter class="bs" value="selectedPeriodRecord.get('points').bs" dec="true" dec-fn="decrement('bs')" max="2"
-                 min="0"
-                 text="Be Safe" id="student.get('id')"></counter>
-        <counter class="kw" value="selectedPeriodRecord.get('points').kw" dec="true" dec-fn="decrement('kw')" max="2"
-                 min="0"
-                 text="Kind Words" id="student.get('id')"></counter>
-        <counter class="cw" value="selectedPeriodRecord.get('points').cw" dec="true" dec-fn="decrement('cw')" max="2"
-                 min="0"
-                 text="Complete Work" id="student.get('id')"></counter>
-        <counter class="fd" value="selectedPeriodRecord.get('points').fd" dec="true" dec-fn="decrement('fd')" max="2"
-                 min="0"
-                 text="Follow Directions" id="student.get('id')"></counter>
-    </div> -->
+
+        <!-- animated counter widgets have been retired
+            (at least until someone has the time to fix them) -->
+
+        <div class="frequency-counter bs" ng-click="decrementCategory('bs')">
+            <div class="countWrapper">
+                <div class="count">{{selectedPeriodRecord.get('points').bs}}</div>
+            </div>
+            <div class="name">Be Safe</div>
+            <div ng-class="{arrowDisabled: selectedPeriodRecord.get('points').bs === 0}" class="arrow-container down">
+                <div class="arrow-down"></div>
+            </div>
+        </div>
+        <div class="frequency-counter kw" ng-click="decrementCategory('kw')">
+            <div class="countWrapper">
+                <div class="count">{{selectedPeriodRecord.get('points').kw}}</div>
+            </div>
+            <div class="name">Kind Words</div>
+            <div ng-class="{arrowDisabled: selectedPeriodRecord.get('points').kw === 0}" class="arrow-container down">
+                <div class="arrow-down"></div>
+            </div>
+        </div>
+        <div class="frequency-counter cw" ng-click="decrementCategory('cw')">
+            <div class="countWrapper">
+                <div class="count">{{selectedPeriodRecord.get('points').cw}}</div>
+            </div>
+            <div class="name">Complete Work</div>
+            <div ng-class="{arrowDisabled: selectedPeriodRecord.get('points').cw === 0}" class="arrow-container down">
+                <div class="arrow-down"></div>
+            </div>
+        </div>
+        <div class="frequency-counter fd" ng-click="decrementCategory('fd')">
+            <div class="countWrapper">
+                <div class="count">{{selectedPeriodRecord.get('points').fd}}</div>
+            </div>
+            <div class="name">Follow Directions</div>
+            <div ng-class="{arrowDisabled: selectedPeriodRecord.get('points').fd === 0}" class="arrow-container down">
+                <div class="arrow-down"></div>
+            </div>
+        </div>
+
+    </div>
 </div>
