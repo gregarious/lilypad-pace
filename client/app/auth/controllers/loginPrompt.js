@@ -45,32 +45,4 @@ app.controller('LoginPromptCtrl', function ($scope, $rootScope, sessionManager, 
             }
         }, 0);
     }
-
-    function initializeClassroomList() {
-        // query the server for classrooms accessible by the current user and
-        // handle async response with success/error callbacks
-        classroomDataStore.getAll().then(
-            function(classroomCollection) {
-                if (classroomCollection.length === 0) {
-                    // TODO
-                    console.log('no classrooms found for user');
-                }
-                else if (classroomCollection.length === 1) {
-                    // skip the classroom list setup and set the selected one immediately
-                    var onlyClassroom = classroomCollection.models[0];
-                    $scope.viewState.selectedClassroom = onlyClassroom;
-                }
-                else {
-                    $scope.viewState.selectedClassroom = null;
-                }
-
-                $scope.viewState.classroomCollection = classroomCollection;
-            },
-            function(err) {
-                // TODO: handle a problem getting the user's classroom list
-                console.error('error fetching classroom list');
-            }
-        );
-    }
-
 });

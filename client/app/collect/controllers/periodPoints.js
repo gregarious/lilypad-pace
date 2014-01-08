@@ -45,9 +45,8 @@ app.controller('CollectPeriodPointsCtrl', function ($scope, $rootScope, dailyDat
         $scope.isStudentAbsent = isStudentAbsent(student);
 
         if (student && periodNumber) {
-            var studentData = dailyDataStore.studentData[student.id];
-            if (studentData.periodicRecords) {
-                var selectedPeriods = studentData.periodicRecords.filter(function(pd) {
+            if ($scope.collectData.periodicRecords) {
+                var selectedPeriods = $scope.collectData.periodicRecords.filter(function(pd) {
                     return pd.get('period') === periodNumber;
                 });
                 if (selectedPeriods.length > 0) {
@@ -69,11 +68,11 @@ app.controller('CollectPeriodPointsCtrl', function ($scope, $rootScope, dailyDat
      */
     function isStudentAbsent(student) {
         // if attendance status is unknown or not applicable for today, return false immediately
-        if (!dailyDataStore.hasDayBegun || !dailyDataStore.studentData[student.id]) {
+        if (!dailyDataStore.hasDayBegun || !$scope.collectData) {
             return false;
         }
 
-        return !dailyDataStore.studentData[student.id].activeAttendanceSpan;
+        return !$scope.collectData.activeAttendanceSpan;
     }
 
 });

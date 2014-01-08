@@ -60,7 +60,6 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
         var isInEditPointLossMode = editIncident && editIncident.has('periodicRecord');
 
         if (editIncident) {
-            console.error('Edit incident title not in place');
             initialFormData = {
                 typeModel: editIncident.get('type'),
                 startedAt: moment(editIncident.getOccurredAt()).format("HH:mm"),
@@ -73,7 +72,6 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
             $scope.confirmDeleteFor = null;
 
             initialFormData.startedAt = timeTracker.getTimestampAsMoment().format("HH:mm");
-            console.error('Add new incident title not in place');
             timeModalOpened = Date.now();
         }
 
