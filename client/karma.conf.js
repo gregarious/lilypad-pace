@@ -15,19 +15,8 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
         // dependencies
-        'https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.js',
-        'https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular-mobile.js',
-        'lib/underscore.js',
-        'lib/backbone.js',
-        'lib/moment.js',
 
         // our code
-        'modules/underscore.js',
-        'modules/backbone.js',
-        'modules/moment.js',
-        'modules/widgets.js',
-        'app.js',
-        'services/**/*.js',
 
         // angular mock library for Jasmine
         'tests/angular-mocks.js',
