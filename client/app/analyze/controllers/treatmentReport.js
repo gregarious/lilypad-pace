@@ -1,12 +1,12 @@
 // controller for rules
-app.controller('AnalyzeTreatmentReportCtrl', function ($scope, rulesDataStore, timeTracker, _, moment) {
+app.controller('AnalyzeTreatmentReportCtrl', function ($scope, rulesDataSource, timeTracker, _, moment) {
     $scope.data = {};
 
     $scope.$watch('viewState.selectedStudent', setRulesForStudent);
 
     function setRulesForStudent(student) {
       if (student) {
-        rulesDataStore.getDailyRulePointTotals(student).then(function(data) {
+        rulesDataSource.getDailyRulePointTotals(student).then(function(data) {
             var chartData = {
               categories: [
                 'Follow Directions',
@@ -24,7 +24,7 @@ app.controller('AnalyzeTreatmentReportCtrl', function ($scope, rulesDataStore, t
     }
 
     /**
-     * Transforms a data array from a rulesDataStore.getDailyRulePointTotals
+     * Transforms a data array from a rulesDataSource.getDailyRulePointTotals
      * call into a format friendly for the chart API.
      *
      * If startDate is omitted, all of the date range will be included. If

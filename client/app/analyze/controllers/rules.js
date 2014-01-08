@@ -1,12 +1,12 @@
 // controller for rules
-app.controller('AnalyzeRulesCtrl', function ($scope, rulesDataStore, timeTracker, _, moment) {
+app.controller('AnalyzeRulesCtrl', function ($scope, rulesDataSource, timeTracker, _, moment) {
     $scope.data = {};
 
     $scope.$watch('viewState.selectedStudent', setRulesForStudent);
 
     function setRulesForStudent(student) {
       if (student) {
-        rulesDataStore.getDailyRulePointTotals(student).then(function(data) {
+        rulesDataSource.getDailyRulePointTotals(student).then(function(data) {
             // filter and transform raw data (nothing being done here yet)
             data = processRulesData(data);
 
@@ -30,14 +30,14 @@ app.controller('AnalyzeRulesCtrl', function ($scope, rulesDataStore, timeTracker
     }
 
     /**
-     * Responsible for transforming raw data from the rulesDataStore
+     * Responsible for transforming raw data from the rulesDataSource
      * to displayable data. Duties include:
      * - date-filtering the data
      *
      * If startDate is omitted, all of the date range will be included. If
      * endData is omitted, it defaults to today.
      *
-     * @param  {Array} totalsData        data from a `rulesDataStore.getDailyRulePointTotals` call
+     * @param  {Array} totalsData        data from a `rulesDataSource.getDailyRulePointTotals` call
      * @param  {Date/String} startDate   start date to include in range (inclusive) (optional)
      * @param  {Date/String} endDate     end date to include in range (inclusive) (optional)
      *
