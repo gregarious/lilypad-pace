@@ -837,7 +837,7 @@ td.invalid #behaviorTypeInput li {
     color: black;
 }
 
-.noData {
+.dataStatus {
     text-align: center;
     padding-top: 27px;
     height: 48px;

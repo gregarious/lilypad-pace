@@ -1,13 +1,15 @@
-<table class="log" ng-controller="AnalyzeAttendanceLogCtrl">
-    <tr>
-        <th>Date</th>
-        <th>In</th>
-        <th>Out</th>
-    </tr>
-    <tr ng-repeat="logEntry in attendanceSpanCollection.models">
-        <td>{{logEntry.get('date') | date:'EEE MMMM d'}}</td>
-        <td>{{logEntry.get('timeIn') | formatTimeString}}</td>
-        <td>{{logEntry.get('timeOut') | formatTimeString}}</td>
-    </tr>
-</table>
-<div class="noData" ng-show="attendanceSpanCollection.models.length == 0">No attendance records yet logged</div>
+<div ng-controller="AnalyzeAttendanceLogCtrl">
+    <table class="log">
+        <tr>
+            <th>Date</th>
+            <th>In</th>
+            <th>Out</th>
+        </tr>
+        <tr ng-repeat="logEntry in attendanceSpanCollection.models">
+            <td>{{logEntry.get('date') | date:'EEE MMMM d'}}</td>
+            <td>{{logEntry.get('timeIn') | formatTimeString}}</td>
+            <td>{{logEntry.get('timeOut') | formatTimeString}}</td>
+        </tr>
+    </table>
+    <div class="dataStatus" ng-show="statusMessage">{{statusMessage}}</div>
+</div>
