@@ -15,6 +15,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
             var pointsProcessor = new RulePointsProcessor(collection);
             drawVisualization(pointsProcessor.getChartData());
             $scope.summaryData = pointsProcessor.getSummaryData();
+            $scope.statusMessage = "";
           }, function(response) {
             $scope.statusMessage = "Error retrieving rules data";
           });
