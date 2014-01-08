@@ -100,8 +100,6 @@ class PeriodicRecord(models.Model):
     date = models.DateField()
     student = models.ForeignKey(Student, related_name='periodic_records')
 
-    is_eligible = models.BooleanField(default=True)
-
     # these are nullable if not eligible
     kind_words_points = models.IntegerField(null=True, blank=True)
     complete_work_points = models.IntegerField(null=True, blank=True)

@@ -249,13 +249,6 @@ angular.module('pace').service('dailyDataStore', function($http, $q, $rootScope,
         this.behaviorIncidents = new BehaviorIncidentCollection(data.behaviorIncidents,
             {parse: true});
 
-        // filter out records with falsy `isEligible`
-        // TODO: this attribute should be removed from server data model. since refactor,
-        // records should only be created if student is eligible in the given period
-        data.periodicRecords = _.filter(data.periodicRecords, function(pdRecord) {
-            return pdRecord.isEligible === true;
-        });
-
         this.periodicRecords = new PeriodicRecordCollection(data.periodicRecords,
             {parse: true});
     }

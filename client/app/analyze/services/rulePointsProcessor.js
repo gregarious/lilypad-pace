@@ -53,12 +53,6 @@ angular.module('pace').factory('RulePointsProcessor', function(timeTracker, mome
                 earliestDateString = dateString;
             }
 
-            // no points to process if student was ineligible this period
-            // TODO: remove this
-            if (!pdRecord.get('isEligible')) {
-                return;
-            }
-
             var totalsForDate = dateTotalsMap[dateString];
 
             // if running total doesn't exist for this date yet, start one

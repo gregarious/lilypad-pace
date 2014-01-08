@@ -55,7 +55,7 @@ class PeriodicRecordSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = PeriodicRecord
         fields = ('id', 'url', 'last_changed_at', 'period', 'date',
-            'student', 'is_eligible', 'kind_words_points',
+            'student', 'kind_words_points',
             'complete_work_points', 'follow_directions_points',
             'be_safe_points', 'point_losses')
 
