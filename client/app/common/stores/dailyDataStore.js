@@ -11,7 +11,6 @@ angular.module('pace').service('dailyDataStore', function($http, $q, $rootScope,
     };
     this._data = null;
 
-    this.isSynced = false;
     this.currentPeriod = null;
     this.studentData = {};
     this.hasDayBegun = false;
@@ -27,7 +26,6 @@ angular.module('pace').service('dailyDataStore', function($http, $q, $rootScope,
         this._settings.classroom = null;
         this._data = null;  // clear out data
         this.currentPeriod = null;
-        this.isSynced = false;
         this.studentData = {};
         this.hasDayBegun = false;
     };
@@ -52,19 +50,17 @@ angular.module('pace').service('dailyDataStore', function($http, $q, $rootScope,
 
         var dataStore = this;
         $http.get(url).then(function(response) {
-            dataStore.isSynced = true;
             dataStore.hasDayBegun = true;
             dataStore._processResponseData(response.data);
+            $rootScope.$broadcast('dailyDataStoreSynced', dataStore);
             fetchingData.resolve(dataStore);
         }, function(response, status) {
             if (response.status === 404) {
-                dataStore.isSynced = true;
                 dataStore.currentPeriod = null;
                 dataStore.hasDayBegun = false;
                 fetchingData.resolve(dataStore);
             }
             else {
-                dataStore.isSynced = false;
                 fetchingData.reject(response, status);
             }
         });
@@ -94,7 +90,6 @@ angular.module('pace').service('dailyDataStore', function($http, $q, $rootScope,
 
         var url = apiConfig.toAPIUrl('classrooms/' + this._settings.classroom.id + '/dailyrecords/');
 
-        this.isSynced = false;
         var postData = {
             date: this._settings.date,
             currentPeriod: 1
@@ -109,6 +104,7 @@ angular.module('pace').service('dailyDataStore', function($http, $q, $rootScope,
                 // the server.
                 dataStore.hasDayBegun = true;
                 dataStore._processResponseData(response.data);
+                $rootScope.$broadcast('dailyDataStoreSynced', dataStore);
                 initializingRecord.resolve(dataStore);
             },
             function(response) {
@@ -120,6 +116,7 @@ angular.module('pace').service('dailyDataStore', function($http, $q, $rootScope,
                     $http.get(recordUrl).then(function(response) {
                         dataStore.hasDayBegun = true;
                         dataStore._processResponseData(response.data);
+                        $rootScope.$broadcast('dailyDataStoreSynced', dataStore);
                         initializingRecord.resolve(dataStore);
                     }, function(response) {
                         // don't gracefully handle 404s this time. something is wrong server-side

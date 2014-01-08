@@ -6,8 +6,11 @@ app.controller('StudentCollectCtrl', function ($scope, dailyDataStore) {
     // various local view state properties
     $scope.statusMessage = '';
 
-    // on student changes, reset all of the collect view data
+    // on student/store changes, reset all of the collect view data
     $scope.$watch('viewState.selectedStudent', resetCollectDataForStudent);
+    $scope.$on('dailyDataStoreSynced', function() {
+        resetCollectDataForStudent($scope.viewState.selectedStudent);
+    });
 
     /** Implementation details **/
 

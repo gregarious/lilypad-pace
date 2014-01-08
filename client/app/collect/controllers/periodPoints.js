@@ -3,6 +3,10 @@ app.controller('CollectPeriodPointsCtrl', function ($scope, $rootScope, dailyDat
 
     $scope.selectedPeriodRecord = null;
 
+    // variables necessary to display eligiblity status #refactor
+    $scope.isSelectedPeriodCurrent = null;
+    $scope.isStudentAbsent = null;
+
     // watch for student or period change
     $scope.$watch('viewState.selectedStudent', function(student) {
         resetPointCounters(student, $scope.viewState.selectedPeriod);
@@ -13,8 +17,10 @@ app.controller('CollectPeriodPointsCtrl', function ($scope, $rootScope, dailyDat
 
     // also watch for attendance status to change: when this happens to
     // the selected student, a new periodic record may exist
-    $scope.$on('studentAttendanceChange', function(event, student, isNowPresent) {
-        if (student === $scope.viewState.selectedStudent && isNowPresent) {
+    $scope.$on('studentAttendanceChange', function(event, student) {
+        $scope.isStudentAbsent = isStudentAbsent(student);
+
+        if (student === $scope.viewState.selectedStudent && !$scope.isStudentAbsent) {
             resetPointCounters(
                 $scope.viewState.selectedStudent,
                 $scope.viewState.selectedPeriod);
@@ -34,6 +40,10 @@ app.controller('CollectPeriodPointsCtrl', function ($scope, $rootScope, dailyDat
 
     function resetPointCounters(student, periodNumber) {
         $scope.selectedPeriodRecord = null;
+        $scope.isSelectedPeriodCurrent = null;
+
+        $scope.isStudentAbsent = isStudentAbsent(student);
+
         if (student && periodNumber) {
             var studentData = dailyDataStore.studentData[student.id];
             if (studentData.periodicRecords) {
@@ -44,6 +54,26 @@ app.controller('CollectPeriodPointsCtrl', function ($scope, $rootScope, dailyDat
                     $scope.selectedPeriodRecord = selectedPeriods[0];
                 }
             }
+
+            $scope.isSelectedPeriodCurrent = (periodNumber === dailyDataStore.currentPeriod);
         }
     }
+
+    /**
+     * Returns true when the given student is known to be absent, false
+     * otherwise. This means it will return false if the day has not
+     * begun.
+     *
+     * @param  {Student}  student
+     * @return {Boolean}
+     */
+    function isStudentAbsent(student) {
+        // if attendance status is unknown or not applicable for today, return false immediately
+        if (!dailyDataStore.hasDayBegun || !dailyDataStore.studentData[student.id]) {
+            return false;
+        }
+
+        return !dailyDataStore.studentData[student.id].activeAttendanceSpan;
+    }
+
 });

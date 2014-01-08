@@ -1,6 +1,12 @@
 <div id="periodicBehaviors">
-    <div id="periodBehaviorCounters">
 
+    <div class="eligibilityStatus" ng-hide="true">
+        <span ng-show="isStudentAbsent && selectedPeriodRecord && isSelectedPeriodCurrent">Partially present</span>
+        <span ng-show="!selectedPeriodRecord && isSelectedPeriodCurrent">Currently absent</span>
+        <span ng-show="!selectedPeriodRecord && !isSelectedPeriodCurrent">Historically absent</span>
+    </div>
+
+    <div id="pointCounters" ng-class="{counterDisabled: !selectedPeriodRecord}">
         <!-- animated counter widgets have been retired
             (at least until someone has the time to fix them) -->
 
@@ -40,6 +46,6 @@
                 <div class="arrow-down"></div>
             </div>
         </div>
-
     </div>
+
 </div>

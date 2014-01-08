@@ -126,9 +126,8 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
                 mixpanel.track("Incident added", { 'Time Open (s)': duration }); // mixpanel tracking
 
                 // create a new BehaviorIncident
-                var studentData = dailyDataStore.studentData[$scope.viewState.selectedStudent.id];
-                if (studentData) {
-                    var newIncident = studentData.behaviorIncidents.create({
+                if ($scope.collectData) {
+                    var newIncident = $scope.collectData.behaviorIncidents.create({
                         student: $scope.viewState.selectedStudent,
                         type: incidentFormData.typeModel,
                         startedAt: incidentFormData.startedAt,
@@ -186,10 +185,9 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
         $scope.incidentLogCollection = null;
 
         if (student) {
-            var studentData = dailyDataStore.studentData[student.id];
-            if (studentData) {
+            if ($scope.collectData) {
                 var incidentModels = [];
-                incidentModels = incidentModels.concat(studentData.behaviorIncidents.models);
+                incidentModels = incidentModels.concat($scope.collectData.behaviorIncidents.models);
 
                 var collection = new LoggableCollection();
 
@@ -200,10 +198,10 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
                 });
 
                 // finally ready to all the models: point losses & behavior incidents
-                studentData.periodicRecords.each(function(record) {
+                $scope.collectData.periodicRecords.each(function(record) {
                     collection.add(record.get('pointLosses').models);
                 });
-                collection.add(studentData.behaviorIncidents.models);
+                collection.add($scope.collectData.behaviorIncidents.models);
 
                 $scope.incidentLogCollection = collection;
             }

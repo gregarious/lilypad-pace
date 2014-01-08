@@ -710,12 +710,16 @@ td.invalid #behaviorTypeInput li {
     background: #FFF;
 }
 
-#periodBehaviorCounters .frequency-counter {
+.counterDisabled {
+    opacity: .3;
+}
+
+#pointCounters .frequency-counter {
     width: 23.1%;
     margin-right: 2.5%;
 }
 
-#periodBehaviorCounters .frequency-counter:last-child {
+#pointCounters .frequency-counter:last-child {
     margin-right: 0;
 }
 
@@ -739,7 +743,7 @@ td.invalid #behaviorTypeInput li {
     font-family: aller_lightregular;
 }
 
-#periodBehaviorCounters {
+#pointCounters {
     font-size: 0;
 }
 
