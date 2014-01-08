@@ -1,5 +1,5 @@
 <div ng-controller="AnalyzeTreatmentReportCtrl">
-    <div class="treatmentReport">
+    <div class="treatmentReport" ng-show="isDataLoaded">
         <div class="divider"></div>
         <h4 class>Behaviors</h4>
         <table class="log">
@@ -155,4 +155,5 @@
             </tr>
         </table>
     </div>
+    <div class="dataStatus" ng-show="statusMessage">{{statusMessage}}</div>
 </div>

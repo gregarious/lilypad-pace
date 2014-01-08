@@ -12,7 +12,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         // TODO: blank out chart?
 
         analyzeDataSources.fetchPeriodicRecords(student).then(function(collection) {
-          var pointsProcessor = new RulePointsProcessor(collection);
+            var pointsProcessor = new RulePointsProcessor(collection);
             drawVisualization(pointsProcessor.getChartData());
             $scope.summaryData = pointsProcessor.getSummaryData();
           }, function(response) {

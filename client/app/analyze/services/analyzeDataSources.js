@@ -17,6 +17,10 @@ angular.module('pace').factory('analyzeDataSources', function($http, $q, apiConf
         }
     });
 
+    var BehaviorIncidentCollection = LoggableCollection.extend({
+        model: BehaviorIncident
+    });
+
     var PeriodicRecordCollection = Backbone.Collection.extend({
         model: PeriodicRecord,
         comparator: 'date'
@@ -65,6 +69,25 @@ angular.module('pace').factory('analyzeDataSources', function($http, $q, apiConf
                 deferred.resolve(compositeCollection);
             }, function(response) {
                 deferred.reject(responses);
+            });
+
+            return deferred.promise;
+        },
+
+        /**
+         * Returns a promise for a Collection of just BehaviorIncident
+         * objects related to the given student.
+         *
+         * @param  {Student} student
+         * @return {Promise}
+         */
+        fetchBehaviorIncidentLog: function(student) {
+            var url = apiConfig.toAPIUrl('students/' + student.id + '/behaviorincidents/');
+            var deferred = $q.defer();
+            $http.get(url).then(function(response) {
+                deferred.resolve(new BehaviorIncidentCollection(response.data));
+            }, function(response) {
+                deferred.reject(response);
             });
 
             return deferred.promise;
