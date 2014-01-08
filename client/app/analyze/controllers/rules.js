@@ -8,6 +8,8 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
     function setRulesForStudent(student) {
       if (student) {
         $scope.statusMessage = "Fetching rules data...";
+        $scope.summaryData = null;
+        // TODO: blank out chart?
 
         analyzeDataSources.fetchPeriodicRecords(student).then(function(collection) {
           var pointsProcessor = new RulePointsProcessor(collection);
@@ -18,9 +20,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
           });
       }
       else {
-        // TODO: blank out chart?
         $scope.statusMessage = "No student selected";
-        $scope.summaryData = null;
       }
     }
 
