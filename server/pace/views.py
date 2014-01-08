@@ -4,7 +4,7 @@ from pace.models import Classroom, Student, PeriodicRecord, PointLoss,     \
                         BehaviorIncidentType, BehaviorIncident, \
                         AttendanceSpan, DailyRecord
 
-from pace.serializers import ClassroomSerializer,                             \
+from pace.serializers import ClassroomSerializer, DailyRecordBaseSerializer,  \
                              DailyClassroomDigestSerializer,                  \
                              StudentSerializer, PeriodicRecordSerializer,     \
                              PointLossSerializer, BehaviorIncidentSerializer, \
@@ -208,7 +208,7 @@ class DailyRecordCreateView(APIView):
         return Response(data, status=http_status, headers=headers)
 
 
-class DailyClassroomDigestView(generics.RetrieveAPIView):
+class DailyClassroomDigestView(generics.RetrieveUpdateAPIView):
     """
     View to display a digest of information containing all classroom data
     on a given day. This includes:
@@ -222,11 +222,25 @@ class DailyClassroomDigestView(generics.RetrieveAPIView):
     URL to access the view must include classroom id and date in ISO basic
     format (YYYYMMDD).
 
-    Supports GET only.
+    Supports GET for digests, PUT to update current period only.
     """
     queryset = DailyRecord.objects.all()
     serializer_class = DailyClassroomDigestSerializer
     permission_classes = (ClassroomDataPermission,)
+
+    def get_serializer_class(self):
+        '''
+        Serialize the full daily digest for a GET, just the record stub for PATCH,
+        and disallow PUT completely.
+        '''
+        method = self.request.method.upper()
+        if method == 'PUT':
+            raise Http404
+        elif method == 'PATCH':
+            return DailyRecordBaseSerializer
+        else:
+            return DailyClassroomDigestSerializer
+
     def get_object(self):
         '''
         Override default behavior to enable lookup by classroom pk and date.

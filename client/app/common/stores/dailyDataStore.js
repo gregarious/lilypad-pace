@@ -30,6 +30,15 @@ angular.module('pace').service('dailyDataStore', function($http, $q, $rootScope,
         this.hasDayBegun = false;
     };
 
+    // more complex exposed methods: implementations below
+    this.loadDay = loadDay;
+    this.toggleAttendanceForStudent = toggleAttendanceForStudent;
+    this.startDay = startDay;
+    this.createNewPeriod = createNewPeriod;
+
+    // private methods: implementations belows
+    this._processResponseData = processResponseData;
+
     /**
      * Returns promise for server fetch. Resolves to store
      * object itself, rejects with error info.
@@ -39,7 +48,7 @@ angular.module('pace').service('dailyDataStore', function($http, $q, $rootScope,
      *
      * @return {Promise}
      */
-    this.loadDay = function() {
+    function loadDay() {
         if (!this._settings.date || !this._settings.classroom) {
             throw Exception('A date and classroom must be provided for this operation.');
         }
@@ -77,7 +86,7 @@ angular.module('pace').service('dailyDataStore', function($http, $q, $rootScope,
      *
      * @return {[type]} [description]
      */
-    this.startDay = function() {
+    function startDay(toggleAttendanceForStudent) {
         if (!this._settings.date || !this._settings.classroom) {
             throw Exception('A date and classroom must be provided for this operation.');
         }
@@ -131,49 +140,9 @@ angular.module('pace').service('dailyDataStore', function($http, $q, $rootScope,
         );
 
         return initializingRecord.promise;
-    };
+    }
 
-    this._processResponseData = function(data) {
-        var classroom = this._settings.classroom;
-
-        // first, set the current period
-        this.currentPeriod = data.currentPeriod;
-
-        // update/add any students not currently in the collection
-        classroom.set('students', data.students, {remove: false, parse: true});
-
-        // now process all the student data
-        var studentData = {};
-
-        // set up student-specific data buckets
-        var students = classroom.get('students');
-        var studentRawDataMap = {};
-        students.each(function(student) {
-            studentRawDataMap[student.id] = {
-                attendanceSpans: [],
-                behaviorIncidents: [],
-                periodicRecords: []
-            };
-        });
-
-        // filter data into buckets
-        _.each(['attendanceSpans', 'behaviorIncidents', 'periodicRecords'], function(dataType) {
-            _.each(data[dataType], function(item) {
-                var studentId = item.student;
-                studentRawDataMap[studentId][dataType].push(item);
-            });
-        });
-
-        // finally build a DailyData object for each student
-        students.each(function(student) {
-            studentData[student.id] = new DailyData(studentRawDataMap[student.id]);
-        });
-
-        this.studentData = studentData;
-        return true;
-    };
-
-    this.toggleAttendanceForStudent = function(student) {
+    function toggleAttendanceForStudent(student) {
         var studentData = this.studentData[student.id];
         if (!this.hasDayBegun || !studentData) {
             // do nothing if the day has not yet begun
@@ -217,7 +186,81 @@ angular.module('pace').service('dailyDataStore', function($http, $q, $rootScope,
 
         // broadcast the attendance change
         $rootScope.$broadcast('studentAttendanceChange', student, !!studentData.activeAttendanceSpan);
-    };
+    }
+
+    function processResponseData(data) {
+        var classroom = this._settings.classroom;
+
+        // first, set the current period
+        this.currentPeriod = data.currentPeriod;
+
+        // update/add any students not currently in the collection
+        classroom.set('students', data.students, {remove: false, parse: true});
+
+        // now process all the student data
+        var studentData = {};
+
+        // set up student-specific data buckets
+        var students = classroom.get('students');
+        var studentRawDataMap = {};
+        students.each(function(student) {
+            studentRawDataMap[student.id] = {
+                attendanceSpans: [],
+                behaviorIncidents: [],
+                periodicRecords: []
+            };
+        });
+
+        // filter data into buckets
+        _.each(['attendanceSpans', 'behaviorIncidents', 'periodicRecords'], function(dataType) {
+            _.each(data[dataType], function(item) {
+                var studentId = item.student;
+                studentRawDataMap[studentId][dataType].push(item);
+            });
+        });
+
+        // finally build a DailyData object for each student
+        students.each(function(student) {
+            studentData[student.id] = new DailyData(studentRawDataMap[student.id]);
+        });
+
+        this.studentData = studentData;
+        return true;
+    }
+
+    /**
+     * Creates a new periodic record for each present student
+     * and advances the current period counter.
+     *
+     * @param  {Number} periodNumber
+     */
+    function createNewPeriod(periodNumber) {
+        // first update the daily record on the server
+        var url = apiConfig.toAPIUrl('classrooms/' + this._settings.classroom.id +
+                             '/dailyrecords/' + this._settings.date + '/');
+
+        // TODO: error handling on failure
+        this.currentPeriod = periodNumber;
+        $http({
+            url: url,
+            method: 'PATCH',
+            data: {currentPeriod: periodNumber},
+            headers: {'Content-Type': 'application/json;charset=utf-8'}
+        });
+
+        // now create a new PeriodicRecord for all currently present students
+        var allStudentData = this.studentData;
+        this._settings.classroom.get('students').each(function(student) {
+            var studentData = allStudentData[student.id];
+            if (studentData.activeAttendanceSpan) {
+                studentData.periodicRecords.create({
+                    student: student,
+                    date: timeTracker.getDateString(),
+                    period: periodNumber
+                });
+            }
+        });
+    }
 
     // Collections used by DailyData
     var BehaviorIncidentCollection = Backbone.Collection.extend({

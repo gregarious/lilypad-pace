@@ -21,6 +21,11 @@ app.controller('TodayStatusBarCtrl', function ($scope, timeTracker, dailyDataSto
      */
     this.notifyPeriodChange = function(periodNumber) {
         $scope.viewState.selectedPeriod = periodNumber;
+        // if the period switcher goes beyond what periods the daily store
+        // knows about, tell the store to create a new period
+        if (periodNumber > dailyDataStore.currentPeriod) {
+            dailyDataStore.createNewPeriod(periodNumber);
+        }
     };
     $scope.switcher = periodSwitcher;
     $scope.switcher.delegate = this;

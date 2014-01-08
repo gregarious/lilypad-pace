@@ -79,7 +79,6 @@ angular.module('pace').factory('periodSwitcher', function($timeout) {
                     label: 'Period ' + nextPeriodNumber,
                     value: nextPeriodNumber
                 });
-                console.error('not yet supporting new period creation server-side');
                 // notify controller about period change
                 if (this.delegate) {
                     this.delegate.notifyPeriodChange(this.selectedPeriodNumber);

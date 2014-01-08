@@ -83,17 +83,19 @@ class DeepBehaviorIncidentSerializer(BehaviorIncidentSerializer):
     '''
     type = BehaviorIncidentTypeSerializer()
 
-class DailyClassroomDigestSerializer(serializers.ModelSerializer):
+class DailyRecordBaseSerializer(serializers.ModelSerializer):
     date = serializers.DateField()
     current_period = serializers.IntegerField()
+
+    class Meta:
+        model = DailyRecord
+        exclude = ('id',)
+
+class DailyClassroomDigestSerializer(DailyRecordBaseSerializer):
     students = StudentSerializer(many=True)
     periodic_records = PeriodicRecordSerializer(many=True)
     behavior_incidents = DeepBehaviorIncidentSerializer(many=True)
     attendance_spans = AttendanceSpanSerializer(many=True)
-
-    class Meta:
-        model = DailyRecord
-        exclude = ('id',)       # API doesn't use DailyRecord ids as primary keys
 
 class ReplyPostSerializer(serializers.ModelSerializer):
     # TODO: make this a true User stub when user model worked out
