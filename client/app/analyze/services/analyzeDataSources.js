@@ -53,7 +53,7 @@ angular.module('pace').factory('analyzeDataSources', function($http, $q, apiConf
             var fetchingAll = $q.all([fetchingIncidents, fetchingPointLosses]);
             var deferred = $q.defer();
             fetchingAll.then(function(responses) {
-                var incidents = new (Backbone.Collection.extend({model: BehaviorIncident}))(responses[0].data);
+                var incidents = new (Backbone.Collection.extend({model: BehaviorIncident}))(responses[0].data, {parse: true});
                 var losses = new (Backbone.Collection.extend({model: PointLoss}))(responses[1].data);
                 var compositeCollection = new LoggableCollection(incidents.models);
                 compositeCollection.add(losses.models);
