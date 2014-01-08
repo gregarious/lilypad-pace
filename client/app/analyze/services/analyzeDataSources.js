@@ -1,4 +1,4 @@
-angular.module('pace').factory('analyzeDataSources', function($http, $q, apiConfig, Backbone, AttendanceSpan, BehaviorIncident, PointLoss) {
+angular.module('pace').factory('analyzeDataSources', function($http, $q, apiConfig, Backbone, AttendanceSpan, BehaviorIncident, PointLoss, PeriodicRecord) {
     var AttendanceSpanCollection = Backbone.Collection.extend({
         model: AttendanceSpan,
         comparator: function(span) {
@@ -15,6 +15,11 @@ angular.module('pace').factory('analyzeDataSources', function($http, $q, apiConf
         comparator: function(entry) {
             return -moment(entry.getOccurredAt());
         }
+    });
+
+    var PeriodicRecordCollection = Backbone.Collection.extend({
+        model: PeriodicRecord,
+        comparator: 'date'
     });
 
     return {
@@ -60,6 +65,25 @@ angular.module('pace').factory('analyzeDataSources', function($http, $q, apiConf
                 deferred.resolve(compositeCollection);
             }, function(response) {
                 deferred.reject(responses);
+            });
+
+            return deferred.promise;
+        },
+
+        /**
+         * Returns a promise for a Collection of PeriodicRecord
+         * objects related to the given student.
+         *
+         * @param  {Student} student
+         * @return {Promise}
+         */
+        fetchPeriodicRecords: function(student) {
+            var url = apiConfig.toAPIUrl('students/' + student.id + '/periodicrecords/');
+            var deferred = $q.defer();
+            $http.get(url).then(function(response) {
+                deferred.resolve(new PeriodicRecordCollection(response.data));
+            }, function(response) {
+                deferred.reject(response);
             });
 
             return deferred.promise;
