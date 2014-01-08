@@ -4,7 +4,7 @@ app.controller('StudentAnalyzeCtrl', function ($scope) {
         // {name: 'Rules', url: 'app/analyze/views/rules.html'},
         // temporarily disabled
         // {name: 'Treatment Report', url: 'frontEnd/main/student/analyze/treatmentReport.html'},
-        // {name: 'Behavior Log', url: 'frontEnd/main/student/analyze/behaviorLog.html'},
-        // {name: 'Attendance Records', url: 'app/analyze/views/attendanceLog.html'}
+        {name: 'Behavior Log', url: 'app/analyze/views/behaviorLog.html'},
+        {name: 'Attendance Records', url: 'app/analyze/views/attendanceLog.html'}
     ];
 });

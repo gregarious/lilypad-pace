@@ -1,4 +1,4 @@
-angular.module('pace').factory('analyzeDataSources', function($http, $q, apiConfig, Backbone, AttendanceSpan) {
+angular.module('pace').factory('analyzeDataSources', function($http, $q, apiConfig, Backbone, AttendanceSpan, BehaviorIncident, PointLoss) {
     var AttendanceSpanCollection = Backbone.Collection.extend({
         model: AttendanceSpan,
         comparator: function(span) {
@@ -11,9 +11,15 @@ angular.module('pace').factory('analyzeDataSources', function($http, $q, apiConf
         }
     });
 
+    var LoggableCollection = Backbone.Collection.extend({
+        comparator: function(entry) {
+            return -moment(entry.getOccurredAt());
+        }
+    });
+
     return {
         /**
-         * Returns a promise for an array of Attendance objects
+         * Returns a promise for a Collection of Attendance objects
          * related to the given student.
          *
          * @param  {Student} student
@@ -26,6 +32,34 @@ angular.module('pace').factory('analyzeDataSources', function($http, $q, apiConf
                 deferred.resolve(new AttendanceSpanCollection(response.data));
             }, function(response) {
                 deferred.reject(response);
+            });
+
+            return deferred.promise;
+        },
+
+        /**
+         * Returns a promise for a Collection of PointLoss and BehaviorIncident
+         * objects related to the given student.
+         *
+         * @param  {Student} student
+         * @return {Promise}
+         */
+        fetchIncidentLog: function(student) {
+            var incidentUrl = apiConfig.toAPIUrl('students/' + student.id + '/behaviorincidents/');
+            var pointLossUrl = apiConfig.toAPIUrl('students/' + student.id + '/pointlosses/');
+            var fetchingIncidents = $http.get(incidentUrl);
+            var fetchingPointLosses = $http.get(pointLossUrl);
+
+            var fetchingAll = $q.all([fetchingIncidents, fetchingPointLosses]);
+            var deferred = $q.defer();
+            fetchingAll.then(function(responses) {
+                var incidents = new (Backbone.Collection.extend({model: BehaviorIncident}))(responses[0].data);
+                var losses = new (Backbone.Collection.extend({model: PointLoss}))(responses[1].data);
+                var compositeCollection = new LoggableCollection(incidents.models);
+                compositeCollection.add(losses.models);
+                deferred.resolve(compositeCollection);
+            }, function(response) {
+                deferred.reject(responses);
             });
 
             return deferred.promise;
