@@ -10,9 +10,16 @@ angular.module('pace').controller('IncidentModalCtrl', function($scope, $modalIn
     // form handles both point losses and behavior incidents
     $scope.formMode = isPointLoss ? 'pointLoss' : 'behaviorIncident';
 
+    // time/comment should be disabled if type is not yet selected
+    if (!isPointLoss && !initialFormData.typeModel) {
+        $scope.rightSideIsDisabled = true;
+    }
+    else {
+        $scope.rightSideIsDisabled = false;
+    }
+
     $scope.submitForm = function() {
         // only close modal if validator OKs the data
-        console.log('valid: ' + validateForm($scope.incidentFormData));
         if (validateForm($scope.incidentFormData)) {
             $modalInstance.close($scope.incidentFormData);
         }
@@ -25,6 +32,7 @@ angular.module('pace').controller('IncidentModalCtrl', function($scope, $modalIn
     // set the desired behavior type
     $scope.setBehavior = function(selectedType) {
         $scope.incidentFormData.typeModel = selectedType;
+        $scope.rightSideIsDisabled = false;
         $scope.incidentFormData._typeMissing = false;
     };
 

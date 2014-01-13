@@ -55,6 +55,11 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
             return;
         }
 
+        // also go no further if modal is already opened
+        if ($scope.modalInstance) {
+            return;
+        }
+
         var initialFormData = {};
         var timeModalOpened = null;
         var isInEditPointLossMode = editIncident && editIncident.has('periodicRecord');
@@ -75,7 +80,7 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
             timeModalOpened = Date.now();
         }
 
-        var modalInstance = $modal.open({
+        $scope.modalInstance = $modal.open({
             templateUrl: 'app/collect/views/incidentModal.html',
             controller: 'IncidentModalCtrl',
             resolve: {
@@ -91,11 +96,12 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
                 title: function() {
                     return editIncident ? "Edit Incident" : "Add New Incident";
                 }
-            }
+            },
+            backdrop: 'static'
         });
 
         // modal instance returns promise that is fulfilled when modal closes
-        modalInstance.result.then(function (incidentFormData) {
+        $scope.modalInstance.result.then(function (incidentFormData) {
             // combine time strings with current date
             var today = timeTracker.getTimestamp();
             incidentFormData.startedAt = replaceTime(today, incidentFormData.startedAt);
@@ -138,9 +144,9 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
                     console.error('Problem creating new behavior incident: daily data source is inconsistent');
                 }
             }
-
+            delete $scope.modalInstance;
         }, function () {
-            // nothing to do when modal is cancelled
+            delete $scope.modalInstance;
         });
 
     };

@@ -41,21 +41,22 @@
 </div>
 
 <div class="behaviorDetails">
-    <div class="instructions" ng-show="!incidentFormData.typeModel && formMode !== 'pointLoss'">
+    <div class="instructions" ng-show="rightSideIsDisabled">
         Select a behavior
     </div>
-    <form name="incidentForm" ng-class="{dimmed: !incidentFormData.typeModel && formMode !== 'pointLoss'}">
+    <form name="incidentForm" ng-class="{dimmed: rightSideIsDisabled}">
         <div class="clearfix">
             <label>
-                <input ng-model="incidentFormData.startedAt" type="time" required/>
+                <input ng-model="incidentFormData.startedAt" type="time" required ng-disabled="rightSideIsDisabled"/>
             </label>
             <label ng-show="incidentFormData.typeModel.get('supportsDuration')">
                 <input type="time" ng-model="incidentFormData.endedAt"
-                       ng-required="incidentFormData.typeModel.get('supportsDuration')" />
+                       ng-required="incidentFormData.typeModel.get('supportsDuration')"
+                       ng-disabled="rightSideIsDisabled"/>
             </label>
         </div>
         <div>
-            <textarea placeholder="Comment" ng-model="incidentFormData.comment" ng-class="{wide: formMode === 'pointLoss'}"></textarea>
+            <textarea placeholder="Comment" ng-model="incidentFormData.comment" ng-class="{wide: formMode === 'pointLoss'}" ng-disabled="rightSideIsDisabled"></textarea>
         </div>
     </form>
 </div>
