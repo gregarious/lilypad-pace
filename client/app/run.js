@@ -39,7 +39,10 @@ angular.module('pace').run(function(sessionManager, $rootScope, mixpanel, behavi
     // and in login controller, so just putting it on $rootScope.
     // Assumes that sessionManager has a `username` value defined on it.
     $rootScope.grantAccess = function() {
-        mixpanel.identify(sessionManager.getValue('username'));
+        var username = sessionManager.getValue('username');
+        mixpanel.identify(username);
+        mixpanel.people.set({ $username: username });
+
         $rootScope.viewState.isUserAuthenticated = true;
 
         // TODO: move this into post-authenication start up routine to give
