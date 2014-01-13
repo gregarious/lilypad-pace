@@ -28,6 +28,11 @@ angular.module('mixpanel', []).
                 },
                 identify: function() {
                     console.log('Mock: mixpanel.identify %o', arguments);
+                },
+                people: {
+                    set: function() {
+                        console.log('Mock: mixpanel.people.set %o', arguments);
+                    }
                 }
             };
         };
