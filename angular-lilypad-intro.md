@@ -153,6 +153,8 @@ that its a Javascript object that every controller (and every other service) has
 
 Services are pure Javascript -- they know nothing about the DOM.
 
+### Note: the rest of section is severely outdated
+
 In our codebase, we use services for 2 main purposes:
 
 ### Global state

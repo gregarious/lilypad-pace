@@ -1,0 +1,62 @@
+<div class="clearfix header">
+    <button class="close" ng-click="closeForm()">Cancel</button>
+    <h4>{{title}}</h4>
+    <button class="close" ng-click="submitForm()">Done</button>
+</div>
+
+<div class="behaviorSelection" ng-show="formMode !== 'pointLoss'">
+    <div ng-show="addingBehaviorType">
+        <form name="newBehaviorTypeForm" class="newBehaviorForm">
+            <div class="clearfix">
+                <span class="buttonGroup">
+                    <button ng-click="closeNewBehaviorType()" class="cancel">Cancel</button>
+                    <button class="main submit" ng-disabled="!newBehaviorTypeForm.$valid" ng-click="submitNewBehaviorType()">Done</button>
+                </span>
+            </div>
+            <table class="behaviors">
+                <tbody>
+                <tr>
+                    <td><input type="text" name="behaviorName" placeholder="Behavior Name" ng-model="behaviorTypeFormData.label" required/></td>
+                </tr>
+                <tr>
+                    <td ng-class="{invalid: missingBehaviorType}"><buttonset id="behaviorTypeInput" options="behaviorTypeCategories"
+                               value="behaviorTypeFormData.selectedBehaviorTypeCategory" required></buttonset></td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <div class="behaviorsTableWrapper" ng-show="!addingBehaviorType">
+        <table class="behaviors" ng-class="{invalid: incidentFormData._typeMissing}">
+            <tbody>
+        <tr ng-repeat="studentType in behaviorTypeCollection.models"
+            ng-click="setBehavior(studentType)"
+            ng-class="{selected: incidentFormData.typeModel.get('label') == studentType.get('label')}">
+                <td>{{studentType.get('label')}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <button ng-click="openNewBehaviorType()" class="newCustomBehavior" ng-class="{invalid: incidentFormData._typeMissing}">New Behavior Type +</button>
+</div>
+
+<div class="behaviorDetails">
+    <div class="instructions" ng-show="rightSideIsDisabled">
+        Select a behavior
+    </div>
+    <form name="incidentForm" ng-class="{dimmed: rightSideIsDisabled}">
+        <div class="clearfix">
+            <label>
+                <input ng-model="incidentFormData.startedAt" type="time" required ng-disabled="rightSideIsDisabled"/>
+            </label>
+            <label ng-show="incidentFormData.typeModel.get('supportsDuration')">
+                <input type="time" ng-model="incidentFormData.endedAt"
+                       ng-required="incidentFormData.typeModel.get('supportsDuration')"
+                       ng-disabled="rightSideIsDisabled"/>
+            </label>
+        </div>
+        <div>
+            <textarea placeholder="Comment" ng-model="incidentFormData.comment" ng-class="{wide: formMode === 'pointLoss'}" ng-disabled="rightSideIsDisabled"></textarea>
+        </div>
+    </form>
+</div>

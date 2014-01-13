@@ -16,7 +16,6 @@ angular.module('backbone', ['underscore']).
             Backbone.$ = {};    // Some BB extensions assume this is an Object
 
             configureBackboneRelational(Backbone);
-            patchModelParsing(Backbone);
             patchAjax(Backbone, $http, sessionManager);
 
             return Backbone;
@@ -40,56 +39,6 @@ angular.module('backbone', ['underscore']).
                 }
                 return value;
             };
-        }
-
-        /**
-         * Monkey-patch Backbone.RelationalModel.parse and Backbone.RelationalModel.toJSON to
-         * handle case conversions between client and server case conventions
-         * (snakecase on server, camelcase on client)
-         */
-        function patchModelParsing(Backbone) {
-            // case conversion code stolen from Ember.js
-            var STRING_CAMELIZE_REGEXP = (/(\-|_|\.|\s)+(.)?/g);
-            var camelize = function(str) {
-                return str.replace(STRING_CAMELIZE_REGEXP, function(match, separator, chr) {
-                    return chr ? chr.toUpperCase() : '';
-                })
-                .replace(/^([A-Z])/, function(match, separator, chr) {
-                    return match.toLowerCase();
-                });
-            };
-            var STRING_DECAMELIZE_REGEXP = (/([a-z])([A-Z])/g);
-            var decamelize = function(str) {
-                return str.replace(STRING_DECAMELIZE_REGEXP, '$1_$2').toLowerCase();
-            };
-
-            var originalToJSON = Backbone.RelationalModel.prototype.toJSON;
-            Backbone.RelationalModel = Backbone.RelationalModel.extend({
-                parse: function(response, options) {
-                    var camelResponse = {};
-                    _.each(_.pairs(response), function(kv_pair) {
-                        camelResponse[camelize(kv_pair[0])] = kv_pair[1];
-                    });
-                    return camelResponse;
-                },
-                toJSON: function() {
-                    var data = originalToJSON.apply(this, arguments);
-                    var snakeData = {};
-                    _.each(_.pairs(data), function(kv_pair) {
-                        // first serialize any sub models into stubs (don't go recursive)
-                        var value = kv_pair[1];
-                        if(value && value.id) {
-                            value = {
-                                'id': value.id,
-                            };
-                        }
-
-                        // now transform key
-                        snakeData[decamelize(kv_pair[0])] = value;
-                    });
-                    return snakeData;
-                }
-            });
         }
 
         /**
@@ -146,11 +95,12 @@ angular.module('backbone', ['underscore']).
                     url: jqSettings.url,
                     method: jqSettings.type,
                     data: jqSettings.data,
-                    headers: {'Authorization': sessionManager.getAuthToken()}
                 };
 
                 if (jqSettings.contentType) {
-                    angSettings.headers['Content-Type'] = jqSettings.contentType;
+                    angSettings.headers = {
+                        'Content-Type': jqSettings.contentType
+                    };
                 }
 
                 // return an HttpPromise object (note: this object is not the same as an XHR!)

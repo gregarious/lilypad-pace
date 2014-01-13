@@ -1,108 +1,46 @@
 from rest_framework import serializers
-from common.serializers import NamespacedHyperlinkedModelSerializer, NamespacedHyperlinkedModelSerializerWithPKWrite
 
-from pace.models import Classroom, Student,             \
-                        PeriodicRecord, PointLoss,      \
+from pace.models import Classroom, Student, DailyRecord,        \
+                        PeriodicRecord, PointLoss,              \
                         BehaviorIncidentType, BehaviorIncident, \
                         Post, ReplyPost, AttendanceSpan
 
-class ClassroomSerializer(NamespacedHyperlinkedModelSerializer):
+class StudentSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Student
+        fields = ('url', 'id', 'first_name', 'last_name',)
+
+class ClassroomSerializer(serializers.HyperlinkedModelSerializer):
+    students = StudentSerializer(many=True)
+
     class Meta:
         model = Classroom
-        fields = ('id', 'url', 'name',)
+        fields = ('id', 'url', 'name', 'students',)
 
-class AttendanceSpanSerializer(NamespacedHyperlinkedModelSerializer):
+class AttendanceSpanSerializer(serializers.HyperlinkedModelSerializer):
     student = serializers.PrimaryKeyRelatedField()
 
     class Meta:
         model = AttendanceSpan
-        fields = ('id', 'url', 'student', 'date', 'time_in', 'time_out')
+        fields = ('id', 'url', 'student', 'date', 'time_in', 'time_out',)
 
-class StudentSerializer(NamespacedHyperlinkedModelSerializer):
-    '''
-    Student serializer has a few customizations:
+def get_active_attendance_span(self, obj):
+    if self.attendance_anchor_dt:
+        date = self.attendance_anchor_dt.date()
+        time = self.attendance_anchor_dt.time()
 
-    1. Various URL fields to give shortcuts to student-specific data
-    2. A field called 'active_attendance_span' which will contain a serialized
-        AttendanceSpan object or None. This field is set by looking for an
-        AttendanceSpan for the student that is still open as of a set datetime
-        (specified in the constructor with the argument
-        `attendance_anchor_dt`).
+        spans = AttendanceSpan.objects.filter(
+            student=obj,
+            date=date,
+            time_in__lte=time,
+            time_out__isnull=True)
 
-    The code that adds this 'active_attendance_span' field is pretty hacky,
-    but it gets the job done. Might want to look into making it more robust
-    by playing nicer with the rest_framework API.
-    '''
-    periodic_records_url = serializers.HyperlinkedIdentityField(
-        view_name='pace:student_periodicrecord-list')
-    point_losses_url = serializers.HyperlinkedIdentityField(
-        view_name='pace:student_pointloss-list')
-    behavior_types_url = serializers.HyperlinkedIdentityField(
-        view_name='pace:student_behaviortype-list')
-    behavior_incidents_url = serializers.HyperlinkedIdentityField(
-        view_name='pace:student_behaviorincident-list')
-    posts_url = serializers.HyperlinkedIdentityField(
-        view_name='pace:student_post-list')
-    attendance_spans_url = serializers.HyperlinkedIdentityField(
-        view_name='pace:student_attendancespan-list')
+        if len(spans) > 0:
+            return spans[0]
 
-    class Meta:
-        model = Student
-        fields = ('url', 'id', 'first_name', 'last_name',
-            'periodic_records_url', 'point_losses_url',
-            'behavior_types_url', 'behavior_incidents_url',
-            'posts_url', 'attendance_spans_url')
+    return None
 
-    ### All of the code below is a quick and dirty way to add an
-    ### active_attendance_span field to this ModelSerializer. Definitely
-    ### a better way to do it than this, but just hacking into the
-    ### `data` object right before it's returned was the quickest way
-    ### to do it.
-
-    def __init__(self, *args, **kwargs):
-        self.attendance_anchor_dt = kwargs.pop('attendance_anchor_dt', None)
-        super(StudentSerializer, self).__init__(*args, **kwargs)
-
-    @property
-    def data(self):
-        # See notes above about this function
-        data = super(StudentSerializer, self).data
-        student = self.object
-
-        if not self.many:
-            data = [data]
-            student = [student]
-
-        for (dataset, obj) in zip(data, student):
-            active_span = self.get_active_attendance_span(obj)
-            if active_span:
-                # temporarily serializing whole span (card #130)
-                dataset['active_attendance_span'] = AttendanceSpanSerializer(active_span).data
-            else:
-                dataset['active_attendance_span'] = None
-
-        if self.many:
-            return data
-        else:
-            return data[0]
-
-    def get_active_attendance_span(self, obj):
-        if self.attendance_anchor_dt:
-            date = self.attendance_anchor_dt.date()
-            time = self.attendance_anchor_dt.time()
-
-            spans = AttendanceSpan.objects.filter(
-                student=obj,
-                date=date,
-                time_in__lte=time,
-                time_out__isnull=True)
-
-            if len(spans) > 0:
-                return spans[0]
-
-        return None
-
-class PointLossSerializer(NamespacedHyperlinkedModelSerializer):
+class PointLossSerializer(serializers.HyperlinkedModelSerializer):
     periodic_record = serializers.PrimaryKeyRelatedField()
 
     class Meta:
@@ -110,18 +48,18 @@ class PointLossSerializer(NamespacedHyperlinkedModelSerializer):
         fields = ('id', 'url', 'occurred_at', 'periodic_record',
             'point_type', 'comment')
 
-class PeriodicRecordSerializer(NamespacedHyperlinkedModelSerializer):
+class PeriodicRecordSerializer(serializers.HyperlinkedModelSerializer):
     student = serializers.PrimaryKeyRelatedField()
     point_losses = PointLossSerializer(many=True, required=False)
 
     class Meta:
         model = PeriodicRecord
         fields = ('id', 'url', 'last_changed_at', 'period', 'date',
-            'student', 'is_eligible', 'kind_words_points',
+            'student', 'kind_words_points',
             'complete_work_points', 'follow_directions_points',
             'be_safe_points', 'point_losses')
 
-class BehaviorIncidentTypeSerializer(NamespacedHyperlinkedModelSerializer):
+class BehaviorIncidentTypeSerializer(serializers.HyperlinkedModelSerializer):
     applicable_student = serializers.PrimaryKeyRelatedField(required=False)
 
     class Meta:
@@ -129,7 +67,7 @@ class BehaviorIncidentTypeSerializer(NamespacedHyperlinkedModelSerializer):
         fields = ('id', 'url', 'label', 'code', 'supports_duration',
             'applicable_student')
 
-class BehaviorIncidentSerializer(NamespacedHyperlinkedModelSerializer):
+class BehaviorIncidentSerializer(serializers.HyperlinkedModelSerializer):
     student = serializers.PrimaryKeyRelatedField()
     type = serializers.PrimaryKeyRelatedField()
 
@@ -137,6 +75,27 @@ class BehaviorIncidentSerializer(NamespacedHyperlinkedModelSerializer):
         model = BehaviorIncident
         fields = ('id', 'url', 'type', 'started_at', 'ended_at', 'comment',
             'student', 'last_modified_at')
+
+class DeepBehaviorIncidentSerializer(BehaviorIncidentSerializer):
+    '''
+    More specialized BehaviorIncidentSerializer that includes the full
+    type subresource in it.
+    '''
+    type = BehaviorIncidentTypeSerializer()
+
+class DailyRecordBaseSerializer(serializers.ModelSerializer):
+    date = serializers.DateField()
+    current_period = serializers.IntegerField()
+
+    class Meta:
+        model = DailyRecord
+        exclude = ('id',)
+
+class DailyClassroomDigestSerializer(DailyRecordBaseSerializer):
+    students = StudentSerializer(many=True)
+    periodic_records = PeriodicRecordSerializer(many=True)
+    behavior_incidents = DeepBehaviorIncidentSerializer(many=True)
+    attendance_spans = AttendanceSpanSerializer(many=True)
 
 class ReplyPostSerializer(serializers.ModelSerializer):
     # TODO: make this a true User stub when user model worked out
@@ -146,7 +105,7 @@ class ReplyPostSerializer(serializers.ModelSerializer):
         model = ReplyPost
         fields = ('author', 'content', 'created_at')
 
-class PostSerializer(NamespacedHyperlinkedModelSerializer):
+class PostSerializer(serializers.HyperlinkedModelSerializer):
     # TODO: make this a true User stub when user model worked out
     author = serializers.RelatedField()
     student = serializers.PrimaryKeyRelatedField()

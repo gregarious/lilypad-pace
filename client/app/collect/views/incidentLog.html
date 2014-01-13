@@ -1,0 +1,34 @@
+
+<div class="clearfix">
+    <div class="buttonGroup">
+        <button class="editIncident" ng-click="editIncidents()" ng-class="{ highlighted: isEditLogModeActive }">
+            <span ng-show="!isEditLogModeActive">Edit Incidents</span>
+            <span ng-show="isEditLogModeActive">Save Incidents</span>
+        </button>
+        <button class="newIncident" ng-click="showBehaviorModal()">New Incident</button>
+    </div>
+</div>
+<div id="behaviorIncidentsTable">
+    <table class="log">
+        <tr>
+            <th class="delete" ng-show="isEditLogModeActive"></th>
+            <th class="time">Time</th>
+            <th class="label">Incident</th>
+            <th class="duration">Duration</th>
+            <th class="comment">Comment</th>
+        </tr>
+        <tr ng-repeat="logEntry in incidentLogCollection.models">
+            <td class="delete" ng-show="isEditLogModeActive" ng-click="confirmDelete(logEntry)">
+                <div class="deleteCircle" ng-class="{active:(confirmDeleteFor != null) && (confirmDeleteFor === logEntry)}">-</div>
+            </td>
+            <td class="time" ng-click="showBehaviorModal(logEntry)">{{logEntry.getOccurredAt() | date: 'h:mm a'}}</td>
+            <td class="label" ng-click="showBehaviorModal(logEntry)">{{logEntry.getLabel()}}</td>
+            <td class="duration" ng-click="showBehaviorModal(logEntry)">{{logEntry.getDuration() | duration}}</td>
+            <td class="comment">
+                <span ng-click="showBehaviorModal(logEntry)">{{logEntry.getComment()}}</span>
+                <span class="deleteBtn" ng-show="(confirmDeleteFor != undefined) && (confirmDeleteFor === logEntry)" ng-click="removeIncident(logEntry)">Delete</span>
+            </td>
+        </tr>
+    </table>
+    <div class="dataStatus" ng-hide="incidentLogCollection.models.length > 0">No incidents yet logged</div>
+</div>

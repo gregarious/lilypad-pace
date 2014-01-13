@@ -1,16 +1,37 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
+from django.conf import settings
 
-class StaffProfile(models.Model):
-    user = models.OneToOneField(User)
-    classrooms = models.ManyToManyField('Classroom')
+import itertools
+
+from pytz import timezone
+from datetime import datetime, time, timedelta
 
 class Classroom(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
+    permissions_group = models.OneToOneField(Group, null=True, blank=True)
+
     def __unicode__(self):
         return self.name
+
+    @property
+    def default_permissions_group_name(self):
+        '''
+        Default name given to the related Group that grants access
+        permissions. This name will be used to automatically create a Group
+        when a new Classroom is created.
+        '''
+        return u"%s Accessors" % self.name
+
+# hook to create a new permission group after Classroom creation
+@receiver(post_save, sender=Classroom)
+def create_permissions_group_for_classroom(sender, instance, created, raw, **kwargs):
+    if created and not raw and instance.periodic_record and not instance.permissions_group:
+        group_name = instance.default_permissions_group_name
+        instance.permissions_group = Group.objects.get_or_create(name=group_name)[0]
+        instance.save()
 
 class Student(models.Model):
     first_name = models.CharField(max_length=100)
@@ -22,12 +43,62 @@ class Student(models.Model):
     def __unicode__(self):
         return u'%s %s' % (self.first_name, self.last_name)
 
+class DailyRecord(models.Model):
+    '''
+    Tracks the current status of a classroom on a given day.
+    '''
+    classroom = models.ForeignKey(Classroom)
+    date = models.DateField()
+    current_period = models.IntegerField(default=1)
+
+    def __unicode__(self):
+        return u"%s: %s" % (unicode(self.date), unicode(self.classroom))
+
+    @models.permalink
+    def get_absolute_url(self):
+        '''
+        Resource URL is identified by classroom id and date
+        '''
+        return ('dailyrecord-detail', (), {
+                    "classroom_pk": self.classroom.pk,
+                    "date": self.date.strftime('%Y-%m-%d')})
+
+    def get_fq_absolute_url(self, request):
+        '''
+        Fully qualified version of absolute url (includes protocol/domain)
+        '''
+        return request.build_absolute_uri(self.get_absolute_url())
+
+    @property
+    def students(self):
+        return self.classroom.students.all()
+
+    @property
+    def periodic_records(self):
+        record_lists = [s.periodic_records.filter(date=self.date) for s in self.students]
+        return list(itertools.chain.from_iterable(record_lists))
+
+    @property
+    def attendance_spans(self):
+        span_lists = [s.attendance_spans.filter(date=self.date) for s in self.students]
+        return list(itertools.chain.from_iterable(span_lists))
+
+    @property
+    def behavior_incidents(self):
+        ## need to only include incidents that started today
+        # hardcoding the expectation that "today" starts at the server's TIME_ZONE setting (EST)
+        default_tzinfo = timezone(settings.TIME_ZONE)
+        start_dt = datetime.combine(self.date, time.min).replace(tzinfo=default_tzinfo)
+        end_dt = start_dt + timedelta(days=1)
+        qsfilter = lambda qs: qs.filter(started_at__gte=start_dt, started_at__lt=end_dt)
+        incident_lists = [qsfilter(s.behavior_incidents) for s in self.students]
+        return list(itertools.chain.from_iterable(incident_lists))
+
+
 class PeriodicRecord(models.Model):
     period = models.IntegerField()
     date = models.DateField()
     student = models.ForeignKey(Student, related_name='periodic_records')
-
-    is_eligible = models.BooleanField(default=True)
 
     # these are nullable if not eligible
     kind_words_points = models.IntegerField(null=True, blank=True)
@@ -161,7 +232,7 @@ class ReplyPost(BasePost):
     parent_post = models.ForeignKey(Post, related_name='replies')
 
 class AttendanceSpan(models.Model):
-    student = models.ForeignKey(Student)
+    student = models.ForeignKey(Student, related_name='attendance_spans')
     date = models.DateField()
     time_in = models.TimeField(null=True, blank=True)
     time_out = models.TimeField(null=True, blank=True)
