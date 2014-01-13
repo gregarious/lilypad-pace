@@ -1,4 +1,8 @@
 app.controller('CollectPeriodPointsCtrl', function ($scope, $rootScope, dailyDataStore) {
+    /**
+     * NOTE: We are inheriting $scope.collectData from the parent controller here. #refactor
+     */
+
     /** $scope initializing  **/
 
     $scope.selectedPeriodRecord = null;
