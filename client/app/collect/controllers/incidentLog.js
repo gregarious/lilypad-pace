@@ -1,5 +1,9 @@
 // controller for the incident log
 app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, moment, mixpanel, timeTracker, dailyDataStore, behaviorTypeDataStore) {
+    /**
+     * NOTE: We are inheriting $scope.collectData from the parent controller here. #refactor
+     */
+
     // various view control state values
     $scope.isEditLogModeActive = false;
     $scope.confirmDeleteFor = null;
@@ -24,6 +28,10 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
         $scope.confirmDeleteFor = null;
         $scope.isEditLogModeActive = false;
         resetIncidentLogForStudent(student);
+    });
+
+    $scope.$watch('collectData', function() {
+        resetIncidentLogForStudent($scope.viewState.selectedStudent);
     });
 
     // listen for new point losses (from our sister controller)
