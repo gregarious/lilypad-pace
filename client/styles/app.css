@@ -367,7 +367,7 @@ tr th {
 #classroomList {
     position: absolute;
     width: 279px;
-    height: 748px;
+    height: 691px;
     z-index: 100;
     background: #F9F9F9;
     border-right: 1px solid #DBDBDB;
@@ -555,7 +555,7 @@ form .buttonGroup button {
     border: 0px;
 }
 
-.modalWrapper {
+.modal-backdrop {
     box-sizing: border-box;
     position: absolute;
     top: 0px;
@@ -635,17 +635,21 @@ form .buttonGroup button {
     margin-left: 20%;
 }
 
-#classroomToggle {
+#classroomHeading {
+    border-right: 1px solid #DBDBDB;
+    height: 44px !important;
+    line-height: 3 !important;
+    font-size: 11pt !important;
+}
+
+/* hamburger menu */
+.toggleActive {
     box-sizing: border-box;
     background-image: url(../images/menu.png);
     background-repeat: no-repeat;
     background-position: 18px center;
     background-size: 20px;
-    border-right: 1px solid #DBDBDB;
     padding-left: 55px !important;
-    height: 44px !important;
-    line-height: 3 !important;
-    font-size: 11pt !important;
 }
 
 /* Student Main Styles */
@@ -675,10 +679,10 @@ td.invalid #behaviorTypeInput li {
     /*font-size: 14px;*/
 /*}*/
 
-.periodSwitcher {
+#todayStatusBar {
     position: absolute;
     top: 0px;
-    z-index: 20000;
+    z-index: 1000;
 }
 
 #periodicBehaviors {
@@ -706,16 +710,20 @@ td.invalid #behaviorTypeInput li {
     background: #FFF;
 }
 
-#periodBehaviorCounters .frequency-counter {
+.counterDisabled {
+    opacity: .3;
+}
+
+#pointCounters .frequency-counter {
     width: 23.1%;
     margin-right: 2.5%;
 }
 
-#periodBehaviorCounters .frequency-counter:last-child {
+#pointCounters .frequency-counter:last-child {
     margin-right: 0;
 }
 
-#periodicBehaviors select {
+.periodSelect {
     float: left;
     font-size: 11pt;
     margin-bottom: 24px;
@@ -735,7 +743,7 @@ td.invalid #behaviorTypeInput li {
     font-family: aller_lightregular;
 }
 
-#periodBehaviorCounters {
+#pointCounters {
     font-size: 0;
 }
 
@@ -833,7 +841,7 @@ td.invalid #behaviorTypeInput li {
     color: black;
 }
 
-.noData {
+.dataStatus {
     text-align: center;
     padding-top: 27px;
     height: 48px;
@@ -911,15 +919,15 @@ form {
     margin-right: 0;
 }
 
-form[name=behavior] input[type=text], input[type=textarea] {
+form[name=newBehaviorForm] input[type=text], input[type=textarea] {
     width: 207px;
 }
 
-form[name=incident] input[type=text] {
+form[name=incidentForm] input[type=text] {
     width: 380px;
 }
 
-form[name=incident].dimmed {
+form[name=incidentForm].dimmed {
     opacity: .2;
 }
 
