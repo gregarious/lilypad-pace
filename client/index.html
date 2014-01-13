@@ -125,6 +125,7 @@
 
     <div id="main" ng-show="viewState.isUserAuthenticated">
         <div class="mainContent"
+          ng-show="viewState.isStudentSelected()"
           ng-class="{disabled: viewState.editingAttendance}"
           ng-controller="MainContentCtrl">
                 <main-tabs>
