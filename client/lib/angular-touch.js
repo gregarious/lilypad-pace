@@ -305,6 +305,7 @@ ngTouch.directive('ngClick', ['$parse', '$timeout', '$rootElement',
     event.preventDefault();
 
     // Blur focused form elements
+    // !!!!! greg: commented this out because it breaks our modal
     // event.target && event.target.blur();
   }
 
