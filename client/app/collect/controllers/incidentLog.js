@@ -4,24 +4,20 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
      * NOTE: We are inheriting $scope.collectData from the parent controller here. #refactor
      */
 
+    // collection of PointLoss/BehaviorIncident models displayed in log
+    $scope.incidentLogCollection = null;
+
+    // view functions exposed to UI
+    $scope.showBehaviorModal = showBehaviorModal;
+    $scope.editIncidents = editIncidents;
+    $scope.confirmDelete = confirmDelete;
+    $scope.removeIncident = removeIncident;
+
     // various view control state values
     $scope.isEditLogModeActive = false;
     $scope.confirmDeleteFor = null;
 
-    // state object needed by modal directive
-    $scope.behaviorModalState = {'active': false, 'title': "New Incident", 'timeOpen': 0};
-
-    // form-related objects shared with CollectBehaviorsModalCtrl (needed
-    //  in this scope for initiation reasons)
-    $scope.incidentFormData = {};
-
-    var LoggableCollection = Backbone.Collection.extend({
-        comparator: function(loggableModel) {
-            return -loggableModel.getOccurredAt();
-        }
-    });
-
-    $scope.incidentLogCollection = null;
+    /** Value watches **/
 
     // on student changes, close the edit mode and reset the loggable collection
     $scope.$watch('viewState.selectedStudent', function(student) {
@@ -29,12 +25,11 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
         $scope.isEditLogModeActive = false;
         resetIncidentLogForStudent(student);
     });
-
     $scope.$watch('collectData', function() {
         resetIncidentLogForStudent($scope.viewState.selectedStudent);
     });
 
-    // listen for new point losses (from our sister controller)
+    // listen for new point losses (from our sister controller) so we can add them to the displayed log
     $scope.$on('pointLossRegistered', function(event, lossRecord) {
         if (lossRecord.get('periodicRecord') && lossRecord.get('periodicRecord').get('student')) {
             var student = lossRecord.get('periodicRecord').get('student');
@@ -45,7 +40,7 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
     });
 
     // listen for new incidents (from the modal controller)
-    // TODO: would be better to listen to dailyDataStore behaviorIncident collection changes
+    // Note: would be better to listen to dailyDataStore behaviorIncident collection changes #refactor
     $scope.$on('behaviorIncidentRegistered', function(event, incident) {
         var student = incident.get('student');
         if (student === $scope.viewState.selectedStudent && $scope.incidentLogCollection) {
@@ -53,11 +48,21 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
         }
     });
 
+    /*--------------------------*/
+    /** Implementation details **/
+    /*--------------------------*/
 
-    /** View functions **/
+    // simple BB collection used for holding incident log models: sorts models
+    // by `getOccurredAt()` response
+    var LoggableCollection = Backbone.Collection.extend({
+        comparator: function(loggableModel) {
+            return -loggableModel.getOccurredAt();
+        }
+    });
+
 
     // shows the settings modal
-    $scope.showBehaviorModal = function (editIncident) {
+    function showBehaviorModal(editIncident) {
         // go no further if edit handler was clicked, but edit mode is inactive
         if (editIncident && !$scope.isEditLogModeActive) {
             return;
@@ -88,6 +93,7 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
             timeModalOpened = Date.now();
         }
 
+        // open a new modal to present the form
         $scope.modalInstance = $modal.open({
             templateUrl: 'app/collect/views/incidentModal.html',
             controller: 'IncidentModalCtrl',
@@ -108,7 +114,7 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
             backdrop: 'static'
         });
 
-        // modal instance returns promise that is fulfilled when modal closes
+        // when model closes, handle the response as follows
         $scope.modalInstance.result.then(function (incidentFormData) {
             // combine time strings with current date
             var today = timeTracker.getTimestamp();
@@ -157,14 +163,14 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
             delete $scope.modalInstance;
         });
 
-    };
+    }
 
-    $scope.editIncidents = function() {
+    function editIncidents() {
         $scope.isEditLogModeActive = !$scope.isEditLogModeActive;
         $scope.confirmDeleteFor = null;
-    };
+    }
 
-    $scope.confirmDelete = function(incident) {
+    function confirmDelete(incident) {
         if ($scope.confirmDeleteFor) {
             if ($scope.confirmDeleteFor === incident) {
                 // reset confirm delete state
@@ -174,9 +180,9 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
         }
 
         $scope.confirmDeleteFor = incident;
-    };
+    }
 
-    $scope.removeIncident = function(logEntry) {
+    function removeIncident(logEntry) {
         // if record has a periodicRecord, it's a PointLoss and needs to go
         // through its parent PeriodicRecord to be destoryed correctly
         // #refactor
@@ -187,7 +193,7 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
 
         logEntry.destroy();
         $scope.editIncidents();
-    };
+    }
 
     function resetIncidentLogForStudent(student) {
         if($scope.incidentLogCollection) {
@@ -218,15 +224,6 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
                 $scope.incidentLogCollection = collection;
             }
         }
-    }
-
-    function submitIncidentForm(formData) {
-        var today = timeTracker.getTimestamp();
-        $scope.incidentFormData.startedAt = replaceTime(today, $scope.incidentFormData.startedAt);
-        if ($scope.incidentFormData.endedAt) {
-            $scope.incidentFormData.endedAt = replaceTime(today, $scope.incidentFormData.endedAt);
-        }
-
     }
 
     function replaceTime(date, timeString) {
