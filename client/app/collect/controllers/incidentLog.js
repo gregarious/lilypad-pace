@@ -126,7 +126,7 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
             if (editIncident) {
                 // we edit both BehaviorIncidents and PointLosses with same form
                 if (isInEditPointLossMode) {
-                    editIncident.set('startedAt', incidentFormData.startedAt);
+                    editIncident.set('occurredAt', incidentFormData.startedAt);
                 }
                 else {
                     editIncident.set('type', incidentFormData.typeModel);
