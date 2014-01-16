@@ -1,0 +1,2 @@
+1/13/14 - Pushed refactor which included explicit start day behavior
+1/14/14 - Pushed change to fix PointLoss timestamp editing
