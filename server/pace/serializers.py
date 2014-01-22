@@ -12,10 +12,18 @@ class StudentSerializer(serializers.HyperlinkedModelSerializer):
 
 class ClassroomSerializer(serializers.HyperlinkedModelSerializer):
     students = StudentSerializer(many=True)
+    period_labels = serializers.SerializerMethodField('get_period_labels_as_list')
 
     class Meta:
         model = Classroom
-        fields = ('id', 'url', 'name', 'students',)
+        fields = ('id', 'url', 'name', 'students', 'period_labels')
+
+    def get_period_labels_as_list(self, obj):
+        clean_labels = obj.period_labels.strip()
+        if clean_labels == '':
+            return None
+        else:
+            return [label.strip() for label in clean_labels.split('\n')]
 
 class AttendanceSpanSerializer(serializers.HyperlinkedModelSerializer):
     student = serializers.PrimaryKeyRelatedField()
