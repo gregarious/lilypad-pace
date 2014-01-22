@@ -83,6 +83,9 @@ app.controller('TodayStatusBarCtrl', function ($scope, timeTracker, dailyDataSto
             $scope.startDayButton.text = "";
             $scope.startDayButton.action = null;
             $scope.switcher.reset(dailyDataStore.currentPeriod);
+            if (classroom.has('periodLabels')) {
+                $scope.switcher.setPeriodLabels(classroom.get('periodLabels'));
+            }
         }, function(err) {
             alert("We're sorry, but there was a problem starting a new day. Please try again. If problem persists, please contact us.");
             $scope.startDayButton.text = "Start Day";
