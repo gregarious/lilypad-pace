@@ -36,6 +36,7 @@ app.controller('TodayStatusBarCtrl', function ($scope, timeTracker, dailyDataSto
             dailyDataStore.configure(timeTracker.getDateString(), classroom);
 
             $scope.startDayButton.text = 'Loading today...';
+            $scope.switcher.setPeriodLabels([]);
 
             var fetchingRecord = dailyDataStore.loadDay(classroom);
             fetchingRecord.then(function() {
@@ -47,6 +48,9 @@ app.controller('TodayStatusBarCtrl', function ($scope, timeTracker, dailyDataSto
                     $scope.startDayButton.text = "";
                     $scope.startDayButton.action = null;
                     $scope.switcher.reset(dailyDataStore.currentPeriod);
+                    if (classroom.has('periodLabels')) {
+                        $scope.switcher.setPeriodLabels(classroom.get('periodLabels'));
+                    }
                 }
             }, function(err) {
                 alert("We're sorry, but there was a problem loading today's data. Please try again. If problem persists, please contact us.");
@@ -65,6 +69,7 @@ app.controller('TodayStatusBarCtrl', function ($scope, timeTracker, dailyDataSto
                 action: null,
             };
             $scope.switcher.reset();
+            $scope.switcher.setPeriodLabels([]);
         }
     }
 

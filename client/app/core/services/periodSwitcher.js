@@ -7,16 +7,18 @@ angular.module('pace').factory('periodSwitcher', function($timeout) {
         MAX_PERIOD: 10,
         availablePeriods: [],
         selectedPeriodNumber: null,
+        periodLabels: [],
 
         // delegate to notify TodayStatusBarCtrl of period changes
         delegate: null,
 
         // resets all values based on the given day record
         reset: function(currentPeriod) {
+            var self = this;
             if (currentPeriod) {
                 this.availablePeriods = _.map(_.range(1, currentPeriod+1), function(pdNum) {
                     return {
-                        label: 'Period ' + pdNum,
+                        label: self.getLabelForPeriod(pdNum),
                         value: pdNum
                     };
                 });
@@ -31,6 +33,24 @@ angular.module('pace').factory('periodSwitcher', function($timeout) {
             if (this.delegate) {
                 this.delegate.notifyPeriodChange(this.selectedPeriodNumber);
             }
+        },
+
+        setPeriodLabels: function(labels) {
+            this.periodLabels = labels ? labels : [];
+            // refresh the available period labels
+            _.each(this.availablePeriods, function(periodObj) {
+                periodObj.label = this.getLabelForPeriod(periodObj.value);
+            }, this);
+        },
+
+        getLabelForPeriod: function(pdNum) {
+            var label;
+            if (this.periodLabels.length >= pdNum) {
+                console.log('getting label for ' + pdNum + ': ' + this.periodLabels[pdNum-1]);
+                return this.periodLabels[pdNum-1];
+            }
+            console.log('getting default label for ' + pdNum);
+            return 'Period ' + pdNum;
         },
 
         // Moves to previous period
@@ -75,8 +95,9 @@ angular.module('pace').factory('periodSwitcher', function($timeout) {
             var nextPeriodNumber = this.selectedPeriodNumber + 1;
             if (nextPeriodNumber <= this.MAX_PERIOD) {  // sanity check
                 this.selectedPeriodNumber = nextPeriodNumber;
+
                 this.availablePeriods.push({
-                    label: 'Period ' + nextPeriodNumber,
+                    label: this.getLabelForPeriod(nextPeriodNumber),
                     value: nextPeriodNumber
                 });
                 // notify controller about period change

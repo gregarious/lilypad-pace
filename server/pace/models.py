@@ -12,6 +12,7 @@ from datetime import datetime, time, timedelta
 class Classroom(models.Model):
     name = models.CharField(max_length=200, unique=True)
     permissions_group = models.OneToOneField(Group, null=True, blank=True)
+    period_labels = models.TextField(help_text=u'Labels for each of the 10 periods, one per line')
 
     def __unicode__(self):
         return self.name
