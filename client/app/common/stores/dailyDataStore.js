@@ -284,9 +284,9 @@ angular.module('pace').service('dailyDataStore', function($http, $q, $rootScope,
 
         if (activeSpans.length > 0) {
             // BB-relational doesn't want us using new to create a model that already exists
-            var span = Backbone.AppModels.AttendanceSpan.find(activeSpans[0]);
+            this.activeAttendanceSpan = Backbone.AppModels.AttendanceSpan.find(activeSpans[0]);
             if (!span) {
-                span = new AttendanceSpan(activeSpans[0]);
+                this.activeAttendanceSpan = new AttendanceSpan(activeSpans[0]);
             }
         }
         else {
