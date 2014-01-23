@@ -727,7 +727,7 @@ td.invalid #behaviorTypeInput li {
     float: left;
     font-size: 11pt;
     margin-bottom: 24px;
-    width: 191px;
+    width: 240px;
     height: 44px;
     overflow: hidden;
     background: #FFF;
@@ -737,7 +737,7 @@ td.invalid #behaviorTypeInput li {
     border-bottom: 1px solid #DBDBDB;
     border-left: 0px;
     border-right: 0px;
-    padding-left: 30px;
+    padding-left: 16px;
     outline: none;
     color: #58585b;
     font-family: aller_lightregular;
