@@ -1,3 +1,4 @@
 1/13/14 - Pushed refactor which included explicit start day behavior
 1/14/14 - Pushed change to fix PointLoss timestamp editing
 1/23/14 - Added period labels
+1/23/14 (mid-day) - Bug fix on attendance handling
