@@ -3,6 +3,7 @@ from django.contrib.auth.models import User, Group
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 
 import itertools
 
@@ -11,8 +12,8 @@ from datetime import datetime, time, timedelta
 
 class Classroom(models.Model):
     name = models.CharField(max_length=200, unique=True)
-    permissions_group = models.OneToOneField(Group, null=True, blank=True)
-    period_labels = models.TextField(help_text=u'Labels for each of the 10 periods, one per line')
+    permissions_group = models.OneToOneField(Group, help_text=u'Will be automatically assigned on classroom creation', null=True, blank=True)
+    period_labels = models.TextField(help_text=u'Labels for each of the 10 periods, one per line', blank=True)
 
     def __unicode__(self):
         return self.name
@@ -29,7 +30,7 @@ class Classroom(models.Model):
 # hook to create a new permission group after Classroom creation
 @receiver(post_save, sender=Classroom)
 def create_permissions_group_for_classroom(sender, instance, created, raw, **kwargs):
-    if created and not raw and instance.periodic_record and not instance.permissions_group:
+    if created and not raw and not instance.permissions_group:
         group_name = instance.default_permissions_group_name
         instance.permissions_group = Group.objects.get_or_create(name=group_name)[0]
         instance.save()
@@ -185,8 +186,13 @@ def register_point_loss_with_periodic_record(sender, instance, created, raw, **k
 
 @receiver(post_delete, sender=PointLoss)
 def deregister_point_loss_with_periodic_record(sender, instance, **kwargs):
-    if instance.periodic_record:
-        instance.periodic_record.deregister_point_loss(instance)
+    try:
+        if instance.periodic_record:
+            instance.periodic_record.deregister_point_loss(instance)
+    except ObjectDoesNotExist:
+        # if this is a cascading delete of a PointLoss from a PdRecord,
+        # we'll get a DNE error here. ignore it.
+        pass
 
 
 class BehaviorIncidentType(models.Model):

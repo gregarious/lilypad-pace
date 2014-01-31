@@ -72,6 +72,7 @@ STATIC_ROOT = ''
 STATIC_URL = '/static/'
 
 # Additional locations of static files
+# add app files
 STATICFILES_DIRS = (
     os.path.join(
         os.path.dirname(PROJECT_ROOT),  # want to be in repo root
