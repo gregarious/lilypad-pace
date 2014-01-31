@@ -11,7 +11,7 @@ from datetime import datetime, time, timedelta
 
 class Classroom(models.Model):
     name = models.CharField(max_length=200, unique=True)
-    permissions_group = models.OneToOneField(Group, null=True, blank=True)
+    permissions_group = models.OneToOneField(Group, help_text=u'Will be automatically assigned on classroom creation', null=True, blank=True)
     period_labels = models.TextField(help_text=u'Labels for each of the 10 periods, one per line', blank=True)
 
     def __unicode__(self):
@@ -29,7 +29,7 @@ class Classroom(models.Model):
 # hook to create a new permission group after Classroom creation
 @receiver(post_save, sender=Classroom)
 def create_permissions_group_for_classroom(sender, instance, created, raw, **kwargs):
-    if created and not raw and instance.periodic_record and not instance.permissions_group:
+    if created and not raw and not instance.permissions_group:
         group_name = instance.default_permissions_group_name
         instance.permissions_group = Group.objects.get_or_create(name=group_name)[0]
         instance.save()
