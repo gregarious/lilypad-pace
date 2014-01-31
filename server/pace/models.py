@@ -185,8 +185,13 @@ def register_point_loss_with_periodic_record(sender, instance, created, raw, **k
 
 @receiver(post_delete, sender=PointLoss)
 def deregister_point_loss_with_periodic_record(sender, instance, **kwargs):
-    if instance.periodic_record:
-        instance.periodic_record.deregister_point_loss(instance)
+    try:
+        if instance.periodic_record:
+            instance.periodic_record.deregister_point_loss(instance)
+    except DoesNotExist:
+        # if this is a cascading delete of a PointLoss from a PdRecord,
+        # we'll get a DNE error here. ignore it.
+        pass
 
 
 class BehaviorIncidentType(models.Model):
