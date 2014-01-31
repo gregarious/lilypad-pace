@@ -3,6 +3,7 @@ from django.contrib.auth.models import User, Group
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 
 import itertools
 
@@ -188,7 +189,7 @@ def deregister_point_loss_with_periodic_record(sender, instance, **kwargs):
     try:
         if instance.periodic_record:
             instance.periodic_record.deregister_point_loss(instance)
-    except DoesNotExist:
+    except ObjectDoesNotExist:
         # if this is a cascading delete of a PointLoss from a PdRecord,
         # we'll get a DNE error here. ignore it.
         pass
