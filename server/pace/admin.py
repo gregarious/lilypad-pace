@@ -13,8 +13,13 @@ admin.site.register(PointLoss)
 admin.site.register(BehaviorIncidentType)
 admin.site.register(BehaviorIncident)
 admin.site.register(AttendanceSpan)
-admin.site.register(Classroom)
 admin.site.register(DailyRecord)
+
+class ClassroomAdmin(admin.ModelAdmin):
+    model = Classroom
+    exclude = ('permissions_group',)
+
+admin.site.register(Classroom, ClassroomAdmin)
 
 class ReplyInline(admin.TabularInline):
     model = ReplyPost
