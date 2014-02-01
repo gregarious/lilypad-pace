@@ -154,6 +154,20 @@
         </div>
     </div>
 
+    <!-- Staging server only function to erase all staging server data for the day (called in loginPrompt.html) -->
+    <script>
+        window.confirmErase = function() {
+            if (confirm('Are you sure you want to erase today\'s data on the staging server?')) {
+                // ensure the host name checks out just in case this leaks out to production.
+                if (document.location.hostname === 'pace.staging.lilypadcmu.com') {
+                    document.location = '/erase_today';
+                }
+                else {
+                    console.error('Sorry. Not pulling the trigger unless the host is `pace.staging.lilypadcmu.com`.');
+                }
+            }
+        };
+    </script>
 
     <script>
         // For development purposes. Simply call `_injector.get('serviceName')` to get a service instance.
