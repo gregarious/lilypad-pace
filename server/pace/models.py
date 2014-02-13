@@ -223,21 +223,6 @@ class BehaviorIncident(models.Model):
     def __unicode__(self):
         return '<%s@%s:%s>' % (self.type.label, self.started_at.strftime('%Y-%m-%d %H:%M:%S'), self.student)
 
-class BasePost(models.Model):
-    class Meta:
-        abstract = True
-        ordering = ('created_at',)
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(User)
-    content = models.TextField()
-
-class Post(BasePost):
-    student = models.ForeignKey(Student)
-
-class ReplyPost(BasePost):
-    parent_post = models.ForeignKey(Post, related_name='replies')
-
 class AttendanceSpan(models.Model):
     student = models.ForeignKey(Student, related_name='attendance_spans')
     date = models.DateField()
@@ -249,6 +234,7 @@ class AttendanceSpan(models.Model):
 
     def __unicode__(self):
         return "%s: %s" % (self.student, self.date.strftime('%Y-%m-%d'))
+
 
 # Token generation hook
 
