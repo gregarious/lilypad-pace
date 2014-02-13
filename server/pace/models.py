@@ -235,6 +235,15 @@ class AttendanceSpan(models.Model):
     def __unicode__(self):
         return "%s: %s" % (self.student, self.date.strftime('%Y-%m-%d'))
 
+class TreatmentPeriod(models.Model):
+    student = models.ForeignKey(Student, related_name='treatment_periods')
+    date_start = models.DateField(help_text="date period began (inclusive)")
+    date_end = models.DateField(help_text="date period ended (inclusive)")
+
+
+    def __unicode__(self):
+        return u'%s: %s - %s' % (unicode(self.student),
+            self.date_start.strftime('%Y.%m.%d'), self.date_end.strftime('%Y.%m.%d'))
 
 # Token generation hook
 

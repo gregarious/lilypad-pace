@@ -2,14 +2,15 @@ from django.shortcuts import get_object_or_404
 
 from pace.models import Classroom, Student, PeriodicRecord, PointLoss,     \
                         BehaviorIncidentType, BehaviorIncident, \
-                        AttendanceSpan, DailyRecord
+                        AttendanceSpan, DailyRecord, TreatmentPeriod
 
 from pace.serializers import ClassroomSerializer, DailyRecordBaseSerializer,  \
                              DailyClassroomDigestSerializer,                  \
                              StudentSerializer, PeriodicRecordSerializer,     \
                              PointLossSerializer, BehaviorIncidentSerializer, \
                              BehaviorIncidentTypeSerializer,                  \
-                             AttendanceSpanSerializer
+                             AttendanceSpanSerializer,                        \
+                             TreatmentPeriodSerializer
 
 from pace.permissions import ClassroomPermission, ClassroomPermissionFilter,  \
                                 ClassroomDataPermission,                      \
@@ -128,7 +129,7 @@ class AttendanceSpanViewSet(mixins.RetrieveModelMixin,
                 return Response({"detail": 'You do not have permission to perform this action.'},
                             status=status.HTTP_403_FORBIDDEN)
         except InvalidRelation:
-            return Response("Invalid periodic record identifier", status=status.HTTP_400_BAD_REQUEST)
+            return Response("Invalid student identifier", status=status.HTTP_400_BAD_REQUEST)
 
         return super(AttendanceSpanViewSet, self).create(request, *args, **kwargs)
 
@@ -155,6 +156,28 @@ class PointLossViewSet(mixins.RetrieveModelMixin,
             return Response("Invalid periodic record identifier", status=status.HTTP_400_BAD_REQUEST)
 
         return super(PointLossViewSet, self).create(request, *args, **kwargs)
+
+class TreatmentPeriodViewSet(mixins.RetrieveModelMixin,
+                              mixins.CreateModelMixin,
+                              viewsets.GenericViewSet):
+    queryset = TreatmentPeriod.objects.all()
+    serializer_class = TreatmentPeriodSerializer
+    filter_backends = (StudentDataPermissionFilter,)
+
+    def create(self, request, *args, **kwargs):
+        '''
+        Includes custom check for parent Student access before allowing POST
+        actions.
+        '''
+        try:
+            if not request_has_student_write_permissions(request):
+                return Response({"detail": 'You do not have permission to perform this action.'},
+                            status=status.HTTP_403_FORBIDDEN)
+        except InvalidRelation:
+            return Response("Invalid student identifier", status=status.HTTP_400_BAD_REQUEST)
+
+        return super(TreatmentPeriodViewSet, self).create(request, *args, **kwargs)
+
 
 ### API endpoints for DailyRecord-related data views ###
 
@@ -291,6 +314,10 @@ class StudentPeriodicRecordListView(StudentDataListView):
 class StudentBehaviorIncidentListView(StudentDataListView):
     serializer_class = BehaviorIncidentSerializer
     queryset = BehaviorIncident.objects.all()
+
+class StudentTreatmentPeriodListView(StudentDataListView):
+    serializer_class = TreatmentPeriodSerializer
+    queryset = TreatmentPeriod.objects.all()
 
 # StudentDataListView can't be used here because `student` property
 # is below `periodic_record`
