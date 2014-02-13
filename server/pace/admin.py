@@ -1,7 +1,7 @@
 from pace.models import Student, PeriodicRecord, PointLoss, \
                         BehaviorIncidentType, BehaviorIncident, \
-                        Post, ReplyPost, AttendanceSpan, Classroom, \
                         DailyRecord
+                        AttendanceSpan, Classroom, \
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
