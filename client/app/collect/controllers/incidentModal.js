@@ -1,4 +1,4 @@
-angular.module('pace').controller('IncidentModalCtrl', function($scope, $modalInstance, typeCollection, initialFormData, isPointLoss, title) {
+angular.module('pace').controller('IncidentModalCtrl', function($scope, $modalInstance, typeCollection, initialFormData, isPointLoss, title, mixpanel) {
     $scope.title = title;
     $scope.incidentFormData = initialFormData;
     $scope.behaviorTypeCollection = typeCollection;
