@@ -1,7 +1,6 @@
 from pace.models import Student, PeriodicRecord, PointLoss, \
                         BehaviorIncidentType, BehaviorIncident, \
-                        Post, ReplyPost, AttendanceSpan, Classroom, \
-                        DailyRecord
+                        DailyRecord, AttendanceSpan, Classroom
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
@@ -20,16 +19,6 @@ class ClassroomAdmin(admin.ModelAdmin):
     exclude = ('permissions_group',)
 
 admin.site.register(Classroom, ClassroomAdmin)
-
-class ReplyInline(admin.TabularInline):
-    model = ReplyPost
-
-class PostAdmin(admin.ModelAdmin):
-    inlines = [
-        ReplyInline
-    ]
-
-admin.site.register(Post, PostAdmin)
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)

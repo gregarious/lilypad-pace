@@ -3,7 +3,7 @@ from rest_framework import serializers
 from pace.models import Classroom, Student, DailyRecord,        \
                         PeriodicRecord, PointLoss,              \
                         BehaviorIncidentType, BehaviorIncident, \
-                        Post, ReplyPost, AttendanceSpan
+                        AttendanceSpan
 
 class StudentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -104,21 +104,3 @@ class DailyClassroomDigestSerializer(DailyRecordBaseSerializer):
     periodic_records = PeriodicRecordSerializer(many=True)
     behavior_incidents = DeepBehaviorIncidentSerializer(many=True)
     attendance_spans = AttendanceSpanSerializer(many=True)
-
-class ReplyPostSerializer(serializers.ModelSerializer):
-    # TODO: make this a true User stub when user model worked out
-    author = serializers.RelatedField()
-
-    class Meta:
-        model = ReplyPost
-        fields = ('author', 'content', 'created_at')
-
-class PostSerializer(serializers.HyperlinkedModelSerializer):
-    # TODO: make this a true User stub when user model worked out
-    author = serializers.RelatedField()
-    student = serializers.PrimaryKeyRelatedField()
-    replies = ReplyPostSerializer(many=True)
-
-    class Meta:
-        model = Post
-        fields = ('id', 'url', 'author', 'student', 'content', 'created_at', 'replies')
