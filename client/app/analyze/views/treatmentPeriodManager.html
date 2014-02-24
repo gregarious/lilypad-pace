@@ -1,0 +1,35 @@
+<div ng-controller="TreatmentPeriodManagerCtrl">
+
+    <div class="clearfix">
+        <div class="buttonGroup">
+            <button class="editTreatmentPeriods" ng-click="editTreatmentPeriods()" ng-class="{ highlighted: isEditPeriodsModeActive }">
+                <span ng-show="!isEditPeriodsModeActive">Edit Treatment Periods</span>
+                <span ng-show="isEditPeriodsModeActive">Save Treatment Periods</span>
+            </button>
+            <button class="newTreatmentPeriod" ng-click="showTreatmentPeriodModal()">End Current Treatment Period</button>
+        </div>
+    </div>
+
+
+    <table class="log">
+        <tr>
+            <th class="delete" ng-show="isEditPeriodsModeActive"></th>
+            <th>Treatment Period</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+        </tr>
+        <tr ng-repeat="treatmentPeriod in treatmentPeriodLogCollection.models">
+            <td class="delete" ng-show="isEditPeriodsModeActive" ng-click="confirmDelete(treatmentPeriod)">
+                <div class="deleteCircle" ng-class="{active:(confirmDeleteFor != null) && (confirmDeleteFor === treatmentPeriod)}">-</div>
+            </td>
+            <td>Treatment Period {{treatmentPeriod.attributes.id }}</td>
+            <td>{{treatmentPeriod.attributes.dateStart | date: 'M/d'}}</td>
+            <td>
+                {{treatmentPeriod.attributes.dateEnd | date: 'M/d'}}
+                <span class="deleteBtn" ng-show="(confirmDeleteFor != undefined) && (confirmDeleteFor === treatmentPeriod)" ng-click="removeTreatmentPeriod(treatmentPeriod)">Delete</span>
+            </td>
+        </tr>
+    </table>
+    <div class="dataStatus" ng-show="statusMessage">{{statusMessage}}</div>
+</div>
+
