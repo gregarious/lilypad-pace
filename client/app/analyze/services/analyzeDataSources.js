@@ -38,7 +38,7 @@ angular.module('pace').factory('analyzeDataSources', function($http, $q, apiConf
             var url = apiConfig.toAPIUrl('students/' + student.id + '/attendancespans/');
             var deferred = $q.defer();
             $http.get(url).then(function(response) {
-                deferred.resolve(new AttendanceSpanCollection(response.data));
+                deferred.resolve(new AttendanceSpanCollection(response.data, {parse: true}));
             }, function(response) {
                 deferred.reject(response);
             });
@@ -63,7 +63,7 @@ angular.module('pace').factory('analyzeDataSources', function($http, $q, apiConf
             var deferred = $q.defer();
             fetchingAll.then(function(responses) {
                 var incidents = new (Backbone.Collection.extend({model: BehaviorIncident}))(responses[0].data, {parse: true});
-                var losses = new (Backbone.Collection.extend({model: PointLoss}))(responses[1].data);
+                var losses = new (Backbone.Collection.extend({model: PointLoss}))(responses[1].data, {parse: true});
                 var compositeCollection = new LoggableCollection(incidents.models);
                 compositeCollection.add(losses.models);
                 deferred.resolve(compositeCollection);
@@ -85,7 +85,7 @@ angular.module('pace').factory('analyzeDataSources', function($http, $q, apiConf
             var url = apiConfig.toAPIUrl('students/' + student.id + '/behaviorincidents/');
             var deferred = $q.defer();
             $http.get(url).then(function(response) {
-                deferred.resolve(new BehaviorIncidentCollection(response.data));
+                deferred.resolve(new BehaviorIncidentCollection(response.data, {parse: true}));
             }, function(response) {
                 deferred.reject(response);
             });
@@ -104,7 +104,7 @@ angular.module('pace').factory('analyzeDataSources', function($http, $q, apiConf
             var url = apiConfig.toAPIUrl('students/' + student.id + '/periodicrecords/');
             var deferred = $q.defer();
             $http.get(url).then(function(response) {
-                deferred.resolve(new PeriodicRecordCollection(response.data));
+                deferred.resolve(new PeriodicRecordCollection(response.data, {parse: true}));
             }, function(response) {
                 deferred.reject(response);
             });
