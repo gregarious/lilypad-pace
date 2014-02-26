@@ -73,22 +73,18 @@ angular.module('pace').factory('RulePointsProcessor', function(timeTracker, mome
         var totalsData = [];
 
         // cycle through all dates from the first one available to today
-        // and if available, extract values from the mapping for the given
-        // date, or if not, create a blank entry for the given day
+        // in chronological order, and add data from the given day if
+        // available. if no data is available, no entry is created
         if (earliestDateString) {
             var currentDate = moment(earliestDateString);
             var now = timeTracker.getTimestampAsMoment();
+
             while(currentDate <= now) {
                 var currentDateString = currentDate.format('YYYY-MM-DD');
                 var existingTotals = dateTotalsMap[currentDateString];
 
                 if (existingTotals) {
-                    // if totals exist for the given day, simply use them
                     totalsData.push(existingTotals);
-                }
-                else {
-                    // otherwise, create a
-                    totalsData.push(createTotalsEntry(currentDateString));
                 }
 
                 currentDate.add('days', 1);
