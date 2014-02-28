@@ -307,18 +307,34 @@ tr th {
 }
 
 .bs {
-    background-color: #db6464;
+    color: #db6464;
 }
 
 .kw {
-    background-color: #f5906c;
+    color: #f5906c;
 }
 
 .cw {
-    background-color: #648ec9;
+    color: #648ec9;
 }
 
 .fd {
+    color: #8a6aad;
+}
+
+.bs-bg {
+    background-color: #db6464;
+}
+
+.kw-bg {
+    background-color: #f5906c;
+}
+
+.cw-bg {
+    background-color: #648ec9;
+}
+
+.fd-bg {
     background-color: #8a6aad;
 }
 
