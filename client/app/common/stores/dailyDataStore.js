@@ -86,7 +86,7 @@ angular.module('pace').service('dailyDataStore', function($http, $q, $rootScope,
      *
      * @return {[type]} [description]
      */
-    function startDay(toggleAttendanceForStudent) {
+    function startDay() {
         if (!this._settings.date || !this._settings.classroom) {
             throw Exception('A date and classroom must be provided for this operation.');
         }
@@ -169,11 +169,12 @@ angular.module('pace').service('dailyDataStore', function($http, $q, $rootScope,
             studentData.activeAttendanceSpan = activeSpan;
 
             // create a periodic record client-side
-            var existingRecords = studentData.periodicRecords.filter(function(record) {
-                return record.period === this.currentPeriod;
-            });
 
             // if no records exist for the current period yet, create one
+            var currentPeriod = this.currentPeriod;
+            var existingRecords = studentData.periodicRecords.filter(function(record) {
+                return record.get('period') === currentPeriod;
+            });
             if (existingRecords.length === 0) {
                 // PeriodicRecord model handles default point values
                 studentData.periodicRecords.create({
