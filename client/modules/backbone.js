@@ -91,8 +91,15 @@ angular.module('backbone', ['underscore']).
                     throw new Error('Unexpected Backbone.ajax option value. `processData` must be false');
                 }
 
+                // force urls to end in slashes (important to avoid 301 redirects: Safari
+                // won't pass the auth header on a redirect)
+                var url = jqSettings.url;
+                if (url.length && url[url.length-1] !== '/') {
+                    url += '/';
+                }
+
                 var angSettings = {
-                    url: jqSettings.url,
+                    url: url,
                     method: jqSettings.type,
                     data: jqSettings.data,
                 };
