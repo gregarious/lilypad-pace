@@ -203,17 +203,17 @@ tr th {
     outline: 0px;
 }
 
-.newIncident {
+.newIncident, .newTreatmentPeriod {
     float: right;
     outline: 0px;
 }
 
-.editIncident {
+.editIncident, .editTreatmentPeriods {
     float: left;
     outline: 0px;
 }
 
-.editIncident.highlighted {
+.editIncident.highlighted, .editTreatmentPeriods.highlighted {
     background-color: #8C8C8C;
     color: #FFF;
 }
@@ -469,6 +469,18 @@ form .buttonGroup {
 
 form .buttonGroup button {
     margin-right: 0.25em;
+}
+
+.modal .periodEndText {
+    width: 100%;
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.modal .periodDatePicker {
+    width: 100%;
+    text-align: center;
 }
 
 .modal table.behaviors {
@@ -786,12 +798,12 @@ td.invalid #behaviorTypeInput li {
     position: relative;
 }
 
-#behaviorIncidentsTable .delete {
+.delete {
     width: 8%;
     text-align: center;
 }
 
-#behaviorIncidentsTable .deleteCircle {
+.deleteCircle {
     width: 18px;
     height: 18px;
     border-radius: 20px;
@@ -802,12 +814,12 @@ td.invalid #behaviorTypeInput li {
     -webkit-transition: all .2s;
 }
 
-#behaviorIncidentsTable .deleteCircle.active {
+.deleteCircle.active {
     -webkit-transform: rotate(90deg);
     background-color: #DC6564;
 }
 
-#behaviorIncidentsTable .deleteBtn {
+.deleteBtn {
     position: absolute;
     right: 12px;
     width: 72px;
@@ -952,7 +964,7 @@ form[name=analyze] {
     margin-top: -20px;
 }
 
-form[name=analyze] select {
+form[name=analyze] > select {
     position: absolute;
     bottom: 0;
     margin-bottom: 0;
@@ -964,6 +976,11 @@ form[name=analyze] span {
 
 form[name=analyze] span span:last-child {
     margin-right: 3em;
+}
+
+.treatmentPeriodPicker select{
+    position: relative;
+    top: 12px;
 }
 
 #nostudent{

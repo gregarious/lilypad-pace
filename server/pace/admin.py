@@ -1,6 +1,7 @@
 from pace.models import Student, PeriodicRecord, PointLoss, \
                         BehaviorIncidentType, BehaviorIncident, \
-                        DailyRecord, AttendanceSpan, Classroom
+                        AttendanceSpan, Classroom, \
+                        DailyRecord, TreatmentPeriod
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
@@ -13,6 +14,7 @@ admin.site.register(BehaviorIncidentType)
 admin.site.register(BehaviorIncident)
 admin.site.register(AttendanceSpan)
 admin.site.register(DailyRecord)
+admin.site.register(TreatmentPeriod)
 
 class ClassroomAdmin(admin.ModelAdmin):
     model = Classroom
