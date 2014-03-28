@@ -133,15 +133,20 @@
           ng-controller="MainContentCtrl">
                 <main-tabs>
                     <h1 class="studentName"><strong>{{studentLabel}}</strong></h1>
-                    <main-pane title="Collect">
-                        <div id="todayStatusBar" class="clearfix"
-                             ng-controller="TodayStatusBarCtrl"
-                             ng-include="'app/core/views/todayStatus.html'">
-                        </div>
-                        <div ng-controller="StudentCollectCtrl">
-                            <div ng-include="'app/collect/views/studentCollect.html'"></div>
-                        </div>
-                    </main-pane>
+                        <main-pane title="Collect">
+                            <div id="todayStatusBar" class="clearfix"
+                                 ng-show="viewState.userHasCollectAccess"
+                                 ng-controller="TodayStatusBarCtrl"
+                                 ng-include="'app/core/views/todayStatus.html'">
+                            </div>
+                            <div ng-controller="StudentCollectCtrl"
+                                 ng-show="viewState.userHasCollectAccess">
+                                <div ng-include="'app/collect/views/studentCollect.html'"></div>
+                            </div>
+                            <div ng-hide="viewState.userHasCollectAccess">
+                                Only classroom users are able to collect data.
+                            </div>
+                        </main-pane>
                     <main-pane title="Analyze">
                         <div ng-controller="StudentAnalyzeCtrl">
                             <div ng-include="'app/analyze/views/analyze.html'"></div>

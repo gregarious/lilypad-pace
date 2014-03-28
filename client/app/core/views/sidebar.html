@@ -18,7 +18,7 @@
         <span>{{viewState.selectedClassroom.get('name')}}</span>
     </li>
     <li id="attendanceToggle" ng-class="{highlighted: viewState.editingAttendance}"
-        ng-show="viewState.selectedClassroom"
+        ng-show="viewState.selectedClassroom && viewState.userHasCollectAccess"
         ng-click="toggleAttendance()">
         <span ng-show="dailyDataStore.hasDayBegun">
             <span ng-show="viewState.editingAttendance">Done</span>
