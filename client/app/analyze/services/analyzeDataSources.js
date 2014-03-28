@@ -1,4 +1,4 @@
-angular.module('pace').factory('analyzeDataSources', function($http, $q, apiConfig, Backbone, AttendanceSpan, BehaviorIncident, PointLoss, PeriodicRecord) {
+angular.module('pace').factory('analyzeDataSources', function($http, $q, apiConfig, Backbone, AttendanceSpan, BehaviorIncident, PointLoss, PeriodicRecord, TreatmentPeriod) {
     var AttendanceSpanCollection = Backbone.Collection.extend({
         model: AttendanceSpan,
         comparator: function(span) {
@@ -24,6 +24,18 @@ angular.module('pace').factory('analyzeDataSources', function($http, $q, apiConf
     var PeriodicRecordCollection = Backbone.Collection.extend({
         model: PeriodicRecord,
         comparator: 'date'
+    });
+
+    var StudentTreatmentPeriodCollection = Backbone.Collection.extend({
+        model: TreatmentPeriod,
+        comparator: 'date_start',
+        initialize: function(models, options) {
+            this.student = options.student;
+        },
+        create: function(attributes) {
+            attributes.student = this.student;
+            Backbone.Collection.prototype.create.call(this, attributes);
+        }
     });
 
     return {
@@ -105,6 +117,18 @@ angular.module('pace').factory('analyzeDataSources', function($http, $q, apiConf
             var deferred = $q.defer();
             $http.get(url).then(function(response) {
                 deferred.resolve(new PeriodicRecordCollection(response.data, {parse: true}));
+            }, function(response) {
+                deferred.reject(response);
+            });
+
+            return deferred.promise;
+        },
+
+        fetchTreatmentPeriods: function(student) {
+            var url = apiConfig.toAPIUrl('students/' + student.id + '/treatmentperiods/');
+            var deferred = $q.defer();
+            $http.get(url).then(function(response) {
+                deferred.resolve(new StudentTreatmentPeriodCollection(response.data, {student: student}));
             }, function(response) {
                 deferred.reject(response);
             });

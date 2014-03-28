@@ -1,0 +1,13 @@
+<div class="clearfix header">
+    <button class="close" ng-click="closeForm()">Cancel</button>
+    <h4 style="margin-left: 85px">{{title}}</h4>
+    <button class="close" ng-click="submitForm()">Done</button>
+</div>
+
+<div class="periodEndText">Ending Treatment Period {{formData.num}}</div>
+
+<div class="periodDatePicker">
+    <form name="treatmentPeriodForm">
+        <input ng-model="formData.endedAt" type="date" required />
+    </form>
+</div>

@@ -1,11 +1,32 @@
 <form name="analyze" class="clearfix">
     <select ng-init="analyzeView = views[0]" ng-model="analyzeView" ng-options="v.name for v in views"></select>
-    <span ng-hide="analyzeView == 'treatmentPeriods'">
-        Displaying all data (date-filtering coming soon)
-        <!--
-        <span><label><p>End date</p><input type="date"/></label></span>
-        <span><label><p>Start date</p><input type="date"/></label></span>
-        -->
+
+    <span ng-hide="analyzeView != views[0]" class="treatmentPeriodPicker">
+
+        <span><label>
+          <p>Duration</p>
+          <select ng-model="duration">
+            <option ng-show="startTX"
+              ng-repeat = "i in range(treatmentPeriods.length - startTX + 1) track by $index"
+              ng-value = "$index + 1" >
+              {{$index + 1}} TX
+            </option>
+          </select>
+          <br>
+
+        </label></span>
+
+        <span><label>
+          <p>Start TX</p>
+          <select ng-model="startTX" value="1">
+            <option
+              ng-repeat = "treatmentPeriod in treatmentPeriods.models"
+              ng-value = "$index + 1" >
+              {{treatmentPeriod.attributes.dateStart | date: 'M/d'}}
+            </option>
+          </select>
+        </label></span>
+
     </span>
 </form>
 <div class="divider clear"></div>
