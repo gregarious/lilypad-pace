@@ -964,7 +964,7 @@ form[name=analyze] {
     margin-top: -20px;
 }
 
-form[name=analyze] select {
+form[name=analyze] > select {
     position: absolute;
     bottom: 0;
     margin-bottom: 0;
@@ -976,6 +976,11 @@ form[name=analyze] span {
 
 form[name=analyze] span span:last-child {
     margin-right: 3em;
+}
+
+.treatmentPeriodPicker select{
+    position: relative;
+    top: 12px;
 }
 
 #nostudent{
