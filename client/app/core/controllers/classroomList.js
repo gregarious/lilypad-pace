@@ -22,6 +22,13 @@ app.controller('MenuClassroomListCtrl', function ($scope, mixpanel, classroomDat
                 $scope.classroomCollection = classroomCollection;
                 $scope.viewState.selectedClassroom = null;
 
+                if (classroomCollection.length > 1) {
+                    $scope.viewState.userHasCollectAccess = false;
+                }
+                else {
+                    $scope.viewState.userHasCollectAccess = true;
+                }
+
                 if (classroomCollection.length === 0) {
                     $scope.statusMessage = "No classrooms found for user";
                 }
