@@ -33,6 +33,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
       else {
         $scope.statusMessage = "No student selected";
       }
+      mixpanel.track("Viewing Rules");
     }
 
     function updateVisualization(){
@@ -52,6 +53,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         // from startTX <select> and duration <select>
         var startIndex = Number($scope.startTX) - 1;
         var endIndex = Number($scope.startTX) + Number($scope.duration) - 2;
+        var durationTX = Number($scope.duration)
         if (endIndex >= periods.length){
           endIndex = periods.length - 1;
         }
@@ -69,6 +71,11 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         filteredCollection.models = _.filter(filteredCollection.models, withinRange);
         filteredCollection.length = filteredCollection.models.length;
         drawChartFrom(filteredCollection);
+        mixpanel.track( "Updated Visualization", {
+          "TXs": durationTX,
+          "Viz start": dateStart,
+          "Viz end": dateEnd
+        });
       }
     }
 

@@ -4,6 +4,7 @@ app.controller('TreatmentPeriodManagerCtrl', function ($scope, $modal, analyzeDa
 
     // collection of Treatment Period models displayed in log
     $scope.treatmentPeriodLogCollection = null;
+    mixpanel.track("Viewing Treatment Period Manager");
 
     // view functions exposed to UI
     $scope.showTreatmentPeriodModal = showTreatmentPeriodModal;
@@ -112,6 +113,7 @@ app.controller('TreatmentPeriodManagerCtrl', function ($scope, $modal, analyzeDa
 
     function removeTreatmentPeriod(treatmentPeriod) {
         treatmentPeriod.destroy();
+        mixpanel.track("Deleted a treatment period");
         $scope.editTreatmentPeriods();
     }
 

@@ -12,6 +12,7 @@ app.controller('AnalyzeAttendanceLogCtrl', function ($scope, analyzeDataSources)
         $scope.attendanceSpanCollection = null;
         if (student) {
             $scope.statusMessage = "Fetching attendance logs...";
+            mixpanel.track("Viewing Attendance Records");
             analyzeDataSources.fetchAttendanceLog(student).then(function(spans) {
                 $scope.attendanceSpanCollection = spans;
                 $scope.statusMessage = spans.length === 0 ?
