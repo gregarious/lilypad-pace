@@ -33,7 +33,6 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
       else {
         $scope.statusMessage = "No student selected";
       }
-      mixpanel.track("Viewing Rules");
     }
 
     function updateVisualization(){
