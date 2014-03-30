@@ -1,5 +1,5 @@
 // controller for rules
-app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePointsProcessor, moment, _) {
+app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePointsProcessor, moment, _, $timeout) {
     $scope.statusMessage = '';
     $scope.summaryData = null;
     $scope.records = null;
@@ -11,6 +11,9 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
 
     function setRulesForStudent(student) {
       if (student) {
+        // Fix data digest bug
+        $timeout(updateVisualization, 3000);
+
         $scope.statusMessage = "Fetching rules data...";
         $scope.summaryData = null;
         $scope.records = null;
@@ -35,6 +38,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
     }
 
     function updateVisualization() {
+      console.log('startTX: ' + $scope.startTX);
       // Ensure we have access to our set of points and the set of treatment periods
       if (!$scope.records || !$scope.txPeriods){
         return;
@@ -49,7 +53,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         // by calculating the index in the treatment period array
         // from startTX <select> and duration <select>
         var startIndex = Number($scope.startTX) - Number($scope.duration);
-        var endIndex = Number($scope.startTX) - 2;
+        var endIndex = Number($scope.startTX) - 1;
         if (endIndex >= periods.length){
           endIndex = periods.length - 1;
         }
