@@ -9,7 +9,6 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
     $scope.$watch('startTX', updateVisualization);
     $scope.$watch('duration', updateVisualization);
 
-
     function setRulesForStudent(student) {
       if (student) {
         $scope.statusMessage = "Fetching rules data...";
@@ -35,8 +34,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
       }
     }
 
-    function updateVisualization(){
-
+    function updateVisualization() {
       // Ensure we have access to our set of points and the set of treatment periods
       if (!$scope.records || !$scope.txPeriods){
         return;
@@ -50,8 +48,8 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         // Determine the (string) start and end date
         // by calculating the index in the treatment period array
         // from startTX <select> and duration <select>
-        var startIndex = Number($scope.startTX) - 1;
-        var endIndex = Number($scope.startTX) + Number($scope.duration) - 2;
+        var startIndex = Number($scope.startTX) - Number($scope.duration);
+        var endIndex = Number($scope.startTX) - 2;
         if (endIndex >= periods.length){
           endIndex = periods.length - 1;
         }
