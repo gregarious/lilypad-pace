@@ -58,13 +58,18 @@ app.controller('TreatmentPeriodManagerCtrl', function ($scope, $modal, analyzeDa
 
         var initialFormData = {};
         var timeModalOpened = null;
-        var endOfLastPeriod = $scope.treatmentPeriodLogCollection.models[$scope.treatmentPeriodLogCollection.length-1].attributes.dateEnd;
-        var lastPeriodNum = $scope.treatmentPeriodLogCollection.models[$scope.treatmentPeriodLogCollection.length-1].attributes.dateEnd;
-
+        if ($scope.treatmentPeriodLogCollection.length == 0) {
+            var endOfLastPeriod = moment(Date.now()).format('YYYY-MM-DD');
+            var lastPeriodNum = 0;
+        } else {
+            var endOfLastPeriod = $scope.treatmentPeriodLogCollection.models[$scope.treatmentPeriodLogCollection.length-1].attributes.dateEnd;
+            var lastPeriodNum = $scope.treatmentPeriodLogCollection.models[$scope.treatmentPeriodLogCollection.length-1].attributes.id;
+        }
+    
         initialFormData = {
             startedAt: moment(endOfLastPeriod).add('days', 1).format("YYYY-MM-DD"),
             endedAt: moment(Date.now()).format("YYYY-MM-DD"),
-            num: $scope.treatmentPeriodLogCollection.models[$scope.treatmentPeriodLogCollection.length-1].attributes.id + 1
+            num: lastPeriodNum + 1
         };
 
         // open a new modal to present the form
@@ -116,7 +121,7 @@ app.controller('TreatmentPeriodManagerCtrl', function ($scope, $modal, analyzeDa
     }
 
     function resetTreatmentPeriodLogForStudent(student) {
-        if($scope.treatmentPeriodLogCollection) {
+        if ($scope.treatmentPeriodLogCollection) {
             // stop listening for the 'change' events set up below
             $scope.treatmentPeriodLogCollection.stopListening();
         }
