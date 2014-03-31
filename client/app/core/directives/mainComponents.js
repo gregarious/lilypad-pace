@@ -1,5 +1,5 @@
 // directive for the navigation tabs
-app.directive('mainTabs', function (mixpanel) {
+app.directive('mainTabs', function ($rootScope, mixpanel) {
     return {
         restrict: 'E',
         transclude: true,
@@ -12,6 +12,7 @@ app.directive('mainTabs', function (mixpanel) {
                     pane.selected = false;
                 });
                 mixpanel.track('Switched to ' + pane.title); // mixpanel tracking
+                $rootScope.viewState.selectedTab = panes.indexOf(pane);
                 pane.selected = true;
             };
 

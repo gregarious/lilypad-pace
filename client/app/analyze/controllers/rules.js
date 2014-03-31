@@ -5,9 +5,31 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
     $scope.records = null;
     $scope.txPeriods = null;
 
-    $scope.$watch('viewState.selectedStudent', setRulesForStudent);
+    var ANALYZE_TAB_INDEX = 1;
+    // when a new student is selected, update the rules data only if analyze is selected
+    $scope.$watch('viewState.selectedStudent', function(student) {
+      if($scope.viewState.selectedTab == ANALYZE_TAB_INDEX) {
+        setRulesForStudent(student);
+      }
+    });
+    // if the analyze tab is selected, update the current student's rules
+    $scope.$watch('viewState.selectedTab', function(selectedTab){
+      if(selectedTab == ANALYZE_TAB_INDEX) {
+        setRulesForStudent($scope.viewState.selectedStudent);
+      }
+    });
+
     $scope.$watch('endTX', updateVisualization);
     $scope.$watch('duration', updateVisualization);
+
+    // for mixpanel tracking
+    $scope.$watch('viewState.selectedTab', reportSwitchToRules);
+
+    function reportSwitchToRules() {
+        if ($scope.analyzeView.name === 'Rules' && $scope.viewState.selectedTab === ANALYZE_TAB_INDEX) {
+            console.log("Westin, code goes here")
+        }
+    }
 
     function setRulesForStudent(student) {
       if (student) {
