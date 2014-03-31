@@ -1,9 +1,7 @@
 // controller for rules
-app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePointsProcessor, moment, _, $timeout) {
+app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePointsProcessor, moment, _, $timeout, $q) {
     $scope.statusMessage = '';
     $scope.summaryData = null;
-    $scope.records = null;
-    $scope.txPeriods = null;
 
     var ANALYZE_TAB_INDEX = 1;
     // when a new student is selected, update the rules data only if analyze is selected
@@ -19,8 +17,10 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
       }
     });
 
-    $scope.$watch('endTX', updateVisualization);
-    $scope.$watch('duration', updateVisualization);
+    // after rules data is in place, these will be set to functions that will stop watching
+    // for treatment period widget input changes (necessary when selected student changes)
+    var stopWatchingTxInput;
+    var stopWatchingDurationInput;
 
     // for mixpanel tracking
     $scope.$watch('viewState.selectedTab', reportSwitchToRules);
@@ -32,27 +32,55 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
     }
 
     function setRulesForStudent(student) {
-      if (student) {
-        // Fix data digest bug
-        // TODO - Call updateVisualization on success, not a timer
-        $timeout(updateVisualization, 3000);
+      var rawDataCollections = {};    // this will have two keys upon fetch: 'txPeriods' and 'records'
 
+      if (student) {
         $scope.statusMessage = "Fetching rules data...";
         $scope.summaryData = null;
-        $scope.records = null;
-        $scope.txPeriods = null;
         // TODO: blank out chart?
 
-        analyzeDataSources.fetchTreatmentPeriods(student).then(function(collection) {
-          $scope.txPeriods = collection;
-        });
+        // if we're watching the input widgets, stop until the new data is fetched
+        if (stopWatchingTxInput) stopWatchingTxInput();
+        if (stopWatchingDurationInput) stopWatchingDurationInput();
 
-        analyzeDataSources.fetchPeriodicRecords(student).then(function(collection){
-            $scope.records = collection;
-            drawChartFrom(collection);
-            $scope.statusMessage = "";
-        },function(response) {
-            $scope.statusMessage = "Error retrieving rules data";
+        // fetch periodic records and treatment periods
+        var fetchingRecords = analyzeDataSources.fetchPeriodicRecords(student);
+        var fetchingTx = analyzeDataSources.fetchTreatmentPeriods(student);
+
+        // when both fetches return, we can start creating the visualization
+        $q.all({
+          records: fetchingRecords,
+          txPeriods: fetchingTx
+        }).then(function(response) {
+          // grab the three pieces of data we need for the visualization
+          rawDataCollections = response;
+          var origTx = $scope.endTx;
+          var origDuration = $scope.duration;
+
+          // do all the legwork to render the graph and summary data
+          updateVisualization(rawDataCollections, origTx, origDuration);
+
+          // finally, set up watches on the treatment period/duration widgets (hold onto the unregister
+          // functions so we don't set up duplicate watches when selected student changes)
+          stopWatchingTxInput = $scope.$watch('endTX', function(newTx) {
+            // this check is necessary because Angular always calls the callback on watch creation, which we don't want
+            if (origTx !== newTx) {
+              origTx = newTx;
+              updateVisualization(rawDataCollections, newTx, $scope.duraton);
+            }
+          });
+
+          stopWatchingDurationInput = $scope.$watch('duration', function(newDuration) {
+            // this check is necessary because Angular always calls the callback on watch creation, which we don't want
+            if (origDuration !== newDuration) {
+              origDuration = newDuration;
+              updateVisualization(rawDataCollections, $scope.endTx, newDuration);
+            }
+          });
+
+          $scope.statusMessage = "";
+        }, function(errorReasons) {
+          $scope.statusMessage = "Error retrieving rules data";
         });
       }
       else {
@@ -60,25 +88,23 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
       }
     }
 
-    function updateVisualization() {
+    function updateVisualization(rawDataCollections, endTx, duration) {
+      var records = rawDataCollections.records;
+      var txPeriods = rawDataCollections.txPeriods;
+      console.log(records, txPeriods);
 
       console.log("updating visualization");
-      console.log($scope.duration);
+      console.log(duration);
 
       var currentDuration = document.querySelector('#durationInput').value;
 
       //$scope.$apply();
 
-      // Ensure we have access to our set of points and the set of treatment periods
-      if (!$scope.records || !$scope.txPeriods){
-        console.warn("Treatment period data hasn't been loaded yet");
-        return;
-      }
-      var filteredCollection = _.clone($scope.records);
-      var periods = $scope.txPeriods.models;
+      var filteredCollection = _.clone(records);
+      var periods = txPeriods.models;
 
       if (typeof currentDuration === 'undefined' || Number(currentDuration) < 1){
-        $scope.duration = 1;
+        $scope.duration = duration = 1;
       }
 
       /*
@@ -90,19 +116,19 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         $scope.duration = $scope.endTX;
       }*/
 
-      console.log('[ endTX: ' + $scope.endTX + ' , duration: ' + currentDuration + ' ]');
+      console.log('[ endTX: ' + endTx + ' , duration: ' + currentDuration + ' ]');
 
-      if ($scope.endTX > 0 && currentDuration > 0){
+      if (endTx > 0 && currentDuration > 0){
 
         // Determine the (string) start and end date
         // by calculating the index in the treatment period array
         // from endTX <select> and duration <select>
 
         // Determine the (index of the) starting treatment period
-        var startIndex = Number($scope.endTX) - Number(currentDuration);
+        var startIndex = Number(endTx) - Number(currentDuration);
 
         // Determine the (index of the) ending treatment period
-        var endIndex = Number($scope.endTX) - 1;
+        var endIndex = Number(endTx) - 1;
 
         // Assertions
         if (0 > startIndex || startIndex >= periods.length){
