@@ -59,7 +59,7 @@ app.controller('TreatmentPeriodManagerCtrl', function ($scope, $modal, analyzeDa
         var initialFormData = {};
         var timeModalOpened = null;
         if ($scope.treatmentPeriodLogCollection.length == 0) {
-            var endOfLastPeriod = moment(Date.now()).format('YYYY-MM-DD');
+            var endOfLastPeriod = '2013-09-01'; // Start of deployment
             var lastPeriodNum = 0;
         } else {
             var endOfLastPeriod = $scope.treatmentPeriodLogCollection.models[$scope.treatmentPeriodLogCollection.length-1].attributes.dateEnd;
