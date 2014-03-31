@@ -9,7 +9,14 @@ app.controller('StudentAnalyzeCtrl', function ($scope, $q, analyzeDataSources) {
   ];
 
   $scope.range = function(n) {
-      return new Array(n);
+
+    // This is a hack that assumes that
+    // endTX is defaulting to treatmentPeriods.models.length
+    if (typeof n === 'undefined'){
+      n = ($scope.treatmentPeriods.models.length || 1);
+    }
+
+    return new Array(Number(n));
   };
 
   $scope.$watch('viewState.selectedStudent', setTXPickerForStudent);

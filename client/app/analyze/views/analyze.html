@@ -1,14 +1,16 @@
 <form name="analyze" class="clearfix">
     <select ng-init="analyzeView = views[0]" ng-model="analyzeView" ng-options="v.name for v in views"></select>
 
-    <span ng-hide="analyzeView != views[0]" class="treatmentPeriodPicker">
+    <span ng-show="analyzeView == views[0]" class="treatmentPeriodPicker">
 
         <span><label>
           <p>&nbsp;</p>
-          <select ng-model="startTX" value="1">
+          <select ng-model="endTX">
             <option
               ng-repeat = "treatmentPeriod in treatmentPeriods.models"
-              ng-value = "$index + 1" >
+              ng-value = "$index + 1"
+              ng-selected = "$last" >
+
               TX {{treatmentPeriod.attributes.id}} - {{treatmentPeriod.attributes.dateEnd | date: 'M/d'}}
             </option>
           </select>
@@ -17,10 +19,11 @@
         <span><label>
           <p>&nbsp;</p>
           <select ng-model="duration">
-            <!-- TODO: MAKE THIS WORK BACKWARDS -->
-            <option ng-show="startTX"
-              ng-repeat = "i in range(treatmentPeriods.length - startTX + 1) track by $index"
-              ng-value = "$index + 1" >
+            <option
+              ng-repeat = "i in range(endTX) track by $index"
+              ng-value = "$index + 1"
+              ng-selected = "$first" >
+
               View {{$index + 1}} TX
             </option>
           </select>
