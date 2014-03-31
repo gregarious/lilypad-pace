@@ -7,7 +7,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
 
     $scope.$watch('viewState.selectedStudent', setRulesForStudent);
     // TODO: replace line above with this logic once viewState.selectedTab exists
-    // var ANALYZE_TAB_INDEX = 1;
+    var ANALYZE_TAB_INDEX = 1;
     // // when a new student is selected, update the rules data only if analyze is selected
     // $scope.$watch('viewState.selectedStudent', function(student) {
     //   if($scope.viewState.selectedTab == ANALYZE_TAB_INDEX) {
@@ -23,6 +23,15 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
 
     $scope.$watch('startTX', updateVisualization);
     $scope.$watch('duration', updateVisualization);
+
+    // for mixpanel tracking
+    $scope.$watch('viewState.selectedTab', reportSwitchToRules);
+
+    function reportSwitchToRules() {
+        if ($scope.analyzeView.name === 'Rules' && $scope.viewState.selectedTab === ANALYZE_TAB_INDEX) {
+            console.log("Westin, code goes here")
+        }
+    }
 
 
     function setRulesForStudent(student) {
