@@ -1,7 +1,7 @@
 <form name="analyze" class="clearfix">
     <select ng-init="analyzeView = views[0]" ng-model="analyzeView" ng-options="v.name for v in views"></select>
 
-    <span ng-show="analyzeView == views[0]" class="treatmentPeriodPicker">
+    <span ng-show="analyzeView == views[0] && hasTreatmentPeriods" class="treatmentPeriodPicker">
 
         <span><label>
           <p>&nbsp;</p>

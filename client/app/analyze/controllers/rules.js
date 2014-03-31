@@ -40,8 +40,13 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
 
     function updateVisualization() {
 
+      console.log("updating visualization");
+
+      //$scope.$apply();
+
       // Ensure we have access to our set of points and the set of treatment periods
       if (!$scope.records || !$scope.txPeriods){
+        console.warn("Treatment period data hasn't been loaded yet");
         return;
       }
       var filteredCollection = _.clone($scope.records);
@@ -51,9 +56,14 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         $scope.duration = 1;
       }
 
+      /*
       if (typeof $scope.endTX === 'undefined' || $scope.endTX < 1){
         $scope.endTX = (periods.length || 1);
       }
+
+      if ($scope.endTX < $scope.duration){
+        $scope.duration = $scope.endTX;
+      }*/
 
       console.log('[ endTX: ' + $scope.endTX + ' , duration: ' + $scope.duration + ' ]');
 

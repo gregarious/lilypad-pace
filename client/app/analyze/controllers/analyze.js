@@ -8,6 +8,8 @@ app.controller('StudentAnalyzeCtrl', function ($scope, $q, analyzeDataSources) {
       {name: 'Treatment Period Manager', url: 'app/analyze/views/treatmentPeriodManager.html'}
   ];
 
+  $scope.hasTreatmentPeriods = false;
+
   $scope.range = function(n) {
 
     // This is a hack that assumes that
@@ -24,9 +26,14 @@ app.controller('StudentAnalyzeCtrl', function ($scope, $q, analyzeDataSources) {
   // Treatment Period Picker
   function setTXPickerForStudent(student) {
     if (student) {
+      $scope.hasTreatmentPeriods = false;
       $scope.treatmentPeriods = null;
       analyzeDataSources.fetchTreatmentPeriods(student).then(function(collection) {
         $scope.treatmentPeriods = collection;
+        if (collection.models.length > 0){
+          console.log("has tx periods");
+          $scope.hasTreatmentPeriods = true;
+        }
       });
     }
   }

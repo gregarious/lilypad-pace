@@ -96,6 +96,12 @@ input[type=text], input[type=password] {
     outline: 0px;
 }
 
+/* For debugging
+.ng-dirty {
+    background-color: #FA787E;
+}
+*/
+
 textarea {
     color: #58585b;
     outline: 0px;
