@@ -5,7 +5,7 @@
 
         <span><label>
           <p>&nbsp;</p>
-          <select ng-model="endTX">
+          <select ng-model="endTX" id="txInput">
             <option
               ng-repeat = "treatmentPeriod in treatmentPeriods.models"
               ng-value = "$index + 1"
@@ -18,7 +18,7 @@
 
         <span><label>
           <p>&nbsp;</p>
-          <select ng-model="duration">
+          <select ng-model="duration" id="durationInput">
             <option
               ng-repeat = "i in range(endTX) track by $index"
               ng-value = "$index + 1"

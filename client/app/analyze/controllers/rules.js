@@ -43,6 +43,8 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
       console.log("updating visualization");
       console.log($scope.duration);
 
+      var currentDuration = document.querySelector('#durationInput').value;
+
       //$scope.$apply();
 
       // Ensure we have access to our set of points and the set of treatment periods
@@ -53,7 +55,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
       var filteredCollection = _.clone($scope.records);
       var periods = $scope.txPeriods.models;
 
-      if (typeof $scope.duration === 'undefined' || Number($scope.duration) < 1){
+      if (typeof currentDuration === 'undefined' || Number(currentDuration) < 1){
         $scope.duration = 1;
       }
 
@@ -66,16 +68,16 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         $scope.duration = $scope.endTX;
       }*/
 
-      console.log('[ endTX: ' + $scope.endTX + ' , duration: ' + $scope.duration + ' ]');
+      console.log('[ endTX: ' + $scope.endTX + ' , duration: ' + currentDuration + ' ]');
 
-      if ($scope.endTX > 0 && $scope.duration > 0){
+      if ($scope.endTX > 0 && currentDuration > 0){
 
         // Determine the (string) start and end date
         // by calculating the index in the treatment period array
         // from endTX <select> and duration <select>
 
         // Determine the (index of the) starting treatment period
-        var startIndex = Number($scope.endTX) - Number($scope.duration);
+        var startIndex = Number($scope.endTX) - Number(currentDuration);
 
         // Determine the (index of the) ending treatment period
         var endIndex = Number($scope.endTX) - 1;
