@@ -46,10 +46,8 @@ angular.module('pace').factory('periodSwitcher', function($timeout) {
         getLabelForPeriod: function(pdNum) {
             var label;
             if (this.periodLabels.length >= pdNum) {
-                console.log('getting label for ' + pdNum + ': ' + this.periodLabels[pdNum-1]);
                 return this.periodLabels[pdNum-1];
             }
-            console.log('getting default label for ' + pdNum);
             return 'Period ' + pdNum;
         },
 
