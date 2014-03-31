@@ -18,6 +18,7 @@ router.register(r'behaviorincidents', pace_views.BehaviorIncidentViewSet)
 router.register(r'periodicrecords', pace_views.PeriodicRecordViewSet)
 router.register(r'pointlosses', pace_views.PointLossViewSet)
 router.register(r'attendancespans', pace_views.AttendanceSpanViewSet)
+router.register(r'treatmentperiods', pace_views.TreatmentPeriodViewSet)
 
 apipatterns = router.urls
 
@@ -43,6 +44,9 @@ apipatterns += patterns('',
     url(r'^students/(?P<student_pk>[0-9]+)/pointlosses/$',
         pace_views.StudentPointLossListView.as_view(),
         name="student_pointloss-list"),
+    url(r'^students/(?P<student_pk>[0-9]+)/treatmentperiods/$',
+        pace_views.StudentTreatmentPeriodListView.as_view(),
+        name="student_treatmentperiods-list"),
 
     # authentication url
     url(r'^authtoken/$', 'rest_framework.authtoken.views.obtain_auth_token'),

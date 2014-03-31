@@ -1,11 +1,28 @@
 // controller for rules
-app.controller('AnalyzeTreatmentReportCtrl', function ($scope, $q, TreatmentReportDataProcessor, _) {
+app.controller('AnalyzeTreatmentReportCtrl', function ($scope, $q, analyzeDataSources, TreatmentReportDataProcessor, _) {
     $scope.statusMessage = "";
     $scope.isDataReady = false;
 
     $scope.$watch('viewState.selectedStudent', setTreatmentReportForStudent);
 
+    /****
+     * Demo code for pulling/creating treatment periods:
+     ***/
+
     function setTreatmentReportForStudent(student) {
+      if (student) {
+        analyzeDataSources.fetchTreatmentPeriods(student).then(function(collection) {
+          $scope.test_treatmentPeriods = collection;
+          $scope.test_createNewOne = function () {
+            $scope.test_treatmentPeriods.create({dateStart: $scope.test_newDateStart, dateEnd: $scope.test_newDateEnd});
+          };
+        });
+      }
+
+    /****
+     * End demo code
+     ***/
+
       if (student) {
         // create an array of data processors, one per treatment period, to handle
         // all the data fetching and manipulation

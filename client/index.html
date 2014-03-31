@@ -86,7 +86,6 @@
     <!-- login prompt -->
     <script src="app/auth/controllers/loginPrompt.js"></script>
 
-
     <!-- COLLECT COMPONENTS -->
     <script src="app/collect/controllers/studentCollect.js"></script>
     <script src="app/collect/controllers/periodPoints.js"></script>
@@ -98,11 +97,15 @@
     <script src="app/analyze/services/rulePointsProcessor.js"></script>
     <script src="app/analyze/services/treatmentReportDataProcessor.js"></script>
 
+    <script src="app/analyze/models/treatmentPeriod.js"></script>
+
     <script src="app/analyze/controllers/analyze.js"></script>
     <script src="app/analyze/controllers/attendanceLog.js"></script>
     <script src="app/analyze/controllers/behaviorLog.js"></script>
     <script src="app/analyze/controllers/rules.js"></script>
     <script src="app/analyze/controllers/treatmentReport.js"></script>
+    <script src="app/analyze/controllers/treatmentPeriodManager.js"></script>
+    <script src="app/analyze/controllers/treatmentPeriodModal.js"></script>
 
     <!-- Run final app config & run routines after all providers are registered -->
     <script src="app/config.js"></script>
@@ -130,15 +133,20 @@
           ng-controller="MainContentCtrl">
                 <main-tabs>
                     <h1 class="studentName"><strong>{{studentLabel}}</strong></h1>
-                    <main-pane title="Collect">
-                        <div id="todayStatusBar" class="clearfix"
-                             ng-controller="TodayStatusBarCtrl"
-                             ng-include="'app/core/views/todayStatus.html'">
-                        </div>
-                        <div ng-controller="StudentCollectCtrl">
-                            <div ng-include="'app/collect/views/studentCollect.html'"></div>
-                        </div>
-                    </main-pane>
+                        <main-pane title="Collect">
+                            <div id="todayStatusBar" class="clearfix"
+                                 ng-show="viewState.userHasCollectAccess"
+                                 ng-controller="TodayStatusBarCtrl"
+                                 ng-include="'app/core/views/todayStatus.html'">
+                            </div>
+                            <div ng-controller="StudentCollectCtrl"
+                                 ng-show="viewState.userHasCollectAccess">
+                                <div ng-include="'app/collect/views/studentCollect.html'"></div>
+                            </div>
+                            <div ng-hide="viewState.userHasCollectAccess">
+                                Only classroom users are able to collect data.
+                            </div>
+                        </main-pane>
                     <main-pane title="Analyze">
                         <div ng-controller="StudentAnalyzeCtrl">
                             <div ng-include="'app/analyze/views/analyze.html'"></div>

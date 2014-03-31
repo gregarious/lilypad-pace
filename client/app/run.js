@@ -41,7 +41,7 @@ angular.module('pace').run(function(sessionManager, $rootScope, mixpanel, behavi
     $rootScope.grantAccess = function() {
         var username = sessionManager.getValue('username');
         mixpanel.identify(username);
-        mixpanel.people.set({ $username: username });
+        mixpanel.people.set({ "$username": username });
 
         $rootScope.viewState.isUserAuthenticated = true;
 
