@@ -2,7 +2,20 @@
 app.controller('AnalyzeBehaviorLogCtrl', function ($scope, analyzeDataSources) {
     $scope.behaviorLogCollection = null;
     $scope.statusMessage = '';
-    $scope.$watch('viewState.selectedStudent', setBehaviorLogForStudent);
+
+    var ANALYZE_TAB_INDEX = 1;
+    // when a new student is selected, update the rules data only if analyze is selected
+    $scope.$watch('viewState.selectedStudent', function(student) {
+      if($scope.viewState.selectedTab == ANALYZE_TAB_INDEX) {
+        setBehaviorLogForStudent(student);
+      }
+    });
+    // if the analyze tab is selected, update the current student's rules
+    $scope.$watch('viewState.selectedTab', function(selectedTab){
+      if(selectedTab == ANALYZE_TAB_INDEX) {
+        setBehaviorLogForStudent($scope.viewState.selectedStudent);
+      }
+    });
 
     /**
      * Hooks $scope.behaviorLogCollection up to the given student's data.
