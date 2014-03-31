@@ -5,21 +5,21 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
     $scope.records = null;
     $scope.txPeriods = null;
 
-    $scope.$watch('viewState.selectedStudent', setRulesForStudent);
+    // $scope.$watch('viewState.selectedStudent', setRulesForStudent);
     // TODO: replace line above with this logic once viewState.selectedTab exists
     var ANALYZE_TAB_INDEX = 1;
-    // // when a new student is selected, update the rules data only if analyze is selected
-    // $scope.$watch('viewState.selectedStudent', function(student) {
-    //   if($scope.viewState.selectedTab == ANALYZE_TAB_INDEX) {
-    //     setRulesForStudent(student);
-    //   }
-    // });
-    // // if the analyze tab is selected, update the current student's rules
-    // $scope.$watch('viewState.selectedTab', function(selectedTab){
-    //   if(selectedTab == ANALYZE_TAB_INDEX) {
-    //     setRulesForStudent($scope.viewState.selectedStudent);
-    //   }
-    // });
+    // when a new student is selected, update the rules data only if analyze is selected
+    $scope.$watch('viewState.selectedStudent', function(student) {
+      if($scope.viewState.selectedTab == ANALYZE_TAB_INDEX) {
+        setRulesForStudent(student);
+      }
+    });
+    // if the analyze tab is selected, update the current student's rules
+    $scope.$watch('viewState.selectedTab', function(selectedTab){
+      if(selectedTab == ANALYZE_TAB_INDEX) {
+        setRulesForStudent($scope.viewState.selectedStudent);
+      }
+    });
 
     $scope.$watch('startTX', updateVisualization);
     $scope.$watch('duration', updateVisualization);
@@ -89,7 +89,6 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         };
 
         // Create the collection and update the page.
-        console.log("Filtering chart to dates between " + dateStart + " and " + dateEnd);
         filteredCollection.models = _.filter(filteredCollection.models, withinRange);
         filteredCollection.length = filteredCollection.models.length;
         drawChartFrom(filteredCollection);
