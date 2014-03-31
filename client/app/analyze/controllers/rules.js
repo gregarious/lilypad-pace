@@ -41,6 +41,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
     function updateVisualization() {
 
       console.log("updating visualization");
+      console.log($scope.duration);
 
       //$scope.$apply();
 
@@ -52,7 +53,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
       var filteredCollection = _.clone($scope.records);
       var periods = $scope.txPeriods.models;
 
-      if (typeof $scope.duration === 'undefined' || $scope.duration < 1){
+      if (typeof $scope.duration === 'undefined' || Number($scope.duration) < 1){
         $scope.duration = 1;
       }
 

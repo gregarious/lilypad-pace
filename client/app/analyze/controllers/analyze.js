@@ -33,6 +33,8 @@ app.controller('StudentAnalyzeCtrl', function ($scope, $q, analyzeDataSources) {
         if (collection.models.length > 0){
           console.log("has tx periods");
           $scope.hasTreatmentPeriods = true;
+          $scope.endTX = collection.models.length;
+          $scope.duration = 1;
         }
       });
     }
