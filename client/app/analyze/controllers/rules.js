@@ -140,10 +140,15 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         filteredCollection.models = _.filter(filteredCollection.models, withinRange);
         filteredCollection.length = filteredCollection.models.length;
         drawChartFrom(filteredCollection);
-
       } else {
         console.warn('Invalid end treatment period and duration');
       }
+
+      mixpanel.track( "Updated Visualization", {
+          "TXs": durationTX,
+          "Viz start": dateStart,
+          "Viz end": dateEnd
+      });
     }
 
     // Updates the graph and percentage totals.
