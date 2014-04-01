@@ -23,7 +23,10 @@
             </td>
             <td class="time" ng-click="showBehaviorModal(logEntry)">{{logEntry.getOccurredAt() | date: 'h:mm a'}}</td>
             <td class="label" ng-click="showBehaviorModal(logEntry)">{{logEntry.getLabel()}}</td>
-            <td class="duration" ng-click="showBehaviorModal(logEntry)">{{logEntry.getDuration() | duration}}</td>
+            <td class="duration" ng-click="showBehaviorModel(logEntry)">
+                <span ng-hide="logEntry.get('type').get('supportsDuration') && logEntry.getDuration() == null">{{logEntry.getDuration() | duration}}</span>
+                <span ng-show="logEntry.get('type').get('supportsDuration') && logEntry.getDuration() == null" class="vibrant">TBD</span>
+            </td>
             <td class="comment">
                 <span ng-click="showBehaviorModal(logEntry)">{{logEntry.getComment()}}</span>
                 <span class="deleteBtn" ng-show="(confirmDeleteFor != undefined) && (confirmDeleteFor === logEntry)" ng-click="removeIncident(logEntry)">Delete</span>
