@@ -793,6 +793,11 @@ td.invalid #behaviorTypeInput li {
     width: 13%;
 }
 
+#behaviorIncidentsTable .duration .vibrant {
+    color: #DC6364;
+    font-family: allerbold;
+}
+
 #behaviorIncidentsTable .comment {
     width: 34%;
     position: relative;
