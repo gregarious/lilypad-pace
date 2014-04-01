@@ -978,7 +978,11 @@ form[name=analyze] span span:last-child {
     margin-right: 3em;
 }
 
-.treatmentPeriodPicker select{
+.treatmentPeriodPicker {
+    margin-top: -49px;
+}
+
+.treatmentPeriodPicker select {
     position: relative;
     top: 12px;
 }

@@ -1,17 +1,42 @@
 // controller for rules
-app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePointsProcessor, moment, _) {
+app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePointsProcessor, moment, _, $timeout) {
     $scope.statusMessage = '';
     $scope.summaryData = null;
     $scope.records = null;
     $scope.txPeriods = null;
 
-    $scope.$watch('viewState.selectedStudent', setRulesForStudent);
-    $scope.$watch('startTX', updateVisualization);
+    var ANALYZE_TAB_INDEX = 1;
+    // when a new student is selected, update the rules data only if analyze is selected
+    $scope.$watch('viewState.selectedStudent', function(student) {
+      if($scope.viewState.selectedTab == ANALYZE_TAB_INDEX) {
+        setRulesForStudent(student);
+      }
+    });
+    // if the analyze tab is selected, update the current student's rules
+    $scope.$watch('viewState.selectedTab', function(selectedTab){
+      if(selectedTab == ANALYZE_TAB_INDEX) {
+        setRulesForStudent($scope.viewState.selectedStudent);
+      }
+    });
+
+    $scope.$watch('endTX', updateVisualization);
     $scope.$watch('duration', updateVisualization);
 
+    // for mixpanel tracking
+    $scope.$watch('viewState.selectedTab', reportSwitchToRules);
+
+    function reportSwitchToRules() {
+        if ($scope.analyzeView.name === 'Rules' && $scope.viewState.selectedTab === ANALYZE_TAB_INDEX) {
+            mixpanel.track("Viewing Rules");
+        }
+    }
 
     function setRulesForStudent(student) {
       if (student) {
+        // Fix data digest bug
+        // TODO - Call updateVisualization on success, not a timer
+        $timeout(updateVisualization, 3000);
+
         $scope.statusMessage = "Fetching rules data...";
         $scope.summaryData = null;
         $scope.records = null;
@@ -35,27 +60,72 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
       }
     }
 
-    function updateVisualization(){
+    function updateVisualization() {
+
+      console.log("updating visualization");
+      console.log($scope.duration);
+
+      var currentDuration = document.querySelector('#durationInput').value;
+
+      //$scope.$apply();
 
       // Ensure we have access to our set of points and the set of treatment periods
       if (!$scope.records || !$scope.txPeriods){
+        console.warn("Treatment period data hasn't been loaded yet");
         return;
       }
       var filteredCollection = _.clone($scope.records);
       var periods = $scope.txPeriods.models;
 
+      if (typeof currentDuration === 'undefined' || Number(currentDuration) < 1){
+        $scope.duration = 1;
+      }
 
-      if ($scope.startTX > 0 && $scope.duration > 0){
+      /*
+      if (typeof $scope.endTX === 'undefined' || $scope.endTX < 1){
+        $scope.endTX = (periods.length || 1);
+      }
+
+      if ($scope.endTX < $scope.duration){
+        $scope.duration = $scope.endTX;
+      }*/
+
+      console.log('[ endTX: ' + $scope.endTX + ' , duration: ' + currentDuration + ' ]');
+
+      if ($scope.endTX > 0 && currentDuration > 0){
 
         // Determine the (string) start and end date
         // by calculating the index in the treatment period array
-        // from startTX <select> and duration <select>
-        var startIndex = Number($scope.startTX) - 1;
-        var endIndex = Number($scope.startTX) + Number($scope.duration) - 2;
-        var durationTX = Number($scope.duration);
-        if (endIndex >= periods.length){
-          endIndex = periods.length - 1;
+        // from endTX <select> and duration <select>
+
+        // Determine the (index of the) starting treatment period
+        var startIndex = Number($scope.endTX) - Number(currentDuration);
+
+        // Determine the (index of the) ending treatment period
+        var endIndex = Number($scope.endTX) - 1;
+
+        // Assertions
+        if (0 > startIndex || startIndex >= periods.length){
+          console.warn("Start TX Index out of range");
         }
+        if (0 > endIndex || endIndex >= periods.length){
+          console.warn("End TX Index out of range");
+        }
+
+        // To correct for any mistakes, ensure that our indexes are within range.
+        startIndex = (startIndex >= periods.length) ? (periods.length - 1) : startIndex;
+        startIndex = (startIndex < 0) ? 0 : startIndex;
+        endIndex = (endIndex >= periods.length) ? (periods.length - 1): endIndex;
+        endIndex = (endIndex < 0) ? 0 : endIndex;
+
+        // Ensure that our start date is earlier than our end date.
+        if (startIndex > endIndex){
+          console.warn("Start TX Index exceeds End TX Index");
+          var swap = startIndex;
+          startIndex = endIndex;
+          startIndex = swap;
+        }
+
         var dateStart = periods[startIndex].attributes.dateStart;
         var dateEnd = periods[endIndex].attributes.dateEnd;
 
@@ -65,17 +135,20 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
           return (dateStart <= date && date <= dateEnd);
         };
 
-        // Create the collection and update the page.
+        // Filter the collection and update the page.
         console.log("Filtering chart to dates between " + dateStart + " and " + dateEnd);
         filteredCollection.models = _.filter(filteredCollection.models, withinRange);
         filteredCollection.length = filteredCollection.models.length;
         drawChartFrom(filteredCollection);
-        mixpanel.track( "Updated Visualization", {
+      } else {
+        console.warn('Invalid end treatment period and duration');
+      }
+
+      mixpanel.track( "Updated Visualization", {
           "TXs": durationTX,
           "Viz start": dateStart,
           "Viz end": dateEnd
-        });
-      }
+      });
     }
 
     // Updates the graph and percentage totals.

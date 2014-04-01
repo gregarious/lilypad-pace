@@ -1,30 +1,33 @@
 <form name="analyze" class="clearfix">
     <select ng-init="analyzeView = views[0]" ng-model="analyzeView" ng-options="v.name for v in views"></select>
 
-    <span ng-hide="analyzeView != views[0]" class="treatmentPeriodPicker">
+    <span ng-show="analyzeView == views[0] && hasTreatmentPeriods" class="treatmentPeriodPicker">
 
         <span><label>
-          <p>Duration</p>
-          <select ng-model="duration">
-            <option ng-show="startTX"
-              ng-repeat = "i in range(treatmentPeriods.length - startTX + 1) track by $index"
-              ng-value = "$index + 1" >
-              {{$index + 1}} TX
+          <p>&nbsp;</p>
+          <select ng-model="endTX" id="txInput">
+            <option
+              ng-repeat = "treatmentPeriod in treatmentPeriods.models"
+              ng-value = "$index + 1"
+              ng-selected = "$last" >
+
+              TX {{treatmentPeriod.attributes.id}} - {{treatmentPeriod.attributes.dateEnd | date: 'M/d'}}
             </option>
           </select>
-          <br>
-
         </label></span>
 
         <span><label>
-          <p>Start TX</p>
-          <select ng-model="startTX" value="1">
+          <p>&nbsp;</p>
+          <select ng-model="duration" id="durationInput">
             <option
-              ng-repeat = "treatmentPeriod in treatmentPeriods.models"
-              ng-value = "$index + 1" >
-              {{treatmentPeriod.attributes.dateStart | date: 'M/d'}}
+              ng-repeat = "i in range(endTX) track by $index"
+              ng-value = "$index + 1"
+              ng-selected = "$first" >
+
+              View {{$index + 1}} TX
             </option>
           </select>
+          <br>
         </label></span>
 
     </span>

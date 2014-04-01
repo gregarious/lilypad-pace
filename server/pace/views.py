@@ -159,6 +159,7 @@ class PointLossViewSet(mixins.RetrieveModelMixin,
 
 class TreatmentPeriodViewSet(mixins.RetrieveModelMixin,
                               mixins.CreateModelMixin,
+                              mixins.DestroyModelMixin,
                               viewsets.GenericViewSet):
     queryset = TreatmentPeriod.objects.all()
     serializer_class = TreatmentPeriodSerializer
