@@ -52,7 +52,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         // from startTX <select> and duration <select>
         var startIndex = Number($scope.startTX) - 1;
         var endIndex = Number($scope.startTX) + Number($scope.duration) - 2;
-        var durationTX = Number($scope.duration)
+        var durationTX = Number($scope.duration);
         if (endIndex >= periods.length){
           endIndex = periods.length - 1;
         }
