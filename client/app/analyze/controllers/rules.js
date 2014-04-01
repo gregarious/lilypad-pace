@@ -27,7 +27,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
 
     function reportSwitchToRules() {
         if ($scope.analyzeView.name === 'Rules' && $scope.viewState.selectedTab === ANALYZE_TAB_INDEX) {
-            mixpanel.track("Viewing Rules")
+            mixpanel.track("Viewing Rules");
         }
     }
 
