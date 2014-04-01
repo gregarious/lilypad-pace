@@ -22,6 +22,7 @@ app.controller('AnalyzeBehaviorLogCtrl', function ($scope, analyzeDataSources) {
      */
     function setBehaviorLogForStudent(student) {
         $scope.behaviorLogCollection = null;
+        mixpanel.track("Viewing Behavior Log");
         if (student) {
             $scope.statusMessage = "Fetching incident logs...";
             analyzeDataSources.fetchIncidentLog(student).then(function(collection) {

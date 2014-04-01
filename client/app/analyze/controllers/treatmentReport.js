@@ -44,6 +44,7 @@ app.controller('AnalyzeTreatmentReportCtrl', function ($scope, $q, analyzeDataSo
         // when all data is loaded, we can finally process it
         promises.then(function() {
           displayData(dataProcessors);
+          mixpanel.track("Viewing Treatment Report");
           $scope.isDataReady = true;
         }, function() {
           $scope.statusMessage = "Error fetching data";

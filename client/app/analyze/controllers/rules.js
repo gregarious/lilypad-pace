@@ -27,7 +27,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
 
     function reportSwitchToRules() {
         if ($scope.analyzeView.name === 'Rules' && $scope.viewState.selectedTab === ANALYZE_TAB_INDEX) {
-            console.log("Westin, code goes here")
+            mixpanel.track("Viewing Rules");
         }
     }
 
@@ -140,10 +140,15 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         filteredCollection.models = _.filter(filteredCollection.models, withinRange);
         filteredCollection.length = filteredCollection.models.length;
         drawChartFrom(filteredCollection);
-
       } else {
         console.warn('Invalid end treatment period and duration');
       }
+
+      mixpanel.track( "Updated Visualization", {
+          "TXs": durationTX,
+          "Viz start": dateStart,
+          "Viz end": dateEnd
+      });
     }
 
     // Updates the graph and percentage totals.
