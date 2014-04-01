@@ -5,9 +5,31 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
     $scope.records = null;
     $scope.txPeriods = null;
 
-    $scope.$watch('viewState.selectedStudent', setRulesForStudent);
+    var ANALYZE_TAB_INDEX = 1;
+    // when a new student is selected, update the rules data only if analyze is selected
+    $scope.$watch('viewState.selectedStudent', function(student) {
+      if($scope.viewState.selectedTab == ANALYZE_TAB_INDEX) {
+        setRulesForStudent(student);
+      }
+    });
+    // if the analyze tab is selected, update the current student's rules
+    $scope.$watch('viewState.selectedTab', function(selectedTab){
+      if(selectedTab == ANALYZE_TAB_INDEX) {
+        setRulesForStudent($scope.viewState.selectedStudent);
+      }
+    });
+
     $scope.$watch('endTX', updateVisualization);
     $scope.$watch('duration', updateVisualization);
+
+    // for mixpanel tracking
+    $scope.$watch('viewState.selectedTab', reportSwitchToRules);
+
+    function reportSwitchToRules() {
+        if ($scope.analyzeView.name === 'Rules' && $scope.viewState.selectedTab === ANALYZE_TAB_INDEX) {
+            mixpanel.track("Viewing Rules");
+        }
+    }
 
     function setRulesForStudent(student) {
       if (student) {
@@ -118,10 +140,15 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         filteredCollection.models = _.filter(filteredCollection.models, withinRange);
         filteredCollection.length = filteredCollection.models.length;
         drawChartFrom(filteredCollection);
-
       } else {
         console.warn('Invalid end treatment period and duration');
       }
+
+      mixpanel.track( "Updated Visualization", {
+          "TXs": durationTX,
+          "Viz start": dateStart,
+          "Viz end": dateEnd
+      });
     }
 
     // Updates the graph and percentage totals.

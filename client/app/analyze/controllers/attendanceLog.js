@@ -3,7 +3,20 @@ app.controller('AnalyzeAttendanceLogCtrl', function ($scope, analyzeDataSources)
 
     $scope.attendanceSpanCollection = null;
     $scope.statusMessage = '';
-    $scope.$watch('viewState.selectedStudent', setAttendanceLogsForStudent);
+
+    var ANALYZE_TAB_INDEX = 1;
+    // when a new student is selected, update the attendance data only if analyze is selected
+    $scope.$watch('viewState.selectedStudent', function(student) {
+      if($scope.viewState.selectedTab == ANALYZE_TAB_INDEX) {
+        setAttendanceLogsForStudent(student);
+      }
+    });
+    // if the analyze tab is selected, update the current student's attendance
+    $scope.$watch('viewState.selectedTab', function(selectedTab){
+      if(selectedTab == ANALYZE_TAB_INDEX) {
+        setAttendanceLogsForStudent($scope.viewState.selectedStudent);
+      }
+    });
 
     /**
      * Hooks $scope.attendanceSpanCollection up to the given student's data.
@@ -12,6 +25,7 @@ app.controller('AnalyzeAttendanceLogCtrl', function ($scope, analyzeDataSources)
         $scope.attendanceSpanCollection = null;
         if (student) {
             $scope.statusMessage = "Fetching attendance logs...";
+            mixpanel.track("Viewing Attendance Records");
             analyzeDataSources.fetchAttendanceLog(student).then(function(spans) {
                 $scope.attendanceSpanCollection = spans;
                 $scope.statusMessage = spans.length === 0 ?
