@@ -137,6 +137,7 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
                 editIncident.set('comment', incidentFormData.comment);
 
                 editIncident.save();
+                mixpanel.track("Saved edit to incident");
             }
             else {
                 // track amount of time modal is open on new incident creation
@@ -167,6 +168,10 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
 
     function editIncidents() {
         $scope.isEditLogModeActive = !$scope.isEditLogModeActive;
+        if ($scope.isEditLogModeActive === true) {
+            mixpanel.track("Editing incidents");
+        }
+
         $scope.confirmDeleteFor = null;
     }
 
@@ -191,6 +196,7 @@ app.controller('CollectIncidentLogCtrl', function ($scope, $modal, $rootScope, m
             record.reversePointLoss(logEntry.get('pointType'));
         }
 
+        mixpanel.track("Deleted incident");
         logEntry.destroy();
         $scope.editIncidents();
     }
