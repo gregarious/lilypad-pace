@@ -1,5 +1,5 @@
 // controller for rules
-app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePointsProcessor, moment, _, $timeout) {
+app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePointsProcessor, mixpanel, moment, _, $timeout) {
     $scope.statusMessage = '';
     $scope.summaryData = null;
     $scope.records = null;
@@ -145,7 +145,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
       }
 
       mixpanel.track( "Updated Visualization", {
-          "TXs": durationTX,
+          "TXs": currentDuration,
           "Viz start": dateStart,
           "Viz end": dateEnd
       });
