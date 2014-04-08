@@ -154,8 +154,8 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
     // Updates the graph and percentage totals.
     function drawChartFrom(collection){
       var pointsProcessor = new RulePointsProcessor(collection);
-      drawVisualization(pointsProcessor.getChartData());
       $scope.summaryData = pointsProcessor.getSummaryData();
+      drawVisualization(pointsProcessor.getChartData());
     }
 
     function drawVisualization(data) {
@@ -166,16 +166,19 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
           chartArea: {left:50,top:15,width:564,height:200},
           vAxis: {
           title: "Points Retained",
-          maxValue: 20 },
+          minValue: 0, 
+          maxValue: 40 },
           hAxis: {
           title: "Time",
+          showTextEvery: 1,
           maxAlternation: 1},
           lineWidth: 3,
           series: [
             {color: '#DA6666'},
             {color: '#F39070'},
             {color: '#678FC7'},
-            {color: '#8A6CAB'}],
+            {color: '#8A6CAB'},
+            {color: '#000000'}],
           annotations: {style: 'line'}
         };
 
@@ -185,7 +188,18 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         table.addColumn({type: 'string', role: 'annotation'});
         var addNumericColumn = function(name){table.addColumn('number', name);};
         _.map(data.categories, addNumericColumn);
-        table.addRows(data.points);
+        table.addColumn('number', 'Total Eligible');
+        var points = data.points;
+
+        // Add total points 
+        for (var i=0; i<points.length; i++) {
+          points[i].push($scope.summaryData.bs.eligible);
+        }
+
+        console.log(points);
+
+        table.addRows(points);
+        chartOptions.hAxis.showTextEvery = parseInt(table.getNumberOfRows() / 10);
 
         // Create and draw the visualization.
         var chartEl = document.getElementById('rules-visualization');
