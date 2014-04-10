@@ -1,5 +1,5 @@
 // controller for rules
-app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePointsProcessor, mixpanel, moment, _, $timeout) {
+app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePointsProcessor, mixpanel, moment, _, $timeout, $q) {
     $scope.statusMessage = '';
     $scope.summaryData = null;
     $scope.records = null;
@@ -19,8 +19,16 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
       }
     });
 
-    $scope.$watch('endTX', updateVisualization);
-    $scope.$watch('duration', updateVisualization);
+    $scope.$watch('endTX', function () {
+      if ($scope.records) {
+        updateVisualization();
+      }
+    });
+    $scope.$watch('duration', function () {
+      if ($scope.records) {
+        updateVisualization();
+      }
+    });
 
     // for mixpanel tracking
     $scope.$watch('viewState.selectedTab', reportSwitchToRules);
@@ -32,26 +40,30 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
     }
 
     function setRulesForStudent(student) {
+      $scope.summaryData = null;
+      $scope.records = null;
+      $scope.txPeriods = null;
+
       if (student) {
         // Fix data digest bug
-        // TODO - Call updateVisualization on success, not a timer
-        $timeout(updateVisualization, 3000);
 
         $scope.statusMessage = "Fetching rules data...";
-        $scope.summaryData = null;
-        $scope.records = null;
-        $scope.txPeriods = null;
         // TODO: blank out chart?
 
-        analyzeDataSources.fetchTreatmentPeriods(student).then(function(collection) {
+        var fetchingTx = analyzeDataSources.fetchTreatmentPeriods(student).then(function(collection) {
           $scope.txPeriods = collection;
         });
 
-        analyzeDataSources.fetchPeriodicRecords(student).then(function(collection){
+        var fetchingPdRecords = analyzeDataSources.fetchPeriodicRecords(student).then(function(collection){
             $scope.records = collection;
             drawChartFrom(collection);
+        });
+
+        // once both fetches complete, we can update the visualization
+        $q.all([fetchingTx, fetchingPdRecords]).then(function(collections) {
+            updateVisualization();
             $scope.statusMessage = "";
-        },function(response) {
+        }, function(failureReasons) {
             $scope.statusMessage = "Error retrieving rules data";
         });
       }
