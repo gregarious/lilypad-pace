@@ -98,7 +98,7 @@ angular.module('pace').factory('RulePointsProcessor', function(timeTracker, mome
      * Transforms data into a form friendly for the chart API.
      *
      * @param  {Array} totalsData
-     * @return {Array} Contains [date, annotation, fd-value, cw-value, kw-value, bs-value] arrays
+     * @return {Array} Contains [date, annotation, fd-value, cw-value, kw-value, bs-value, eligible] arrays
      */
     function toChartData(totalsData) {
       return {
@@ -114,7 +114,8 @@ angular.module('pace').factory('RulePointsProcessor', function(timeTracker, mome
             item.fd.acquired,
             item.cw.acquired,
             item.kw.acquired,
-            item.bs.acquired
+            item.bs.acquired,
+            item.bs.eligible    // we just need any type's eligible point total: they should be all the same
           ];
         })
       };

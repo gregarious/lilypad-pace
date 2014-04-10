@@ -190,7 +190,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
             {color: '#F39070'},
             {color: '#678FC7'},
             {color: '#8A6CAB'},
-            {color: '#000000'}],
+            {color: '#8C8C8C'}],
           annotations: {style: 'line'}
         };
 
@@ -199,21 +199,13 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         table.addColumn('string', 'x');
         table.addColumn({type: 'string', role: 'annotation'});
         var addNumericColumn = function(name){table.addColumn('number', name);};
+
         _.map(data.categories, addNumericColumn);
+        table.addColumn('number', 'Total Eligible');
 
-        var points = data.points;
+        // add points data: 4 point values and a total eligible value
+        table.addRows(data.points);
 
-        //// commented out incomplete points eligible code
-        // table.addColumn('number', 'Total Eligible');
-
-        // // Add total points
-        // for (var i=0; i<points.length; i++) {
-        //   points[i].push($scope.summaryData.bs.eligible);
-        // }
-
-        console.log(points);
-
-        table.addRows(points);
         chartOptions.hAxis.showTextEvery = parseInt(table.getNumberOfRows() / 10);
 
         // Create and draw the visualization.
