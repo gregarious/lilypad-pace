@@ -1,4 +1,4 @@
-app.controller('TreatmentPeriodManagerCtrl', function ($scope, $modal, analyzeDataSources) {
+app.controller('TreatmentPeriodManagerCtrl', function ($scope, $modal, analyzeDataSources, mixpanel) {
     $scope.statusMessage = '';
     $scope.$watch('viewState.selectedStudent', setTreatmentPeriodLogForStudent);
 
@@ -66,7 +66,7 @@ app.controller('TreatmentPeriodManagerCtrl', function ($scope, $modal, analyzeDa
             var endOfLastPeriod = $scope.treatmentPeriodLogCollection.models[$scope.treatmentPeriodLogCollection.length-1].attributes.dateEnd;
             var lastPeriodNum = $scope.treatmentPeriodLogCollection.models[$scope.treatmentPeriodLogCollection.length-1].attributes.id;
         }
-    
+
         initialFormData = {
             startedAt: moment(endOfLastPeriod).add('days', 1).format("YYYY-MM-DD"),
             endedAt: moment(Date.now()).format("YYYY-MM-DD"),

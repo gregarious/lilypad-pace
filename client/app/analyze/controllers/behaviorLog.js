@@ -1,5 +1,5 @@
 // controller for the behavior log
-app.controller('AnalyzeBehaviorLogCtrl', function ($scope, analyzeDataSources) {
+app.controller('AnalyzeBehaviorLogCtrl', function ($scope, analyzeDataSources, mixpanel) {
     $scope.behaviorLogCollection = null;
     $scope.statusMessage = '';
 

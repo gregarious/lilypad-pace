@@ -5,6 +5,7 @@ app.controller('StudentAnalyzeCtrl', function ($scope, $q, analyzeDataSources) {
       {name: 'Rules', url: 'app/analyze/views/rules.html'},
       {name: 'Behavior Log', url: 'app/analyze/views/behaviorLog.html'},
       {name: 'Attendance Records', url: 'app/analyze/views/attendanceLog.html'},
+      {name: 'Treatment Report', url: 'app/analyze/views/treatmentPeriodManager.html'},
       {name: 'Treatment Period Manager', url: 'app/analyze/views/treatmentPeriodManager.html'}
   ];
 

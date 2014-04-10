@@ -1,5 +1,5 @@
 // controller for rules
-app.controller('AnalyzeTreatmentReportCtrl', function ($scope, $q, analyzeDataSources, TreatmentReportDataProcessor, _) {
+app.controller('AnalyzeTreatmentReportCtrl', function ($scope, $q, analyzeDataSources, TreatmentReportDataProcessor, _, mixpanel) {
     $scope.statusMessage = "";
     $scope.isDataReady = false;
 

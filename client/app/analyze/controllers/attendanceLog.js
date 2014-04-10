@@ -1,5 +1,5 @@
 // controller for the behavior log
-app.controller('AnalyzeAttendanceLogCtrl', function ($scope, analyzeDataSources) {
+app.controller('AnalyzeAttendanceLogCtrl', function ($scope, analyzeDataSources, mixpanel) {
 
     $scope.attendanceSpanCollection = null;
     $scope.statusMessage = '';
