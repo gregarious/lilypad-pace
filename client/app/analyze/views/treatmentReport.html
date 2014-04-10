@@ -1,23 +1,5 @@
 <div ng-controller="AnalyzeTreatmentReportCtrl">
 
-    <!-- Demo for treatment periods -->
-
-    <div style="border: 2px solid black; padding: 1em;">
-        <h3>Test Treatment Periods:</h3>
-        <br>
-        <h4>{{test_treatmentPeriods.length}} treatment periods found for student: </h4>
-        <ul>
-            <li ng-repeat="period in test_treatmentPeriods.models">
-                {{period.get('dateStart')}} -- {{period.get('dateEnd')}}
-            </li>
-        </ul>
-        <input ng-model="test_newDateStart" type="date"> -
-        <input ng-model="test_newDateEnd" type="date">
-        <button ng-click="test_createNewOne()">Declare new period</button>
-    </div>
-
-    <!-- End demo -->
-
     <div class="treatmentReport" ng-show="isDataLoaded">
         <div class="divider"></div>
         <h4 class>Behaviors</h4>
