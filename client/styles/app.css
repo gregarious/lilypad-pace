@@ -1019,3 +1019,10 @@ form[name=analyze] span span:last-child {
     font-size: 15pt;
     margin-top: -55px;
 }
+
+.pointsEligibleLegend {
+    text-align: center;
+    color: #8c8c8c;
+    margin: 8px 0;
+    font-size: 16px;
+}
