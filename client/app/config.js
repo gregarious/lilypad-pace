@@ -1,7 +1,7 @@
 angular.module('pace').config(function(timeTrackerProvider) {
     // override timeTracker for development by setting app time to set app
     // time to 4/4/2013 at 10:20am
-    timeTrackerProvider.setAnchorTime(new Date(2013, 3, 4, 10, 20));
+    timeTrackerProvider.setAnchorTime(new Date(2014, 3, 4, 10, 20));
 });
 
 angular.module('mixpanel').config(function(mixpanelProvider) {
