@@ -140,15 +140,15 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         filteredCollection.models = _.filter(filteredCollection.models, withinRange);
         filteredCollection.length = filteredCollection.models.length;
         drawChartFrom(filteredCollection);
+
+        mixpanel.track( "Updated Visualization", {
+            "TXs": currentDuration,
+            "Viz start": dateStart,
+            "Viz end": dateEnd
+        });
       } else {
         console.warn('Invalid end treatment period and duration');
       }
-
-      mixpanel.track( "Updated Visualization", {
-          "TXs": currentDuration,
-          "Viz start": dateStart,
-          "Viz end": dateEnd
-      });
     }
 
     // Updates the graph and percentage totals.
@@ -166,7 +166,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
           chartArea: {left:50,top:15,width:564,height:200},
           vAxis: {
           title: "Points Retained",
-          minValue: 0, 
+          minValue: 0,
           maxValue: 40 },
           hAxis: {
           title: "Time",
@@ -191,7 +191,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         table.addColumn('number', 'Total Eligible');
         var points = data.points;
 
-        // Add total points 
+        // Add total points
         for (var i=0; i<points.length; i++) {
           points[i].push($scope.summaryData.bs.eligible);
         }
