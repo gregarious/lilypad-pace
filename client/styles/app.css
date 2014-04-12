@@ -785,8 +785,12 @@ td.invalid #behaviorTypeInput li {
     text-align: center;
 }
 
+#behaviorIncidentsTable .period {
+    width: 10%;
+}
+
 #behaviorIncidentsTable .label {
-    width: 40%;
+    width: 34%;
 }
 
 #behaviorIncidentsTable .duration {
@@ -799,7 +803,7 @@ td.invalid #behaviorTypeInput li {
 }
 
 #behaviorIncidentsTable .comment {
-    width: 34%;
+    width: 30%;
     position: relative;
 }
 

@@ -13,6 +13,7 @@
         <tr>
             <th class="delete" ng-show="isEditLogModeActive"></th>
             <th class="time">Time</th>
+            <th class="period">Period</th>
             <th class="label">Incident</th>
             <th class="duration">Duration</th>
             <th class="comment">Comment</th>
@@ -22,6 +23,7 @@
                 <div class="deleteCircle" ng-class="{active:(confirmDeleteFor != null) && (confirmDeleteFor === logEntry)}">-</div>
             </td>
             <td class="time" ng-click="showBehaviorModal(logEntry)">{{logEntry.getOccurredAt() | date: 'h:mm a'}}</td>
+            <td class="period" ng-click="showBehaviorModal(logEntry)">{{logEntry.attributes.periodicRecord.attributes.period}}</td>
             <td class="label" ng-click="showBehaviorModal(logEntry)">{{logEntry.getLabel()}}</td>
             <td class="duration" ng-click="showBehaviorModel(logEntry)">
                 <span ng-hide="logEntry.get('type').get('supportsDuration') && logEntry.getDuration() == null">{{logEntry.getDuration() | duration}}</span>
