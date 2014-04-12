@@ -11,7 +11,7 @@
               ng-value = "$index + 1"
               ng-selected = "$last" >
 
-              TX {{treatmentPeriod.attributes.id}} - {{treatmentPeriod.attributes.dateEnd | date: 'M/d'}}
+              TX {{$index + 1}} - {{treatmentPeriod.attributes.dateEnd | date: 'M/d'}}
             </option>
           </select>
         </label></span>
