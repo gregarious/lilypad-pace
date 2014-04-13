@@ -35,6 +35,11 @@
             ng-repeat="student in studentCollection.models">
             <div ng-click="handleClick(student)" ng-class="{absent: isStudentAbsent(student)}">
                 {{student.get('firstName')}} {{student.get('lastName')}}
+
+                <!-- INSERT THE STUDENT'S DAILY TOTAL HERE -->
+                <div class="dailyTotal">
+                    <span class="pointsRetained">{{ 10 }}</span>&nbsp;/&nbsp;{{ 40 }}
+                </div>
             </div>
         </li>
     </ul>

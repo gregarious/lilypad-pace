@@ -174,7 +174,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         var chartOptions = {
           curveType: "function",
           width: 614,
-          height: 250,
+          height: 270,
           chartArea: {left:50,top:15,width:564,height:200},
           vAxis: {
           title: "Points Retained",
@@ -182,6 +182,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
           maxValue: 40 },
           hAxis: {
           title: "Time",
+          slantedText: true,
           showTextEvery: 1,
           maxAlternation: 1},
           lineWidth: 3,
@@ -206,7 +207,8 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         // add points data: 4 point values and a total eligible value
         table.addRows(data.points);
 
-        chartOptions.hAxis.showTextEvery = parseInt(table.getNumberOfRows() / 10);
+        chartOptions.hAxis.showTextEvery = Math.ceil(table.getNumberOfRows() / 9);
+        console.log("showTextEvery " + chartOptions.hAxis.showTextEvery + ' of ' + table.getNumberOfRows());
 
         // Create and draw the visualization.
         var chartEl = document.getElementById('rules-visualization');

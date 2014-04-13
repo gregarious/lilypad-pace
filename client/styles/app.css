@@ -350,6 +350,22 @@ tr th {
     margin-left: -1px;
 }
 
+.dailyTotal {
+    float: right;
+    margin-right: 12px;
+    font-size: 10pt;
+    height: 55px;
+    color: rgba(88, 88, 91, 0.7);
+}
+
+.selected .dailyTotal {
+    color: rgb(255, 255, 255);
+}
+
+.dailyTotal .pointsRetained {
+    font-size: 13pt;
+}
+
 #logo {
     width: 100%;
     height: 42px;
