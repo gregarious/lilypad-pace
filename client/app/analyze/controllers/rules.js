@@ -4,6 +4,8 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
     $scope.summaryData = null;
     $scope.records = null;
     $scope.txPeriods = null;
+    $scope.hiddenSeries = [];
+    $scope.filterState = 'total';
 
     var ANALYZE_TAB_INDEX = 1;
     // when a new student is selected, update the rules data only if analyze is selected
@@ -71,6 +73,12 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         $scope.statusMessage = "No student selected";
       }
     }
+
+    $scope.hideRules = function(rulesToHide, selectedRule) {
+      $scope.hiddenSeries = rulesToHide.sort().reverse();
+      $scope.filterState = selectedRule;
+      updateVisualization();
+    };
 
     function updateVisualization() {
 
@@ -187,10 +195,10 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
           maxAlternation: 1},
           lineWidth: 3,
           series: [
-            {color: '#DA6666'},
-            {color: '#F39070'},
-            {color: '#678FC7'},
             {color: '#8A6CAB'},
+            {color: '#678FC7'},
+            {color: '#f5906c'},
+            {color: '#db6464'},
             {color: '#8C8C8C'}],
           annotations: {style: 'line'}
         };
@@ -204,14 +212,28 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         _.map(data.categories, addNumericColumn);
         table.addColumn('number', 'Total Eligible');
 
-        // add points data: 4 point values and a total eligible value
+        // Add points data: 4 point values and a total eligible value
         table.addRows(data.points);
 
         chartOptions.hAxis.showTextEvery = Math.ceil(table.getNumberOfRows() / 9);
-        console.log("showTextEvery " + chartOptions.hAxis.showTextEvery + ' of ' + table.getNumberOfRows());
+
+        // Create data view
+        var view = new google.visualization.DataView(table);
+
+        // Col 1 = X Label
+        // Col 2 = Follow Directions
+        // Col 3 = Complete Work
+        // Col 4 = Kind Words
+        // Col 5 = Be Safe
+        // Col 6 = Total Eligible
+        view.hideColumns($scope.hiddenSeries);
+
+        for(var i=0; i<$scope.hiddenSeries.length; i++) {
+          chartOptions.series.splice($scope.hiddenSeries[i]-2, 1);
+        }
 
         // Create and draw the visualization.
         var chartEl = document.getElementById('rules-visualization');
-        new google.visualization.LineChart(chartEl).draw(table, chartOptions);
+        new google.visualization.LineChart(chartEl).draw(view, chartOptions);
     }
 });
