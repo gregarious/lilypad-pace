@@ -185,9 +185,13 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
           height: 270,
           chartArea: {left:50,top:15,width:564,height:200},
           vAxis: {
-          title: "Points Retained",
+          viewWindowMode: "explicit",
+          viewWindow: {
+          max: 110,  // Hack to show correct labels, should be 100.
+          min: 0 },
+          title: "Percent Points Retained",
           minValue: 0,
-          maxValue: 40 },
+          maxValue: 100 },
           hAxis: {
           title: "Time",
           slantedText: true,
@@ -210,9 +214,8 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         var addNumericColumn = function(name){table.addColumn('number', name);};
 
         _.map(data.categories, addNumericColumn);
-        table.addColumn('number', 'Total Eligible');
 
-        // Add points data: 4 point values and a total eligible value
+        // Add points data: 4 point values
         table.addRows(data.points);
 
         chartOptions.hAxis.showTextEvery = Math.ceil(table.getNumberOfRows() / 9);
