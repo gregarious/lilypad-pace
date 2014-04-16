@@ -36,10 +36,12 @@
             <div ng-click="handleClick(student)" ng-class="{absent: isStudentAbsent(student)}">
                 {{student.get('firstName')}} {{student.get('lastName')}}
 
-                <!-- INSERT THE STUDENT'S DAILY TOTAL HERE -->
+                <!-- TODO: use getStudentDailyPointTotals in the controller to get the data needed here. can't simply call the
+                            function here because it's inherit watch is too broad: it causes angular watch depth limiting
                 <div class="dailyTotal">
                     <span class="pointsRetained">{{ 10 }}</span>&nbsp;/&nbsp;{{ 40 }}
                 </div>
+                -->
             </div>
         </li>
     </ul>
