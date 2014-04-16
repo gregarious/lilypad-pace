@@ -52,4 +52,36 @@ app.controller('MenuStudentListCtrl', function ($scope, mixpanel, timeTracker, d
 
         return !dailyDataStore.studentData[student.id].activeAttendanceSpan;
     }
+
+    /**
+     * Returns an object with the student's point totals for the given day.
+     *
+     * Result is an object is of the form: {
+     *     retained: Number
+     *     available: Number
+     * }
+     *
+     * null is returned if the student has no data for the given day.
+     *
+     * @param  {Student} student
+     * @return {Object}
+     */
+    function getStudentDailyPointTotals(student) {
+        if (!dailyDataStore.hasDayBegun || !dailyDataStore.studentData[student.id]) {
+            return null;
+        }
+
+        var result = {
+            retained: 0,
+            available: 0
+        };
+
+        dailyDataStore.studentData[student.id].periodicRecords.each(function(record) {
+            var points = record.get('points');
+            result.available += 8;
+            result.retained += (points.kw + points.cw + points.bs + points.fd);
+        });
+
+        return result;
+    }
 });

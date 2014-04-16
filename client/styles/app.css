@@ -350,6 +350,22 @@ tr th {
     margin-left: -1px;
 }
 
+.dailyTotal {
+    float: right;
+    margin-right: 12px;
+    font-size: 10pt;
+    height: 55px;
+    color: rgba(88, 88, 91, 0.7);
+}
+
+.selected .dailyTotal {
+    color: rgb(255, 255, 255);
+}
+
+.dailyTotal .pointsRetained {
+    font-size: 13pt;
+}
+
 #logo {
     width: 100%;
     height: 42px;
@@ -413,7 +429,7 @@ tr th {
     width: 100%;
     background: rgba(255,255,255,0.9);
     border-bottom: 1px solid #DBDBDB;
-    height: 43px;
+    height: 44px;
     z-index: 1000;
 }
 
@@ -785,8 +801,12 @@ td.invalid #behaviorTypeInput li {
     text-align: center;
 }
 
+#behaviorIncidentsTable .period {
+    width: 10%;
+}
+
 #behaviorIncidentsTable .label {
-    width: 40%;
+    width: 34%;
 }
 
 #behaviorIncidentsTable .duration {
@@ -799,7 +819,7 @@ td.invalid #behaviorTypeInput li {
 }
 
 #behaviorIncidentsTable .comment {
-    width: 34%;
+    width: 30%;
     position: relative;
 }
 
