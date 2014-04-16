@@ -68,16 +68,21 @@ angular.module('pace').factory('analyzeDataSources', function($http, $q, apiConf
         fetchIncidentLog: function(student) {
             var incidentUrl = apiConfig.toAPIUrl('students/' + student.id + '/behaviorincidents/');
             var pointLossUrl = apiConfig.toAPIUrl('students/' + student.id + '/pointlosses/');
-            var fetchingIncidents = $http.get(incidentUrl);
-            var fetchingPointLosses = $http.get(pointLossUrl);
 
-            var fetchingAll = $q.all([fetchingIncidents, fetchingPointLosses]);
+            // currently removing point losses from the incident log
+
+            var fetchingIncidents = $http.get(incidentUrl);
+            // var fetchingPointLosses = $http.get(pointLossUrl);
+            var fetchingAll = $q.all([
+                fetchingIncidents,
+                // fetchingPointLosses
+            ]);
             var deferred = $q.defer();
             fetchingAll.then(function(responses) {
                 var incidents = new (Backbone.Collection.extend({model: BehaviorIncident}))(responses[0].data, {parse: true});
-                var losses = new (Backbone.Collection.extend({model: PointLoss}))(responses[1].data, {parse: true});
+                // var losses = new (Backbone.Collection.extend({model: PointLoss}))(responses[1].data, {parse: true});
                 var compositeCollection = new LoggableCollection(incidents.models);
-                compositeCollection.add(losses.models);
+                // compositeCollection.add(losses.models);
                 deferred.resolve(compositeCollection);
             }, function(response) {
                 deferred.reject(responses);
