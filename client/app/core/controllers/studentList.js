@@ -8,6 +8,8 @@ app.controller('MenuStudentListCtrl', function ($scope, mixpanel, timeTracker, d
     // UI event handling functions
     $scope.handleClick = handleClick;
 
+    $scope.getStudentDailyPointTotals = getStudentDailyPointTotals;
+
     // listen for future changes in selectedClassroom
     $scope.$watch('viewState.selectedClassroom', resetStudentList);
 
@@ -71,17 +73,16 @@ app.controller('MenuStudentListCtrl', function ($scope, mixpanel, timeTracker, d
             return null;
         }
 
-        var result = {
-            retained: 0,
-            available: 0
-        };
+        var totals = dailyDataStore.studentData[student.id].dailyTotals;
+        if (!totals) {
+            return null;
+        }
 
-        dailyDataStore.studentData[student.id].periodicRecords.each(function(record) {
-            var points = record.get('points');
-            result.available += 8;
-            result.retained += (points.kw + points.cw + points.bs + points.fd);
-        });
-
-        return result;
+        if (dailyDataStore.currentPeriod <= 5) {
+            return totals.morning;
+        }
+        else {
+            return totals.afternoon;
+        }
     }
 });
