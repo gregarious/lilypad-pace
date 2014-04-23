@@ -3,7 +3,6 @@
 //  - start new day
 //  - get student data for today
 angular.module('pace').service('dailyDataStore', function($http, $q, $rootScope, _, timeTracker, moment, apiConfig, AttendanceSpan, BehaviorIncident, PeriodicRecord) {
-
     /* Current settings of store. Don't set directly. Use configure() */
     this._settings = {
         date: null,
@@ -299,5 +298,56 @@ angular.module('pace').service('dailyDataStore', function($http, $q, $rootScope,
 
         this.periodicRecords = new PeriodicRecordCollection(data.periodicRecords,
             {parse: true});
+
+        /**
+         * Given a PeriodicRecord Collection, run through and calculate the
+         * total points retained and available.
+         *
+         * Result will be stored in a member variable named `dailyTotal`
+         */
+        this.updateDailyTotal = function() {
+            var result = {
+                retained: 0,
+                available: 0
+            };
+
+            var validPointTypes = ['kw', 'cw', 'fd', 'bs'];
+            if (this.periodicRecords) {
+                this.periodicRecords.each(function(record) {
+                    _.each(validPointTypes, function(type) {
+                        result.retained += record.get('points')[type];
+                        result.available += 2;
+                    });
+                });
+            }
+
+            this.dailyTotal = result;
+        };
+
+        this.updateDailyTotal();
+
+        // hook up a bunch of event listeners to keep this.dailyTotal current
+
+        // listen to each periodic record for point changes
+        this.periodicRecords.each(function(record) {
+            record.on('pointChange', function() {
+                this.updateDailyTotal();
+            }, this);
+            // TODO: are these callbacks orphaned if this DailyData object is deallocated? Look into that.
+        }, this);
+
+        // update the point totals and hook up a new listener when a new record comes into existance
+        this.periodicRecords.on('add', function(newRecord) {
+            this.updateDailyTotal();
+            newRecord.on('pointChange', function() {
+                this.updateDailyTotal();
+            }, this);
+        }, this);
+
+        // remove event listeners if model is removed from collection (not that this happens, but just in case)
+        this.periodicRecords.on('remove', function(oldRecord) {
+            this.updateDailyTotal();
+            oldRecord.off('pointChange', null, this);
+        }, this);
     }
 });
