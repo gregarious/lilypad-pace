@@ -63,7 +63,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
 
         var fetchingIncidentLog = analyzeDataSources.fetchIncidentLog(student).then(function(collection) {
             $scope.behaviorLogCollection = collection;
-        }); 
+        });
 
         // once both fetches complete, we can update the visualization
         $q.all([fetchingTx, fetchingPdRecords, fetchingIncidentLog]).then(function(collections) {
@@ -88,8 +88,6 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
 
       var currentDuration = document.querySelector('#durationInput').value;
 
-      //$scope.$apply();
-
       // Ensure we have access to our set of points and the set of treatment periods
       if (!$scope.records || !$scope.txPeriods){
         console.warn("Treatment period data hasn't been loaded yet");
@@ -101,15 +99,6 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
       if (typeof currentDuration === 'undefined' || Number(currentDuration) < 1){
         $scope.duration = 1;
       }
-
-      /*
-      if (typeof $scope.endTX === 'undefined' || $scope.endTX < 1){
-        $scope.endTX = (periods.length || 1);
-      }
-
-      if ($scope.endTX < $scope.duration){
-        $scope.duration = $scope.endTX;
-      }*/
 
       if ($scope.endTX > 0 && currentDuration > 0){
 
@@ -235,7 +224,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
           var validDate = (dateStart <= incident_date && incident_date <= dateEnd);
 
           // Check if correct label
-          var matchesLabel = (incident.attributes.type.attributes.label == "Time Out");
+          var matchesLabel = (incident.attributes.type.attributes.label == "Daily Note");
 
           if (validDate && matchesLabel) {
             annotationTable[incident_date] = incident.attributes.type.attributes.label;
