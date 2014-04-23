@@ -134,6 +134,9 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
           startIndex = swap;
         }
 
+        var dateStart = periods[startIndex].attributes.dateStart;
+        var dateEnd = periods[endIndex].attributes.dateEnd;
+
         // Our filter, ensuring that we only include points within our date range.
         var withinRange = function(model){
           var date = model.attributes.date;
@@ -202,7 +205,6 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         table.addColumn({type: 'string', role: 'annotation'});
         var addNumericColumn = function(name){table.addColumn('number', name);};
 
-        // Convert date object to integer that uniquely identifies date
         var indexByDay = function(day){
           if (typeof day == "undefined" || typeof day !== 'object') {
             return -1;
@@ -213,7 +215,7 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         var dateStart = indexByDay(data.points[0][0]),
             dateEnd = indexByDay(data.points[data.points.length - 1][0]);
 
-        // Map indexed days to annotations
+        // Map over all incidents
         var annotationTable = {};
         _.map($scope.behaviorLogCollection.models, function(incident) {
 
@@ -229,13 +231,14 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
           }
         });
 
-        // Check if there's an annotation for a particular day, and add the applicable label.
         data.points = _.map(data.points, function(row) {
           var annotation = annotationTable[indexByDay(row[0])];
+
           if (annotation !== null && typeof annotation !== "undefined") {
             row[1] = annotation;
           }
           return row;
+
         });
 
         _.map(data.categories, addNumericColumn);
