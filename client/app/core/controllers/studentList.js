@@ -73,6 +73,16 @@ app.controller('MenuStudentListCtrl', function ($scope, mixpanel, timeTracker, d
             return null;
         }
 
-        return dailyDataStore.studentData[student.id].dailyTotal;
+        var totals = dailyDataStore.studentData[student.id].dailyTotals;
+        if (!totals) {
+            return null;
+        }
+
+        if (dailyDataStore.currentPeriod <= 5) {
+            return totals.morning;
+        }
+        else {
+            return totals.afternoon;
+        }
     }
 });
