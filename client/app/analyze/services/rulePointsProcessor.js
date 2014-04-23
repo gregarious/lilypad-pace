@@ -111,8 +111,8 @@ angular.module('pace').factory('RulePointsProcessor', function(timeTracker, mome
 
           var toPercent = function(x){ return parseInt( x * 100 / item.bs.eligible);};
           return [
-            moment(item.dateString).format('MM/DD'),
-            null,   // TODO: add phase lines comments here?
+            moment(item.dateString)._d,
+            null,
             toPercent( item.fd.acquired ),
             toPercent( item.cw.acquired ),
             toPercent( item.kw.acquired ),

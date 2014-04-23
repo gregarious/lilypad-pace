@@ -61,8 +61,12 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
             drawChartFrom(collection);
         });
 
+        var fetchingIncidentLog = analyzeDataSources.fetchIncidentLog(student).then(function(collection) {
+            $scope.behaviorLogCollection = collection;
+        }); 
+
         // once both fetches complete, we can update the visualization
-        $q.all([fetchingTx, fetchingPdRecords]).then(function(collections) {
+        $q.all([fetchingTx, fetchingPdRecords, fetchingIncidentLog]).then(function(collections) {
             updateVisualization();
             $scope.statusMessage = "";
         }, function(failureReasons) {
@@ -81,9 +85,6 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
     };
 
     function updateVisualization() {
-
-      console.log("updating visualization");
-      console.log($scope.duration);
 
       var currentDuration = document.querySelector('#durationInput').value;
 
@@ -109,8 +110,6 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
       if ($scope.endTX < $scope.duration){
         $scope.duration = $scope.endTX;
       }*/
-
-      console.log('[ endTX: ' + $scope.endTX + ' , duration: ' + currentDuration + ' ]');
 
       if ($scope.endTX > 0 && currentDuration > 0){
 
@@ -157,6 +156,10 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
 
         // Filter the collection and update the page.
         console.log("Filtering chart to dates between " + dateStart + " and " + dateEnd);
+
+        $scope.dateStart = dateStart;
+        $scope.dateEnd = dateEnd;
+
         filteredCollection.models = _.filter(filteredCollection.models, withinRange);
         filteredCollection.length = filteredCollection.models.length;
         drawChartFrom(filteredCollection);
@@ -213,7 +216,49 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         table.addColumn({type: 'string', role: 'annotation'});
         var addNumericColumn = function(name){table.addColumn('number', name);};
 
+        var indexByDay = function(day){
+          if (typeof day == "undefined" || typeof day !== 'object') {
+            return -1;
+          }
+          return parseInt(day.getTime() / 86400000);
+        };
+
+        var dateStart = indexByDay(data.points[0][0]),
+            dateEnd = indexByDay(data.points[data.points.length - 1][0]);
+
+        // Map over all incidents
+        var annotationTable = {};
+        _.map($scope.behaviorLogCollection.models, function(incident) {
+
+          // Check if within correct date range
+          var incident_date = indexByDay(incident.attributes.startedAt);
+          var validDate = (dateStart <= incident_date && incident_date <= dateEnd);
+
+          // Check if correct label
+          var matchesLabel = (incident.attributes.type.attributes.label == "Time Out");
+
+          if (validDate && matchesLabel) {
+            annotationTable[incident_date] = incident.attributes.type.attributes.label;
+          }
+        });
+
+        data.points = _.map(data.points, function(row) {
+          var annotation = annotationTable[indexByDay(row[0])];
+
+          if (annotation !== null && typeof annotation !== "undefined") {
+            row[1] = annotation;
+          }
+          return row;
+
+        });
+
         _.map(data.categories, addNumericColumn);
+
+        // Change date label from date object to string
+        data.points = _.map(data.points, function(row) {
+          row[0] = (row[0].getMonth() + 1) + "/" + row[0].getDate();
+          return row;
+        });
 
         // Add points data: 4 point values
         table.addRows(data.points);
