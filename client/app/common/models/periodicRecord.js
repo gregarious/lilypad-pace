@@ -1,8 +1,8 @@
 angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTracker, Student, PointLoss, apiConfig, mixpanel) {
     // utilities in use below
-    var validPointpointTypes = ['kw', 'cw', 'fd', 'bs'];
+    var validPointTypes = ['kw', 'cw', 'fd', 'bs'];
     var isValidPointType = function(code) {
-        return _.indexOf(validPointpointTypes, code) !== -1;
+        return _.indexOf(validPointTypes, code) !== -1;
     };
 
     var InnerPointLossCollection = Backbone.Collection.extend({
@@ -78,7 +78,7 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
             var initAttrs = {
                 points: {}
             };
-            _.each(validPointpointTypes, function(code) {
+            _.each(validPointTypes, function(code) {
                 initAttrs.points[code] = 2;
             });
             return initAttrs;
@@ -145,10 +145,13 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
          */
         registerPointLoss: function(pointType) {
             if (isValidPointType(pointType)) {
-                if (this.get('points')[pointType] >= 1) {
-                    this.get('points')[pointType]--;
+                var origPoints = this.get('points')[pointType];
+                if (origPoints >= 1) {
+                    var newPoints = origPoints - 1;
+                    this.get('points')[pointType] = newPoints;
                     // Note: we rely on server to handle the point change on its own: don't save it
                     var lossRecord = createPointLoss(this, pointType, timeTracker.getTimestamp());
+                    this.trigger('pointChange', this, pointType, newPoints, origPoints);
                     return lossRecord;
                 }
             }
@@ -157,11 +160,16 @@ angular.module('pace').factory('PeriodicRecord', function(_, Backbone, timeTrack
 
         reversePointLoss: function(pointType) {
             if(isValidPointType(pointType)) {
-                this.get('points')[pointType]++;
+                var origPoints = this.get('points')[pointType];
+                if (origPoints <= 2) {
+                    var newPoints = origPoints + 1;
+                    this.get('points')[pointType] = newPoints;
+                    // Note: we're assuming a PointLoss record was destroyed as a part of the point reversal.
+                    // This action will cause the update to the server.
+                    // TODO: fix this design choice
+                    this.trigger('pointChange', this, pointType, newPoints, origPoints);
+                }
             }
-
-            // disabled: relying on server to handle this on its own
-            // this.save();
         },
 
         /**

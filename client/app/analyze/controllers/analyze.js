@@ -14,9 +14,9 @@ app.controller('StudentAnalyzeCtrl', function ($scope, $q, analyzeDataSources) {
   $scope.range = function(n) {
 
     // This is a hack that assumes that
-    // endTX is defaulting to treatmentPeriods.models.length
+    // endTX is defaulting to treatmentPeriods.length (or 1 if there are no Tx)
     if (typeof n === 'undefined'){
-      n = ($scope.treatmentPeriods.models.length || 1);
+      n = $scope.treatmentPeriods ? $scope.treatmentPeriods.length : 1;
     }
 
     return new Array(Number(n));
