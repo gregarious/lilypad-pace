@@ -125,6 +125,9 @@ angular.module('backbone', ['underscore']).
                 // version to the promise
                 if (jqSettings.error) {
                     promise.error(function(data, status, headers, config) {
+                        setTimeout(function() {
+                            alert('Sorry, the application has experienced a problem and the data was not saved. Try closing and opening the app again.\n\nIf the problem persists email Hayden at ddemerso@andrew.cmu.edu');
+                        }, 0);
                         jqSettings.error(arguments, 'error', undefined);
                     });
                 }
