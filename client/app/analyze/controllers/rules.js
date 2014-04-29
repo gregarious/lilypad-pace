@@ -31,6 +31,11 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
         updateVisualization();
       }
     });
+    $scope.$watch('overlayedIncident', function () {
+      if ($scope.records) {
+        updateVisualization();
+      }
+    });
 
     // for mixpanel tracking
     $scope.$watch('viewState.selectedTab', reportSwitchToRules);
@@ -222,7 +227,9 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
           var validDate = (dateStart <= incident_date && incident_date <= dateEnd);
 
           // Check if correct label
-          var matchesLabel = (incident.attributes.type.attributes.label == "Daily Note");
+          var phaseLineFilter = $scope.overlayedIncident;
+          console.log(phaseLineFilter);
+          var matchesLabel = (incident.attributes.type.attributes.label == phaseLineFilter);
 
           if (validDate && matchesLabel) {
             annotationTable[incident_date] = incident.attributes.type.attributes.label;

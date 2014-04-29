@@ -1,5 +1,5 @@
 // parent controller for analyze
-app.controller('StudentAnalyzeCtrl', function ($scope, $q, analyzeDataSources) {
+app.controller('StudentAnalyzeCtrl', function ($scope, $q, analyzeDataSources, behaviorTypeDataStore) {
 
   $scope.views = [
       {name: 'Rules', url: 'app/analyze/views/rules.html'},
@@ -10,6 +10,8 @@ app.controller('StudentAnalyzeCtrl', function ($scope, $q, analyzeDataSources) {
   ];
 
   $scope.hasTreatmentPeriods = false;
+  $scope.behaviorTypeCollection = null;
+  $scope.overlayedIncident = 'none';
 
   $scope.range = function(n) {
 
@@ -23,6 +25,7 @@ app.controller('StudentAnalyzeCtrl', function ($scope, $q, analyzeDataSources) {
   };
 
   $scope.$watch('viewState.selectedStudent', setTXPickerForStudent);
+  $scope.$watch('viewState.selectedStudent', setIncidentsForStudent);
 
   // Treatment Period Picker
   function setTXPickerForStudent(student) {
@@ -38,6 +41,13 @@ app.controller('StudentAnalyzeCtrl', function ($scope, $q, analyzeDataSources) {
           $scope.duration = 1;
         }
       });
+    }
+  }
+
+  // Incident picker
+  function setIncidentsForStudent(student) {
+    if (student) {
+      $scope.behaviorTypeCollection = behaviorTypeDataStore.getForStudent($scope.viewState.selectedStudent);
     }
   }
 
