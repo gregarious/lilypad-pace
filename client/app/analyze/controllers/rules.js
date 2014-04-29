@@ -228,7 +228,6 @@ app.controller('AnalyzeRulesCtrl', function ($scope, analyzeDataSources, RulePoi
 
           // Check if correct label
           var phaseLineFilter = $scope.overlayedIncident;
-          console.log(phaseLineFilter);
           var matchesLabel = (incident.attributes.type.attributes.label == phaseLineFilter);
 
           if (validDate && matchesLabel) {
