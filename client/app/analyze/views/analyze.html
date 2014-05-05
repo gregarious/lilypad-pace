@@ -22,12 +22,29 @@
             <option
               ng-repeat = "i in range(endTX) track by $index"
               ng-value = "$index + 1"
-              ng-selected = "$first" >
+              ng-selected = "$last" >
 
               View {{$index + 1}} TX
             </option>
           </select>
           <br>
+        </label></span>
+
+        <span><label>
+          <p>&nbsp;</p>
+          <select ng-model="overlayedIncident" id="overlayedIncident">
+            <option 
+              value="none" 
+              ng-selected = "true">
+              No Phase Lines
+            </option>
+            <option
+              ng-repeat = "behavior in behaviorTypeCollection.models"
+              ng-value  = "behavior.get('label')" >
+
+              {{behavior.get('label')}}
+            </option>
+          </select>
         </label></span>
 
     </span>
