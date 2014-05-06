@@ -1,11 +1,11 @@
 import datetime
-from pace.models import AttendanceSpan
+from pace.models import AttendanceSpan, PeriodicRecord
 
-from logging
+import logging
 
 logger = logging.getLogger(__name__)
 
-def end_student_days(self):
+def end_student_days():
     # first find all attendance spans that were not ended at the end of the day
     spans = AttendanceSpan.objects.filter(time_out__isnull=True)
 
@@ -32,11 +32,11 @@ def end_student_days(self):
                 period_numbers_created.append(missing_period)
 
         if len(period_numbers_created) > 0:
-            print u'Created periods %s for %s on %s' % (unicode(period_numbers_created), unicode(span.student), span.date.strftime('%Y%m%d'))
+            logger.info(u'Created periods %s for %s on %s' % (unicode(period_numbers_created), unicode(span.student), span.date.strftime('%Y%m%d')))
 
 
 
-def remove_duplicate_period_records(self):
+def remove_duplicate_period_records():
     pd_buckets = {}
     for pd in PeriodicRecord.objects.all():
         classroom = pd.student.classroom if pd.student else '----'
@@ -74,5 +74,5 @@ def remove_duplicate_period_records(self):
 
 
 if __name__ == '__main__':
-    close_attendance_spans()
+    end_student_days()
     remove_duplicate_period_records()
