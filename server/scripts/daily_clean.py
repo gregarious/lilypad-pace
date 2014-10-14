@@ -1,13 +1,14 @@
 import datetime
-from pace.models import AttendanceSpan
+from pace.models import AttendanceSpan, PeriodicRecord
 
-from logging
+import logging
+from django.utils import timezone
 
 logger = logging.getLogger(__name__)
 
-def end_student_days(self):
+def end_student_days():
     # first find all attendance spans that were not ended at the end of the day
-    spans = AttendanceSpan.objects.filter(time_out__isnull=True)
+    spans = AttendanceSpan.objects.filter(time_out__isnull=True, date__lt=timezone.now().date())
 
     # set a hard time-out time to 3pm for each of them
     logger.info('Checking out %d students' % spans.count())
@@ -32,13 +33,13 @@ def end_student_days(self):
                 period_numbers_created.append(missing_period)
 
         if len(period_numbers_created) > 0:
-            print u'Created periods %s for %s on %s' % (unicode(period_numbers_created), unicode(span.student), span.date.strftime('%Y%m%d'))
+            logger.info(u'Created periods %s for %s on %s' % (unicode(period_numbers_created), unicode(span.student), span.date.strftime('%Y%m%d')))
 
 
 
-def remove_duplicate_period_records(self):
+def remove_duplicate_period_records():
     pd_buckets = {}
-    for pd in PeriodicRecord.objects.all():
+    for pd in PeriodicRecord.objects.filter(date__lt=timezone.now().date()):
         classroom = pd.student.classroom if pd.student else '----'
         key = '%s-%s-%s-%s' % (classroom, str(pd.student.id), pd.date.strftime('%Y%m%d'), str(pd.period))
         bucket = pd_buckets.setdefault(key, [])
@@ -74,5 +75,5 @@ def remove_duplicate_period_records(self):
 
 
 if __name__ == '__main__':
-    close_attendance_spans()
+    end_student_days()
     remove_duplicate_period_records()
