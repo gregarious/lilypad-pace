@@ -60,5 +60,5 @@ urlpatterns = patterns('',
     url(r'^api/', include(apipatterns)),
 
     # Staging server only function to erase all server data for the day
-    url(r'^erase_today/', 'lilypad_server.views.erase_today'),
+    url(r'^erase_new_data/', 'lilypad_server.views.erase_new_data'),
 )

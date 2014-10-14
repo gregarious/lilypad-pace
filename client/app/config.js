@@ -1,3 +1,8 @@
+// override timeTracker for staging by setting app time to set app to 4/4/2013 at 8:30am
+angular.module('pace').config(function(timeTrackerProvider) {
+    timeTrackerProvider.setAnchorTime(new Date(2014, 3, 4, 8, 30));
+});
+
 // still stub calls for staging
 angular.module('mixpanel').config(function(mixpanelProvider) {
     // uncomment this to track with real Mixpanel
