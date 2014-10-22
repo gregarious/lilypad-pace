@@ -1,6 +1,6 @@
-// override timeTracker for staging by setting app time to set app to 4/4/2013 at 8:30am
+// override timeTracker for staging by setting app time to set app to 4/5/2013 at 8:30am
 angular.module('pace').config(function(timeTrackerProvider) {
-    timeTrackerProvider.setAnchorTime(new Date(2014, 3, 4, 8, 30));
+    timeTrackerProvider.setAnchorTime(new Date(2014, 3, 5, 8, 30));
 });
 
 // still stub calls for staging
