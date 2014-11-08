@@ -73,6 +73,6 @@ And if you want to deactivate the virtualenv, simply run:
 
 4. Profit!
 
-## Code introduction
+## Client-side codebase introduction
 
 See [this article](angular-lilypad-intro.md).
